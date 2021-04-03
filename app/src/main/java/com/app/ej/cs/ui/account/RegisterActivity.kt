@@ -15,8 +15,12 @@ import java.util.*
 
 
 class RegisterActivity : BasePermissionActivity() {
+
     protected override fun permissions(): List<PermissionModel> {
+
         val permissions: MutableList<PermissionModel> = ArrayList<PermissionModel>()
+
+        // Dark Blue, Purple, Light Blue
         permissions.add(
             PermissionModelBuilder.withContext(this)
                 .withTitle("WRITE EXTERNAL STORAGE")
@@ -29,9 +33,10 @@ class RegisterActivity : BasePermissionActivity() {
                 .withExplanationMessage("We need this permission to save your data locally on your phone.")
                 .withFontType("my_font.ttf")
                 .withLayoutColorRes(R.color.blue)
-                .withImageResourceId(R.drawable.permission_one)
+                .withImageResourceId(R.drawable.permission_two)
                 .build()
         )
+
         permissions.add(
                 PermissionModelBuilder.withContext(this)
                         .withTitle("ACCESS FINE LOCATION")
@@ -47,9 +52,10 @@ class RegisterActivity : BasePermissionActivity() {
                         )
                         .withFontType("my_font.ttf")
                         .withLayoutColorRes(R.color.colorAccent3)
-                        .withImageResourceId(R.drawable.permission_two)
+                        .withImageResourceId(R.drawable.permission_one)
                         .build()
         )
+
         permissions.add(
                 PermissionModelBuilder.withContext(this)
                         .withTitle("READ CONTACTS")
@@ -65,7 +71,7 @@ class RegisterActivity : BasePermissionActivity() {
                         )
                         .withFontType("my_font.ttf")
                         .withLayoutColorRes(R.color.colorAccent)
-                        .withImageResourceId(R.drawable.permission_two)
+                        .withImageResourceId(R.drawable.permission_one)
                         .build()
         )
 
@@ -104,6 +110,7 @@ class RegisterActivity : BasePermissionActivity() {
 //                .withLayoutColorRes(R.color.colorAccent)
 //                .withImageResourceId(R.drawable.permission_two)
 //                .build());
+
         permissions.add(
             PermissionModelBuilder.withContext(this)
                 .withTitle("CALL PHONE")
@@ -119,7 +126,7 @@ class RegisterActivity : BasePermissionActivity() {
                 )
                 .withFontType("my_font.ttf")
                 .withLayoutColorRes(R.color.green)
-                .withImageResourceId(R.drawable.permission_two)
+                .withImageResourceId(R.drawable.permission_three)
                 .build()
         )
 
@@ -178,11 +185,10 @@ class RegisterActivity : BasePermissionActivity() {
     }
 
     protected override fun permissionIsPermanentlyDenied(permissionName: String) {
-        Log.e(
-            "DANGER",
-            "Permission ( $permissionName ) is permanentlyDenied and can only be granted via settings screen"
-        )
-        /** [com.fastaccess.permission.base.PermissionHelper.openSettingsScreen] can help you to open it if you like  */
+
+        Log.e("DANGER",
+            "Permission ( $permissionName ) is permanentlyDenied and can only be granted via settings screen")
+
     }
 
     protected override fun onUserDeclinePermission(permissionName: String) {
@@ -199,8 +205,11 @@ class RegisterActivity : BasePermissionActivity() {
     }
 
     companion object {
+
         fun startActivity(context: Context) {
             context.startActivity(Intent(context, RegisterActivity::class.java))
         }
+
     }
+
 }

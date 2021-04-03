@@ -16,7 +16,7 @@ import androidx.core.view.MotionEventCompat
 import androidx.core.view.ViewConfigurationCompat
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
-import com.fastaccess.permission.R
+import com.app.ej.cs.R
 
 
 /// TODO DONE
