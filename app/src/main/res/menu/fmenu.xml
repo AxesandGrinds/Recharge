@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <group android:id="@+id/f10menu" >
+
+        <item
+            android:id="@+id/check_account_number"
+            android:icon="@drawable/ic_account_balance_black_24dp"
+            android:orderInCategory="100"
+            android:title="@string/check_account_number"
+            app:showAsAction="never" />
+
+        <item
+            android:id="@+id/airtime_phone_transfer"
+            android:icon="@drawable/ic_airplanemode_active_black_24dp"
+            android:orderInCategory="100"
+            android:title="@string/airtime_phone_transfer"
+            app:showAsAction="never" />
+
+        <item
+            android:id="@+id/airtime_bank_topup_transfer"
+            android:icon="@drawable/ic_airplanemode_active_black_24dp"
+            android:orderInCategory="100"
+            android:title="@string/airtime_bank_topup_transfer"
+            app:showAsAction="never" />
+
+        <item
+            android:id="@+id/bank_transfer"
+            android:icon="@drawable/ic_compare_black_24dp"
+            android:orderInCategory="100"
+            android:title="@string/bank_transfer"
+            app:showAsAction="never" />
+
+    </group>
+
+</menu>

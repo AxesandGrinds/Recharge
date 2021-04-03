@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:keepScreenOn="true"
+    android:background="@color/colorPrimary"
+    >
+
+    <RelativeLayout
+        android:id="@+id/preview_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:adjustViewBounds="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" >
+
+      <ImageView
+          android:id="@+id/preview"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent" />
+
+      <com.app.ej.cs.vision.CameraSourcePreview
+          android:id="@+id/preview_view"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:visibility="visible" />
+
+      <com.otaliastudios.cameraview.CameraView
+          android:id="@+id/camera"
+          android:visibility="visible"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:layout_gravity="center"
+          android:keepScreenOn="true"
+          app:cameraPictureMetering="false"
+          app:cameraPictureSnapshotMetering="false"
+          app:cameraAudio="off"
+          app:cameraEngine="camera2"
+          app:cameraExperimental="true"
+          app:cameraFacing="back"
+          app:cameraFlash="auto"
+          app:cameraGestureLongTap="none"
+          app:cameraGesturePinch="zoom"
+          app:cameraGestureScrollHorizontal="filterControl1"
+          app:cameraGestureScrollVertical="exposureCorrection"
+          app:cameraGestureTap="autoFocus"
+          app:cameraGrid="off"
+          app:cameraMode="picture"
+          app:cameraPlaySounds="true"
+          app:cameraPreview="glSurface" >
+
+      </com.otaliastudios.cameraview.CameraView>
+
+
+
+    </RelativeLayout>
+
+    <com.app.ej.cs.vision.GraphicOverlay
+        android:id="@+id/graphic_overlay"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintLeft_toLeftOf="@id/preview_layout"
+        app:layout_constraintRight_toRightOf="@id/preview_layout"
+        app:layout_constraintTop_toTopOf="@id/preview_layout"
+        app:layout_constraintBottom_toBottomOf="@id/preview_layout"/>
+
+
+
+<!--  <ImageView-->
+<!--      android:id="@+id/preview"-->
+<!--      android:layout_width="wrap_content"-->
+<!--      android:layout_height="match_parent"-->
+<!--      android:adjustViewBounds="true"-->
+<!--      app:layout_constraintBottom_toTopOf="@+id/control"-->
+<!--      app:layout_constraintEnd_toEndOf="parent"-->
+<!--      app:layout_constraintStart_toStartOf="parent"-->
+<!--      app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--  <com.app.ej.cs.vision.CameraSourcePreview-->
+<!--      android:id="@+id/preview_view"-->
+<!--      android:layout_width="match_parent"-->
+<!--      android:layout_height="0dp"-->
+<!--      app:layout_constraintTop_toTopOf="parent"-->
+<!--      app:layout_constraintBottom_toTopOf="@+id/control"/>-->
+
+<!--  <com.app.ej.cs.vision.GraphicOverlay-->
+<!--      android:id="@+id/graphic_overlay"-->
+<!--      android:layout_width="match_parent"-->
+<!--      android:layout_height="match_parent"-->
+<!--      app:layout_constraintLeft_toLeftOf="@id/preview"-->
+<!--      app:layout_constraintRight_toRightOf="@id/preview"-->
+<!--      app:layout_constraintTop_toTopOf="@id/preview"-->
+<!--      app:layout_constraintBottom_toBottomOf="@id/preview"/>-->
+
+  <FrameLayout
+      android:id="@id/control"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:layout_constraintBottom_toTopOf="@id/control2"
+      android:orientation="vertical"
+      android:background="@color/transparent_black"
+      android:visibility="visible">
+
+    <LinearLayout
+        android:id="@+id/snap_camera_lll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:baselineAligned="false">
+
+      <!--<ImageButton
+          android:id="@+id/changeFilter"
+          android:layout_width="56dp"
+          android:layout_height="56dp"
+          android:layout_margin="16dp"
+          android:background="@drawable/background"
+          app:srcCompat="@drawable/ic_filters"
+          tools:visibility="gone" />-->
+
+
+
+      <!--<View
+          android:id="@+id/empty_view1"
+          android:layout_width="56dp"
+          android:layout_height="56dp" />-->
+
+      <LinearLayout
+          android:id="@+id/switch_camera_ll"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center"
+          android:paddingTop="20dp"
+          android:paddingBottom="10dp"
+          android:orientation="vertical">
+
+        <!--<ImageButton
+            android:id="@+id/changeFilter"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_margin="16dp"
+            android:background="@drawable/background"
+            android:elevation="3dp"
+            app:srcCompat="@drawable/ic_filters"
+            tools:visibility="gone" />
+
+        <ImageButton
+            android:id="@+id/toggleCamera"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_margin="16dp"
+            android:elevation="3dp"
+            android:background="@drawable/background"
+            app:srcCompat="@drawable/ic_switch" />-->
+
+        <ToggleButton
+            android:id="@+id/facing_switch"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/main_card_padding"
+            android:elevation="3dp"
+            android:background="@drawable/ic_switch_camera_white_48dp"
+            android:backgroundTint="@color/scan_background"
+            android:checked="false"
+            android:textOff=""
+            android:textOn=""/>
+
+      </LinearLayout>
+
+      <LinearLayout
+          android:id="@+id/snap_camera_ll"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center"
+          android:paddingTop="20dp"
+          android:paddingBottom="10dp"
+          android:gravity="center"
+          android:layout_weight="1"
+          android:orientation="vertical">
+
+        <ImageButton
+            android:id="@+id/snap_camera_btn"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:visibility="visible"
+            android:background="@drawable/background"
+            app:srcCompat="@drawable/ic_baseline_linked_camera_36" />
+
+        <ImageButton
+            android:id="@+id/take_another_btn"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:visibility="gone"
+            android:background="@drawable/white_background"
+            app:srcCompat="@drawable/ic_baseline_refresh_48" />
+
+
+      </LinearLayout>
+
+
+      <View
+          android:id="@+id/empty_view2"
+          android:layout_width="56dp"
+          android:layout_height="56dp" />
+
+
+
+
+    </LinearLayout>
+
+
+
+
+  </FrameLayout>
+
+    <FrameLayout
+        android:id="@id/control2"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@color/transparent_black"
+        app:layout_constraintBottom_toBottomOf="parent" >
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+
+
+
+
+      <LinearLayout
+          android:id="@+id/select_image_button_ll"
+          android:layout_width="wrap_content"
+          android:layout_height="50dp"
+          android:layout_gravity="center"
+          android:orientation="vertical">
+
+        <Button
+            android:visibility="visible"
+            android:id="@+id/select_image_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/select_image"
+            android:textColor="@color/black"/>
+
+        <Button
+            android:visibility="gone"
+            android:id="@+id/process_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/process_selection"/>
+
+      </LinearLayout>
+
+
+      <LinearLayout
+          android:id="@+id/control2"
+          android:layout_width="180dp"
+          android:layout_height="60dp"
+          android:layout_marginBottom="@dimen/vision_spinner_padding"
+          android:layout_marginLeft="20dp"
+          app:layout_constraintBottom_toBottomOf="parent"
+          android:orientation="horizontal"
+          android:baselineAligned="false">
+
+        <LinearLayout
+            android:id="@+id/size_selectorll"
+            android:visibility="gone"
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:layout_weight="1"
+            android:layout_marginLeft="@dimen/vision_spinner_padding"
+            android:background="@drawable/border_optional_edit"
+            tools:ignore="UselessParent">
+
+          <Spinner
+              android:id="@+id/size_selector"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_gravity="center"
+              android:overlapAnchor="false"
+              android:spinnerMode="dropdown" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/feature_selectorll"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_marginLeft="@dimen/vision_spinner_padding"
+            android:background="@drawable/border_orange"
+            tools:ignore="UselessParent">
+
+          <Spinner
+              android:id="@+id/feature_selector"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_gravity="center"
+              android:overlapAnchor="false"
+              android:spinnerMode="dropdown" />
+
+        </LinearLayout>
+
+      </LinearLayout>
+
+      <LinearLayout
+          android:id="@+id/live_settings_ll"
+          android:visibility="gone"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center"
+          android:orientation="vertical">
+
+      <ImageView
+          android:id="@+id/live_settings"
+          android:layout_width="48dp"
+          android:layout_height="48dp"
+          android:layout_gravity="bottom|end"
+          android:layout_margin="16dp"
+          android:contentDescription="@string/menu_item_settings"
+          app:srcCompat="@drawable/ic_baseline_settings_green_48" />
+
+      </LinearLayout>
+
+    </LinearLayout>
+
+
+  </FrameLayout>
+
+
+
+
+  <include
+      layout="@layout/vision_settings_style"
+      android:id="@+id/live_settings_button_include"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:visibility="gone"
+      app:layout_constraintRight_toRightOf="@id/root"
+      app:layout_constraintTop_toTopOf="@id/root"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

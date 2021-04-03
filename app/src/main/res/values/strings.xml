@@ -1,0 +1,850 @@
+<resources>
+
+    <!--    Some temporary dimens first for testing V-->
+
+    <string name="run_code">Run code</string>
+    <string name="roll_the_dice">Roll the Dice</string>
+    <string name="roll">Roll!</string>
+
+    <string name="clear">Clear</string>
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n\nSed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?\n</string>
+    <string name="running_code">Running code</string>
+
+    <string name="scariness_rating">Scariness Rating</string>
+
+    <string name="list">List</string>
+    <string name="grid">Grid</string>
+    <string name="settings">Settings</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails</string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+
+
+    <!--    Some temporary dimens first for testing ^-->
+
+
+
+
+
+
+    <string name="vision_review_instructions">If this is the accurate recharge code, you can press done. If this recharge code is not accurate, you may edit it here.</string>
+    <string name="code_input_instructions">Enter the recharge code below.</string>
+
+    <string name="admob_app_id">ca-app-pub-5127161627511605~6097746121</string>
+    <string name="adunitid_sf">ca-app-pub-5127161627511605/4753886624</string>
+    <string name="adunitid_ef">ca-app-pub-5127161627511605/7738949094</string>
+
+
+
+    <!--    Recognition Review-->
+    <string name="adunitid_rra">ca-app-pub-5127161627511605/1844846741</string>
+
+
+
+    <!--    Code Input   -->
+    <string name="adunitid_ciact">ca-app-pub-5127161627511605/5891849065</string>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <string name="choose_messenger_instructions">Choose Any Default Phone Messenger (Except Facebook Messenger) To Complete</string>
+    <string name="splash_screen_text">Recharge App</string>
+
+    <string name="app_name">Recharge</string>
+    <string name="main_title">Recharge</string>
+    <string name="title_home">Home</string>
+    <string name="main_menu">Main Menu</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="scan">Scan</string>
+    <string name="contacts">Invite Friends</string>
+    <string name="edit">Edit</string>
+    <string name="default_bio">Hey there, I am a Sparks user.</string>
+    <string name="hello_there">Hello there,</string>
+    <string name="welcome_back">welcome back to Recharge</string>
+    <string name="header">Header</string>
+    <string name="forgot_password">Forgot your Password ?</string>
+    <string name="sign_in">Sign In</string>
+    <string name="verify">Verify Code</string>
+    <string name="new_here">New here ? Sign Up instead</string>
+    <string name="amount">ex. 1000 for N1000</string>
+    <string name="airtime_balance">Check airtime balance</string>
+    <string name="data_balance">Check data balance</string>
+    <string name="bank_recharge">Recharge from bank</string>
+    <string name="code_recharge">Recharge from code</string>
+    <string name="buy_data">Buy Data Bundle</string>
+    <string name="dstv_gotv_bill">Pay DSTV/GOTV Bill</string>
+    <string name="electricity_bill">Pay Electricity Bill</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="delete_account">Delete Account</string>
+
+    <string name="create_pin">Create New Pin</string>
+    <string name="error_enter_number">Enter Number</string>
+    <string name="hint_pin">ex. 1234</string>
+    <string name="send_code">Send Code</string>
+    <string name="resend_code">Resend Code</string>
+    <string name="hint_phone_number">Phone Number</string>
+    <string name="hint_verification_code">Verification Code</string>
+    <string name="status_code_sent">Code Sent</string>
+    <string name="status_verification_failed">Verification failed</string>
+    <string name="status_verification_succeeded">Verification succeeded</string>
+    <string name="status_sign_in_failed">Sign-in failed</string>
+    <string name="instant_validation">(instant validation)</string>
+
+    <string name="check_account_number">Account Number?</string>
+    <string name="airtime_phone_transfer">Airtime Transfer (Phone2Phone)</string>
+    <string name="bank_transfer">Bank Transfer(Bank2Bank)</string>
+    <string name="airtime_bank_topup_transfer">Airtime TopUp (Bank2Phone)</string>
+
+    <string name="username_exists">This username already exists.</string>
+
+    <string name="google_sign_in_text">Continue with Google</string>
+    <string name="twitter_sign_in_text">Continue with Twitter</string>
+    <string name="offline_sign_in_text">Offline Sign In</string>
+
+    <string name="take_another">Take another</string>
+    <string name="finished">Finished</string>
+    <string name="zero">0</string>
+    <string name="unrecognized_images">Unrecognized</string>
+    <string name="recognized_images">RECOGNIZED</string>
+    <string name="see">See Unrecognized</string>
+    <string name="view_image">View Image</string>
+
+    <string name="loading_name">Loading Name&#8230;</string>
+    <string name="getting_name">Getting name&#8230;</string>
+    <string name="getting_username">Getting username&#8230;</string>
+
+    <string name="network_prompt">Choose a network</string>
+    <string name="bank_prompt">Choose associated bank</string>
+    <string name="get_on_board">Get on Board</string>
+    <string name="r_header">Registration Header</string>
+
+    <string name="phone">Phone</string>
+    <string name="phone1">Phone</string>
+    <string name="phone2">Phone 2</string>
+    <string name="phoneNumber01">Phone 1</string>
+    <string name="network">Network</string>
+    <string name="network01">Network 1</string>
+    <string name="network2">Network 2</string>
+    <string name="bank">Bank</string>
+
+    <string name="friendPhone">Friend Phone</string>
+    <string name="friend">Friend</string>
+    <string name="friend1">Friend 1 Phone</string>
+    <string name="friend2">Friend 2 Phone</string>
+    <string name="friend3">Friend 3 Phone</string>
+    <string name="friend4">Friend 4 Phone</string>
+    <string name="friend5">Friend 5 Phone</string>
+    <string name="friend6">Friend 6 Phone</string>
+    <string name="friend7">Friend 7 Phone</string>
+    <string name="friend8">Friend 8 Phone</string>
+    <string name="friend9">Friend 9 Phone</string>
+    <string name="friend10">Friend 10 Phone</string>
+
+    <string name="menu_options_content_description">Menu Button To Access Options</string>
+
+    <string name="menu_options_user_2_content_description">Menu Button To Access Options for user\'s second simcard</string>
+
+    <string name="menu_options_friends_content_description">Menu Button To Access Options for Friend</string>
+
+    <string name="optional">optional</string>
+    <string name="optionalDualSim">optional for Dual Sim Card</string>
+    <string name="mandatory">red = mandatory</string>
+    <string name="optional_info">all other colors = optional</string>
+    <string name="optional_explain">You can add optional info anytime after registration</string>
+    <string name="optional_explain_edit">You can add optional info anytime</string>
+
+    <string name="friend_phone1">Friend 1 Phone (ex. 0803&#8230;)</string>
+    <string name="friend_phone2">Friend 2 Phone (ex. 0803&#8230;)</string>
+    <string name="friend_phone3">Friend 3 Phone (ex. 0803&#8230;)</string>
+    <string name="friend_phone4">Friend 4 Phone (ex. 0803&#8230;)</string>
+    <string name="friend_phone5">Friend 5 Phone (ex. 0803&#8230;)</string>
+    <string name="friend_phone6">Friend 6 Phone (ex. 0803&#8230;)</string>
+    <string name="friend_phone7">Friend 7 Phone (ex. 0803&#8230;)</string>
+    <string name="friend_phone8">Friend 8 Phone (ex. 0803&#8230;)</string>
+    <string name="friend_phone9">Friend 9 Phone (ex. 0803&#8230;)</string>
+    <string name="friend_phone10">Friend 10 Phone (ex. 0803&#8230;)</string>
+
+    <string name="friend_phone_1">Phone 1 (ex. 08031234567)</string>
+    <string name="friend_phone_2">Phone 2</string>
+    <string name="friend_phone_3">Phone 3</string>
+
+    <string name="friend_network_1">Network 1</string>
+    <string name="friend_network_2">Network 2</string>
+    <string name="friend_network_3">Network 3</string>
+
+    <string name="friend_bank_1">Bank 1</string>
+    <string name="friend_bank_2">Bank 2</string>
+    <string name="friend_bank_3">Bank 3</string>
+    <string name="friend_bank_4">Bank 4</string>
+    <string name="friend_bank_5">Bank 5</string>
+
+    <string name="friend_name">Friend Name</string>
+
+    <string name="friend_name1">Friend 1 Name</string>
+    <string name="friend_name2">Friend 2 Name</string>
+    <string name="friend_name3">Friend 3 Name</string>
+    <string name="friend_name4">Friend 4 Name</string>
+    <string name="friend_name5">Friend 5 Name</string>
+    <string name="friend_name6">Friend 6 Name</string>
+    <string name="friend_name7">Friend 7 Name</string>
+    <string name="friend_name8">Friend 8 Name</string>
+    <string name="friend_name9">Friend 9 Name</string>
+    <string name="friend_name10">Friend 10 Name</string>
+
+    <string name="mPhone1">Number 1 (ex. 0803&#8230;)</string>
+    <string name="mPhone2">Number 2 (ex. 0803&#8230;)</string>
+
+    <string name="pin1">Pin 1 (ex. 1234)</string>
+    <string name="pin2">Pin 2 (ex. 1234)</string>
+
+    <string name="friend_account1">Friend Account Number 1</string>
+    <string name="friend_account2">Friend Account Number 2</string>
+    <string name="friend_account3">Friend Account Number 3</string>
+    <string name="friend_account4">Friend Account Number 4</string>
+    <string name="friend_account5">Friend Account Number 5</string>
+
+<!--    <string name="friend_account1">Friend 1 Account Number</string>-->
+<!--    <string name="friend_account2">Friend 2 Account Number</string>-->
+<!--    <string name="friend_account3">Friend 3 Account Number</string>-->
+<!--    <string name="friend_account4">Friend 4 Account Number</string>-->
+<!--    <string name="friend_account5">Friend 5 Account Number</string>-->
+<!--    <string name="friend_account6">Friend 6 Account Number</string>-->
+<!--    <string name="friend_account7">Friend 7 Account Number</string>-->
+<!--    <string name="friend_account8">Friend 8 Account Number</string>-->
+<!--    <string name="friend_account9">Friend 9 Account Number</string>-->
+<!--    <string name="friend_account10">Friend 10 Account Number</string>-->
+
+    <string name="details">Details</string>
+    <string name="change_password"> Change password </string>
+    <string name="change_picture"> Change profile picture </string>
+    <string name="save_details"> Save details </string>
+
+    <string name="done"> Done </string>
+    <string name="cross_check">Cross Check Detected Recharge #</string>
+    <string name="enter_code">Enter Recharge #</string>
+
+    <string name="show_more_details_content_description">Show More Button to show more details of a Friend in your friend\'s list</string>
+    <string name="reorder_friend_content_description">Reorder Button to reorder the position of a Friend in your friend\'s list</string>
+    <string name="add_friend_content_description">Plus Button To Add Friend From Phone Contacts List</string>
+
+    <string name="add_one_more_friend_content_description">Plus Button To Add One More Friend to Form For Friend Details</string>
+
+    <string name="add_friend1">Add Friend 1</string>
+    <string name="add_friend2">Add Friend 2</string>
+    <string name="add_friend3">Add Friend 3</string>
+    <string name="add_friend4">Add Friend 4</string>
+    <string name="add_friend5">Add Friend 5</string>
+    <string name="add_friend6">Add Friend 6</string>
+    <string name="add_friend7">Add Friend 7</string>
+    <string name="add_friend8">Add Friend 8</string>
+    <string name="add_friend9">Add Friend 9</string>
+    <string name="add_friend10">Add Friend 10</string>
+
+    <string name="fName">Friend Name</string>
+    <string name="fPhone">Phone</string>
+    <string name="fNetwork">Network</string>
+
+    <string name="name">Full Name</string>
+    <string name="number">0000 000 0000</string>
+    <string name="checkAll">Check All</string>
+    <string name="amountRv">100</string>
+    <string name="data">1.5 GB</string>
+    <string name="valid">30 days</string>
+
+    <string name="usernameAst">Username<font fgcolor="red">*</font></string>
+    <string name="nameAst">Full Name<font fgcolor="red">*</font></string>
+    <string name="emailAst">Email<font fgcolor="red">*</font></string>
+    <string name="mPhone1AstOrig">Number 1 (ex. 0803&#8230;)<font fgcolor="red">*</font></string>
+    <string name="mPhone1Ast">Number 1 (ex. 08031234567)<font fgcolor="red">*</font></string>
+    <string name="passwordAst">Password<font fgcolor="red">*</font></string>
+
+    <string name="smartCardNumber1">DSTV/GOTV SmartCard Number 1</string>
+    <string name="smartCardNumber2">DSTV/GOTV SmartCard Number 2</string>
+    <string name="smartCardNumber3">DSTV/GOTV SmartCard Number 3</string>
+    <string name="smartCardNumber4">DSTV/GOTV SmartCard Number 4</string>
+
+    <string name="meterNumber1">Electricity Meter Number 1</string>
+    <string name="meterNumber2">Electricity Meter Number 2</string>
+    <string name="meterNumber3">Electricity Meter Number 3</string>
+
+    <string name="onlineOfflinePassword">Online &amp; Offline SignIn Password*</string>
+    <string name="offlinePassword">Offline SignIn Password*</string>
+
+    <string name="username">Username</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="enter_number">Phone #: ex. 0803&#8230;</string>
+    <string name="verification_code">Code: ex. 123456</string>
+    <string name="verification_code2">Verification ex. 123456</string>
+    <string name="agree">By creating an account you agree to our</string>
+    <string name="terms">Terms and Use</string>
+    <string name="privacy">Privacy Policy</string>
+    <string name="and">&amp;</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="already_member">I am already a member</string>
+
+    <string name="offline_messageO">Your information has been scheduled for update, when internet connection is available it will be updated.</string>
+    <string name="offline_message">You need an internet connection in order to update details.</string>
+
+    <string name="noFriendsAlready">None of your contacts currently has this app</string>
+    <string name="already">The following friends already has app:</string>
+    <string name="invite">Please invite the following contacts:</string>
+    <string name="send">Send Invites</string>
+    <string name="share">Share on social media</string>
+
+
+
+
+
+    <!--    Camera Strings Begin     -->
+
+    <string name="java_entry_title">Run the ML Kit quickstart written in Java</string>
+    <string name="kotlin_entry_title">Run the ML Kit quickstart written in Kotlin</string>
+    <string name="ok">OK</string>
+    <string name="permission_camera_rationale">Access to the camera is needed for detection</string>
+    <string name="no_camera_permission">This application cannot run because it does not have the camera permission.  The application will now exit.</string>
+    <string name="low_storage_error">Face detector dependencies cannot be downloaded due to low device storage</string>
+    <string name="toggle_turn_on">Front</string>
+    <string name="toggle_turn_off">Back</string>
+    <string name="desc_camera_source_activity">Vision detectors demo with live camera preview</string>
+    <string name="desc_still_image_activity">Vision detectors demo with a still image</string>
+    <string name="desc_recognition_image_activity">Vision detectors demo with live and still image</string>
+    <string name="desc_camerax_live_preview_activity">Vision detectors demo with live preview using CameraX. Note that CameraX is only supported on API 21+</string>
+    <string name="download_error">Download error</string>
+    <string name="start_over">Start over</string>
+    <string name="menu_item_settings">Settings</string>
+    <string name="select_image">Select image</string>
+    <string name="process_selection">Process</string>
+
+    <!-- Settings related strings. -->
+    <string name="pref_screen_title_live_preview">Live preview settings</string>
+    <string name="pref_screen_title_still_image">Still image settings</string>
+    <string name="pref_screen_title_camerax_live_preview">CameraX live preview settings</string>
+    <string name="pref_category_face_detection">Face Detection</string>
+    <string name="pref_category_object_detection">Object Detection / Custom Object Detection</string>
+    <string name="pref_category_automl">AutoML Image Labeling</string>
+    <string name="pref_category_pose_detection">Pose Detection</string>
+    <string name="pref_category_segmentation">Selfie Segmentation</string>
+
+    <!-- Strings for camera settings. -->
+    <string name="pref_category_key_camera" translatable="false">pckc</string>
+    <string name="pref_category_title_camera">Camera</string>
+    <string name="pref_key_rear_camera_preview_size" translatable="false">rcpvs</string>
+    <string name="pref_key_rear_camera_picture_size" translatable="false">rcpts</string>
+    <string name="pref_key_front_camera_preview_size" translatable="false">fcpvs</string>
+    <string name="pref_key_front_camera_picture_size" translatable="false">fcpts</string>
+    <string name="pref_key_camerax_rear_camera_target_resolution" translatable="false">crctas</string>
+    <string name="pref_key_camerax_front_camera_target_resolution" translatable="false">cfctas</string>
+    <string name="pref_key_camera_live_viewport" translatable="false">clv</string>
+    <string name="pref_title_rear_camera_preview_size">Rear camera preview size</string>
+    <string name="pref_title_front_camera_preview_size">Front camera preview size</string>
+    <string name="pref_title_camerax_rear_camera_target_resolution">CameraX rear camera target resolution</string>
+    <string name="pref_title_camerax_front_camera_target_resolution">CameraX front camera target resolution</string>
+    <string name="pref_title_camera_live_viewport">Enable live viewport</string>
+    <string name="pref_summary_camera_live_viewport">Do not block camera preview drawing on detection</string>
+
+    <!-- Strings for object detector enable multiple objects preference. -->
+    <string name="pref_title_object_detector_enable_multiple_objects">Enable multiple objects</string>
+    <string name="pref_key_live_preview_object_detector_enable_multiple_objects" translatable="false">lpodemo</string>
+    <string name="pref_key_still_image_object_detector_enable_multiple_objects" translatable="false">siodemo</string>
+
+    <!-- Strings for object detector enable classification preference. -->
+    <string name="pref_title_object_detector_enable_classification">Enable classification</string>
+    <string name="pref_key_live_preview_object_detector_enable_classification" translatable="false">lpodec</string>
+    <string name="pref_key_still_image_object_detector_enable_classification" translatable="false">siodec</string>
+
+    <!-- Strings for face detector landmark mode preference. -->
+    <string name="pref_title_face_detector_landmark_mode">Landmark mode</string>
+    <string name="pref_key_live_preview_face_detection_landmark_mode" translatable="false">lpfdlm</string>
+    <string name="pref_entries_face_detector_landmark_mode_no_landmarks">No landmarks</string>
+    <string name="pref_entries_face_detector_landmark_mode_all_landmarks">All landmarks</string>
+    <!-- The following entry values must match the ones in FaceDetectorOptions#LandmarkMode -->
+    <string name="pref_entry_values_face_detector_landmark_mode_no_landmarks" translatable="false">1</string>
+    <string name="pref_entry_values_face_detector_landmark_mode_all_landmarks" translatable="false">2</string>
+
+    <!-- Strings for face detector contour mode preference. -->
+    <string name="pref_title_face_detector_contour_mode">Contour mode</string>
+    <string name="pref_key_live_preview_face_detection_contour_mode" translatable="false">lpfdcm</string>
+    <string name="pref_entries_face_detector_contour_mode_no_contours">No contours</string>
+    <string name="pref_entries_face_detector_contour_mode_all_contours">All contours</string>
+    <!-- The following entry values must match the ones in FaceDetectorOptions#ContourMode -->
+    <string name="pref_entry_values_face_detector_contour_mode_no_contours" translatable="false">1</string>
+    <string name="pref_entry_values_face_detector_contour_mode_all_contours" translatable="false">2</string>
+
+    <!-- Strings for face detector classification mode preference. -->
+    <string name="pref_title_face_detector_classification_mode">Classification mode</string>
+    <string name="pref_key_live_preview_face_detection_classification_mode" translatable="false">lpfdcfm</string>
+    <string name="pref_entries_face_detector_classification_mode_no_classifications">No classifications</string>
+    <string name="pref_entries_face_detector_classification_mode_all_classifications">All classifications</string>
+    <!-- The following entry values must match the ones in FaceDetectorOptions#ClassificationMode -->
+    <string name="pref_entry_values_face_detector_classification_mode_no_classifications" translatable="false">1</string>
+    <string name="pref_entry_values_face_detector_classification_mode_all_classifications" translatable="false">2</string>
+
+    <!-- Strings for face detector performance mode preference. -->
+    <string name="pref_title_face_detector_performance_mode">Performance mode</string>
+    <string name="pref_key_live_preview_face_detection_performance_mode" translatable="false">lpfdpm</string>
+    <string name="pref_entries_face_detector_performance_mode_fast">Fast</string>
+    <string name="pref_entries_face_detector_performance_mode_accurate">Accurate</string>
+    <!-- The following entry values must match the ones in FaceDetectorOptions#PerformanceMode -->
+    <string name="pref_entry_values_face_detector_performance_mode_fast" translatable="false">1</string>
+    <string name="pref_entry_values_face_detector_performance_mode_accurate" translatable="false">2</string>
+
+    <!-- Strings for face detector face tracking preference. -->
+    <string name="pref_title_face_detector_face_tracking">Face tracking</string>
+    <string name="pref_key_live_preview_face_detection_face_tracking" translatable="false">lpfdft</string>
+
+    <!-- Strings for face detector min face size preference. -->
+    <string name="pref_title_face_detector_min_face_size">Minimum face size</string>
+    <string name="pref_key_live_preview_face_detection_min_face_size" translatable="false">lpfdmfs</string>
+    <string name="pref_dialog_message_face_detector_min_face_size">Proportion of the head width to the image width, and the valid value range is [0.0, 1.0]</string>
+    <string name="pref_toast_invalid_min_face_size">Minimum face size must be a float value and in the range [0.0, 1.0]</string>
+
+    <!-- Strings for pose detector performance mode preference. -->
+    <string name="pref_title_pose_detector_performance_mode">Performance mode</string>
+    <string name="pref_key_live_preview_pose_detection_performance_mode" translatable="false">lppdpm</string>
+    <string name="pref_key_still_image_pose_detection_performance_mode" translatable="false">sipdpm</string>
+    <string name="pref_entries_pose_detector_performance_mode_fast">Fast</string>
+    <string name="pref_entries_pose_detector_performance_mode_accurate">Accurate</string>
+    <string name="pref_entry_values_pose_detector_performance_mode_fast" translatable="false">1</string>
+    <string name="pref_entry_values_pose_detector_performance_mode_accurate" translatable="false">2</string>
+
+    <!-- Strings for pose detector showInFrameLikelihood preference. -->
+    <string name="pref_title_pose_detector_show_in_frame_likelihood">Show in-frame likelihood</string>
+    <string name="pref_key_live_preview_pose_detector_show_in_frame_likelihood" translatable="false">lppdsifl</string>
+    <string name="pref_key_still_image_pose_detector_show_in_frame_likelihood" translatable="false">sipdsifl</string>
+
+    <!-- Strings for pose detector z value visualization preference. -->
+    <string name="pref_title_pose_detector_visualize_z">Visualize z value</string>
+    <string name="pref_key_pose_detector_visualize_z" translatable="false">pdvz</string>
+    <string name="pref_title_pose_detector_rescale_z">Rescale z value for visualization</string>
+    <string name="pref_key_pose_detector_rescale_z" translatable="false">pdrz</string>
+
+    <!-- Strings for pose classification preference. -->
+    <string name="pref_title_pose_detector_run_classification">Run Classification</string>
+    <string name="pref_key_pose_detector_run_classification" translatable="false">pdrc</string>
+    <string name="pref_summary_pose_detector_run_classification">Classify squat and pushup poses. Count reps in streaming mode. To get the best classification results based on the current sample data, face the camera side way and make sure your full body is in the frame.</string>
+
+    <!-- Strings for segmentation preference. -->
+    <string name="pref_title_segmentation_raw_size_mask">Enable raw size mask</string>
+    <string name="pref_key_segmentation_raw_size_mask" translatable="false">srsm</string>
+
+
+    <!--    Camera Strings End    -->
+
+
+
+
+
+
+
+
+
+
+
+    <string-array name="banks_arrays">
+        <item>Choose Bank</item>
+        <item>Access Bank</item>
+        <item>Diamond Bank</item>
+        <item>EcoBank</item>
+        <item>FCMB Bank</item>
+        <item>Fidelity Bank</item>
+        <item>First Bank</item>
+        <item>GTBank</item>
+        <item>Heritage Bank</item>
+        <item>Jaiz Bank</item>
+        <item>Keystone Bank</item>
+        <item>Polaris Bank</item>
+        <item>Stanbic IBTC Bank</item>
+        <item>Sterling Bank</item>
+        <item>UBA Bank</item>
+        <item>Union Bank</item>
+        <item>Unity Bank</item>
+        <item>Wema Bank</item>
+        <item>Zenith Bank</item>
+    </string-array>
+
+    <string-array name="bank_transfer_arrays">
+        <item>Choose Friend\'s Bank</item>
+        <item>Access Bank</item>
+        <item>Diamond Bank</item>
+        <item>EcoBank</item>
+        <item>FCMB Bank</item>
+        <item>Fidelity Bank</item>
+        <item>First Bank</item>
+        <item>GTBank</item>
+        <item>Heritage Bank</item>
+        <item>Jaiz Bank</item>
+        <item>Keystone Bank</item>
+        <item>Polaris Bank</item>
+        <item>Stanbic IBTC Bank</item>
+        <item>Sterling Bank</item>
+        <item>UBA Bank</item>
+        <item>Union Bank</item>
+        <item>Unity Bank</item>
+        <item>Wema Bank</item>
+        <item>Zenith Bank</item>
+    </string-array>
+
+    <string-array name="network_arrays">
+        <item>Choose Network</item>
+        <item>Airtel</item>
+        <item>Etisalat(9Mobile)</item>
+        <item>Glo Mobile</item>
+        <item>MTN Nigeria</item>
+        <!--<item>Visafone</item>-->
+    </string-array>
+
+    <string-array name="friend_network_arrays">
+        <item>Choose Friend\'s Network</item>
+        <item>Airtel</item>
+        <item>Etisalat(9Mobile)</item>
+        <item>Glo Mobile</item>
+        <item>MTN Nigeria</item>
+        <!--<item>Visafone</item>-->
+    </string-array>
+
+    <!--
+        <item>M-Tel</item>
+        <item>Ntel</item>
+                            -->
+
+    <!--MTN-->
+
+    <string-array name="mtn_sms_code_array">
+        <item>104</item>
+        <item>113</item>
+        <item>103</item>
+        <item>106</item>
+        <item>110</item>
+        <item>116</item>
+        <item>117</item>
+        <item>118</item>
+        <item>133</item>
+    </string-array>
+
+    <string-array name="mtn_amount_array">
+        <item>100</item>
+        <item>200</item>
+        <item>500</item>
+        <item>1,000</item>
+        <item>2,000</item>
+        <item>5,000</item>
+        <item>10,000</item>
+        <item>20,000</item>
+        <item>50,000</item>
+    </string-array>
+
+    <string-array name="mtn_data_array">
+        <item>30 MB</item>
+        <item>100 MB</item>
+        <item>750 MB</item>
+        <item>1.5 GB</item>
+        <item>3.5 GB</item>
+        <item>10 GB</item>
+        <item>22 GB</item>
+        <item>50 GB</item>
+        <item>85 GB</item>
+    </string-array>
+
+    <string-array name="mtn_valid_array">
+        <item>24 Hrs</item>
+        <item>24 Hrs</item>
+        <item>7 Days</item>
+        <item>30 Days</item>
+        <item>30 Days</item>
+        <item>30 Days</item>
+        <item>30 Days</item>
+        <item>60 Days</item>
+        <item>90 Days</item>
+    </string-array>
+
+    <!--GLO-->
+    <string-array name="glo_code_array">
+        <item>*127*14</item>
+        <item>*127*51</item>
+        <item>*127*56</item>
+        <item>*127*57</item>
+        <item>*127*53</item>
+        <item>*127*55</item>
+        <item>*127*58</item>
+        <item>*127*54</item>
+        <item>*127*59</item>
+        <item>*127*2</item>
+        <item>*127*1</item>
+        <item>*127*11</item>
+        <item>*127*12</item>
+        <item>*127*13</item>
+    </string-array>
+
+
+    <string-array name="glo_amount_array">
+        <item>50</item>
+        <item>100</item>
+        <item>200</item>
+        <item>500</item>
+        <item>1,000</item>
+        <item>2,000</item>
+        <item>2,500</item>
+        <item>3,000</item>
+        <item>4,000</item>
+        <item>5,000</item>
+        <item>8,000</item>
+        <item>10,000</item>
+        <item>15,000</item>
+        <item>18,000</item>
+    </string-array>
+
+    <string-array name="glo_data_array">
+        <item>30 MB</item>
+        <item>70 MB</item>
+        <item>200 MB</item>
+        <item>1.6 GB</item>
+        <item>3.2 GB</item>
+        <item>7.5 GB</item>
+        <item>10 GB</item>
+        <item>12 GB</item>
+        <item>16 GB</item>
+        <item>24 GB</item>
+        <item>32 GB</item>
+        <item>46 GB</item>
+        <item>60 GB</item>
+        <item>90 GB</item>
+    </string-array>
+
+    <string-array name="glo_valid_array">
+        <item>1 Day</item>
+        <item>1 Day</item>
+        <item>5 Days</item>
+        <item>10 Days</item>
+        <item>30 Days</item>
+        <item>30 Days</item>
+        <item>30 Days</item>
+        <item>30 Days</item>
+        <item>30 Days</item>
+        <item>30 Days</item>
+        <item>30 Days</item>
+        <item>30 Days</item>
+        <item>30 Days</item>
+        <item>30 Days</item>
+    </string-array>
+
+    <!--AIRTEL-->
+    <string-array name="airtel_code_array">
+        <item>*401</item>
+        <item>*440*18</item>
+        <item>*412</item>
+        <item>*417</item>
+        <item>*885*1</item>
+        <item>*440*17</item>
+        <item>*418</item>
+        <item>*496</item>
+        <item>*435</item>
+        <item>*437</item>
+        <item>*437*1</item>
+        <item>*438</item>
+        <item>*438*1</item>
+
+        <!--Mega Users-->
+        <item>*452</item>
+        <item>*460</item>
+        <item>*406</item>
+        <item>*407</item>
+        <item>*408</item>
+
+        <!--Unlimited-->
+        <item>*462*10</item>
+        <item>*462*15</item>
+        <item>*462*20</item>
+    </string-array>
+
+
+    <string-array name="airtel_amount_array">
+        <item>100</item>
+        <item>100</item>
+        <item>200</item>
+        <item>300</item>
+        <item>300</item>
+        <item>525</item>
+        <item>500</item>
+        <item>1,000</item>
+        <item>1,500</item>
+        <item>2,000</item>
+        <item>2,500</item>
+        <item>3,500</item>
+        <item>4,000</item>
+
+        <!--Mega Users-->
+        <item>5,000</item>
+        <item>8,000</item>
+        <item>36,000</item>
+        <item>70,000</item>
+        <item>136,000</item>
+
+        <!--Unlimited-->
+        <item>10,000 FUP@40GB</item>
+        <item>15,000 FUP@65GB</item>
+        <item>20,000 FUP@100GB</item>
+    </string-array>
+
+    <string-array name="airtel_data_array">
+        <item>40 MB</item>
+        <item>50 MB</item>
+        <item>200 MB</item>
+        <item>250 MB</item>
+        <item>350 MB</item>
+        <item>200 MB</item>
+        <item>750 MB</item>
+        <item>1.5 GB</item>
+        <item>3.5 GB</item>
+        <item>3 GB</item>
+        <item>5 GB</item>
+        <item>7 GB</item>
+        <item>9 GB</item>
+
+        <!--Mega Users-->
+        <item>10 GB</item>
+        <item>16 GB</item>
+        <item>50 GB</item>
+        <item>100 GB</item>
+        <item>200 GB</item>
+
+        <!--Unlimited-->
+        <item>Unlimited</item>
+        <item>Unlimited</item>
+        <item>Unlimited</item>
+    </string-array>
+
+    <string-array name="airtel_valid_array">
+        <item>1 Day</item>
+        <item>1 Day</item>
+        <item>3 Days</item>
+        <item>25 Days</item>
+        <item>7 Days</item>
+        <item>7 Days</item>
+        <item>14 Days</item>
+        <item>30 Days</item>
+        <item>30 Days</item>
+        <item>30 Days</item>
+        <item>30 Days</item>
+        <item>30 Days</item>
+        <item>30 Days</item>
+
+        <!--Mega Users-->
+        <item>30 Days</item>
+        <item>30 Days</item>
+        <item>180 Days</item>
+        <item>365 Days</item>
+        <item>365 Days</item>
+
+        <!--Unlimited-->
+        <item>30 Days</item>
+        <item>30 Days</item>
+        <item>30 Days</item>
+    </string-array>
+
+    <string-array name="etisalat_code_array">
+        <item>*229*2*11</item>
+        <item>*229*2*22</item>
+        <item>*229*2*44</item>
+        <item>*229*2*33</item>
+        <item>*229*2*55</item>
+
+        <item>*229*3*8</item>
+        <item>*229*3*1</item>
+        <item>*229*2*10</item>
+        <item>*229*2*12</item>
+        <item>*229*5*1</item>
+        <item>*229*5*2</item>
+        <item>*229*4*5</item>
+        <item>*229*5*3</item>
+        <!--<item>500</item>-->
+        <item>*229*3*8</item>
+    </string-array>
+
+    <string-array name="etisalat_amount_array">
+        <item>500</item>
+        <item>1,000</item>
+        <item>2,000</item>
+        <item>3,500</item>
+        <item>8,000</item>
+
+        <item>50</item>
+        <item>100</item>
+        <item>200</item>
+        <item>500</item>
+        <item>27,500</item>
+        <item>55,000</item>
+        <item>84,992</item>
+        <item>110,000</item>
+        <!--<item>500</item>-->
+        <item>50</item>
+    </string-array>
+
+    <string-array name="etisalat_data_array">
+        <item>500 MB</item>
+        <item>1 GB</item>
+        <item>2.5 GB</item>
+        <item>5 GB</item>
+        <item>11.5 GB</item>
+
+        <item>10 MB</item>
+        <item>40 GB</item>
+        <item>150 GB</item>
+        <item>500 GB</item>
+        <item>30 GB</item>
+        <item>60 GB</item>
+        <item>100 GB</item>
+        <item>120 GB</item>
+        <!--<item>1 GB</item>-->
+        <item>10 MB</item>
+    </string-array>
+
+    <string-array name="etisalat_valid_array">
+        <item>30 Days</item>
+        <item>30 Days</item>
+        <item>30 Days</item>
+        <item>30 Days</item>
+        <item>30 Days</item>
+
+        <item>1 Day</item>
+        <item>1 Day</item>
+        <item>7 Days</item>
+        <item>30 Days</item>
+        <item>90 Days</item>
+        <item>120 Days</item>
+        <item>30 Days</item>
+        <item>365 Days</item>
+        <!---->
+        <item>1 Day</item>
+    </string-array>
+
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_main2">Main2Activity</string>
+
+
+</resources>

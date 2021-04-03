@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <group android:id="@+id/user_menu" >
+
+        <item
+            android:id="@+id/airtime_balance"
+            android:icon="@drawable/ic_account_balance_black_24dp"
+            android:orderInCategory="100"
+            android:title="@string/airtime_balance"
+            app:showAsAction="never" />
+
+        <item
+            android:id="@+id/data_balance"
+            android:icon="@drawable/ic_internet_24dp"
+            android:orderInCategory="100"
+            android:title="@string/data_balance"
+            app:showAsAction="never" />
+
+        <item
+            android:id="@+id/bank_recharge"
+            android:icon="@drawable/ic_battery_charger_icon_7"
+            android:orderInCategory="100"
+            android:title="@string/bank_recharge"
+            app:showAsAction="never" />
+
+        <item
+            android:id="@+id/code_recharge"
+            android:icon="@drawable/ic_baseline_battery_saver_24"
+            android:orderInCategory="100"
+            android:title="@string/code_recharge"
+            app:showAsAction="never" />
+
+        <item
+            android:id="@+id/buy_data"
+            android:icon="@drawable/ic_add_shopping_cart_black_24dp"
+            android:orderInCategory="100"
+            android:title="@string/buy_data"
+            app:showAsAction="never" />
+
+        <item
+            android:id="@+id/dstv_bill"
+            android:icon="@drawable/ic_live_tv_black_24dp"
+            android:orderInCategory="100"
+            android:title="@string/dstv_gotv_bill"
+            app:showAsAction="never" />
+
+        <item
+            android:id="@+id/electricity_bill"
+            android:icon="@drawable/ic_lightbulb_outline_black_24dp"
+            android:orderInCategory="100"
+            android:title="@string/electricity_bill"
+            app:showAsAction="never" />
+
+    </group>
+
+</menu>

@@ -1,0 +1,541 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    android:orientation="vertical"
+    android:padding="@dimen/card_padding">
+
+
+  <androidx.cardview.widget.CardView
+      android:id="@+id/edit_card"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_margin="@dimen/card_layout_margin"
+      app:cardCornerRadius="@dimen/edit_card_radius"
+      app:cardUseCompatPadding="true"
+      app:cardElevation="@dimen/card_elevation_edit" >
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/optional_card"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@color/priority_card_color"
+        android:orientation="vertical">
+
+      <TextView
+          android:id="@+id/optional1"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginBottom="6dp"
+          android:paddingRight="20dp"
+          android:paddingLeft="20dp"
+          android:paddingStart="20dp"
+          android:paddingEnd="20dp"
+          android:gravity="end"
+          android:text="@string/optional"
+          android:textSize="18sp" />
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_margin="10dp"
+          android:background="@color/priority_card_color"
+          android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/priority_card_color"
+            android:orientation="horizontal">
+
+          <FrameLayout
+              android:layout_width="40dp"
+              android:layout_height="35dp"
+              android:layout_margin="10dp"
+              android:layout_marginHorizontal="@dimen/edit_text_input_layout_margin_horizontal"
+              android:layout_marginVertical="@dimen/edit_text_input_layout_margin_vertical"
+              android:background="@color/priority_card_color"
+              android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/addFriend"
+                app:srcCompat="@drawable/ic_add_black_24dp"
+                android:layout_width="40dp"
+                android:layout_height="35dp"
+                android:background="@color/black"
+                app:tint="@drawable/add_friend_selector_background"
+                android:contentDescription="@string/add_friend_content_description" />
+
+          </FrameLayout>
+
+          <TextView
+              android:id="@+id/friendNumber"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="12dp"
+              android:gravity="end"
+              android:text="@string/friend"
+              android:textSize="23sp" />
+
+
+        </LinearLayout>
+
+
+        <ImageView
+            android:id="@+id/showMoreHandleView"
+            app:srcCompat="@drawable/ic_baseline_unfold_more_48"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginHorizontal="@dimen/edit_text_input_layout_margin_horizontal"
+            android:layout_marginVertical="@dimen/edit_text_input_layout_margin_vertical"
+            android:contentDescription="@string/show_more_details_content_description" />
+
+        <ImageView
+            android:id="@+id/reorderHandleView"
+            app:srcCompat="@drawable/ic_reorder_black_64dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginHorizontal="@dimen/edit_text_input_layout_margin_horizontal"
+            android:layout_marginVertical="@dimen/edit_text_input_layout_margin_vertical"
+            android:contentDescription="@string/reorder_friend_content_description" />
+
+      </LinearLayout>
+
+
+      <com.google.android.material.textfield.TextInputLayout
+          android:id="@+id/h_friend1_name"
+          style="@style/TextLabel"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginHorizontal="@dimen/edit_text_input_layout_margin_horizontal"
+          android:layout_marginVertical="@dimen/edit_text_input_layout_margin_vertical"
+          android:hint="@string/friend_name"
+          android:textColorHint="@color/text_label_color"
+          app:hintTextColor="@color/text_label_color" >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/friendNameEt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/priority_card_color"
+            android:textColor="@color/optional_text_color"
+            android:inputType="textPersonName" />
+
+      </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
+
+
+
+      <LinearLayout
+          android:id="@+id/l_friend_phone1"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginHorizontal="@dimen/edit_text_input_layout_margin_horizontal"
+          android:layout_marginVertical="@dimen/edit_text_input_layout_margin_vertical"
+          android:orientation="vertical"
+          tools:ignore="UselessParent">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/h_friend_phone1"
+            style="@style/TextLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="@dimen/h_friend_layout_marginBottom"
+            android:hint="@string/friend_phone_1"
+            android:textColorHint="@color/text_label_color"
+            app:hintTextColor="@color/text_label_color" >
+
+          <com.google.android.material.textfield.TextInputEditText
+              android:id="@+id/friendPhoneEt1"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/optional_background_even"
+              android:textColor="@color/optional_text_color"
+              android:inputType="phone" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:id="@+id/l_friend_network1spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border_optional_even"
+            tools:ignore="UselessParent">
+
+          <Spinner
+              android:id="@+id/friendNetworkSpinner1"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              app:backgroundTint="@color/black_light"
+              app:overlapAnchor="false"
+              android:entries="@array/friend_network_arrays"
+              android:prompt="@string/network_prompt"
+              android:spinnerMode="dropdown" />
+
+        </LinearLayout>
+        
+        <View
+            android:id="@+id/friendDivider1"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_height"
+            android:background="@color/friend_divider_color"
+            android:layout_marginTop="@dimen/divider_marginTop" />
+
+      </LinearLayout>
+
+      <LinearLayout
+          android:id="@+id/l_friend_phone2"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginHorizontal="@dimen/edit_text_input_layout_margin_horizontal"
+          android:layout_marginVertical="@dimen/edit_text_input_layout_margin_vertical"
+          android:orientation="vertical"
+          tools:ignore="UselessParent">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/h_friend_phone2"
+            style="@style/TextLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/h_friend_layout_marginBottom"
+            android:hint="@string/friend_phone_2"
+            android:textColorHint="@color/text_label_color"
+            app:hintTextColor="@color/text_label_color" >
+
+          <com.google.android.material.textfield.TextInputEditText
+              android:id="@+id/friendPhoneEt2"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/optional_background_odd"
+              android:textColor="@color/optional_text_color"
+              android:inputType="phone" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:id="@+id/l_friend_network2spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border_optional_odd"
+            tools:ignore="UselessParent">
+
+          <Spinner
+              android:id="@+id/friendNetworkSpinner2"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:entries="@array/friend_network_arrays"
+              app:overlapAnchor="false"
+              android:prompt="@string/network_prompt"
+              android:spinnerMode="dropdown" />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/friendDivider2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_height"
+            android:background="@color/friend_divider_color"
+            android:layout_marginTop="@dimen/divider_marginTop" />
+
+      </LinearLayout>
+
+      <LinearLayout
+          android:id="@+id/l_friend_phone3"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginHorizontal="@dimen/edit_text_input_layout_margin_horizontal"
+          android:layout_marginVertical="@dimen/edit_text_input_layout_margin_vertical"
+          android:orientation="vertical"
+          tools:ignore="UselessParent">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/h_friend_phone3"
+            style="@style/TextLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/h_friend_layout_marginBottom"
+            android:hint="@string/friend_phone_3"
+            android:textColorHint="@color/text_label_color"
+            app:hintTextColor="@color/text_label_color" >
+
+          <com.google.android.material.textfield.TextInputEditText
+              android:id="@+id/friendPhoneEt3"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/optional_background_even"
+              android:textColor="@color/optional_text_color"
+              android:inputType="phone" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:id="@+id/l_friend_network3spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border_optional_even"
+            tools:ignore="UselessParent">
+
+          <Spinner
+              android:id="@+id/friendNetworkSpinner3"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:entries="@array/friend_network_arrays"
+              android:prompt="@string/network_prompt"
+              android:spinnerMode="dropdown" />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/friendDivider3"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_height"
+            android:background="@color/friend_divider_color"
+            android:layout_marginTop="@dimen/divider_marginTop" />
+
+      </LinearLayout>
+
+      <LinearLayout
+          android:id="@+id/l_friend_bank1"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginHorizontal="@dimen/edit_text_input_layout_margin_horizontal"
+          android:layout_marginVertical="@dimen/edit_text_input_layout_margin_vertical"
+          android:orientation="vertical"
+          tools:ignore="UselessParent">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/h_friend_bank_account1"
+            style="@style/TextLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/h_friend_layout_marginBottom"
+            android:hint="@string/friend_account1"
+            android:textColorHint="@color/text_label_color"
+            app:hintTextColor="@color/text_label_color" >
+
+          <com.google.android.material.textfield.TextInputEditText
+              android:id="@+id/friendBankAccountEt1"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/optional_background_odd"
+              android:textColor="@color/optional_text_color"
+              android:inputType="phone" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:id="@+id/l_friend_bank1spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border_optional_odd"
+            tools:ignore="UselessParent">
+
+          <Spinner
+              android:id="@+id/friendBankSpinner1"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              app:backgroundTint="@color/black_light"
+              android:entries="@array/bank_transfer_arrays"
+              app:overlapAnchor="false"
+              android:prompt="@string/bank_prompt"
+              android:spinnerMode="dropdown" />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/friendDivider4"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_height"
+            android:background="@color/friend_divider_color"
+            android:layout_marginTop="@dimen/divider_marginTop" />
+
+      </LinearLayout>
+
+      <LinearLayout
+          android:id="@+id/l_friend_bank2"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginHorizontal="@dimen/edit_text_input_layout_margin_horizontal"
+          android:layout_marginVertical="@dimen/edit_text_input_layout_margin_vertical"
+          android:orientation="vertical"
+          tools:ignore="UselessParent">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/h_friend_bank_account2"
+            style="@style/TextLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/h_friend_layout_marginBottom"
+            android:hint="@string/friend_account2"
+            android:textColorHint="@color/text_label_color"
+            app:hintTextColor="@color/text_label_color" >
+
+          <com.google.android.material.textfield.TextInputEditText
+              android:id="@+id/friendBankAccountEt2"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/optional_background_even"
+              android:textColor="@color/optional_text_color"
+              android:inputType="phone" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:id="@+id/l_friend_bank2spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border_optional_even"
+            tools:ignore="UselessParent">
+
+          <Spinner
+              android:id="@+id/friendBankSpinner2"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              app:backgroundTint="@color/black_light"
+              android:entries="@array/bank_transfer_arrays"
+              app:overlapAnchor="false"
+              android:prompt="@string/bank_prompt"
+              android:spinnerMode="dropdown" />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/friendDivider5"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_height"
+            android:background="@color/friend_divider_color"
+            android:layout_marginTop="@dimen/divider_marginTop" />
+
+      </LinearLayout>
+
+      <LinearLayout
+          android:id="@+id/l_friend_bank3"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginHorizontal="@dimen/edit_text_input_layout_margin_horizontal"
+          android:layout_marginVertical="@dimen/edit_text_input_layout_margin_vertical"
+          android:orientation="vertical"
+          tools:ignore="UselessParent">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/h_friend_bank_account3"
+            style="@style/TextLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/h_friend_layout_marginBottom"
+            android:hint="@string/friend_account3"
+            android:textColorHint="@color/text_label_color"
+            app:hintTextColor="@color/text_label_color" >
+
+          <com.google.android.material.textfield.TextInputEditText
+              android:id="@+id/friendBankAccountEt3"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/optional_background_odd"
+              android:textColor="@color/optional_text_color"
+              android:inputType="phone" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:id="@+id/l_friend_bank3spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border_optional_odd"
+            tools:ignore="UselessParent">
+
+          <Spinner
+              android:id="@+id/friendBankSpinner3"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              app:backgroundTint="@color/black_light"
+              android:entries="@array/bank_transfer_arrays"
+              app:overlapAnchor="false"
+              android:prompt="@string/bank_prompt"
+              android:spinnerMode="dropdown" />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/friendDivider6"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_height"
+            android:background="@color/friend_divider_color"
+            android:layout_marginTop="@dimen/divider_marginTop" />
+
+    </LinearLayout>
+
+      <LinearLayout
+          android:id="@+id/l_friend_bank4"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginHorizontal="@dimen/edit_text_input_layout_margin_horizontal"
+          android:layout_marginVertical="@dimen/edit_text_input_layout_margin_vertical"
+          android:orientation="vertical"
+          tools:ignore="UselessParent">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/h_friend_bank_account4"
+            style="@style/TextLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/h_friend_layout_marginBottom"
+            android:hint="@string/friend_account4"
+            android:textColorHint="@color/text_label_color"
+            app:hintTextColor="@color/text_label_color" >
+
+          <com.google.android.material.textfield.TextInputEditText
+              android:id="@+id/friendBankAccountEt4"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/optional_background_even"
+              android:textColor="@color/optional_text_color"
+              android:inputType="phone" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:id="@+id/l_friend_bank4spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border_optional_even"
+            tools:ignore="UselessParent">
+
+          <Spinner
+              android:id="@+id/friendBankSpinner4"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              app:backgroundTint="@color/black_light"
+              android:entries="@array/bank_transfer_arrays"
+              app:overlapAnchor="false"
+              android:prompt="@string/bank_prompt"
+              android:spinnerMode="dropdown" />
+
+        </LinearLayout>
+
+      </LinearLayout>
+
+
+    </LinearLayout>
+
+  </androidx.cardview.widget.CardView>
+
+
+
+</LinearLayout>

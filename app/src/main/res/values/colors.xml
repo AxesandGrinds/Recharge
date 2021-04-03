@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+
+
+<!--    Vision Colors Start    -->
+    <color name="blue_grey_400">#78909C</color>
+    <color name="light_grey_400">#E6E6E6</color>
+    <color name="light_green_700">#689F38</color>
+    <color name="gray">#BFBFBF</color>
+    <color name="blue2">#4286f4</color>
+    <color name="red2">#f44242</color>
+    <!--    Vision Colors End   -->
+
+
+    <color name="scan_background">#545B5E</color>
+    <color name="scan_background2">#D0D0D0</color>
+    <color name="scan_background3">#D8E6ED</color>
+    <color name="scan_background4">#90a4ae</color>
+    <color name="scan_background5">#fff</color>
+    <color name="scan_background6">#D5A394</color>
+    <color name="scan_background7">#e64a19</color>
+    <color name="scan_background8">#ffddc1</color>
+    <color name="scan_background9">#fff</color>
+    <color name="scan_background10">#448AFF</color>
+    <color name="scan_background11">#004c8c</color>
+    <color name="scan_background12">#A7B4BA</color>
+
+    <color name="priority_card_color">#fff</color>
+    <color name="priority_card_color6">#ffab91</color>
+
+
+
+    <color name="mandatory_background">#fff</color>
+    <color name="mandatory_background2">#babdbe</color>
+    <color name="mandatory_background3">#babdbe</color>
+
+
+
+
+
+    <color name="friend_divider_color">#FFFFFF</color>
+    <color name="friend_divider_color2">#ffddc1</color>
+    <color name="friend_divider_color3">#FFFFFF</color>
+    <color name="friend_divider_color4">#FF914D</color>
+    <color name="friend_divider_color5">#E64A19</color>
+    <color name="friend_divider_color6">#004c8c</color>
+
+
+
+
+
+    <color name="editColor">#008577</color>
+    <color name="editColor2">#6200EE</color>
+
+    <!--    Permissions -->
+    <color name="blue">#448AFF</color>
+
+    <color name="splash_background_color">#E64A19</color>
+    <color name="splash_background_color7">#FF914D</color>
+
+    <color name="splash_background_color2">#ffab91</color>
+    <color name="splash_background_color3">#c8e6c9</color>
+    <color name="splash_background_color4">#c8e6c9</color>
+    <color name="splash_background_color5">#c8e6c9</color>
+    <color name="splash_background_color6">#ffccbc</color>
+
+    <color name="main_background">#FFF</color>
+    <color name="main_background_e">#FFF</color>
+
+    <color name="optional_background">#ffab91</color>
+
+    <color name="optional_background_odd">#ffddc1</color>
+    <color name="optional_background_even">#ffddc1</color>
+    <color name="optional_background_even2">#DA927C</color>
+
+    <color name="optional_background_edit">#ffddc1</color>
+
+    <color name="optional_background_edit_main">#ffab91</color>
+    <color name="optional_background_edit_odd">#ffab91</color>
+    <color name="optional_background_edit_even">#ffab91</color>
+
+    <color name="card_color_user">#E6E5E5</color>
+
+    <color name="card_color">#FFF</color>
+    <color name="card_color_even">#E6E5E5</color>
+
+    <color name="card_color_old">#E6E5E5</color>
+    <color name="card_color_even_old">#babdbe</color>
+
+    <color name="more_vert_color">#e64a19</color>
+
+    <color name="login_edit_text_color">#4D7B83</color>
+    <color name="login_background_color">#4D7B83</color>
+    <color name="login_background_color_dark">#1f4f56</color>
+
+    <color name="icon_color">#e64a19</color>
+    <color name="text_color">#000000</color>
+
+
+
+
+
+
+    <color name="optional_text_color">#6A6A6A</color>
+
+
+    <color name="optional_text_color2">#ffddc1</color>
+
+
+
+
+
+
+
+
+    <color name="text_label_color">#6A6A6A</color>
+
+    <color name="tab_selected_color">#D32F2F</color>
+    <color name="tab_unselected_color">#BCB9B9</color>
+
+    <color name="secondary_card_color">#979696</color>
+
+    <color name="save_button_color">#e64a19</color>
+
+    <color name="add_one_more_friend_button_color">#BCB9B9</color>
+
+    <color name="add_one_more_friend_button_color2">#e64a19</color>
+
+    <color name="buy_data_dialog_color">#F5F5F5</color>
+
+    <color name="buy_data_text_color">#D32F2F</color>
+
+
+
+
+
+
+
+
+    <color name="buy_data_dialog_color2">#FFE6E6</color>
+
+    <color name="buy_data_dialog_color3">#DDDDDD</color>
+
+    <color name="buy_data_dialog_color4">#FFFAFA</color>
+
+    <color name="buy_data_text_color2">#000000</color>
+
+
+
+    <color name="login_color2">#835A4D</color>
+
+    <color name="optional_background3">#e1bee7</color>
+    <color name="optional_background2">#C8BC97</color>
+
+    <color name="priority_card_color5">#DFB7AA</color>
+    <color name="priority_card_color4">#ffab91</color>
+    <color name="priority_card_color3">#FFE8A3</color>
+
+    <color name="priority_card_color2">#FFCEA3</color>
+    <color name="card_color_user2">#6A6A6A</color>
+
+    <color name="more_vert_color2">#e64a19</color>
+    <color name="main_background_e2">#E6E5E5</color>
+
+    <color name="icon_color2">#000000</color>
+    <color name="text_color2">#000000</color>
+    <color name="text_label_color2">#000000</color>
+
+    <color name="main_edit_details2">#CDCD9666</color>
+
+
+
+
+
+
+
+
+    <color name="main_background2">#E8E7E7</color>
+    <!--    <color name="main_background">#FFFFFF</color>-->
+    <color name="main_background3">#C8BC97</color>
+    <color name="main_background4">#6200EE</color>
+
+    <color name="card_color2">#FFF</color>
+
+    <color name="card_color_user3">#FFE8A3</color>
+    <color name="card_color3">#FFE8A3</color>
+
+    <color name="card_color_user4">#d32f2f</color>
+    <color name="card_color4">#d32f2f</color>
+
+    <color name="card_color_user5">#ffCD9666</color>
+    <color name="card_color5">#ffCD9666</color>
+
+    <color name="card_color_user6">#E6E5E5</color>
+    <color name="card_color6">#E6E5E5</color>
+
+    <color name="colorPrimary3">#e64a19</color>
+    <color name="colorPrimaryLight3">#DD603A</color>
+    <color name="colorPrimaryDark3">#ac0800</color>
+    <color name="colorAccent3">#D81B60</color>
+
+    <color name="colorPrimary">#6A6A6A</color>
+    <color name="colorPrimaryDark">#e64a19</color>
+    <color name="colorAccent">#DD603A</color>
+
+
+    <color name="colorPrimaryDark4">#004c8c</color>
+    <color name="colorAccent4">#58a5f0</color>
+
+    <color name="colorPrimary2">#008577</color>
+    <color name="colorPrimaryDark2">#00574B</color>
+    <color name="colorAccent2">#D81B60</color>
+    <color name="background_color">#000000</color>
+    <color name="card_color7">#FFE8A3</color>
+    <color name="card_color8">#939393</color>
+    <color name="card_color9">#FF55585A</color>
+    <color name="card_color1">#FFFFFF</color>
+    <color name="card_color10">#FF5722</color>
+    <color name="babyBlue">#64b5f6</color>
+    <color name="darkBabyBlue">#2591FC</color>
+
+    <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">@color/colorPrimary</color>
+
+    <color name="black_light">#CC222222</color>
+
+    <color name="green">#388E3C</color>
+    <color name="red">#d32f2f</color>
+
+    <color name="midBabyBlue">#FF00A0EB</color>
+    <color name="lightColorAccent">#30FF4081</color>
+    <color name="dark_black">#CC262626</color>
+    <color name="transparent_75_white">#ACFFFFFF</color>
+    <color name="dark_gray">#FF55585A</color>
+
+
+    <color name="green_top">#388E3C</color>
+    <color name="green_bottom">#4CAF50</color>
+    <color name="minimal_black">#212121</color>
+    <color name="black_bottom">#414141</color>
+    <color name="black_top">#313131</color>
+
+    <color name="colorBackground">#f9f9fa</color>
+    <color name="colorTextSubtitle">#4e4e4e</color>
+    <color name="colorTextTitle">#262626</color>
+
+
+    <color name="like_icon_activated">#FF5252</color>
+    <color name="icons_counter_color">#828181</color>
+
+    <color name="colorSplash">#2ACB6E</color>
+    <color name="orangeIcon">#F2994A</color>
+    <color name="emojiSafeYellow">#FFE8A3</color>
+    <color name="underlineGrey">#E0E0E0</color>
+
+
+    <color name="primary">#009688</color>
+    <color name="primary_dark">#00796B</color>
+    <color name="primary_light">#B2DFDB</color>
+    <color name="accent">#FF5722</color>
+    <color name="accent_light">#FFCCBC</color>
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#727272</color>
+    <color name="divider">#B6B6B6</color>
+    <color name="light_grey">#D8D8D8</color>
+    <color name="dark_white">#f6f6f6</color>
+    <color name="camera_background">#a1887f</color>
+    <color name="gallery_background">#ba68c8</color>
+    <color name="file_background">#64b5f6</color>
+    <color name="record_background">#4db6ac</color>
+    <color name="contact_background">#7986cb</color>
+    <color name="location_background">#81c784</color>
+    <color name="keyboard_background">#90a4ae</color>
+    <color name="transparent_black">#88000000</color>
+    <color name="left_bubble">#D0D0D0</color>
+    <color name="account_linking_background">#DFDFDF</color>
+    <color name="mention_all">#1a237e</color>
+    <color name="mention_other">#009688</color>
+    <color name="mention_me">#af2412</color>
+
+<!--    <color name="colorPrimary">#006837</color>-->
+<!--    <color name="colorPrimaryDark">#004012</color>-->
+<!--    <color name="colorAccent">#c75f00</color>-->
+
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+</resources>

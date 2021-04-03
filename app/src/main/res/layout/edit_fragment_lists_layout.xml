@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fe_coordinatorLayout"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+  <ScrollView
+      android:scrollbars="none"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:padding="0dp" >
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/scan_background">
+
+      <LinearLayout
+          android:id="@+id/edit_frag_LLV"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:paddingBottom="12dp"
+          android:orientation="vertical" >
+
+
+
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/saveCv"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            app:cardElevation="@dimen/card_elevation_scan"
+            app:cardCornerRadius="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="@dimen/details_general_margin"
+            android:layout_marginRight="@dimen/details_general_margin"
+            android:clickable="false"
+            android:focusable="false"
+            android:background="?selectableItemBackground"
+            android:gravity="center">
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/update"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAlignment="center"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/optional_background_even"
+                android:text="@string/save_details"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                app:backgroundTint="@color/optional_background_even" />
+
+
+        </androidx.cardview.widget.CardView>
+
+        <FrameLayout
+            android:id="@+id/fe_fl_adView"
+            android:layout_width="320dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:padding="5dp"
+            android:layout_marginTop="20dp" >
+
+          <com.google.android.gms.ads.AdView
+              xmlns:ads="http://schemas.android.com/apk/res-auto"
+              android:id="@+id/fe_adView"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              ads:adSize="BANNER"
+              ads:adUnitId="@string/adunitid_ef">
+          </com.google.android.gms.ads.AdView>
+
+        </FrameLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/edit_user_main_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="@dimen/edit_text_register_button_layout_margin_vertical" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/edit_user_second_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/edit_text_register_button_layout_margin_vertical_half"
+            android:layout_marginBottom="@dimen/edit_text_register_button_layout_margin_vertical" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/edit_user_friends_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/edit_text_register_button_layout_margin_vertical_half"
+            android:layout_marginBottom="@dimen/edit_text_register_button_layout_margin_vertical" />
+
+        <ImageButton
+            android:id="@+id/add_one_more_friend_btn"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/edit_text_register_button_layout_margin_vertical_half"
+            android:layout_marginBottom="@dimen/edit_text_register_button_layout_margin_vertical"
+            app:srcCompat="@drawable/ic_add_black_24dp"
+            android:background="@color/add_one_more_friend_button_color"
+            android:contentDescription="@string/add_one_more_friend_content_description" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/save2Cv"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            app:cardElevation="@dimen/card_elevation_scan"
+            app:cardCornerRadius="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="30dp"
+            android:layout_marginLeft="@dimen/details_general_margin"
+            android:layout_marginRight="@dimen/details_general_margin"
+            android:clickable="false"
+            android:focusable="false"
+            android:background="?selectableItemBackground"
+            android:gravity="center">
+
+
+          <com.google.android.material.button.MaterialButton
+              android:id="@+id/update2"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:textAlignment="center"
+              android:layout_gravity="center_horizontal"
+              android:background="@color/optional_background_even"
+              android:text="@string/save_details"
+              android:textSize="18sp"
+              android:textColor="@color/black"
+              app:backgroundTint="@color/optional_background_even" />
+
+
+        </androidx.cardview.widget.CardView>
+
+
+      </LinearLayout>
+
+    </FrameLayout>
+
+
+  </ScrollView>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rda_coordinatorLayout"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_background"
+    tools:context="com.app.ej.cs.ui.account.RegisterDetailsActivity">
+
+    <ScrollView
+        android:scrollbars="none"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="0dp" >
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/header"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/r_header"
+                android:scaleType="fitStart"
+                app:srcCompat="@drawable/header" />
+
+            <ProgressBar
+                android:id="@+id/mProgressBar"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="150dp"
+                android:indeterminate = "true"
+                android:minWidth="200dp"
+                android:minHeight="50dp"
+                android:max="100"
+                android:progress="0" />
+
+            <ProgressBar
+                android:id="@+id/mLocationProgressBar"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="150dp"
+                android:indeterminate = "true"
+                android:minWidth="200dp"
+                android:minHeight="50dp"
+                android:max="100"
+                android:progress="0" />
+
+            <LinearLayout
+                android:id="@+id/edit_frag_LLV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="70dp"
+                android:padding="0dp"
+                android:orientation="vertical" >
+
+                <FrameLayout
+                    android:id="@+id/onboard_fl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:paddingStart="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingEnd="10dp"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="70dp" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        android:text="@string/get_on_board"
+                        android:textColor="#212121"
+                        android:textSize="32sp"
+                        tools:ignore="MissingPrefix" />
+
+                </FrameLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/edit_user_main_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/edit_text_register_button_layout_margin_vertical_half"
+                    android:layout_marginBottom="@dimen/edit_text_register_button_layout_margin_vertical" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/edit_user_second_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/edit_text_register_button_layout_margin_vertical_half"
+                    android:layout_marginBottom="@dimen/edit_text_register_button_layout_margin_vertical" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/edit_user_friends_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/edit_text_register_button_layout_margin_vertical_half"
+                    android:layout_marginBottom="@dimen/edit_text_register_button_layout_margin_vertical" />
+
+                <ImageButton
+                    android:id="@+id/add_one_more_friend_btn"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/edit_text_register_button_layout_margin_vertical_half"
+                    android:layout_marginBottom="@dimen/edit_text_register_button_layout_margin_vertical"
+                    app:srcCompat="@drawable/ic_add_black_24dp"
+                    android:background="@color/add_one_more_friend_button_color"
+                    android:contentDescription="@string/add_one_more_friend_content_description" />
+
+                <LinearLayout
+                    android:id="@+id/register_details_LLV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="12dp"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/agree" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal">
+
+                        <!--<Button
+                            style="@style/TextLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:onClick="openTerms"
+                            app:backgroundTint="@color/colorPrimary3"
+                            android:text="@string/terms"
+                            android:textColor="#fff"
+                            android:textAllCaps="false"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="@dimen/register_details_activity_horizontal_margin"
+                            android:layout_marginLeft="@dimen/register_details_activity_horizontal_margin"
+                            android:text="@string/and"
+                            android:textColor="#000"
+                            android:textAllCaps="false"
+                            android:textSize="16sp" />-->
+
+                        <Button
+                            style="@style/TextLabel"
+                            android:layout_width="120dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:onClick="openPolicy"
+                            app:backgroundTint="@color/colorPrimaryDark4"
+                            android:text="@string/privacy"
+                            android:textColor="#fff"
+                            android:textAllCaps="false"
+                            android:textSize="16sp" />
+
+                    </LinearLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/register_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="20dp"
+                        android:padding="10dp"
+                        app:backgroundTint="@color/colorPrimary3"
+                        android:text="@string/sign_up"
+                        android:textAllCaps="false"
+                        android:textColor="#fff"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </FrameLayout>
+
+
+    </ScrollView>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

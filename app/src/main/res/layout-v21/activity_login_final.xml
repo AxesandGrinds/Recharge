@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.app.ej.cs.ui.account.LoginActivity"
+    android:id="@+id/layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/login_background_color"
+    style="@style/AppTheme" >
+
+    <!--<ImageView
+        android:id="@+id/header"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="@string/header"
+        android:scaleType="fitStart"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/header"
+        android:background="@color/login_background_color" />-->
+
+    <ScrollView
+        android:id="@+id/main"
+        android:background="@color/login_background_color"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="80dp"
+        android:overScrollMode="never"
+        android:scrollbars="none"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:orientation="vertical"
+            android:paddingTop="20dp"
+            android:background="@color/login_background_color">
+
+            <!--fontPath="fonts/bold.ttf"-->
+            <TextView
+                android:id="@+id/hello_there"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                fontPath="fonts/bold.ttf"
+                android:text="@string/hello_there"
+                android:textColor="#212121"
+                android:textSize="30sp"
+                tools:ignore="MissingPrefix" />
+
+            <!--fontPath="fonts/bold.ttf"-->
+            <TextView
+                android:id="@+id/welcome_back"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                fontPath="fonts/bold.ttf"
+                android:text="@string/welcome_back"
+                android:textColor="#212121"
+                android:textSize="30sp"
+                tools:ignore="MissingPrefix" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/h_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
+                android:textColorHint="@color/white"
+                app:hintTextColor="@color/white"
+                app:boxStrokeColor="@color/emojiSafeYellow"
+                app:boxBackgroundColor="@color/login_background_color"
+                android:hint="@string/enter_number"
+                style="@style/TextLabelLogin">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/phoneEt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/h_email"
+                    android:inputType="number"
+                    android:shadowColor="@color/white"
+                    android:textColorHint="@color/white"
+                    android:textColor="@color/white"
+                    android:textColorHighlight="@color/white"
+                    android:textColorLink="@color/white"
+                    style="@style/TextLabelLogin"
+                     />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/h_verification_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:textColorHint="@color/white"
+                app:hintTextColor="@color/white"
+                app:boxStrokeColor="@color/emojiSafeYellow"
+                app:boxBackgroundColor="@color/login_background_color"
+                style="@style/TextLabelLogin"
+                android:hint="@string/verification_code">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/verification_codeEt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/h_email"
+                    android:inputType="number"
+                    android:shadowColor="@color/white"
+                    android:textColorHint="@color/white"
+                    android:textColor="@color/white"
+                    android:textColorHighlight="@color/white"
+                    android:textColorLink="@color/white"
+                    style="@style/TextLabelLogin" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/send_verify_button"
+                android:layout_width="wrap_content"
+                android:layout_height="55dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+                android:theme="@style/AppTheme"
+                android:padding="10dp"
+                android:text="@string/send_code"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                app:backgroundTint="@color/colorPrimary"
+                app:iconPadding="2dp"
+                app:cornerRadius="8dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/resend_verify_button"
+                android:layout_width="wrap_content"
+                android:layout_height="55dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+                android:theme="@style/AppTheme"
+                android:padding="10dp"
+                android:text="@string/resend_code"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                app:backgroundTint="@color/colorPrimary"
+                app:iconPadding="2dp"
+                app:cornerRadius="8dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/verify_button"
+                android:layout_width="wrap_content"
+                android:layout_height="55dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+                android:theme="@style/AppTheme"
+                android:padding="10dp"
+                android:text="@string/sign_in"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                app:backgroundTint="@color/colorAccent"
+                app:iconPadding="2dp"
+                app:cornerRadius="8dp" />
+
+            <!--<com.google.android.material.button.MaterialButton
+                android:id="@+id/register_button"
+                android:layout_width="wrap_content"
+                android:layout_height="55dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                style="@style/TextLabelRegister"
+                android:padding="10dp"
+                android:text="@string/new_here"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                app:iconPadding="2dp"
+                app:cornerRadius="8dp" />-->
+
+            <TextView
+                android:id="@+id/detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center"
+                android:layout_marginTop="20dp"
+                style="@style/TextLabelLogin"
+                android:text="" />
+
+            <ProgressBar
+                android:id="@+id/mProgressBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:visibility="invisible" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

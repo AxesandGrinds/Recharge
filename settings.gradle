@@ -1,0 +1,5 @@
+//include ':permission-ktx'
+include ':common'
+include ':permission'
+include ':app'
+rootProject.name = "RechargeCP"

@@ -1,0 +1,92 @@
+<resources>
+
+    <!--    Some temporary dimens first for testing V-->
+
+    <dimen name="button_margin">16dp</dimen>
+    <dimen name="die_dimen">80dp</dimen>
+    <dimen name="dice_vertical_margin">48dp</dimen>
+    <dimen name="headline_margin">48dp</dimen>
+
+    <dimen name="news_title_text_size">40sp</dimen>
+    <dimen name="detail_news_text_size">20sp</dimen>
+
+    <!--    Some temporary dimens first for testing ^-->
+
+    <dimen name="permissions_text_size">16sp</dimen>
+
+
+    <dimen name="box_collapsed_padding_top">0dp</dimen>
+
+
+    <dimen name="vision_spinner_padding">12dp</dimen>
+
+
+    <dimen name="main_card_padding">12dp</dimen>
+    <dimen name="main_card_top_padding">6dp</dimen>
+    <dimen name="main_card_bottom_padding">6dp</dimen>
+
+    <dimen name="card_padding">0dp</dimen>
+    <dimen name="card_layout_margin">2dp</dimen>
+    <dimen name="edit_card_radius">25dp</dimen>
+    <dimen name="scan_card_radius">25dp</dimen>
+    <dimen name="details_margin">4dp</dimen>
+    <dimen name="details_general_margin">20dp</dimen>
+
+
+    <dimen name="card_elevation_scan">5dp</dimen>
+    <dimen name="card_elevation_edit">10dp</dimen>
+
+
+    <dimen name="divider_height">1dp</dimen>
+    <dimen name="divider_marginTop">10dp</dimen>
+
+
+    <dimen name="register_details_activity_horizontal_margin">12dp</dimen>
+
+
+    <dimen name="activity_margin">8dp</dimen>
+    <dimen name="log_text_size">20sp</dimen>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">26dp</dimen>
+    <dimen name="padding_standard">10dp</dimen>
+
+    <dimen name="fab_size_normal">56dp</dimen>
+    <dimen name="fab_size_mini">40dp</dimen>
+    <dimen name="labels_text_size">14sp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="fab_elevation_margin">100dp</dimen>
+
+    <dimen name="buy_data_rv_padding">0dp</dimen>
+    <dimen name="buy_data_rv_corner">17dp</dimen>
+
+    <dimen name="mtrl_textinput_box_stroke_width_default_fin">1dp</dimen>
+    <dimen name="mtrl_textinput_box_stroke_width_focused_fin">2dp</dimen>
+    <dimen name="layout_margin_scan">0dp</dimen>
+    <dimen name="layout_margin_top">0dp</dimen>
+    <dimen name="layout_margin_top_user">16dp</dimen>
+
+
+    <dimen name="network_textview_padding">2dp</dimen>
+
+    <dimen name="phone_text_size">20sp</dimen>
+    <dimen name="network_text_size">12sp</dimen>
+
+    <dimen name="layout_marginLeftStart">40dp</dimen>
+    <dimen name="layout_marginLeftStart2">70dp</dimen>
+
+    <dimen name="edit_text_input_layout_margin_horizontal">10sp</dimen>
+    <dimen name="edit_text_input_layout_margin_vertical">6sp</dimen>
+
+
+    <dimen name="edit_text_register_button_layout_margin_vertical">20dp</dimen>
+    <dimen name="edit_text_register_button_layout_margin_vertical_half">10dp</dimen>
+
+
+    <dimen name="l_main_layout_marginBottom">6dp</dimen>
+    <dimen name="h_friend_layout_marginBottom">6dp</dimen>
+
+</resources>

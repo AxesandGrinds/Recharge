@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    android:orientation="vertical"
+    android:padding="@dimen/card_padding">
+
+  <androidx.cardview.widget.CardView
+      android:id="@+id/friendPhone1Cv"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_margin="@dimen/layout_margin_scan"
+      app:cardCornerRadius="@dimen/scan_card_radius"
+      app:cardElevation="@dimen/card_elevation_scan"
+      app:cardUseCompatPadding="true"
+      android:clickable="true"
+      android:focusable="true"
+      android:background="?selectableItemBackground">
+
+    <LinearLayout
+        android:id="@+id/fphoneLLV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/card_color"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/main_card_padding"
+        android:paddingTop="@dimen/main_card_top_padding"
+        android:paddingRight="@dimen/main_card_padding">
+
+      <LinearLayout
+          android:id="@+id/fphoneLLH"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_gravity="end"
+          android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/friendNameEt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="10dp"
+            android:paddingLeft="10dp"
+            android:paddingEnd="10dp"
+            android:paddingRight="10dp"
+            android:text="@string/getting_name"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/phone_text_size" />
+
+        <ImageButton
+            android:id="@+id/fmenu"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="-40dp"
+            android:layout_marginLeft="-40dp"
+            android:background="@color/card_color"
+            android:contentDescription="@string/menu_options_friends_content_description"
+            app:srcCompat="@drawable/ic_more_vert_any_color_24dp" />
+
+      </LinearLayout>
+
+
+      <TableLayout
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content">
+
+        <TableRow
+            android:id="@+id/friendDetailsLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/card_color"
+            android:padding="10dp">
+
+          <TextView
+              android:id="@+id/friendPhone1"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="@string/friendPhone"
+              android:textColor="@color/text_color"
+              android:textSize="@dimen/phone_text_size"
+              android:drawablePadding="5dp"
+              app:drawableLeftCompat="@drawable/ic_baseline_call_24"
+              app:drawableStartCompat="@drawable/ic_baseline_call_24" />
+
+          <TextView
+              android:id="@+id/friendNetwork1"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginStart="@dimen/layout_marginLeftStart"
+              android:layout_marginLeft="@dimen/layout_marginLeftStart"
+              android:padding="@dimen/network_textview_padding"
+              android:background="@drawable/network_textview_box"
+              android:text="@string/network"
+              android:textColor="@color/text_color"
+              android:textSize="@dimen/network_text_size" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/friendDetailsLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/card_color_even"
+            android:padding="10dp">
+
+          <TextView
+              android:id="@+id/friendPhone2"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="@string/friendPhone"
+              android:textColor="@color/text_color"
+              android:textSize="@dimen/phone_text_size"
+              android:drawablePadding="5dp"
+              app:drawableLeftCompat="@drawable/ic_baseline_call_24"
+              app:drawableStartCompat="@drawable/ic_baseline_call_24" />
+
+          <TextView
+              android:id="@+id/friendNetwork2"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginStart="@dimen/layout_marginLeftStart"
+              android:layout_marginLeft="@dimen/layout_marginLeftStart"
+              android:padding="@dimen/network_textview_padding"
+              android:background="@drawable/network_textview_box"
+              android:text="@string/network"
+              android:textColor="@color/text_color"
+              android:textSize="@dimen/network_text_size" />
+
+        </TableRow>
+
+
+        <TableRow
+            android:id="@+id/friendDetailsLayout3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/card_color"
+            android:padding="10dp">
+
+          <TextView
+              android:id="@+id/friendPhone3"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="@string/friendPhone"
+              android:textColor="@color/text_color"
+              android:textSize="@dimen/phone_text_size"
+              android:drawablePadding="5dp"
+              app:drawableLeftCompat="@drawable/ic_baseline_call_24"
+              app:drawableStartCompat="@drawable/ic_baseline_call_24" />
+
+          <TextView
+              android:id="@+id/friendNetwork3"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginStart="@dimen/layout_marginLeftStart"
+              android:layout_marginLeft="@dimen/layout_marginLeftStart"
+              android:padding="@dimen/network_textview_padding"
+              android:background="@drawable/network_textview_box"
+              android:text="@string/network"
+              android:textColor="@color/text_color"
+              android:textSize="@dimen/network_text_size" />
+
+        </TableRow>
+
+
+        <!--<LinearLayout
+          android:layout_gravity="end"
+          android:orientation="horizontal"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
+
+      </LinearLayout>-->
+
+        <TableRow
+            android:id="@+id/friendDetailsBanksLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/card_color"
+            android:padding="10dp">
+
+          <TextView
+              android:id="@+id/friendBank1"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="10dp"
+              android:layout_weight="1"
+              android:text="@string/bank"
+              android:textColor="@color/text_color" />
+
+          <TextView
+              android:id="@+id/friendBank2"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="10dp"
+              android:layout_weight="1"
+              android:text="@string/bank"
+              android:textColor="@color/text_color" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/friendDetailsBanksLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/card_color_even"
+            android:padding="10dp">
+
+          <TextView
+              android:id="@+id/friendBank3"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="10dp"
+              android:layout_weight="1"
+              android:text="@string/bank"
+              android:textColor="@color/text_color" />
+
+          <TextView
+              android:id="@+id/friendBank4"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="10dp"
+              android:layout_weight="1"
+              android:text="@string/bank"
+              android:textColor="@color/text_color" />
+
+        </TableRow>
+
+
+      </TableLayout>
+
+
+    </LinearLayout>
+
+  </androidx.cardview.widget.CardView>
+
+
+
+
+
+
+
+
+</LinearLayout>

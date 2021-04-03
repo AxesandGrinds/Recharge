@@ -1,0 +1,315 @@
+<resources>
+
+  <!-- Base application theme. -->
+  <style name="AppTheme" parent="Theme.MaterialComponents.Light">
+    <!-- Customize your theme here. -->
+    <item name="colorPrimary">@color/scan_background</item>
+    <item name="colorPrimaryDark">@color/colorPrimaryDark3</item>
+    <item name="colorAccent">@color/colorAccent3</item>
+    <!--<item name="windowActionBar">false</item>
+    <item name="windowNoTitle">true</item>-->
+    <item name="android:fitsSystemWindows">true</item>
+  </style>
+
+
+  <!-- Base application theme. -->
+  <style name="AppBarTheme" parent="Theme.MaterialComponents.Light">
+    <!-- Customize your theme here. -->
+    <item name="colorPrimary">@color/scan_background</item>
+    <item name="colorPrimaryDark">@color/colorPrimary3</item>
+    <item name="colorAccent">@color/colorPrimaryDark3</item>
+    <item name="actionBarTheme">@style/AppTheme.AppBarOverlay2</item>
+    <!--<item name="windowActionBar">false</item>
+    <item name="windowNoTitle">true</item>-->
+    <item name="android:fitsSystemWindows">true</item>
+  </style>
+
+  <style name="AppTheme.AppBarOverlay2" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+    <item name="android:textColorPrimary">@color/colorPrimary3</item>
+  </style>
+
+  <style name="SplashTheme" parent ="Theme.MaterialComponents.Light.NoActionBar">
+
+    <item name="android:windowBackground">@drawable/splash_screen_background</item>
+    <item name="android:windowNoTitle">true</item>
+    <item name="android:windowFullscreen">true</item>
+    <item name="colorPrimary">@color/colorPrimary3</item>
+    <item name="colorPrimaryDark">@color/colorPrimary3</item>
+    <item name="colorAccent">@color/colorAccent3</item>
+    <!--        <item name="android:windowActionBar">false</item>-->
+    <!--        <item name="android:windowContentOverlay">@null</item>-->
+    <!--        <item name="android:windowIsTranslucent">false</item>-->
+    <!--        <item name="android:statusBarColor">@color/colorPrimary3</item>-->
+    <!--        <item name="android:windowLightStatusBar">true</item>-->
+
+  </style>
+
+  <style name="LoginAppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+
+    <item name="colorPrimary">@color/colorPrimary</item>
+    <item name="android:windowBackground">@color/colorPrimary</item>
+    <item name="colorPrimaryDark">@color/login_background_color_dark</item>
+    <item name="colorAccent">@color/colorAccent</item>
+
+    <item name="android:windowNoTitle">true</item>
+    <item name="android:windowFullscreen">true</item>
+
+    <!--    <item name="dialogSheetAccent">@color/colorAccent</item>-->
+    <!--        <item name="android:windowLightStatusBar">true</item>-->
+    <!--        <item name="android:statusBarColor">@color/login_background_color</item>-->
+
+  </style>
+
+
+  <style name="MyDialogTheme" parent="Theme.MaterialComponents.Light.Dialog.Alert">
+    <item name="colorPrimary">@color/colorPrimary3</item>
+    <item name="colorPrimaryDark">@color/colorPrimaryDark3</item>
+    <item name="colorAccent">@color/colorAccent3</item>
+  </style>
+
+
+  <style name="Theme.MainActivity" parent="AppTheme"/>
+  <style name="Theme.PreviewActivity" parent="Theme.MaterialComponents.NoActionBar"/>
+
+  <style name="AppTheme.NoActionBar">
+    <item name="windowActionBar">false</item>
+    <item name="windowNoTitle">true</item>
+    <item name="colorPrimary">@color/colorPrimary3</item>
+    <item name="colorPrimaryDark">@color/colorPrimaryDark3</item>
+    <item name="colorAccent">@color/colorAccent3</item>
+    <item name="android:fitsSystemWindows">true</item>
+  </style>
+
+  <style name="AppBarTheme.NoActionBar">
+    <item name="windowActionBar">false</item>
+    <item name="windowNoTitle">true</item>
+    <item name="colorPrimary">@color/white</item>
+    <item name="colorPrimaryDark">@color/colorPrimary3</item>
+    <item name="colorAccent">@color/colorPrimaryDark3</item>
+    <item name="android:fitsSystemWindows">true</item>
+  </style>
+
+  <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
+
+  <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
+
+  <style name="TextLabel2" parent="Theme.MaterialComponents">
+    <item name="android:textColorHint">@color/colorAccent3</item>
+    <item name="android:textColor">@color/text_color</item>
+    <item name="android:textSize">20sp</item>
+    <item name="colorControlNormal">@color/colorPrimary3</item>
+    <item name="colorControlActivated">@color/colorPrimary3</item>
+  </style>
+
+
+  <style name="RechargeThemeOverlayOutlinedDense">
+    <item name="editTextStyle">@style/RechargeTextInputEditText_FilledBox_dense_h
+    </item>
+  </style>
+
+  <style name="RechargeTextInputEditText_FilledBox_dense_h" parent="@style/Widget.MaterialComponents.TextInputEditText.FilledBox.Dense">
+    <item name="android:paddingTop">12dp</item>
+    <item name="android:paddingBottom">12dp</item>
+  </style>
+
+  <style name="TextLabel" parent="Widget.MaterialComponents.TextInputLayout.FilledBox.Dense">
+
+    <!-- Customize your theme here. -->
+
+
+    <item name="materialThemeOverlay">@style/RechargeThemeOverlayOutlinedDense</item>
+
+
+
+    <item name="colorPrimary">@color/optional_text_color</item>
+    <item name="colorPrimaryDark">@color/optional_text_color</item>
+    <item name="colorAccent">@color/optional_text_color</item>
+    <!--<item name="windowActionBar">false</item>
+    <item name="windowNoTitle">true</item>-->
+    <item name="android:fitsSystemWindows">true</item>
+
+    <item name="android:textColorHint">@color/optional_text_color</item>
+    <item name="android:textColor">@color/text_color</item>
+    <item name="android:textSize">20sp</item>
+    <item name="colorControlNormal">@color/optional_text_color</item>
+    <item name="colorControlActivated">@color/optional_text_color</item>
+
+    <!--<item name="colorOnSurface">@color/colorPrimary</item>-->
+    <item name="boxStrokeWidth">1dp</item>
+    <item name="boxStrokeColor">@color/optional_text_color</item>
+
+<!--    <item name="boxBackgroundMode">filled</item>-->
+    <item name="boxBackgroundColor">@null</item>
+    <!--<item name="errorIconDrawable">@drawable/ic_error_outline_black_24dp</item>
+    <item name="errorIconTint">@color/colorAccent</item>-->
+    <!--<item name="endIconTint">@color/colorPrimary</item>
+    <item name="startIconTint">@color/colorPrimary</item>-->
+   <item name="boxCollapsedPaddingTop">@dimen/box_collapsed_padding_top</item>
+    <!--<item name="boxStrokeWidthFocused">@dimen/mtrl_textinput_box_stroke_width_focused_fin</item>-->
+  </style>
+
+  <style name="TextLabelLogin" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+
+    <!-- Customize your theme here. -->
+    <item name="colorPrimary">@color/optional_text_color</item>
+    <item name="colorPrimaryDark">@color/optional_text_color</item>
+    <item name="colorAccent">@color/optional_text_color</item>
+    <!--<item name="windowActionBar">false</item>
+    <item name="windowNoTitle">true</item>-->
+    <item name="android:fitsSystemWindows">true</item>
+
+    <item name="android:textColorHint">@color/optional_text_color</item>
+    <item name="android:textColor">@color/white</item>
+    <item name="android:textSize">20sp</item>
+    <item name="colorControlNormal">@color/optional_text_color</item>
+    <item name="colorControlActivated">@color/optional_text_color</item>
+
+    <!--<item name="colorOnSurface">@color/colorPrimary</item>-->
+    <item name="boxStrokeWidth">1dp</item>
+    <item name="boxStrokeColor">@color/optional_text_color</item>
+    <!--<item name="box">@color/optional_text_color</item>-->
+
+    <item name="boxBackgroundMode">filled</item>
+    <item name="boxBackgroundColor">@color/login_edit_text_color</item>
+    <!--<item name="errorIconDrawable">@drawable/ic_error_outline_black_24dp</item>
+    <item name="errorIconTint">@color/colorAccent</item>-->
+    <!--<item name="endIconTint">@color/colorPrimary</item>
+    <item name="startIconTint">@color/colorPrimary</item>-->
+   <item name="boxCollapsedPaddingTop">@dimen/box_collapsed_padding_top</item>
+    <!--<item name="boxStrokeWidthFocused">@dimen/mtrl_textinput_box_stroke_width_focused_fin</item>-->
+  </style>
+
+
+
+
+
+
+  <style name="TextLabelMandatory" parent="Widget.MaterialComponents.TextInputLayout.FilledBox.Dense">
+
+    <item name="materialThemeOverlay">@style/RechargeThemeOverlayOutlinedDense</item>
+
+    <item name="colorPrimary">@color/colorPrimary3</item>
+    <item name="colorPrimaryDark">@color/colorPrimaryDark3</item>
+    <item name="colorAccent">@color/colorAccent3</item>
+
+    <item name="android:textColorHint">@color/red</item>
+    <item name="android:textColor">@color/red</item>
+    <item name="android:textSize">20sp</item>
+    <item name="colorControlNormal">@color/colorPrimary3</item>
+    <item name="colorControlActivated">@color/colorPrimary3</item>
+
+    <item name="android:fitsSystemWindows">true</item>
+
+    <!--<item name="colorOnSurface">@color/colorPrimary</item>-->
+    <item name="boxStrokeWidth">1dp</item>
+<!--    <item name="box">1dp</item>-->
+    <!--<item name="boxStrokeColor">#FF0000</item>-->
+    <item name="boxStrokeColor">@drawable/text_input_box_stroke_must</item>
+
+    <item name="boxBackgroundMode">filled</item>
+    <item name="boxBackgroundColor">@color/red</item>
+    <!--<item name="errorIconDrawable">@drawable/ic_error_outline_black_24dp</item>
+    <item name="errorIconTint">@color/colorAccent</item>-->
+    <!--<item name="endIconTint">@color/colorPrimary</item>
+    <item name="startIconTint">@color/colorPrimary</item>-->
+   <item name="boxCollapsedPaddingTop">@dimen/box_collapsed_padding_top</item>
+    <!--<item name="boxStrokeWidthFocused">@dimen/mtrl_textinput_box_stroke_width_focused_fin</item>-->
+  </style>
+
+
+
+
+
+
+
+
+
+
+
+  <style name="TextLabelCreatePin" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+
+    <!-- Customize your theme here. -->
+    <item name="colorPrimary">@color/colorPrimary3</item>
+    <item name="colorPrimaryDark">@color/colorPrimaryDark3</item>
+    <item name="colorAccent">@color/darkBabyBlue</item>
+    <!--<item name="windowActionBar">false</item>
+    <item name="windowNoTitle">true</item>-->
+    <item name="android:fitsSystemWindows">true</item>n
+
+    <item name="android:textColorHint">@color/darkBabyBlue</item>
+    <item name="android:textColor">@color/white</item>
+    <item name="android:textSize">20sp</item>
+    <item name="colorControlNormal">@color/colorPrimary3</item>
+    <item name="colorControlActivated">@color/colorPrimary3</item>
+
+    <!--<item name="colorOnSurface">@color/colorPrimary</item>-->
+    <item name="boxStrokeWidth">1dp</item>
+    <item name="boxStrokeColor">@color/colorPrimary3</item>
+
+    <item name="boxBackgroundMode">filled</item>
+    <item name="boxBackgroundColor">@null</item>
+    <!--<item name="errorIconDrawable">@drawable/ic_error_outline_black_24dp</item>
+    <item name="errorIconTint">@color/colorAccent</item>-->
+    <!--<item name="endIconTint">@color/colorPrimary</item>
+    <item name="startIconTint">@color/colorPrimary</item>-->
+   <item name="boxCollapsedPaddingTop">@dimen/box_collapsed_padding_top</item>
+    <!--<item name="boxStrokeWidthFocused">@dimen/mtrl_textinput_box_stroke_width_focused_fin</item>-->
+  </style>
+
+  <style name="TextLabelRegister" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+
+    <!-- Customize your theme here. -->
+    <item name="colorPrimary">@color/colorPrimary3</item>
+    <item name="colorPrimaryDark">@color/colorPrimaryDark3</item>
+    <item name="colorAccent">@color/colorAccent3</item>
+    <!--<item name="windowActionBar">false</item>
+    <item name="windowNoTitle">true</item>-->
+    <item name="android:fitsSystemWindows">true</item>
+
+    <item name="android:textColor">@color/text_color</item>
+    <item name="android:textSize">20sp</item>
+
+    <!--<item name="colorOnSurface">@color/colorPrimary</item>-->
+    <item name="boxStrokeWidth">1dp</item>
+
+    <item name="boxBackgroundMode">filled</item>
+    <item name="boxBackgroundColor">@null</item>
+    <!--<item name="errorIconDrawable">@drawable/ic_error_outline_black_24dp</item>
+    <item name="errorIconTint">@color/colorAccent</item>-->
+    <!--<item name="endIconTint">@color/colorPrimary</item>
+    <item name="startIconTint">@color/colorPrimary</item>-->
+   <item name="boxCollapsedPaddingTop">@dimen/box_collapsed_padding_top</item>
+    <!--<item name="boxStrokeWidthFocused">@dimen/mtrl_textinput_box_stroke_width_focused_fin</item>-->
+  </style>
+
+  <style name="TextLabelMandatorySign" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+
+
+    <item name="colorPrimary">@color/colorAccent3</item>
+    <item name="colorPrimaryDark">@color/colorAccent3</item>
+    <item name="colorSecondary">@color/colorAccent3</item>
+
+    <item name="android:textColorHint">@color/colorAccent3</item>
+    <item name="android:textColor">@color/red</item>
+    <item name="android:textSize">17sp</item>
+    <item name="colorControlNormal">@color/colorPrimary3</item>
+    <item name="colorControlActivated">@color/colorPrimary3</item>
+
+
+    <!--<item name="colorOnSurface">@color/colorPrimary</item>-->
+    <item name="boxStrokeWidth">1dp</item>
+    <!--<item name="boxStrokeColor">#FF0000</item>-->
+    <item name="boxStrokeColor">@drawable/text_input_box_stroke_must</item>
+
+    <item name="boxBackgroundMode">filled</item>
+    <item name="boxBackgroundColor">@null</item>
+    <!--<item name="errorIconDrawable">@drawable/ic_error_outline_black_24dp</item>
+    <item name="errorIconTint">@color/colorAccent</item>-->
+    <!--<item name="endIconTint">@color/colorPrimary</item>
+    <item name="startIconTint">@color/colorPrimary</item>-->
+    <item name="boxCollapsedPaddingTop">@dimen/box_collapsed_padding_top</item>
+    <!--<item name="boxStrokeWidthFocused">@dimen/mtrl_textinput_box_stroke_width_focused_fin</item>-->
+  </style>
+
+
+</resources>

@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "927325322480",
+    "firebase_url": "https://creditscan-bbff7.firebaseio.com",
+    "project_id": "creditscan-bbff7",
+    "storage_bucket": "creditscan-bbff7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:927325322480:android:f2c3fa380ae83e91",
+        "android_client_info": {
+          "package_name": "com.app.ej.cs"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "927325322480-0o09jcvdovqu4m79i6nn0u5l1hhdi85c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.ej.cs",
+            "certificate_hash": "78b9a3490804ba8fe3fd327a40873dc746e6978c"
+          }
+        },
+        {
+          "client_id": "927325322480-69bc7mbe2l64qqos3q8jh8k097lc4rvd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.ej.cs",
+            "certificate_hash": "b87235ce2a4fd2643d3e44e4698f505c64855fba"
+          }
+        },
+        {
+          "client_id": "927325322480-mp298lg8gp83t64ncgqnr98cqacrtbto.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALjfp3hx8oNppIoeZkIijOjHmrMBGo45U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "927325322480-mp298lg8gp83t64ncgqnr98cqacrtbto.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
