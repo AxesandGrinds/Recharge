@@ -8,7 +8,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/login_background_color"
-    style="@style/AppTheme" >
+    style="@style/LoginAppTheme" >
 
     <!--<ImageView
         android:id="@+id/header"
@@ -28,7 +28,7 @@
         android:background="@color/login_background_color"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="0dp"
         android:overScrollMode="never"
         android:scrollbars="none"
         app:layout_constraintEnd_toEndOf="parent"
@@ -41,41 +41,96 @@
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:orientation="vertical"
-            android:paddingTop="20dp"
+            android:paddingTop="00dp"
             android:background="@color/login_background_color">
 
             <!--fontPath="fonts/bold.ttf"-->
-            <TextView
-                android:id="@+id/hello_there"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                fontPath="fonts/bold.ttf"
-                android:text="@string/hello_there"
-                android:textColor="#212121"
-                android:textSize="30sp"
-                tools:ignore="MissingPrefix" />
 
-            <!--fontPath="fonts/bold.ttf"-->
-            <TextView
-                android:id="@+id/welcome_back"
+
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                fontPath="fonts/bold.ttf"
-                android:text="@string/welcome_back"
-                android:textColor="#212121"
-                android:textSize="30sp"
-                tools:ignore="MissingPrefix" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="160dp"
+                    android:layout_height="160dp"
+                    app:srcCompat="@drawable/recharge_app_name_canva_2"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="30dp"/>
+
+            </FrameLayout>
+
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginTop="20dp">
+
+                <TextView
+                    android:id="@+id/hello_there"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/login"
+                    android:text="@string/hello_there"
+                    android:textColor="@color/login_text_color"
+                    android:textSize="30sp"
+                    tools:ignore="MissingPrefix" />
+
+            </FrameLayout>
+
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/welcome_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/login"
+                    android:text="@string/welcome_back"
+                    android:textColor="@color/login_text_color"
+                    android:textSize="30sp"
+                    tools:ignore="MissingPrefix" />
+
+            </FrameLayout>
+
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/to_recharge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/login"
+                    android:text="@string/to_recharge"
+                    android:textColor="@color/login_text_color"
+                    android:textSize="30sp"
+                    tools:ignore="MissingPrefix" />
+
+            </FrameLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/h_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:layout_marginBottom="10dp"
-                android:textColorHint="@color/white"
-                app:hintTextColor="@color/white"
-                app:boxStrokeColor="@color/emojiSafeYellow"
+                android:layout_marginBottom="0dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:textColorHint="@color/login_edit_text_hint_color"
+                app:hintTextColor="@color/login_edit_text_color"
+                app:boxStrokeColor="@color/login_edit_text_color"
                 app:boxBackgroundColor="@color/login_background_color"
                 android:hint="@string/enter_number"
                 style="@style/TextLabelLogin">
@@ -86,13 +141,12 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/h_email"
                     android:inputType="number"
-                    android:shadowColor="@color/white"
-                    android:textColorHint="@color/white"
-                    android:textColor="@color/white"
-                    android:textColorHighlight="@color/white"
-                    android:textColorLink="@color/white"
-                    style="@style/TextLabelLogin"
-                     />
+                    android:shadowColor="@color/login_edit_text_color"
+                    android:textColorHint="@color/login_edit_text_color"
+                    android:textColor="@color/login_edit_text_color"
+                    android:textColorHighlight="@color/login_edit_text_color"
+                    android:textColorLink="@color/login_edit_text_color"
+                    style="@style/TextLabelLogin" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -100,10 +154,13 @@
                 android:id="@+id/h_verification_code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:textColorHint="@color/white"
-                app:hintTextColor="@color/white"
-                app:boxStrokeColor="@color/emojiSafeYellow"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:textColorHint="@color/login_edit_text_hint_color"
+                app:hintTextColor="@color/login_edit_text_color"
+                app:boxStrokeColor="@color/login_edit_text_color"
                 app:boxBackgroundColor="@color/login_background_color"
                 style="@style/TextLabelLogin"
                 android:hint="@string/verification_code">
@@ -114,11 +171,11 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/h_email"
                     android:inputType="number"
-                    android:shadowColor="@color/white"
-                    android:textColorHint="@color/white"
-                    android:textColor="@color/white"
-                    android:textColorHighlight="@color/white"
-                    android:textColorLink="@color/white"
+                    android:shadowColor="@color/login_edit_text_color"
+                    android:textColorHint="@color/login_edit_text_color"
+                    android:textColor="@color/login_edit_text_color"
+                    android:textColorHighlight="@color/login_edit_text_color"
+                    android:textColorLink="@color/login_edit_text_color"
                     style="@style/TextLabelLogin" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -190,9 +247,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="35dp"
                 style="@style/TextLabelLogin"
-                android:text="" />
+                android:text=""
+                android:textColor="@color/green"/>
 
             <ProgressBar
                 android:id="@+id/mProgressBar"

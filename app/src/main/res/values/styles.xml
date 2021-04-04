@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
   <!-- Base application theme. -->
   <style name="AppTheme" parent="Theme.MaterialComponents.Light">
@@ -46,17 +46,17 @@
 
   <style name="LoginAppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
 
-    <item name="colorPrimary">@color/colorPrimary</item>
-    <item name="android:windowBackground">@color/colorPrimary</item>
-    <item name="colorPrimaryDark">@color/login_background_color_dark</item>
+    <item name="colorPrimary">@color/white</item>
+    <item name="android:windowBackground">@color/white</item>
+    <item name="colorPrimaryDark">@color/white</item>
     <item name="colorAccent">@color/colorAccent</item>
 
-    <item name="android:windowNoTitle">true</item>
-    <item name="android:windowFullscreen">true</item>
+<!--    <item name="android:windowNoTitle">true</item>-->
+<!--    <item name="android:windowFullscreen">true</item>-->
 
     <!--    <item name="dialogSheetAccent">@color/colorAccent</item>-->
-    <!--        <item name="android:windowLightStatusBar">true</item>-->
-    <!--        <item name="android:statusBarColor">@color/login_background_color</item>-->
+            <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+            <item name="android:statusBarColor" tools:targetApi="lollipop">@color/white</item>
 
   </style>
 
@@ -83,9 +83,9 @@
   <style name="AppBarTheme.NoActionBar">
     <item name="windowActionBar">false</item>
     <item name="windowNoTitle">true</item>
-    <item name="colorPrimary">@color/white</item>
-    <item name="colorPrimaryDark">@color/colorPrimary3</item>
-    <item name="colorAccent">@color/colorPrimaryDark3</item>
+<!--    <item name="colorPrimary">@color/white</item>-->
+<!--    <item name="colorPrimaryDark">@color/colorPrimary3</item>-->
+<!--    <item name="colorAccent">@color/colorPrimaryDark3</item>-->
     <item name="android:fitsSystemWindows">true</item>
   </style>
 
@@ -170,7 +170,8 @@
     <!--<item name="box">@color/optional_text_color</item>-->
 
     <item name="boxBackgroundMode">filled</item>
-    <item name="boxBackgroundColor">@color/login_edit_text_color</item>
+    <item name="boxBackgroundColor">@color/colorPrimary3</item>
+<!--    <item name="boxBackgroundColor">@color/login_edit_text_color</item>-->
     <!--<item name="errorIconDrawable">@drawable/ic_error_outline_black_24dp</item>
     <item name="errorIconTint">@color/colorAccent</item>-->
     <!--<item name="endIconTint">@color/colorPrimary</item>

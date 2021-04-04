@@ -46,7 +46,7 @@
                       android:id="@+id/scan_frag_details_LLV"
                       android:layout_width="match_parent"
                       android:layout_height="match_parent"
-                      android:background="@color/optional_background_even"
+                      android:background="@color/optional_background_even2"
                       android:gravity="center|center_horizontal|center_vertical"
                       android:layout_gravity="center"
                       android:orientation="vertical" >

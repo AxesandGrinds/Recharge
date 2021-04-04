@@ -110,6 +110,7 @@ open class PermissionModel : Parcelable {
   }
 
   companion object {
+
     @JvmField val CREATOR: Parcelable.Creator<PermissionModel?> =
       object : Parcelable.Creator<PermissionModel?> {
         override fun createFromParcel(source: Parcel): PermissionModel? {

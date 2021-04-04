@@ -55,6 +55,7 @@
 
     <!--    Permissions -->
     <color name="blue">#448AFF</color>
+    <color name="dark_blue">#004c8c</color>
 
     <color name="splash_background_color">#E64A19</color>
     <color name="splash_background_color7">#FF914D</color>
@@ -68,11 +69,53 @@
     <color name="main_background">#FFF</color>
     <color name="main_background_e">#FFF</color>
 
-    <color name="optional_background">#ffab91</color>
 
-    <color name="optional_background_odd">#ffddc1</color>
-    <color name="optional_background_even">#ffddc1</color>
-    <color name="optional_background_even2">#DA927C</color>
+
+
+
+
+
+    <color name="optional_background">#EDEDED</color>
+    <color name="optional_background2">#ffab91</color>
+    <color name="optional_background22">#cccccc</color>
+    <color name="optional_background24">#F6F5F5</color>
+    <color name="optional_background25">#ffffff</color>
+    <color name="optional_background23">#EDEDED</color>
+
+
+
+
+
+
+
+    <color name="optional_background_odd">#EDEDED</color>
+    <color name="optional_background_odd2">#ffddc1</color>
+    <color name="optional_background_odd22">#cccccc</color>
+    <color name="optional_background_odd24">#F6F5F5</color>
+    <color name="optional_background_odd25">#ffffff</color>
+    <color name="optional_background_odd23">#EDEDED</color>
+
+
+
+
+    <color name="optional_background_even">#EDEDED</color>
+    <color name="optional_background_even2">#ffddc1</color>
+    <color name="optional_background_even3">#DA927C</color>
+    <color name="optional_background_even4">#cccccc</color>
+    <color name="optional_background_even24">#F6F5F5</color>
+    <color name="optional_background_even25">#ffffff</color>
+    <color name="optional_background_even23">#EDEDED</color>
+
+
+
+
+
+
+
+
+
+
+
 
     <color name="optional_background_edit">#ffddc1</color>
 
@@ -90,9 +133,26 @@
 
     <color name="more_vert_color">#e64a19</color>
 
-    <color name="login_edit_text_color">#4D7B83</color>
-    <color name="login_background_color">#4D7B83</color>
+
+
+    <color name="login_edit_text_hint_color">#7A7A7A</color>
+
+    <color name="login_edit_text_color">#000</color>
+    <color name="login_edit_text_color2">#4D7B83</color>
+    <color name="login_edit_text_color3">#E64A19</color>
     <color name="login_background_color_dark">#1f4f56</color>
+
+    <color name="login_text_color">#E64A19</color>
+    <color name="login_text_color2">#212121</color>
+
+
+    <color name="login_background_color">#fff</color>
+    <color name="login_background_color2">#4D7B83</color>
+    <color name="login_background_color3">#E64A19</color>
+
+
+
+
 
     <color name="icon_color">#e64a19</color>
     <color name="text_color">#000000</color>
@@ -123,9 +183,10 @@
 
     <color name="save_button_color">#e64a19</color>
 
-    <color name="add_one_more_friend_button_color">#BCB9B9</color>
+    <color name="add_one_more_friend_button_color">#000000</color>
 
     <color name="add_one_more_friend_button_color2">#e64a19</color>
+    <color name="add_one_more_friend_button_color3">#BCB9B9</color>
 
     <color name="buy_data_dialog_color">#F5F5F5</color>
 
@@ -151,7 +212,7 @@
     <color name="login_color2">#835A4D</color>
 
     <color name="optional_background3">#e1bee7</color>
-    <color name="optional_background2">#C8BC97</color>
+    <color name="optional_background4">#C8BC97</color>
 
     <color name="priority_card_color5">#DFB7AA</color>
     <color name="priority_card_color4">#ffab91</color>
@@ -224,7 +285,14 @@
 
     <color name="black_light">#CC222222</color>
 
+
+
+
+    <color name="yellow">#ffca28</color>
+    <color name="yellow2">#FFE8A3</color>
+    <color name="yellow3">#FFE8A3</color>
     <color name="green">#388E3C</color>
+    <color name="green2">#2ACB6E</color>
     <color name="red">#d32f2f</color>
 
     <color name="midBabyBlue">#FF00A0EB</color>
@@ -252,6 +320,11 @@
     <color name="orangeIcon">#F2994A</color>
     <color name="emojiSafeYellow">#FFE8A3</color>
     <color name="underlineGrey">#E0E0E0</color>
+
+
+
+
+
 
 
     <color name="primary">#009688</color>

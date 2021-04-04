@@ -41,9 +41,9 @@ class MemoryUserAndFriendsRepository(appContext: Context) : UsersAndFriendsRepos
 
   private lateinit var userId: String
 
-  private lateinit var usersList: MutableList<User>
+  private var usersList: MutableList<User>? = null
 
-  private lateinit var friendsList: MutableList<Friend>
+  private var friendsList: MutableList<Friend>? = null
 
 
     private fun readFromFirestore() {
@@ -122,7 +122,7 @@ class MemoryUserAndFriendsRepository(appContext: Context) : UsersAndFriendsRepos
 
       var i: Int = 0
 
-      usersList.forEach { user ->
+      usersList!!.forEach { user ->
 
         userInsert(
 
@@ -161,7 +161,7 @@ class MemoryUserAndFriendsRepository(appContext: Context) : UsersAndFriendsRepos
 
       var j: Int = 0
 
-      friendsList.forEach { friend ->
+      friendsList!!.forEach { friend ->
 
         friendInsert(
 
@@ -364,7 +364,15 @@ private fun returnToLogin() {
 
       }
 
-      return friendsList
+        return if (friendsList != null) {
+
+            friendsList!!
+
+        } else {
+
+            mutableListOf()
+
+        }
 
 //      return friendsMap.values.sortedBy { it.index }.toMutableList()
 
@@ -403,7 +411,23 @@ private fun returnToLogin() {
 
       }
 
-      return usersList
+//        try {
+//
+//        }
+//        catch (e: Exception) {
+//
+//
+//        }
+
+        return if (usersList != null) {
+
+            usersList!!
+
+        } else {
+
+            mutableListOf()
+
+        }
 
 //      return usersMap.values.sortedBy { it.index }.toMutableList()
 

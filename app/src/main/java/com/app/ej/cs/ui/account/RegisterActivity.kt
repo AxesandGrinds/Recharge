@@ -23,7 +23,7 @@ class RegisterActivity : BasePermissionActivity() {
         // Dark Blue, Purple, Light Blue
         permissions.add(
             PermissionModelBuilder.withContext(this)
-                .withTitle("WRITE EXTERNAL STORAGE")
+                .withTitle("STORAGE")
                 .withCanSkip(false)
                 .withPermissionName(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .withMessage(
@@ -32,27 +32,32 @@ class RegisterActivity : BasePermissionActivity() {
                 )
                 .withExplanationMessage("We need this permission to save your data locally on your phone.")
                 .withFontType("my_font.ttf")
-                .withLayoutColorRes(R.color.blue)
-                .withImageResourceId(R.drawable.permission_two)
+                .withLayoutColorRes(R.color.dark_blue)
+//                .withLayoutColorRes(R.color.blue)
+//                .withLayoutColorRes(R.color.light_grey)
+                //.withImageResourceId(R.drawable.permission_two)
+                .withImageResourceId(R.drawable.folder)
                 .build()
         )
 
         permissions.add(
                 PermissionModelBuilder.withContext(this)
-                        .withTitle("ACCESS FINE LOCATION")
+                        .withTitle("LOCATION ACCESS")
                         .withCanSkip(false)
                         .withPermissionName(Manifest.permission.ACCESS_FINE_LOCATION)
                         .withMessage(
-                                "Location is requested only at registration and never again. " +
-                                        "This data is used for analytics and providing personalization for ads."
+                                "Location is requested only at registration. " +
+                                        "It is only used for providing personalization for ads."
                         )
                         .withExplanationMessage(
-                                "We need this permission to access to your location to" +
-                                        " analytics and ads personalization!"
+                                "We need this permission to access your location for" +
+                                        " ads personalization."
                         )
                         .withFontType("my_font.ttf")
-                        .withLayoutColorRes(R.color.colorAccent3)
-                        .withImageResourceId(R.drawable.permission_one)
+//                    .withLayoutColorRes(R.color.colorAccent3)
+                    .withLayoutColorRes(R.color.green)
+//                    .withImageResourceId(R.drawable.permission_one)
+                    .withImageResourceId(R.drawable.map)
                         .build()
         )
 
@@ -62,16 +67,17 @@ class RegisterActivity : BasePermissionActivity() {
                         .withCanSkip(false)
                         .withPermissionName(Manifest.permission.READ_CONTACTS)
                         .withMessage(
-                                "Read Contacts is used so that you can add friends from " +
+                                "Read Contacts is used to allow you to add friends from " +
                                         "your contact list so no need to copy and paste numbers."
                         )
                         .withExplanationMessage(
-                                "We need this permission to allow you to add friend from contact list. " +
+                                "We need this permission to allow you to add friends from contact list. " +
                                         "Without this permission, you will need to add friends by copy and paste."
                         )
                         .withFontType("my_font.ttf")
-                        .withLayoutColorRes(R.color.colorAccent)
-                        .withImageResourceId(R.drawable.permission_one)
+                        .withLayoutColorRes(R.color.black)
+//                    .withImageResourceId(R.drawable.permission_one)
+                    .withImageResourceId(R.drawable.friends)
                         .build()
         )
 
@@ -125,8 +131,11 @@ class RegisterActivity : BasePermissionActivity() {
                             "USSD codes when you request such in app."
                 )
                 .withFontType("my_font.ttf")
-                .withLayoutColorRes(R.color.green)
-                .withImageResourceId(R.drawable.permission_three)
+//                .withLayoutColorRes(R.color.green)
+                .withLayoutColorRes(R.color.purple_500)
+//                .withLayoutColorRes(R.color.yellow)
+//                .withImageResourceId(R.drawable.permission_three)
+                .withImageResourceId(R.drawable.dial_pad)
                 .build()
         )
 

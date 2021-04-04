@@ -60,26 +60,31 @@ class ScanFragment : Fragment(), ScanFragmentView {
 
   override fun displayUserMain(userList: UserListModel) {
 
-    userMainListModel.userList = mutableListOf(userList.userList[0])
-    this.userList.add(userList.userList[0])
-    scanFragmentUserMainViewAdapter.notifyDataSetChanged()
-    Log.e(
-      "ATTENTION ATTENTION",
-      "In ScanFragment displayUserMain: ${userList.userList[0].toString()}"
-    )
+    if (userList.userList.size > 0) {
 
-    initScanMainUserDetails(requireView())
+      userMainListModel.userList = mutableListOf(userList.userList[0])
+      this.userList.add(userList.userList[0])
+      scanFragmentUserMainViewAdapter.notifyDataSetChanged()
+      Log.e(
+        "ATTENTION ATTENTION",
+        "In ScanFragment displayUserMain: ${userList.userList[0].toString()}"
+      )
 
-    if (userMainListModel.userList.isNotEmpty()) {
+      initScanMainUserDetails(requireView())
 
-      Log.e("ATTENTION ATTENTION", "From ScanFragment userMainListModel.userList.isNotEmpty()")
-      Log.e("ATTENTION ATTENTION",
-        "From ScanFragment userMainListModel.userList: ${userMainListModel.userList.toString()}")
+      if (userMainListModel.userList.isNotEmpty()) {
 
-      initFloatingActionMenu(mutableListOf(userMainListModel.userList[0]))
+        Log.e("ATTENTION ATTENTION", "From ScanFragment userMainListModel.userList.isNotEmpty()")
+        Log.e("ATTENTION ATTENTION",
+          "From ScanFragment userMainListModel.userList: ${userMainListModel.userList.toString()}")
 
+        initFloatingActionMenu(mutableListOf(userMainListModel.userList[0]))
+
+      }
 
     }
+
+
 
   }
 

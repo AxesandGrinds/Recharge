@@ -376,20 +376,49 @@ class LoginActivity : AppCompatActivity() {
 
     when (uiState) {
 
-      STATE_INITIALIZED -> mDetailText?.text = null
-      STATE_CODE_SENT -> mDetailText!!.setText(R.string.status_code_sent)
-      STATE_VERIFY_FAILED -> mDetailText!!.setText(R.string.status_verification_failed)
+      STATE_INITIALIZED -> {
+        mDetailText?.text = null
+
+      }
+      STATE_CODE_SENT -> {
+        mDetailText!!.setText(R.string.status_code_sent)
+        mDetailText?.setTextColor(ContextCompat.getColor(this,R.color.green))
+
+      }
+
+
+      STATE_VERIFY_FAILED -> {
+        mDetailText!!.setText(R.string.status_verification_failed)
+        mDetailText?.setTextColor(ContextCompat.getColor(this,R.color.red))
+      }
+
 
       STATE_VERIFY_SUCCESS ->
-
+      {
         if (cred != null) {
+
           if (cred.smsCode != null) {
+
             verification_codeEt.setText(cred.smsCode)
+
+
           }
+
         }
 
-      STATE_SIGNIN_FAILED -> mDetailText!!.setText(R.string.status_sign_in_failed)
+      }
+      STATE_SIGNIN_FAILED -> {
+
+        mDetailText!!.setText(R.string.status_sign_in_failed)
+        mDetailText?.setTextColor(ContextCompat.getColor(this,R.color.red))
+
+      }
       STATE_SIGNIN_SUCCESS -> {
+
+//        mDetailText!!.setText(R.string.status_verification_succeeded)
+//        mDetailText?.setTextColor(ContextCompat.getColor(this,R.color.green))
+
+
       }
 
     }
@@ -398,13 +427,21 @@ class LoginActivity : AppCompatActivity() {
 
 
   private fun validatePhoneNumber(): Boolean {
-    val phoneNumber = phone_numberEt!!.text.toString()
-    if (TextUtils.isEmpty(phoneNumber)) {
+
+    val phoneNumber: String = phone_numberEt.text!!.trim().toString()
+
+    if (TextUtils.isEmpty(phoneNumber) || phoneNumber.length !=  11) {
+
       AnimationUtil.shakeView(phone_numberEt, this)
+
       phone_numberEt.error = "Invalid phone number."
+
       return false
+
     }
+
     return true
+
   }
 
   private fun validateCode(): Boolean {
@@ -568,13 +605,33 @@ class LoginActivity : AppCompatActivity() {
     )
 
     requestWindowFeature(Window.FEATURE_NO_TITLE)
-    window.setFlags(
-      WindowManager.LayoutParams.FLAG_FULLSCREEN,
-      WindowManager.LayoutParams.FLAG_FULLSCREEN
-    )
+
+//    window.setFlags(
+//      WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//      WindowManager.LayoutParams.FLAG_FULLSCREEN
+//    )
+
+    // clear FLAG_TRANSLUCENT_STATUS flag:
+    // clear FLAG_TRANSLUCENT_STATUS flag:
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+      window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+    }
+
+    // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
+    // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
+
+    // finally change the color
+    //
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+      window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+
+      window.statusBarColor = ContextCompat.getColor(this, R.color.white)
+
+    }
 
     setContentView(R.layout.activity_login_final)
-
 
     mProgressBar             = findViewById<View>(R.id.mProgressBar) as ProgressBar
     phone_number_holder      = findViewById<View>(R.id.h_phone) as TextInputLayout
@@ -642,25 +699,51 @@ class LoginActivity : AppCompatActivity() {
 //          Log.i("ATTENTION ATTENTION", "internationalNumber = util.format(phoneNumber, PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL);");
 //          Log.i("ATTENTION ATTENTION", "previousInternationalNumberString: " + previousInternationalNumberString);
 
-        } catch (e: NumberParseException) {
+        }
+        catch (e: Exception) {
+
           e.printStackTrace()
+
         }
         resendVerificationButton.visibility = View.VISIBLE
         sendVerificationButton.visibility = View.GONE
       }
+
     })
+
     resendVerificationButton.setOnClickListener {
+
       if (validatePhoneNumber()) {
+
         try {
+
           val originalNumber = Objects.requireNonNull(phone_numberEt.text).toString()
           val phoneNumber = phoneNumberUtil.parse(originalNumber, "NG")
           e164Number = phoneNumberUtil.format(phoneNumber, PhoneNumberUtil.PhoneNumberFormat.E164)
           val finalLoginNumber: String = retrieveCorrectNumber(e164Number)
-          resendVerificationCode(finalLoginNumber, mResendToken)
-        } catch (e: NumberParseException) {
-          e.printStackTrace()
+
+          if (mResendToken != null) {
+
+            resendVerificationCode(finalLoginNumber, mResendToken)
+
+          }
+          else {
+
+            recreate()
+
+          }
+
         }
+        catch (e: Exception) {
+
+          Log.e("ATTENTION ATTENTION", "Login Activity Resend Code Error: ${e.toString()}")
+
+          e.printStackTrace()
+
+        }
+
       }
+
     }
     verifyLoginButton.setOnClickListener {
       val code = verification_codeEt.text.toString()

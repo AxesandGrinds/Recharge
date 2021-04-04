@@ -158,6 +158,7 @@ class PermissionFragment : Fragment(), View.OnClickListener {
                 )
             }
         } else {
+
             permissionModel?.textSize?.toFloat()?.let {
                 title!!.setTextSize(TypedValue.COMPLEX_UNIT_PX,
                     it
@@ -168,10 +169,13 @@ class PermissionFragment : Fragment(), View.OnClickListener {
                     it
                 )
             }
+
         }
+
     }
 
     companion object {
+
         private const val PERMISSION_INSTANCE = "PERMISSION_INSTANCE"
         fun newInstance(permissionModel: PermissionModel?): PermissionFragment {
             val fragment = PermissionFragment()

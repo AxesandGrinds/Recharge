@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main_background"
+    android:background="@color/scan_background"
     tools:context="com.app.ej.cs.ui.account.RegisterDetailsActivity">
 
     <ScrollView
@@ -22,13 +22,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <ImageView
+            <!--<ImageView
                 android:id="@+id/header"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:contentDescription="@string/r_header"
                 android:scaleType="fitStart"
-                app:srcCompat="@drawable/header" />
+                app:srcCompat="@drawable/header" />-->
 
             <ProgressBar
                 android:id="@+id/mProgressBar"
@@ -60,7 +60,7 @@
                 android:id="@+id/edit_frag_LLV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="70dp"
+                android:layout_marginTop="20dp"
                 android:padding="0dp"
                 android:orientation="vertical" >
 
@@ -74,7 +74,7 @@
                     android:paddingEnd="10dp"
                     android:gravity="center"
                     android:layout_gravity="center"
-                    android:layout_marginTop="70dp" >
+                    android:layout_marginTop="20dp" >
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -82,6 +82,29 @@
                         android:gravity="center"
                         android:layout_gravity="center"
                         android:text="@string/get_on_board"
+                        android:textColor="#ffffff"
+                        android:textSize="32sp"
+                        tools:ignore="MissingPrefix" />
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/empty_onboard_fl"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:paddingLeft="10dp"
+                    android:paddingStart="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingEnd="10dp"
+                    android:gravity="center"
+                    android:layout_gravity="center" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        android:text=""
                         android:textColor="#212121"
                         android:textSize="32sp"
                         tools:ignore="MissingPrefix" />
@@ -92,7 +115,7 @@
                     android:id="@+id/edit_user_main_recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/edit_text_register_button_layout_margin_vertical_half"
+                    android:layout_marginTop="0dp"
                     android:layout_marginBottom="@dimen/edit_text_register_button_layout_margin_vertical" />
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -106,38 +129,86 @@
                     android:id="@+id/edit_user_friends_recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/edit_text_register_button_layout_margin_vertical_half"
-                    android:layout_marginBottom="@dimen/edit_text_register_button_layout_margin_vertical" />
+                    android:layout_marginTop="@dimen/edit_text_register_button_layout_margin_vertical_half" />
 
-                <ImageButton
-                    android:id="@+id/add_one_more_friend_btn"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/edit_text_register_button_layout_margin_vertical_half"
-                    android:layout_marginBottom="@dimen/edit_text_register_button_layout_margin_vertical"
-                    app:srcCompat="@drawable/ic_add_black_24dp"
-                    android:background="@color/add_one_more_friend_button_color"
-                    android:contentDescription="@string/add_one_more_friend_content_description" />
+
+
+
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="12dp"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:layout_gravity="center" >
+
+
+                        <View
+                            android:layout_width="135dp"
+                            android:layout_height="60dp"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/edit_text_register_button_layout_margin_vertical_half"
+                            android:layout_marginBottom="5dp" />
+
+
+                        <ImageButton
+                            android:id="@+id/add_one_more_friend_btn"
+                            app:tint="@drawable/add_new_friend_selector_background"
+                            app:srcCompat="@drawable/ic_add_black_24dp"
+                            android:background="@color/add_one_more_friend_button_color"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/edit_text_register_button_layout_margin_vertical_half"
+                            android:layout_marginBottom="5dp"
+                            android:contentDescription="@string/add_one_more_friend_content_description" />
+
+
+                        <TextView
+                            android:layout_width="120dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/add_button_explanation"
+                            android:textColor="#ffffff"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginTop="@dimen/edit_text_register_button_layout_margin_vertical_half"
+                            android:layout_marginBottom="5dp" />
+
+
+
+                    </LinearLayout>
+
+
+                </FrameLayout>
+
 
                 <LinearLayout
                     android:id="@+id/register_details_LLV"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="12dp"
+                    android:layout_marginTop="0dp"
                     android:orientation="vertical" >
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="@string/agree" />
+                        android:text="@string/agree"
+                        android:textColor="#ffffff"/>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp" >
 
                         <!--<Button
                             style="@style/TextLabel"
@@ -164,7 +235,7 @@
 
                         <Button
                             style="@style/TextLabel"
-                            android:layout_width="120dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:onClick="openPolicy"
@@ -181,7 +252,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="5dp"
                         android:layout_marginBottom="20dp"
                         android:padding="10dp"
                         app:backgroundTint="@color/colorPrimary3"

@@ -82,7 +82,8 @@
     <string name="edit">Edit</string>
     <string name="default_bio">Hey there, I am a Sparks user.</string>
     <string name="hello_there">Hello there,</string>
-    <string name="welcome_back">welcome back to Recharge</string>
+    <string name="welcome_back">welcome back</string>
+    <string name="to_recharge">to Recharge</string>
     <string name="header">Header</string>
     <string name="forgot_password">Forgot your Password ?</string>
     <string name="sign_in">Sign In</string>
@@ -291,6 +292,9 @@
 
     <string name="onlineOfflinePassword">Online &amp; Offline SignIn Password*</string>
     <string name="offlinePassword">Offline SignIn Password*</string>
+
+
+    <string name="add_button_explanation">Add more friends</string>
 
     <string name="username">Username</string>
     <string name="email">Email</string>

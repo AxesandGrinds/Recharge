@@ -237,8 +237,8 @@ class RegisterDetailsActivity() : AppCompatActivity(),
     private val db    = Firebase.firestore
     private val auth = Firebase.auth
 
-    private lateinit var firebaseUser: FirebaseUser
-    private lateinit var userId: String
+    private var firebaseUser: FirebaseUser? = null
+    private var userId: String? = null
 
     private lateinit var mProgressBar: ProgressBar
     private lateinit var mProgressBarLocation: ProgressBar
@@ -248,7 +248,7 @@ class RegisterDetailsActivity() : AppCompatActivity(),
         CoroutineScope(Dispatchers.IO).launch {
 
             val result = permissionsBuilder(
-                    Manifest.permission.CAMERA,
+//                    Manifest.permission.CAMERA,
                     Manifest.permission.CALL_PHONE,
                     Manifest.permission.ACCESS_WIFI_STATE,
                     Manifest.permission.ACCESS_NETWORK_STATE,
@@ -1114,7 +1114,7 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
         userMainRecyclerView.isNestedScrollingEnabled = false
 
-        editFragmentUserMainViewAdapter = EditUserMainViewAdapter(userMainListModel, firebaseUser) {
+        editFragmentUserMainViewAdapter = EditUserMainViewAdapter(userMainListModel, firebaseUser!!) {
             val message: String = "${it?.name}@${it?.phone} Clicked"
 //            KToasty.info(context, "${it?.name}@${it?.phone} Clicked", Toast.LENGTH_LONG).show()
         }
@@ -1198,7 +1198,7 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
             db
                     .collection("users")
-                    .document(userId)
+                    .document(userId!!)
                     .set(userAndFriendInfoUnsaved, SetOptions.merge())
                     .addOnSuccessListener {
 
@@ -1269,7 +1269,7 @@ class RegisterDetailsActivity() : AppCompatActivity(),
         val newUser1: User =
 
             User(
-                uid = userId,
+                uid = userId!!,
                 index = 0,
                 description = "User 1",
                 folded = false,
@@ -1295,7 +1295,7 @@ class RegisterDetailsActivity() : AppCompatActivity(),
         val newUser2: User =
 
             User(
-                uid = userId,
+                uid = userId!!,
                 index = 1,
                 description = "User 2",
                 folded = false,
@@ -1388,9 +1388,27 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
         context = this
 
-        firebaseUser = auth.currentUser as FirebaseUser
+        if (auth.currentUser == null) {
 
-        userId = firebaseUser.uid
+            goToLogin()
+
+        }
+        else {
+
+            firebaseUser = auth.currentUser as FirebaseUser
+
+        }
+
+        if (firebaseUser == null) {
+
+            goToLogin()
+
+        }
+        else {
+
+            userId = firebaseUser!!.uid
+
+        }
 
         rda_coordinatorLayout = findViewById<View>(R.id.rda_coordinatorLayout) as CoordinatorLayout
 
@@ -1972,7 +1990,7 @@ class RegisterDetailsActivity() : AppCompatActivity(),
             userAndFriendInfoUnsaved.usersList[0].created = created
             userAndFriendInfoSaved.usersList[0].created = created
 
-            userAndFriendInfoSaved.usersList[0].uid = userId
+            userAndFriendInfoSaved.usersList[0].uid = userId!!
 
         }
 
@@ -1983,7 +2001,7 @@ class RegisterDetailsActivity() : AppCompatActivity(),
             userAndFriendInfoUnsaved.usersList[1].created = created
             userAndFriendInfoSaved.usersList[1].created = created
 
-            userAndFriendInfoSaved.usersList[1].uid = userId
+            userAndFriendInfoSaved.usersList[1].uid = userId!!
 
         }
 
@@ -2009,12 +2027,12 @@ class RegisterDetailsActivity() : AppCompatActivity(),
             userAndFriendInfoUnsaved = gson.fromJson(allInfoJsonUnsaved, UserAndFriendInfo::class.java)
 
             userAndFriendInfoUnsaved.usersList[0].created = created
-            userAndFriendInfoUnsaved.usersList[0].uid = userId
+            userAndFriendInfoUnsaved.usersList[0].uid = userId!!
 
             if (userAndFriendInfoUnsaved.usersList.size > 1) {
 
                 userAndFriendInfoUnsaved.usersList[1].created = created
-                userAndFriendInfoUnsaved.usersList[1].uid = userId
+                userAndFriendInfoUnsaved.usersList[1].uid = userId!!
 
             }
 
@@ -2032,10 +2050,10 @@ class RegisterDetailsActivity() : AppCompatActivity(),
                 email = userAndFriendInfoUnsaved.usersList[0].email
                 currentEmail = email!!
 
-                firebaseUser.updateEmail(email!!)
+                firebaseUser!!.updateEmail(email!!)
                         .addOnSuccessListener(OnSuccessListener<Void?> {
 
-                            firebaseUser.sendEmailVerification()
+                            firebaseUser!!.sendEmailVerification()
                                     .addOnSuccessListener(OnSuccessListener<Void?> {
 
                                         val message: String =
@@ -2083,10 +2101,10 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
                     Log.e(
                             "ATTENTION ATTENTION",
-                            "mCurrentUser.isEmailVerified(): " + firebaseUser.isEmailVerified
+                            "mCurrentUser.isEmailVerified(): " + firebaseUser!!.isEmailVerified
                     )
 
-                    if (!firebaseUser.isEmailVerified) {
+                    if (!firebaseUser!!.isEmailVerified) {
 
                         //emailVerificationCountDown(5000);
                         mProgressBar.visibility = View.GONE
@@ -2112,7 +2130,7 @@ class RegisterDetailsActivity() : AppCompatActivity(),
                         val locationUser: LocationUser =
 
                             LocationUser(
-                                    uid = userId,
+                                    uid = userId!!,
                                     created = created,
                                     name = userAndFriendInfoUnsaved.usersList[0].name!!,
                                     email = userAndFriendInfoUnsaved.usersList[0].email!!,
@@ -2132,13 +2150,13 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
                         db
                                 .collection("locations")
-                                .document(userId)
+                                .document(userId!!)
                                 .set(locationUser, SetOptions.merge())
                                 .addOnSuccessListener {
 
                                     db
                                             .collection("users")
-                                            .document(userId)
+                                            .document(userId!!)
                                             .set(userAndFriendInfoUnsaved, SetOptions.merge())
                                             .addOnSuccessListener {
 
@@ -2235,13 +2253,13 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
         }
 
-        firebaseUser.updateEmail((email)!!)
+        firebaseUser!!.updateEmail((email)!!)
                 .addOnSuccessListener {
 
-            firebaseUser.sendEmailVerification()
+            firebaseUser!!.sendEmailVerification()
                     .addOnSuccessListener {
 
-                        if (!firebaseUser.isEmailVerified) {
+                        if (!firebaseUser!!.isEmailVerified) {
 
                             //emailVerificationCountDown(5000)
                             mProgressBar.visibility = View.GONE
@@ -2252,7 +2270,7 @@ class RegisterDetailsActivity() : AppCompatActivity(),
                             registerCount++
 
                         }
-                        if (firebaseUser.isEmailVerified) {
+                        if (firebaseUser!!.isEmailVerified) {
 
                             registerData() // toast inside but no snackbar
 
@@ -2320,7 +2338,7 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
                 FirebaseAuth.getInstance().signOut()
 
-                firebaseUser.delete().addOnCompleteListener { task ->
+                firebaseUser!!.delete().addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         KToasty.info(
                                 context,
@@ -2343,9 +2361,17 @@ class RegisterDetailsActivity() : AppCompatActivity(),
         //super.onBackPressed();
     }
 
-    private fun goToMain(){
+    private fun goToMain() {
 
         val intent: Intent = Intent(context, MainActivity::class.java)
+        startActivity(intent)
+        finish()
+
+    }
+
+    private fun goToLogin() {
+
+        val intent: Intent = Intent(context, LoginActivity::class.java)
         startActivity(intent)
         finish()
 
