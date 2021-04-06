@@ -20,6 +20,8 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
+import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -28,9 +30,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import android.widget.AdapterView.OnItemClickListener
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import com.app.ej.cs.R
 import com.app.ej.cs.utils.PhoneUtil
 import com.app.ej.cs.utils.Util
@@ -110,13 +114,13 @@ class RecognitionActivityReviewFinal :
     else {
       val message: String = "Error Recharging Phone!"
       Log.e(TAG, "${network}: Error Recharging Phone!")
-      utils.onShowErrorMessage(message, this)
+      util.onShowErrorMessage(message, this)
       finish()
     }
     
   }
 
-  private val utils: Util = Util()
+  private val util: Util = Util()
   private val phoneUtil: PhoneUtil = PhoneUtil()
 
 
@@ -182,11 +186,12 @@ class RecognitionActivityReviewFinal :
 
 
 
-
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
     setContentView(R.layout.vision_activity_review)
+
+    util.addFontToAppBarTitle(supportActionBar!!, applicationContext)
 
     val intent = intent
     pAccount = intent.getStringExtra("pAccount")!!

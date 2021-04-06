@@ -1,25 +1,18 @@
 package com.app.ej.cs.ui.scan
 
 
-import com.app.ej.cs.ui.fab.FloatingActionButton
-import com.app.ej.cs.ui.fab.FloatingActionMenu
-
+//import com.github.clans.fab.FloatingActionButton
 import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -40,16 +33,18 @@ import com.droidman.ktoasty.KToasty
 import com.fondesa.kpermissions.allGranted
 import com.fondesa.kpermissions.coroutines.sendSuspend
 import com.fondesa.kpermissions.extension.permissionsBuilder
-//import com.github.clans.fab.FloatingActionButton
 import com.github.marlonlom.utilities.timeago.TimeAgo
 import com.google.android.gms.ads.*
-import com.google.android.material.snackbar.Snackbar
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.scan_fragment_lists_layout.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 
@@ -75,8 +70,10 @@ class ScanFragment : Fragment(), ScanFragmentView {
       if (userMainListModel.userList.isNotEmpty()) {
 
         Log.e("ATTENTION ATTENTION", "From ScanFragment userMainListModel.userList.isNotEmpty()")
-        Log.e("ATTENTION ATTENTION",
-          "From ScanFragment userMainListModel.userList: ${userMainListModel.userList.toString()}")
+        Log.e(
+          "ATTENTION ATTENTION",
+          "From ScanFragment userMainListModel.userList: ${userMainListModel.userList.toString()}"
+        )
 
         initFloatingActionMenu(mutableListOf(userMainListModel.userList[0]))
 
@@ -99,21 +96,27 @@ class ScanFragment : Fragment(), ScanFragmentView {
       this.userList.add(userList.userList[1])
       scanFragmentUserSecondViewAdapter.notifyDataSetChanged()
 
-      Log.e("ATTENTION ATTENTION",
-        "In ScanFragment displayUserSecond: ${userList.userList[1].toString()}")
+      Log.e(
+        "ATTENTION ATTENTION",
+        "In ScanFragment displayUserSecond: ${userList.userList[1].toString()}"
+      )
 
       initFloatingActionMenu(
         mutableListOf(
           userMainListModel.userList[0],
-          userSecondListModel.userList[0]))
+          userSecondListModel.userList[0]
+        )
+      )
 
     }
     else {
 
       userSecondRecyclerView.visibility = View.GONE
 
-      Log.e("ATTENTION ATTENTION",
-        "In ScanFragment displayUserSecond: userSecondRecyclerView.visibility = View.GONE")
+      Log.e(
+        "ATTENTION ATTENTION",
+        "In ScanFragment displayUserSecond: userSecondRecyclerView.visibility = View.GONE"
+      )
 
     }
 
@@ -301,6 +304,7 @@ private val TAG: String = "ATTENTION ATTENTION"
       else {
 
         withContext(Dispatchers.Main) {
+
           //KToasty.info(app, "Using local data", Toast.LENGTH_LONG).show()
           val message = "You have denied some " +
                   "permissions permanently. Camera recognition of recharge " +
@@ -471,6 +475,8 @@ private val TAG: String = "ATTENTION ATTENTION"
     fab1!!.setOnClickListener {
 
       fam!!.toggle(true)
+
+//      showInterstitialAd()
       askCameraAndPhonePermissionsBeforeCameraActivity(it, userList[0], "1")
 
     }
@@ -576,12 +582,153 @@ private val TAG: String = "ATTENTION ATTENTION"
 
   }
 
+  private var mInterstitialAd: InterstitialAd? = null
+
+  private fun showFullScreen() {
+
+    mInterstitialAd?.fullScreenContentCallback = object: FullScreenContentCallback() {
+
+      override fun onAdDismissedFullScreenContent() {
+
+        Log.d(TAG, "Ad was dismissed.")
+
+      }
+
+      override fun onAdFailedToShowFullScreenContent(adError: AdError?) {
+
+        Log.d(TAG, "Ad failed to show.")
+
+      }
+
+      override fun onAdShowedFullScreenContent() {
+
+        Log.d(TAG, "Ad showed fullscreen content.")
+        mInterstitialAd = null
+
+      }
+
+    }
+
+    mInterstitialAd!!.show(requireActivity())
+
+  }
+
+  private fun showInterstitialAd() {
+
+    val adRequest = AdRequest.Builder().build()
+
+    InterstitialAd.load(
+      requireContext(),
+      "ca-app-pub-5127161627511605/6554467118",
+      adRequest,
+      object : InterstitialAdLoadCallback() {
+
+      override fun onAdFailedToLoad(adError: LoadAdError) {
+
+        Log.d(TAG, adError.message)
+        mInterstitialAd = null
+
+      }
+
+      override fun onAdLoaded(interstitialAd: InterstitialAd) {
+
+        mInterstitialAd = interstitialAd
+        showFullScreen()
+
+      }
+
+    })
+
+
+  }
+
+  fun toCalendar(date: Date): Calendar {
+
+    val cal = Calendar.getInstance()
+    cal.time = date
+
+    return cal
+
+  }
+
+  val PREFNAME: String = "local_user"
+
+  private fun checkWeeklyInterstitialAd() {
+
+    val currentTimeMillis = System.currentTimeMillis()
+
+    val sharedPref = requireContext().getSharedPreferences(PREFNAME, Context.MODE_PRIVATE)
+    val weeklyInterstitialAd = sharedPref.getInt("weeklyInterstitialAd", 0)
+    val lastWeekDateTime = sharedPref.getString("lastWeekDateTime", "empty")!!
+
+    val thisDate: Date = Calendar.getInstance().time
+
+    if (weeklyInterstitialAd > 0) {
+
+      val dateFormat: SimpleDateFormat = SimpleDateFormat("EE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH)
+
+      val date1: Date = dateFormat.parse(lastWeekDateTime)!!
+
+//      val comparison: Int = date1.compareTo(thisDate)
+
+      /*val c = Calendar.getInstance()
+      c.time = date1
+      c.add(Calendar.DATE, 7)
+
+      if (c.time >= thisDate){
+
+        val editor = sharedPref!!.edit()
+        editor.putInt("weeklyInterstitialAd", weeklyInterstitialAd + 1)
+        editor.putString("lastWeekDateTime", thisDate.toString())
+        editor.apply()
+
+        showInterstitialAd()
+
+      }*/
+
+      val second3 = 3L * 1000
+
+      val day3 = 3L * 24 * 60 * 60 * 1000
+
+      val day7 = 7L * 24 * 60 * 60 * 1000
+
+      val olderThan3Seconds: Boolean = thisDate.after(Date(date1.time + second3))
+
+      val olderThan3Days: Boolean = thisDate.after(Date(date1.time + day3))
+
+      val olderThan7Days: Boolean = thisDate.after(Date(date1.time + day7))
+
+      if (olderThan3Days) {
+
+        val editor = sharedPref!!.edit()
+        editor.putInt("weeklyInterstitialAd", weeklyInterstitialAd + 1)
+        editor.putString("lastWeekDateTime", thisDate.toString())
+        editor.apply()
+
+        showInterstitialAd()
+
+      }
+
+//        if (comparison == 0 || comparison > 0) { }
+
+    }
+    else {
+
+      val editor = sharedPref!!.edit()
+      editor.putInt("weeklyInterstitialAd", 1)
+      editor.putString("lastWeekDateTime", thisDate.toString())
+      editor.apply()
+
+//      showInterstitialAd()
+
+    }
+
+  }
+
 
   private fun checkSignedUp() {
 
     Log.e("ATTENTION ATTENTION", "checkSignedUp in ScanFragment")
-
-    val PREFNAME: String = "local_user"
     val gson = Gson()
 
     val sharedPref = requireContext().getSharedPreferences(PREFNAME, Context.MODE_PRIVATE)
@@ -606,7 +753,9 @@ private val TAG: String = "ATTENTION ATTENTION"
       loadFriends(allInfoSaved.friendList)
 
       if (userMainListModel.userList.isEmpty()) {
+
         (activity as MainActivity).let{
+
           val intent = Intent(it, LoginActivity::class.java)
           it.startActivity(intent)
           it.finish()
@@ -615,6 +764,11 @@ private val TAG: String = "ATTENTION ATTENTION"
           Log.e("ATTENTION ATTENTION", "Makes no sense to finish.")
 
         }
+
+      }
+      else {
+
+        checkWeeklyInterstitialAd ()
 
       }
 
@@ -659,8 +813,10 @@ private val TAG: String = "ATTENTION ATTENTION"
     emailTv.text   = userMainListModel.userList[0].email
     createdTv.text = userMainListModel.userList[0].created?.let { TimeAgo.using(it.toLong()) }
 
-    Log.e("ATTENTION ATTENTION",
-      "createdTv.text = userMainListModel.userList[0].created: ${userMainListModel.userList[0].created}")
+    Log.e(
+      "ATTENTION ATTENTION",
+      "createdTv.text = userMainListModel.userList[0].created: ${userMainListModel.userList[0].created}"
+    )
 
   }
 

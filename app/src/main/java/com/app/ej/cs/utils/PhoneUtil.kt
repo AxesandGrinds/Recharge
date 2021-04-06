@@ -7,7 +7,6 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
 import android.os.Build
@@ -24,8 +23,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.app.ej.cs.R
@@ -33,8 +30,6 @@ import com.app.ej.cs.repository.entity.Friend
 import com.app.ej.cs.repository.entity.User
 import com.app.ej.cs.ui.CodeInputActivity
 import com.app.ej.cs.ui.DataRechargeDialog
-import com.app.ej.cs.vision.RecognitionActivityFinal
-import com.app.ej.cs.vision.RecognitionActivityReviewFinal
 import com.droidman.ktoasty.KToasty
 import com.fondesa.kpermissions.allGranted
 import com.fondesa.kpermissions.coroutines.sendSuspend
@@ -170,18 +165,57 @@ class PhoneUtil {
 
             for (phoneAccountHandle in list) {
 
-                if (phoneAccountHandle.id.contains(activeSubscriptionInfoList[simNumber].iccId)) {
+                if (simNumber == 0) {
 
-                    Log.e("ATTENTION ATTENTION", "Does This Ever Run?")
+                    if (phoneAccountHandle.id.contains(activeSubscriptionInfoList[simNumber].iccId)) {
 
-                    intent.putExtra(
-                        "android.telecom.extra.PHONE_ACCOUNT_HANDLE",
-                        phoneAccountHandle as Parcelable
-                    )
+                        Log.e("ATTENTION ATTENTION", "Does This Ever Run?")
+
+                        intent.putExtra(
+                            "android.telecom.extra.PHONE_ACCOUNT_HANDLE",
+                            phoneAccountHandle as Parcelable)
+
+                        return
+
+                    }
+
+                }
+                else if (simNumber == 1 && activeSubscriptionInfoList.size > 1) {
+
+                    if (phoneAccountHandle.id.contains(activeSubscriptionInfoList[simNumber].iccId)) {
+
+                        Log.e("ATTENTION ATTENTION", "Does This Ever Run?")
+
+                        intent.putExtra(
+                            "android.telecom.extra.PHONE_ACCOUNT_HANDLE",
+                            phoneAccountHandle as Parcelable)
+
+                        return
+
+                    }
+
+
+
                     return
 
                 }
+                else if (simNumber == 1 && activeSubscriptionInfoList.size == 1) {
 
+                    if (phoneAccountHandle.id.contains(activeSubscriptionInfoList[0].iccId)) {
+
+                        Log.e("ATTENTION ATTENTION", "Does This Ever Run?")
+
+                        intent.putExtra(
+                            "android.telecom.extra.PHONE_ACCOUNT_HANDLE",
+                            phoneAccountHandle as Parcelable)
+
+                        return
+
+                    }
+
+                    return
+
+                }
             }
 
         }
@@ -1186,7 +1220,7 @@ class PhoneUtil {
         friend: Friend,
     ) {
 
-        val accountChoiceBuilder: AlertDialog.Builder = AlertDialog.Builder(context, R.style.MyDialogTheme)
+        /*val accountChoiceBuilder: AlertDialog.Builder = AlertDialog.Builder(context, R.style.MyDialogTheme)
 
         accountChoiceBuilder.setTitle("Choose your Associated Banks' Phone Number")
 
@@ -1204,101 +1238,203 @@ class PhoneUtil {
             pAccountType.add(modelList[1].phone!!)
             pAccountList.add("2")
 
+        }*/
+
+        val accountChoiceBuilder: AlertDialog.Builder = AlertDialog.Builder(context, R.style.MyDialogTheme)
+
+        accountChoiceBuilder.setTitle("Choose the phone and bank you want to transfer from")
+
+        val pAccountType = mutableListOf<String>()
+        val pAccountList = mutableListOf<String>()
+
+        val banksList1 = mutableListOf<String>()
+        val banksList2 = mutableListOf<String>()
+
+        if (modelList[0].phone != null && modelList[0].phone!!.trim() != "") {
+
+            if (modelList[0].bank1 != null && modelList[0].bank1 != "Choose Bank") {
+                banksList1.add(modelList[0].bank1!!)
+            }
+
+            if (modelList[0].bank2 != null && modelList[0].bank2 != "Choose Bank") {
+                banksList1.add(modelList[0].bank2!!)
+            }
+
+            if (modelList[0].bank3 != null && modelList[0].bank3 != "Choose Bank") {
+                banksList1.add(modelList[0].bank3!!)
+            }
+
+            if (modelList[0].bank4 != null && modelList[0].bank4 != "Choose Bank") {
+                banksList1.add(modelList[0].bank4!!)
+            }
+
+            pAccountType.add(modelList[0].phone!!)
+            pAccountList.add("1")
+
+        }
+        if (modelList.size > 1 && modelList[1].phone != null && modelList[1].phone != "") {
+
+            if (modelList[1].bank1 != null && modelList[1].bank1 != "Choose Bank") {
+                banksList2.add(modelList[1].bank1!!)
+            }
+
+            if (modelList[1].bank2 != null && modelList[1].bank2 != "Choose Bank") {
+                banksList2.add(modelList[1].bank2!!)
+            }
+
+            if (modelList[1].bank3 != null && modelList[1].bank3 != "Choose Bank") {
+                banksList2.add(modelList[1].bank3!!)
+            }
+
+            if (modelList[1].bank4 != null && modelList[1].bank4 != "Choose Bank") {
+                banksList2.add(modelList[1].bank4!!)
+            }
+
+            pAccountType.add(modelList[1].phone!!)
+            pAccountList.add("2")
+
         }
 
-        accountChoiceBuilder.setSingleChoiceItems(pAccountType.toTypedArray(), -1) {
+        var banks1: String = ""
+        var banks2: String = ""
+
+        for ((i, bank) in banksList1.withIndex()) {
+
+            banks1 = when (i) {
+                0 -> {
+                    bank
+                }
+                banksList1.size - 1 -> {
+                    "$banks1, $bank."
+                }
+                else -> {
+                    "$banks1, $bank"
+                }
+            }
+
+        }
+
+        for ((i, bank) in banksList2.withIndex()) {
+
+            banks2 = when (i) {
+                0 -> {
+                    bank
+                }
+                banksList2.size - 1 -> {
+                    "$banks2, $bank."
+                }
+                else -> {
+                    "$banks2, $bank"
+                }
+            }
+
+        }
+
+        var banksAndAccounts1: String = ""
+        var banksAndAccounts2: String = ""
+
+        val banksAndAccountsList = mutableListOf<String>()
+
+        banksAndAccounts1 = "${pAccountType[0]} with banks: $banks1"
+        banksAndAccountsList.add(banksAndAccounts1)
+
+        if (pAccountList.size > 1 && banksList2.size > 0) {
+            banksAndAccounts2 = "${pAccountType[1]} with banks: $banks2"
+            banksAndAccountsList.add(banksAndAccounts2)
+        }
+
+        accountChoiceBuilder.setSingleChoiceItems(banksAndAccountsList.toTypedArray(), -1) {
 
                 dialogInterface, i ->
 
             dialogInterface.dismiss()
 
-            var user: User = modelList[i]
-            var pAccount: String = pAccountList[i]
+            val user: User = modelList[i]
+            val pAccount: String = pAccountList[i]
 
-            val amountBuilder: AlertDialog.Builder = AlertDialog.Builder(context, R.style.MyDialogTheme)
-            amountBuilder.setTitle("Amount")
+            val name: String = if (friend.name == null || friend.name == "") {
+                "Unknown Name"
+            }
+            else {
+                friend.name!!
+            }
 
-            val amountViewInflated: View =
-                LayoutInflater.from(context).inflate(R.layout.input_amount, null)
+            val banks: MutableList<String> = mutableListOf<String>()
+            val accountNumbers: MutableList<String> = mutableListOf<String>()
+            val banksAndAccountNumbers: MutableList<String> = mutableListOf<String>()
 
-            val amountInput = amountViewInflated.findViewById<View>(R.id.input_amount) as TextInputEditText
-            amountBuilder.setView(amountViewInflated)
-            amountBuilder.setPositiveButton(android.R.string.ok) { dialog, which ->
-                
-                dialog.dismiss()
-                
-                val amountInputStr: String = amountInput.text.toString()
+            if ((friend.bank1 != null && friend.bank1 != "Choose Bank") &&
+                (friend.accountNumber1 != null && friend.accountNumber1 != "")) {
+                banks.add(friend.bank1!!)
+                accountNumbers.add(friend.accountNumber1!!)
+                banksAndAccountNumbers.add("${friend.accountNumber1}: ${friend.bank1}")
+            }
 
-                val name: String = if (friend.name == null || friend.name == "") {
-                    "Unknown Name"
-                }
-                else {
-                    friend.name!!
-                }
+            if ((friend.bank2 != null && friend.bank2 != "Choose Bank") &&
+                (friend.accountNumber2 != null && friend.accountNumber2 != "")) {
+                banks.add(friend.bank2!!)
+                accountNumbers.add(friend.accountNumber2!!)
+                banksAndAccountNumbers.add("${friend.accountNumber2}: ${friend.bank2}")
+            }
 
-                val banks: MutableList<String> = mutableListOf<String>()
-                val accountNumbers: MutableList<String> = mutableListOf<String>()
-                val banksAndAccountNumbers: MutableList<String> = mutableListOf<String>()
+            if ((friend.bank3 != null && friend.bank3 != "Choose Bank") &&
+                (friend.accountNumber3 != null && friend.accountNumber3 != "")) {
+                banks.add(friend.bank3!!)
+                accountNumbers.add(friend.accountNumber3!!)
+                banksAndAccountNumbers.add("${friend.accountNumber1}: ${friend.bank1}")
+            }
 
-                if ((friend.bank1 != null && friend.bank1 != "Choose Bank") &&
-                    (friend.accountNumber1 != null && friend.accountNumber1 != "")) {
-                    banks.add(friend.bank1!!)
-                    accountNumbers.add(friend.accountNumber1!!)
-                    banksAndAccountNumbers.add("${friend.accountNumber1}: ${friend.bank1}")
-                }
+            if ((friend.bank4 != null && friend.bank4 != "Choose Bank") &&
+                (friend.accountNumber4 != null && friend.accountNumber4 != "")) {
+                banks.add(friend.bank4!!)
+                accountNumbers.add(friend.accountNumber4!!)
+                banksAndAccountNumbers.add("${friend.accountNumber1}: ${friend.bank1}")
+            }
 
-                if ((friend.bank2 != null && friend.bank2 != "Choose Bank") &&
-                    (friend.accountNumber2 != null && friend.accountNumber2 != "")) {
-                    banks.add(friend.bank2!!)
-                    accountNumbers.add(friend.accountNumber2!!)
-                    banksAndAccountNumbers.add("${friend.accountNumber2}: ${friend.bank2}")
-                }
+            val friendBankChoiceBuilder: AlertDialog.Builder = AlertDialog.Builder(context, R.style.MyDialogTheme)
 
-                if ((friend.bank3 != null && friend.bank3 != "Choose Bank") &&
-                    (friend.accountNumber3 != null && friend.accountNumber3 != "")) {
-                    banks.add(friend.bank3!!)
-                    accountNumbers.add(friend.accountNumber3!!)
-                    banksAndAccountNumbers.add("${friend.accountNumber1}: ${friend.bank1}")
-                }
+            friendBankChoiceBuilder.setTitle("Choose your friend's account")
+            //Choose your Friend's Phone Number
+            Log.e("ATTENTION ATTENTION", "Choose your friend's account")
+            Log.e("ATTENTION ATTENTION", "\n\n\nFriend's account numbers: ${banksAndAccountNumbers.toString()}")
 
-                if ((friend.bank4 != null && friend.bank4 != "Choose Bank") &&
-                    (friend.accountNumber4 != null && friend.accountNumber4 != "")) {
-                    banks.add(friend.bank4!!)
-                    accountNumbers.add(friend.accountNumber4!!)
-                    banksAndAccountNumbers.add("${friend.accountNumber1}: ${friend.bank1}")
-                }
 
-                val friendBankChoiceBuilder: AlertDialog.Builder = AlertDialog.Builder(context, R.style.MyDialogTheme)
+            friendBankChoiceBuilder.setSingleChoiceItems(banksAndAccountNumbers.toTypedArray(), -1) {
 
-                friendBankChoiceBuilder.setTitle("Choose your Friend's Phone Number")
+                    dialogInterface, i ->
 
-                Log.e("ATTENTION ATTENTION", "Choose your Friend's Phone Number")
-                Log.e("ATTENTION ATTENTION", "\n\n\nFriend's Phone Numbers: ${banksAndAccountNumbers.toString()}")
+                dialogInterface.dismiss()
 
-                friendBankChoiceBuilder.setSingleChoiceItems(banksAndAccountNumbers.toTypedArray(), -1) {
+                val bank: String = banks[i]
+                val accountNumber: String = accountNumbers[i]
 
-                        dialogInterface, i ->
 
-                    dialogInterface.dismiss()
+                val amountBuilder: AlertDialog.Builder = AlertDialog.Builder(context, R.style.MyDialogTheme)
+                amountBuilder.setTitle("Amount")
 
-                    val bank: String = banks[i]
-                    val accountNumber: String = accountNumbers[i]
+                val amountViewInflated: View = LayoutInflater.from(context).inflate(R.layout.input_amount, null)
 
+                val amountInput = amountViewInflated.findViewById<View>(R.id.input_amount) as TextInputEditText
+                amountBuilder.setView(amountViewInflated)
+                amountBuilder.setPositiveButton(android.R.string.ok) { dialog, which ->
+
+                    dialog.dismiss()
+
+                    val amountInputStr: String = amountInput.text.toString()
 
                     bankChoiceTransfer(
                         context, fragment, activity, user, pAccount,
-                        name, accountNumber, amountInputStr, bank
-                    )
+                        name, accountNumber, amountInputStr, bank)
 
                 }
 
-                friendBankChoiceBuilder.setNegativeButton(android.R.string.cancel) { dialog, which -> dialog.cancel() }
-                friendBankChoiceBuilder.show()
+                amountBuilder.setNegativeButton(android.R.string.cancel) { dialog, which -> dialog.cancel() }
+                amountBuilder.show()
 
             }
 
-            amountBuilder.setNegativeButton(android.R.string.cancel) { dialog, which -> dialog.cancel() }
-            amountBuilder.show()
+            friendBankChoiceBuilder.setNegativeButton(android.R.string.cancel) { dialog, which -> dialog.cancel() }
+            friendBankChoiceBuilder.show()
 
         }
 
@@ -1342,7 +1478,7 @@ class PhoneUtil {
             pBanks.add(model.bank3!!)
 
         }
-        if (model.bank1 != null && model.bank2 != "Choose Bank") {
+        if (model.bank4 != null && model.bank4 != "Choose Bank") {
 
             pBanks.add(model.bank4!!)
 
@@ -3326,7 +3462,7 @@ class PhoneUtil {
 
         val accountChoiceBuilder: AlertDialog.Builder = AlertDialog.Builder(context, R.style.MyDialogTheme)
 
-        accountChoiceBuilder.setTitle("Choose the Phone Number associated with the bank you want to Topup Transfer from")
+        accountChoiceBuilder.setTitle("Choose the account you want to Topup Transfer from")
 
         val pAccountType = mutableListOf<String>()
         val pAccountList = mutableListOf<String>()
@@ -3343,25 +3479,34 @@ class PhoneUtil {
                 bankList = modelList[0].bank1!!
             }
             if (modelList[0].bank2 != null) {
+
                 bankList = if (bankList == "") {
                     modelList[0].bank2!!
-                } else {
+                }
+                else {
                     bankList + ", " + modelList[0].bank2!!
                 }
+
             }
             if (modelList[0].bank3 != null) {
+
                 bankList = if (bankList == "") {
                     modelList[0].bank3!!
-                } else {
+                }
+                else {
                     bankList + ", " + modelList[0].bank3!!
                 }
+
             }
             if (modelList[0].bank4 != null) {
+
                 bankList = if (bankList == "") {
                     modelList[0].bank4!!
-                } else {
+                }
+                else {
                     bankList + ", " + modelList[0].bank4!!
                 }
+
             }
 
             val message: String = "${modelList[0].phone!!} associated with banks: $bankList"
@@ -3379,29 +3524,43 @@ class PhoneUtil {
                 bankList = modelList[1].bank1!!
             }
             if (modelList[1].bank2 != null) {
+
                 bankList = if (bankList == "") {
                     modelList[1].bank2!!
-                } else {
+                }
+                else {
                     bankList + ", " + modelList[1].bank2!!
                 }
+
             }
             if (modelList[1].bank3 != null) {
+
                 bankList = if (bankList == "") {
                     modelList[1].bank3!!
-                } else {
+                }
+                else {
                     bankList + ", " + modelList[1].bank3!!
                 }
+
             }
             if (modelList[1].bank4 != null) {
+
                 bankList = if (bankList == "") {
                     modelList[1].bank4!!
-                } else {
+                }
+                else {
                     bankList + ", " + modelList[1].bank4!!
                 }
+
             }
 
-            val message: String = "${modelList[1].phone!!} associated with banks: $bankList"
-            phonesAndBanks.add(message)
+            if (bankList != "") {
+
+                val message: String = "${modelList[1].phone!!} associated with banks: $bankList"
+                phonesAndBanks.add(message)
+
+            }
+
 
         }
 
@@ -3501,9 +3660,9 @@ class PhoneUtil {
 
                     val friendPhoneChoiceBuilder: AlertDialog.Builder = AlertDialog.Builder(context, R.style.MyDialogTheme)
 
-                    friendPhoneChoiceBuilder.setTitle("Choose your Friend's Phone Number")
+                    friendPhoneChoiceBuilder.setTitle("Choose your friend's phone number")
 
-                    Log.e("ATTENTION ATTENTION", "Choose your Friend's Phone Number")
+                    Log.e("ATTENTION ATTENTION", "Choose your friend's phone number")
                     Log.e("ATTENTION ATTENTION", "\n\n\nFriend's Phone Numbers: ${phonesAndNetworks.toString()}")
 
                     friendPhoneChoiceBuilder.setSingleChoiceItems(phonesAndNetworks.toTypedArray(), -1) {

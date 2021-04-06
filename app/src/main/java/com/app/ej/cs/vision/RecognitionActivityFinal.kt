@@ -20,6 +20,7 @@ import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.*
@@ -35,10 +36,12 @@ import android.view.*
 import android.widget.*
 import android.widget.AdapterView.OnItemSelectedListener
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.GestureDetectorCompat
 import com.app.ej.cs.R
 import com.app.ej.cs.utils.Util
@@ -73,6 +76,7 @@ import java.io.*
 import java.text.DateFormat
 import java.text.DateFormat.getDateTimeInstance
 import java.util.*
+import kotlin.concurrent.schedule
 import kotlin.math.max
 
 
@@ -888,36 +892,55 @@ class RecognitionActivityFinal : AppCompatActivity(),
   private lateinit var takeAnother: ImageButton
   private lateinit var snapCamera: ImageButton
 
+  private fun onCreate() {
+
+
+
+  }
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
     setContentView(R.layout.vision_activity_still_image_final)
 
+    onCreate()
+
     context = this
+
+    util.addFontToAppBarTitle(supportActionBar!!, applicationContext)
 
     selectImageButton = findViewById<Button>(R.id.select_image_button)
     processButton = findViewById<Button>(R.id.process_button)
 
     selectImageButton
-      .setOnClickListener { view: View ->
+      .setOnClickListener {
+
+          view: View ->
+
         // Menu for selecting either: a) take new photo b) select from existing
-        val popup =
-          PopupMenu(this@RecognitionActivityFinal, view)
+        val popup = PopupMenu(this@RecognitionActivityFinal, view)
         popup.setOnMenuItemClickListener { menuItem: MenuItem ->
-          val itemId =
-            menuItem.itemId
+
+          val itemId = menuItem.itemId
+
           if (itemId == R.id.select_images_from_local) {
             startChooseImageIntentForResult()
             return@setOnMenuItemClickListener true
-          } else if (itemId == R.id.take_photo_using_camera) {
+          }
+          else if (itemId == R.id.take_photo_using_camera) {
             startCameraIntentForResult()
             return@setOnMenuItemClickListener true
           }
+
           false
+
         }
+
         val inflater = popup.menuInflater
+
         inflater.inflate(R.menu.camera_button_menu, popup.menu)
         popup.show()
+
       }
 
 
@@ -925,9 +948,6 @@ class RecognitionActivityFinal : AppCompatActivity(),
     graphicOverlay = findViewById(R.id.graphic_overlay)
 
     controlLayout = findViewById(R.id.control)
-
-
-
 
 //  TODO--------------------------------------------------------------------------------------------
 //  TODO--------------------------------------------------------------------------------------------
@@ -973,17 +993,58 @@ class RecognitionActivityFinal : AppCompatActivity(),
     takeAnother.setOnClickListener {
 
       camera.close()
+      cameraSource?.clearProcessor()
+//      cameraSource?.camera?.stopPreview()
+//      cameraSource?.camera?.setPreviewCallback(null)
+//      cameraSource?.camera?.release()
+//      cameraSource?.release()
+      camera.visibility = View.GONE
+//      camera.removeAllViews()
+//      camera.removeCameraListener()
 
       snapCamera.visibility = View.VISIBLE
       takeAnother.visibility = View.GONE
       selectImageButton.visibility = View.VISIBLE
       processButton.visibility = View.GONE
 
-      previewView?.visibility = View.VISIBLE
-      preview?.visibility = View.VISIBLE
-      camera.visibility = View.GONE
+//      previewView?.visibility = View.GONE
+//      previewView?.clearAnimation()
+//      previewView?.clearFocus()
+//      previewView?.cameraSource?.release()
+//      previewView?.release()
 
-      recreate()
+//      previewView?.cameraSource?.camera?.stopPreview()
+//      previewView?.cameraSource?.camera?.setPreviewCallback(null)
+//      previewView?.cameraSource?.camera?.release()
+//      previewView?.stop()
+//      previewView?.release()
+      previewView?.visibility = View.GONE
+
+      preview?.clearAnimation()
+      preview?.clearFocus()
+      preview?.visibility = View.GONE
+      graphicOverlay!!.clear()
+      graphicOverlay!!.clearAnimation()
+      graphicOverlay!!.clearFocus()
+      cameraSource = null
+      preview = null
+      graphicOverlay = null
+      previewView = null
+
+//      createCameraSource(selectedMode)
+//      startCameraSource()
+//      createImageProcessor()
+//      tryReloadAndDetectInImage()
+
+//        recreate()
+      finish()
+
+//      requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+      Timer().schedule(1000){
+        startActivity(intent)
+//        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+      }
+
 //      previewView?.release()
 //      startCameraSource()
 
@@ -1065,38 +1126,47 @@ class RecognitionActivityFinal : AppCompatActivity(),
     if (USE_FRAME_PROCESSOR) {
 
       camera.addFrameProcessor(object : FrameProcessor {
+
         private var lastTime = System.currentTimeMillis()
+
         override fun process(frame: Frame) {
+
           val newTime = frame.time
+
           val delay = newTime - lastTime
           lastTime = newTime
+
           LOG.v("Frame delayMillis:", delay, "FPS:", 1000 / delay)
+
           if (DECODE_BITMAP) {
+
             if (frame.format == ImageFormat.NV21
-              && frame.dataClass == ByteArray::class.java
-            ) {
+              && frame.dataClass == ByteArray::class.java) {
+
               val data = frame.getData<ByteArray>()
+
               val yuvImage = YuvImage(
                 data,
                 frame.format,
                 frame.size.width,
                 frame.size.height,
-                null
-              )
+                null)
+
               val jpegStream = ByteArrayOutputStream()
               yuvImage.compressToJpeg(
-                Rect(
-                  0, 0,
+                Rect(0, 0,
                   frame.size.width,
-                  frame.size.height
-                ), 100, jpegStream
-              )
+                  frame.size.height),
+                100, jpegStream)
+
               val jpegByteArray = jpegStream.toByteArray()
+
               val bitmap = BitmapFactory.decodeByteArray(
                 jpegByteArray,
-                0, jpegByteArray.size
-              )
+                0, jpegByteArray.size)
+
               bitmap.toString()
+
             }
 
           }
@@ -1106,7 +1176,6 @@ class RecognitionActivityFinal : AppCompatActivity(),
       })
 
     }
-
 
 //    val group = controlPanel.getChildAt(0) as ViewGroup
 
@@ -1293,6 +1362,7 @@ class RecognitionActivityFinal : AppCompatActivity(),
   }
 
   private fun populateSizeSelector() {
+
     val sizeSpinner = findViewById<Spinner>(R.id.size_selector)
     val options: MutableList<String> = ArrayList()
     options.add(SIZE_SCREEN)
@@ -1325,22 +1395,27 @@ class RecognitionActivityFinal : AppCompatActivity(),
 
   public override fun onSaveInstanceState(outState: Bundle) {
     super.onSaveInstanceState(outState)
+
     outState.putParcelable(
       KEY_IMAGE_URI,
       imageUri
     )
+
     outState.putInt(
       KEY_IMAGE_MAX_WIDTH,
       imageMaxWidth
     )
+
     outState.putInt(
       KEY_IMAGE_MAX_HEIGHT,
       imageMaxHeight
     )
+
     outState.putString(
       KEY_SELECTED_SIZE,
       selectedSize
     )
+
   }
 
   private fun startCameraIntentForResult() { // Clean up last time's image
@@ -1475,17 +1550,23 @@ class RecognitionActivityFinal : AppCompatActivity(),
 
     }
 
+    snapCamera.visibility = View.GONE
+    takeAnother.visibility = View.VISIBLE
+    selectImageButton.visibility = View.GONE
+    processButton.visibility = View.VISIBLE
+
+
     if (imageProcessor != null) {
 
       Log.e(TAG, "imageProcessor != null")
 
       if (!scale) {
 
-        graphicOverlay!!.setImageSourceInfo(
+        graphicOverlay!!
+          .setImageSourceInfo(
           reSized.width,
           reSized.height, /* isFlipped= */
-          false
-        )
+          false)
 
         imageProcessor!!.processBitmap(reSized, graphicOverlay)
 

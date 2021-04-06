@@ -96,7 +96,7 @@ class CodeInputActivity : AppCompatActivity(),
     }
     else {
       message = "Error Recharging Phone!"
-      utils.onShowErrorMessage(message, this)
+      util.onShowErrorMessage(message, this)
     }
 
     Log.e(TAG, "${network}: $message")
@@ -104,7 +104,7 @@ class CodeInputActivity : AppCompatActivity(),
     
   }
 
-  private val utils: Util = Util()
+  private val util: Util = Util()
   private val phoneUtil: PhoneUtil = PhoneUtil()
 
 
@@ -166,15 +166,12 @@ class CodeInputActivity : AppCompatActivity(),
 
   }
 
-
-
-
-
-
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
     setContentView(R.layout.activity_code_input)
+
+    util.addFontToAppBarTitle(supportActionBar!!, applicationContext)
 
     val intent = intent
     pAccount = intent.getStringExtra("pAccount")!!

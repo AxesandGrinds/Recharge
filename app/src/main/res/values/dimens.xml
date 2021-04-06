@@ -27,8 +27,13 @@
 
     <dimen name="card_padding">0dp</dimen>
     <dimen name="card_layout_margin">2dp</dimen>
-    <dimen name="edit_card_radius">25dp</dimen>
-    <dimen name="scan_card_radius">25dp</dimen>
+
+
+
+    <dimen name="edit_card_radius">20dp</dimen>
+    <dimen name="scan_card_radius">19dp</dimen>
+
+
     <dimen name="details_margin">4dp</dimen>
     <dimen name="details_general_margin">20dp</dimen>
 
@@ -70,7 +75,7 @@
     <dimen name="layout_margin_top_user">16dp</dimen>
 
 
-    <dimen name="network_textview_padding">2dp</dimen>
+    <dimen name="network_textview_padding">4dp</dimen>
 
     <dimen name="phone_text_size">20sp</dimen>
     <dimen name="network_text_size">12sp</dimen>

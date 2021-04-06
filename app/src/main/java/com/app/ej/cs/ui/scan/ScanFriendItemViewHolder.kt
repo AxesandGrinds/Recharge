@@ -99,7 +99,7 @@ class ScanFriendItemViewHolder(
 
     accountNumberBool = false
     airtimePhoneTransferBool = true
-    airtimeBankTopUpTransferBool = true
+    airtimeBankTopUpTransferBool = false
     bankTransferBool = false
 
 
@@ -137,6 +137,38 @@ class ScanFriendItemViewHolder(
 
     val size: Int = userList.size
 
+
+    if ( !(
+      (userList[0].bank1 == null || userList[0].bank1 == "Choose Bank") &&
+      (userList[0].bank2 == null || userList[0].bank2 == "Choose Bank") &&
+      (userList[0].bank3 == null || userList[0].bank3 == "Choose Bank") &&
+      (userList[0].bank4 == null || userList[0].bank4 == "Choose Bank")
+
+              )) {
+
+      airtimeBankTopUpTransferBool = true
+
+
+
+    }
+
+    if (size > 1) {
+
+      if ( !(
+        (userList[1].bank1 == null || userList[1].bank1 == "Choose Bank") &&
+        (userList[1].bank2 == null || userList[1].bank2 == "Choose Bank") &&
+        (userList[1].bank3 == null || userList[1].bank3 == "Choose Bank") &&
+        (userList[1].bank4 == null || userList[1].bank4 == "Choose Bank")
+
+                )) {
+
+        airtimeBankTopUpTransferBool = true
+
+      }
+
+
+    }
+
     if (
       (
               (
@@ -156,64 +188,11 @@ class ScanFriendItemViewHolder(
               )
 
     ) {
+
       airtimeBankTopUpTransferBool = false
-    }
-
-
-    if (
-      (userList[0].bank1 == null || userList[0].bank1 == "Choose Bank") &&
-      (userList[0].bank2 == null || userList[0].bank2 == "Choose Bank") &&
-      (userList[0].bank3 == null || userList[0].bank3 == "Choose Bank") &&
-        (userList[0].bank4 == null || userList[0].bank4 == "Choose Bank")
-
-    ) {
-
-      if (size > 1) {
-
-        if (
-          (userList[1].bank1 == null || userList[1].bank1 == "Choose Bank") &&
-          (userList[1].bank2 == null || userList[1].bank2 == "Choose Bank") &&
-          (userList[1].bank3 == null || userList[1].bank3 == "Choose Bank") &&
-          (userList[1].bank4 == null || userList[1].bank4 == "Choose Bank")
-
-        ) {
-
-          airtimeBankTopUpTransferBool = false
-
-        }
-
-
-      }
-      else {
-
-        airtimeBankTopUpTransferBool = false
-
-      }
-
 
     }
-    else {
 
-      if (size > 1) {
-
-        if (
-          (userList[1].bank1 == null || userList[1].bank1 == "Choose Bank") &&
-          (userList[1].bank2 == null || userList[1].bank2 == "Choose Bank") &&
-          (userList[1].bank3 == null || userList[1].bank3 == "Choose Bank") &&
-          (userList[1].bank4 == null || userList[1].bank4 == "Choose Bank")
-
-        ) {
-
-          airtimeBankTopUpTransferBool = false
-
-
-        }
-
-
-      }
-
-
-    }
 
     if (
 

@@ -44,6 +44,7 @@
 
     <string name="admob_app_id">ca-app-pub-5127161627511605~6097746121</string>
     <string name="adunitid_sf">ca-app-pub-5127161627511605/4753886624</string>
+    <string name="adunitid_sf_int">ca-app-pub-5127161627511605/6554467118</string>
     <string name="adunitid_ef">ca-app-pub-5127161627511605/7738949094</string>
 
 
@@ -79,6 +80,7 @@
     <string name="title_notifications">Notifications</string>
     <string name="scan">Scan</string>
     <string name="contacts">Invite Friends</string>
+    <string name="home">Home</string>
     <string name="edit">Edit</string>
     <string name="default_bio">Hey there, I am a Sparks user.</string>
     <string name="hello_there">Hello there,</string>

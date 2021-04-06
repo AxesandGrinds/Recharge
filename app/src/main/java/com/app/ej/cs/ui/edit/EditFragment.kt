@@ -370,22 +370,22 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
 
       if (userAndFriendInfoUnsaved.usersList[0].name == null  || userAndFriendInfoUnsaved.usersList[0].name  == "") {
 
-        util.onShowErrorMessage("you must set name", requireContext(), requireView())
+        util.onShowErrorMessage("Enter your name", requireContext(), requireView())
 
       }
       else if (userAndFriendInfoUnsaved.usersList[0].phone == null || userAndFriendInfoUnsaved.usersList[0].phone == "") {
 
-        util.onShowErrorMessage("you must set phone1", requireContext(), requireView())
+        util.onShowErrorMessage("Enter your phone number", requireContext(), requireView())
 
       }
       else if (userAndFriendInfoUnsaved.usersList[0].network != null && userAndFriendInfoUnsaved.usersList[0].network != "") {
 
-        util.onShowErrorMessage("you must set network1", requireContext(), requireView())
+        util.onShowErrorMessage("Enter your network", requireContext(), requireView())
 
       }
       else if (userAndFriendInfoUnsaved.usersList[0].email == null || userAndFriendInfoUnsaved.usersList[0].email == "") {
 
-        util.onShowErrorMessage("you must set email", requireContext(), requireView())
+        util.onShowErrorMessage("Enter your email address", requireContext(), requireView())
 
       }
 

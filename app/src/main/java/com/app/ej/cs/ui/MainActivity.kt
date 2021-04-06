@@ -286,8 +286,6 @@ class MainActivity : AppCompatActivity(), CheckLoggedIn {
 
 
 
-
-
   @SuppressLint("SetTextI18n")
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -295,41 +293,7 @@ class MainActivity : AppCompatActivity(), CheckLoggedIn {
 
     context = this
 
-
-    val actionBar: ActionBar = supportActionBar!!
-    val tv: TextView = TextView(applicationContext)
-    val typeface: Typeface = ResourcesCompat.getFont(this, R.font.dancingscriptvariablefontwght)!!
-    val lp: RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(
-      RelativeLayout.LayoutParams.MATCH_PARENT, // Width of TextView
-      RelativeLayout.LayoutParams.WRAP_CONTENT
-    ); // Height of TextView
-    tv.layoutParams = lp
-    tv.text = "Recharge" // ActionBar title text
-    tv.textSize = 30f
-    tv.setTextColor(Color.parseColor("#e64a19"))
-    tv.setTypeface(typeface, Typeface.BOLD)
-    actionBar.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
-    actionBar.customView = tv
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    util.addFontToAppBarTitle(supportActionBar!!, applicationContext)
 
     /*myViewPager = (ViewPager2) findViewById(R.id.viewpager);
 
