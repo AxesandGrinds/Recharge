@@ -235,8 +235,8 @@ class RegisterDetailsActivity() : AppCompatActivity(),
     private lateinit var newPinInput: TextInputEditText
     private lateinit var newPinStr: String
 
-    private val db    = Firebase.firestore
-    private val auth = Firebase.auth
+    private var db    = Firebase.firestore
+    private var auth = Firebase.auth
 
     private var firebaseUser: FirebaseUser? = null
     private var userId: String? = null
@@ -1389,28 +1389,52 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
         context = this
 
-        if (auth.currentUser == null) {
+        db    = Firebase.firestore
+        auth = Firebase.auth
 
-            goToLogin()
+        try {
+
+            if (auth.currentUser == null) {
+
+                goToLogin()
+
+            }
+            else {
+
+                firebaseUser = auth.currentUser as FirebaseUser
+
+            }
+
+            if (firebaseUser == null) {
+
+                goToLogin()
+
+            }
+            else {
+
+                firebaseUser = auth.currentUser as FirebaseUser
+
+                if (firebaseUser != null) {
+
+                    userId = firebaseUser?.uid
+
+                }
+                else {
+
+                    goToLogin()
+
+                }
+
+            }
 
         }
-        else {
+        catch (e: Exception) {
 
-            firebaseUser = auth.currentUser as FirebaseUser
-
-        }
-
-        if (firebaseUser == null) {
-
-            goToLogin()
+            KToasty.info(context, "Sorry! You can't use this app because your API level is too low.", Toast.LENGTH_LONG).show()
 
         }
-        else {
 
-            firebaseUser = auth.currentUser as FirebaseUser
-            userId = firebaseUser!!.uid
 
-        }
 
         rda_coordinatorLayout = findViewById<View>(R.id.rda_coordinatorLayout) as CoordinatorLayout
 

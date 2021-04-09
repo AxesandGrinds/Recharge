@@ -25,10 +25,10 @@ android {
 
     defaultConfig {
         applicationId "com.app.ej.cs"
-        minSdkVersion 23
+        minSdkVersion 16
         targetSdkVersion 30
-        versionCode 20
-        versionName "1.0.1"
+        versionCode 21
+        versionName "1.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
