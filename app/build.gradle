@@ -12,14 +12,23 @@ apply plugin: 'kotlin-android-extensions'
 
 android {
 
+    /*signingConfigs {
+        release {
+            storeFile file('/Users/victorlekweuwa/Documents/Projects/keys/recharge.jks')
+            storePassword 'recharge'
+            keyAlias 'rechargekey'
+            keyPassword 'recharge'
+        }
+    }*/
+
     compileSdkVersion 30
 
     defaultConfig {
         applicationId "com.app.ej.cs"
         minSdkVersion 16
         targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        versionCode 19
+        versionName "1.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
@@ -28,8 +37,10 @@ android {
 
     buildTypes {
         release {
-            shrinkResources true
-            minifyEnabled true
+//            debuggable true
+            shrinkResources false
+            minifyEnabled false
+//            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {

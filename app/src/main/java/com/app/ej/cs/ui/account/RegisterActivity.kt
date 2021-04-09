@@ -20,6 +20,26 @@ class RegisterActivity : BasePermissionActivity() {
 
         val permissions: MutableList<PermissionModel> = ArrayList<PermissionModel>()
 
+//        // Dark Blue, Purple, Light Blue
+//        permissions.add(
+//            PermissionModelBuilder.withContext(this)
+//                .withTitle("STORAGE")
+//                .withCanSkip(false)
+//                .withPermissionName(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+//                .withMessage(
+//                    "Recharge App lets you pay bills without internet access." +
+//                            " For this reason, we have to store your information locally in your phone."
+//                )
+//                .withExplanationMessage("We need this permission to save your data locally on your phone.")
+//                .withFontType("my_font.ttf")
+//                .withLayoutColorRes(R.color.dark_blue)
+////                .withLayoutColorRes(R.color.blue)
+////                .withLayoutColorRes(R.color.light_grey)
+//                //.withImageResourceId(R.drawable.permission_two)
+//                .withImageResourceId(R.drawable.folder)
+//                .build()
+//        )
+
         // Dark Blue, Purple, Light Blue
         permissions.add(
             PermissionModelBuilder.withContext(this)
@@ -27,10 +47,10 @@ class RegisterActivity : BasePermissionActivity() {
                 .withCanSkip(false)
                 .withPermissionName(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .withMessage(
-                    "Recharge App lets you pay bills without internet access." +
-                            " For this reason, we have to store your information locally in your phone."
+                    "Recharge App needs your permission to read images of recharge codes and also to store your information locally on your phone."
                 )
-                .withExplanationMessage("We need this permission to save your data locally on your phone.")
+                .withExplanationMessage("We need this permission to save your information locally on your phone," +
+                        " and for when you take pictures of recharge codes outside of Recharge App.")
                 .withFontType("my_font.ttf")
                 .withLayoutColorRes(R.color.dark_blue)
 //                .withLayoutColorRes(R.color.blue)
@@ -38,6 +58,7 @@ class RegisterActivity : BasePermissionActivity() {
                 //.withImageResourceId(R.drawable.permission_two)
                 .withImageResourceId(R.drawable.folder)
                 .build()
+
         )
 
         permissions.add(

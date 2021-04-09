@@ -50,6 +50,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.concurrent.timerTask
 
 class LoginActivity : AppCompatActivity() {
 
@@ -155,8 +156,9 @@ class LoginActivity : AppCompatActivity() {
         //     user action.
         Log.d(TAG, "onVerificationCompleted:$credential")
         mVerificationInProgress = false
-        signInWithPhoneAuthCredential(credential)
         updateUI(STATE_VERIFY_SUCCESS, credential)
+        val timer = Timer()
+        timer.schedule(timerTask { signInWithPhoneAuthCredential(credential) }, 2000)
 
       }
 
@@ -170,22 +172,25 @@ class LoginActivity : AppCompatActivity() {
         }
         else if (e is FirebaseTooManyRequestsException) {
           // The SMS quota for the project has been exceeded
-          Snackbar.make(
-            findViewById(android.R.id.content), "Quota exceeded.",
-            Snackbar.LENGTH_SHORT
-          ).show()
+          Snackbar.make(findViewById(android.R.id.content), "Quota exceeded.",
+            Snackbar.LENGTH_SHORT).show()
+
         }
+
         updateUI(STATE_VERIFY_FAILED)
+
       }
 
       override fun onCodeSent(
         verificationId: String,
         token: ForceResendingToken
       ) {
+
         Log.d(TAG, "onCodeSent:$verificationId")
         mVerificationId = verificationId
         mResendToken = token
         updateUI(STATE_CODE_SENT)
+
       }
 
     }
@@ -386,13 +391,10 @@ class LoginActivity : AppCompatActivity() {
 
       }
 
-
       STATE_VERIFY_FAILED -> {
         mDetailText!!.setText(R.string.status_verification_failed)
         mDetailText?.setTextColor(ContextCompat.getColor(this,R.color.red))
       }
-
-
       STATE_VERIFY_SUCCESS ->
       {
         if (cred != null) {
@@ -400,7 +402,6 @@ class LoginActivity : AppCompatActivity() {
           if (cred.smsCode != null) {
 
             verification_codeEt.setText(cred.smsCode)
-
 
           }
 

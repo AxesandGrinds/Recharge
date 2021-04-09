@@ -501,11 +501,10 @@ private val TAG: String = "ATTENTION ATTENTION"
 
     }
 
-
     /// TODO Remove For Release vvv
-    val testDeviceIds: List<String> = listOf("E9DEDC61204CFB33008E54C7F35245C8") // listOf("78D47CB8E8C50C8391083ABA46D59A17")
-    val configuration = RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build()
-    MobileAds.setRequestConfiguration(configuration)
+//    val testDeviceIds: List<String> = listOf("E9DEDC61204CFB33008E54C7F35245C8") // listOf("78D47CB8E8C50C8391083ABA46D59A17")
+//    val configuration = RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build()
+//    MobileAds.setRequestConfiguration(configuration)
     /// TODO Remove For Release ^^^
 
     val mAdView: AdView = view.findViewById(R.id.fs_adView)

@@ -2,7 +2,7 @@
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.app.ej.cs">
+    package="com.app.ej.cs" >
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -16,7 +16,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-<!--    <uses-permission android:name="android.permission.RECORD_AUDIO"/>-->
+
 
     <!--    <uses-permission android:name="android.permission.RECEIVE_SMS" />-->
     <!--    <uses-permission android:name="android.permission.READ_SMS" />-->
@@ -97,67 +97,70 @@
             android:name="com.google.mlkit.vision.DEPENDENCIES"
             android:value="barcode,face,ocr,ica"/>
 
-        <activity
+        <!--<activity
             android:name=".vision.ChooserActivityFinal"
             android:exported="true">
 
-            <!--<intent-filter>
+            &lt;!&ndash;<intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>-->
+            </intent-filter>&ndash;&gt;
 
-        </activity>
+        </activity>-->
 
         <activity
             android:name=".vision.cameraview.CameraActivity"
-            android:exported="true"
+            android:exported="false"
             android:theme="@style/AppBarTheme">
         </activity>
 
         <activity
             android:name=".vision.cameraview.PicturePreviewActivity"
-            android:exported="true"
+            android:exported="false"
             android:theme="@style/AppBarTheme">
         </activity>
 
-        <activity
+        <!--<activity
             android:name=".vision.RecognitionActivity"
             android:exported="true"
             android:theme="@style/AppBarTheme">
-        </activity>
+        </activity>-->
 
         <activity
             android:name=".vision.RecognitionActivityFinal"
-            android:exported="true"
+            android:screenOrientation="portrait"
+            android:exported="false"
             android:theme="@style/AppBarTheme">
         </activity>
 
-        <activity
+        <!--<activity
             android:name=".vision.StillImageActivity"
             android:exported="true"
             android:theme="@style/AppBarTheme">
-        </activity>
+        </activity>-->
 
-        <activity
+        <!--<activity
             android:name=".vision.LivePreviewActivity"
             android:exported="true"
             android:theme="@style/AppBarTheme">
-        </activity>
+        </activity>-->
 
-        <activity
+        <!--<activity
             android:name=".vision.CameraXLivePreviewActivity"
             android:exported="true"
             android:theme="@style/AppBarTheme">
-        </activity>
+        </activity>-->
 
         <activity
             android:name=".vision.preference.SettingsActivity"
+            android:screenOrientation="portrait"
             android:exported="false">
         </activity>
 
         <activity
             android:name=".vision.RecognitionActivityReviewFinal"
-            android:exported="true"
+            android:screenOrientation="portrait"
+            android:exported="false"
             android:theme="@style/AppBarTheme">
         </activity>
 
@@ -172,6 +175,7 @@
 
 
         <activity android:name=".ui.SplashScreenActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
 
             <intent-filter>
@@ -184,12 +188,14 @@
 
         <activity
             android:name=".ui.MainActivity"
+            android:screenOrientation="portrait"
             android:label="@string/app_name"
             android:theme="@style/AppBarTheme">
         </activity>
 
         <activity
             android:name=".ui.CodeInputActivity"
+            android:screenOrientation="portrait"
             android:label="@string/app_name"
             android:theme="@style/AppBarTheme">
         </activity>

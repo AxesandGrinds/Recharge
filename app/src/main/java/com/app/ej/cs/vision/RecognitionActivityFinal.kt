@@ -20,7 +20,6 @@ import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
-import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.*
@@ -36,12 +35,10 @@ import android.view.*
 import android.widget.*
 import android.widget.AdapterView.OnItemSelectedListener
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.GestureDetectorCompat
 import com.app.ej.cs.R
 import com.app.ej.cs.utils.Util
@@ -641,7 +638,10 @@ class RecognitionActivityFinal : AppCompatActivity(),
     }
     else {
 
-      val rechargeCodeChoiceBuilder: AlertDialog.Builder = AlertDialog.Builder(context, R.style.MyDialogTheme)
+      val rechargeCodeChoiceBuilder: AlertDialog.Builder = AlertDialog.Builder(
+        context,
+        R.style.MyDialogTheme
+      )
       rechargeCodeChoiceBuilder.setTitle("Choose your recharge code to edit")
 
       val intent = intent
@@ -657,12 +657,15 @@ class RecognitionActivityFinal : AppCompatActivity(),
 
         chosenRechargeCode = codeList[i]
 
-        val reviewActivityIntent: Intent = Intent(context, RecognitionActivityReviewFinal::class.java)
+        val reviewActivityIntent: Intent = Intent(
+          context,
+          RecognitionActivityReviewFinal::class.java
+        )
 
         reviewActivityIntent.putExtra("code", chosenRechargeCode)
         reviewActivityIntent.putExtra("pAccount", pAccount)
-        reviewActivityIntent.putExtra("phone",    phone)
-        reviewActivityIntent.putExtra("network",  network)
+        reviewActivityIntent.putExtra("phone", phone)
+        reviewActivityIntent.putExtra("network", network)
 
         startActivity(reviewActivityIntent)
         finish()
@@ -895,6 +898,37 @@ class RecognitionActivityFinal : AppCompatActivity(),
   private fun onCreate() {
 
 
+
+  }
+
+  override fun onDestroy() {
+
+    cameraSource = null
+    preview = null
+    graphicOverlay = null
+    previewView = null
+
+    super.onDestroy()
+  }
+
+  override fun onBackPressed() {
+
+    // code here to show dialog
+
+    camera.close()
+    cameraSource?.clearProcessor()
+
+    preview?.clearAnimation()
+    preview?.clearFocus()
+    graphicOverlay?.clear()
+    graphicOverlay?.clearAnimation()
+    graphicOverlay?.clearFocus()
+    cameraSource = null
+    preview = null
+    graphicOverlay = null
+    previewView = null
+
+    super.onBackPressed() // optional depending on your needs
 
   }
 
@@ -1141,7 +1175,8 @@ class RecognitionActivityFinal : AppCompatActivity(),
           if (DECODE_BITMAP) {
 
             if (frame.format == ImageFormat.NV21
-              && frame.dataClass == ByteArray::class.java) {
+              && frame.dataClass == ByteArray::class.java
+            ) {
 
               val data = frame.getData<ByteArray>()
 
@@ -1150,20 +1185,25 @@ class RecognitionActivityFinal : AppCompatActivity(),
                 frame.format,
                 frame.size.width,
                 frame.size.height,
-                null)
+                null
+              )
 
               val jpegStream = ByteArrayOutputStream()
               yuvImage.compressToJpeg(
-                Rect(0, 0,
+                Rect(
+                  0, 0,
                   frame.size.width,
-                  frame.size.height),
-                100, jpegStream)
+                  frame.size.height
+                ),
+                100, jpegStream
+              )
 
               val jpegByteArray = jpegStream.toByteArray()
 
               val bitmap = BitmapFactory.decodeByteArray(
                 jpegByteArray,
-                0, jpegByteArray.size)
+                0, jpegByteArray.size
+              )
 
               bitmap.toString()
 
@@ -1564,9 +1604,10 @@ class RecognitionActivityFinal : AppCompatActivity(),
 
         graphicOverlay!!
           .setImageSourceInfo(
-          reSized.width,
-          reSized.height, /* isFlipped= */
-          false)
+            reSized.width,
+            reSized.height, /* isFlipped= */
+            false
+          )
 
         imageProcessor!!.processBitmap(reSized, graphicOverlay)
 
