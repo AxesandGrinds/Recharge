@@ -97,48 +97,76 @@ class PermissionFragment : Fragment(), View.OnClickListener {
   }
 
   private fun initViews() {
-    request!!.visibility =
-      if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) View.GONE else View.VISIBLE
+
+//    request!!.visibility =
+//      if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) View.GONE else View.VISIBLE
+
     image!!.setImageResource(permissionModel!!.imageResourceId)
+
     title!!.text = permissionModel!!.title
-    title!!.setTextColor(if (permissionModel!!.textColor == 0) Color.WHITE else permissionModel!!.textColor)
+
+    title!!.setTextColor(
+      if (permissionModel!!.textColor == 0) Color.WHITE
+      else permissionModel!!.textColor)
+
     message!!.text = permissionModel!!.message
+
     setTextSizes()
-    message!!.setTextColor(if (permissionModel!!.textColor == 0) Color.WHITE else permissionModel!!.textColor)
-    previous!!.setImageResource(if (permissionModel!!.previousIcon == 0) R.drawable.ic_arrow_left else permissionModel!!.previousIcon)
-    request!!.setImageResource(if (permissionModel!!.requestIcon == 0) R.drawable.ic_arrow_done else permissionModel!!.requestIcon)
-    next!!.setImageResource(if (permissionModel!!.nextIcon == 0) R.drawable.ic_arrow_right else permissionModel!!.nextIcon)
+
+    message!!.setTextColor(
+      if (permissionModel!!.textColor == 0) Color.WHITE
+      else permissionModel!!.textColor)
+
+    previous!!.setImageResource(if (permissionModel!!.previousIcon == 0) R.drawable.ic_baseline_arrow_back_60 else permissionModel!!.previousIcon)
+
+    request!!.setImageResource(if (permissionModel!!.requestIcon == 0) R.drawable.ic_baseline_check_circle_60 else permissionModel!!.requestIcon)
+
+    next!!.setImageResource(if (permissionModel!!.nextIcon == 0) R.drawable.ic_baseline_arrow_forward_60 else permissionModel!!.nextIcon)
+
     FontTypeHelper.setTextTypeFace(title!!, permissionModel!!.fontType)
+
     FontTypeHelper.setTextTypeFace(message!!, permissionModel!!.fontType)
+
   }
 
   private fun setTextSizes() {
+
     val isFromResources = ThemeUtil.isTextSizeFromResources(requireContext(), permissionModel!!.textSize)
+
     if (isFromResources) {
-      title!!.setTextSize(
-        TypedValue.COMPLEX_UNIT_PX, resources.getDimension(
-          permissionModel!!.textSize
-        )
-      )
-      message!!.setTextSize(
-        TypedValue.COMPLEX_UNIT_PX, resources.getDimension(
-          permissionModel!!.textSize
-        )
-      )
-    } else {
+
+      title!!.setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(permissionModel!!.textSize))
+
+      message!!.setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(permissionModel!!.textSize))
+
+    }
+    else {
+
       title!!.setTextSize(TypedValue.COMPLEX_UNIT_PX, permissionModel!!.textSize.toFloat())
       message!!.setTextSize(TypedValue.COMPLEX_UNIT_PX, permissionModel!!.textSize.toFloat())
+
     }
+
   }
 
   companion object {
+
     private const val PERMISSION_INSTANCE = "PERMISSION_INSTANCE"
+
     fun newInstance(permissionModel: PermissionModel?): PermissionFragment {
+
       val fragment = PermissionFragment()
+
       val localBundle = Bundle()
+
       localBundle.putParcelable(PERMISSION_INSTANCE, permissionModel)
+
       fragment.arguments = localBundle
+
       return fragment
+
     }
+
   }
+
 }

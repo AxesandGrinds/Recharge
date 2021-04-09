@@ -1407,6 +1407,7 @@ class RegisterDetailsActivity() : AppCompatActivity(),
         }
         else {
 
+            firebaseUser = auth.currentUser as FirebaseUser
             userId = firebaseUser!!.uid
 
         }

@@ -125,6 +125,9 @@ class PermissionModelBuilder private constructor(private val context: Context) {
     withRequestIcon(R.drawable.ic_arrow_done)
     withPreviousIcon(R.drawable.ic_arrow_left)
     withNextIcon(R.drawable.ic_arrow_right)
+//    withRequestIcon(R.drawable.ic_baseline_check_circle_60)
+//    withPreviousIcon(R.drawable.ic_baseline_arrow_back_60)
+//    withNextIcon(R.drawable.ic_baseline_arrow_forward_60)
   }
 
 }

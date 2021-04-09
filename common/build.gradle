@@ -4,6 +4,14 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        'recharge config' {
+            storeFile file('/Users/victorlekweuwa/Documents/Projects/keys/recharge.jks')
+            storePassword 'recharge'
+            keyAlias 'rechargekey'
+            keyPassword 'recharge'
+        }
+    }
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
 
@@ -16,6 +24,7 @@ android {
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
+        signingConfig signingConfigs.'recharge config'
     }
 
     buildTypes {

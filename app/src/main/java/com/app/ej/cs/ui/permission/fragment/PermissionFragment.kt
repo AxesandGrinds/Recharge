@@ -81,56 +81,67 @@ class PermissionFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onClick(v: View) {
+
         if (v.id == R.id.previous) {
+
             permissionModel?.permissionName?.let { callback?.onSkip(it) }
-        } else if (v.id == R.id.next) {
+
+        }
+        else if (v.id == R.id.next) {
+
             if (!permissionModel?.isCanSkip!!) {
                 permissionModel?.permissionName?.let { callback?.onPermissionRequest(it, false) }
-            } else {
+            }
+            else {
                 permissionModel?.permissionName?.let { callback?.onNext(it) }
             }
-        } else if (v.id == R.id.request) {
-            permissionModel?.permissionName?.let { callback?.onPermissionRequest(it, true) }
+
         }
+        else if (v.id == R.id.request) {
+
+            permissionModel?.permissionName?.let { callback?.onPermissionRequest(it, true) }
+
+        }
+
     }
 
     private fun initViews() {
-        request?.visibility =
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) View.GONE else View.VISIBLE
+
+        request?.visibility = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) View.GONE else View.VISIBLE
+
         permissionModel?.let { image?.setImageResource(it.imageResourceId) }
-        title?.setText(permissionModel?.title)
+
+        title?.text = permissionModel?.title
+
         if (permissionModel?.textColor === 0) Color.WHITE else permissionModel?.textColor?.let {
-            title?.setTextColor(
-                it
-            )
+
+            title?.setTextColor(it)
+
         }
+
         message?.setText(permissionModel?.message)
+
         setTextSizes()
+
         if (permissionModel?.textColor === 0) Color.WHITE else permissionModel?.textColor?.let {
-            message!!.setTextColor(
-                it
-            )
+
+            message!!.setTextColor(it)
+
         }
 
-        if (permissionModel?.previousIcon === 0) R.drawable.ic_arrow_left else permissionModel?.previousIcon?.let {
-            previous?.setImageResource(
-                it
-            )
-        }
+        if (permissionModel?.previousIcon === 0) R.drawable.ic_baseline_arrow_back_60
+
+        else permissionModel?.previousIcon?.let { previous?.setImageResource(it) }
 
 
-        if (permissionModel?.requestIcon === 0) R.drawable.ic_arrow_done else permissionModel?.requestIcon?.let {
-            request?.setImageResource(
-                it
-            )
-        }
+        if (permissionModel?.requestIcon === 0) R.drawable.ic_baseline_check_circle_60
+
+        else permissionModel?.requestIcon?.let { request?.setImageResource(it) }
 
 
-        if (permissionModel?.nextIcon === 0) R.drawable.ic_arrow_right else permissionModel?.nextIcon?.let {
-            next?.setImageResource(
-                it
-            )
-        }
+        if (permissionModel?.nextIcon === 0) R.drawable.ic_baseline_arrow_forward_60
+
+        else permissionModel?.nextIcon?.let { next?.setImageResource(it) }
 
 
         FontTypeHelper.setTextTypeFace(title!!, permissionModel?.fontType)
@@ -138,36 +149,35 @@ class PermissionFragment : Fragment(), View.OnClickListener {
     }
 
     private fun setTextSizes() {
+
         val isFromResources: Boolean =
-            permissionModel?.textSize?.let {
-                ThemeUtil.isTextSizeFromResources(requireContext(),
-                    it
-                )
-            }!!
+            permissionModel?.textSize?.let { ThemeUtil.isTextSizeFromResources(requireContext(), it) }!!
+
         if (isFromResources) {
+
             permissionModel?.let { resources.getDimension(it?.textSize) }?.let {
-                title!!.setTextSize(
-                    TypedValue.COMPLEX_UNIT_PX,
-                    it
-                )
+
+                title!!.setTextSize(TypedValue.COMPLEX_UNIT_PX, it)
+
             }
+
             permissionModel?.textSize?.let { resources.getDimension(it) }?.let {
-                message!!.setTextSize(
-                    TypedValue.COMPLEX_UNIT_PX,
-                    it
-                )
+
+                message!!.setTextSize(TypedValue.COMPLEX_UNIT_PX, it)
+
             }
-        } else {
+
+        }
+        else {
 
             permissionModel?.textSize?.toFloat()?.let {
-                title!!.setTextSize(TypedValue.COMPLEX_UNIT_PX,
-                    it
-                )
-            }
+
+                title!!.setTextSize(TypedValue.COMPLEX_UNIT_PX, it) }
+
             permissionModel?.textSize?.toFloat()?.let {
-                message!!.setTextSize(TypedValue.COMPLEX_UNIT_PX,
-                    it
-                )
+
+                message!!.setTextSize(TypedValue.COMPLEX_UNIT_PX, it)
+
             }
 
         }

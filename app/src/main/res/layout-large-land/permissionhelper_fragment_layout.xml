@@ -2,6 +2,7 @@
 <LinearLayout
     android:id="@+id/background_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
@@ -69,34 +70,37 @@
                 android:layout_gravity="center"
                 android:orientation="horizontal">
 
-
                 <ImageButton
                     android:id="@+id/previous"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="6dip"
-                    android:background="?selectableItemBackgroundBorderless"
+                    android:background="?selectableItemBackground"
                     android:padding="15dp"
-                    android:src="@drawable/ic_arrow_left"/>
+                    app:srcCompat="@drawable/ic_baseline_arrow_back_60"/>
 
                 <ImageButton
                     android:id="@+id/request"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="6dip"
-                    android:background="?selectableItemBackgroundBorderless"
+                    android:background="?selectableItemBackground"
                     android:padding="15dp"
-                    android:src="@drawable/ic_arrow_done"/>
+                    app:srcCompat="@drawable/ic_baseline_check_circle_60"/>
 
                 <ImageButton
                     android:id="@+id/next"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="6dip"
-                    android:background="?selectableItemBackgroundBorderless"
+                    android:background="?selectableItemBackground"
                     android:padding="15dp"
-                    android:src="@drawable/ic_arrow_right"/>
+                    app:srcCompat="@drawable/ic_baseline_arrow_forward_60"/>
+
             </LinearLayout>
+
         </LinearLayout>
+
     </LinearLayout>
+
 </LinearLayout>
