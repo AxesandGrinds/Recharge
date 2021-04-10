@@ -1122,27 +1122,16 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
     private fun initRegisterButton() {
 
-        registerBtn = findViewById<MaterialButton>(R.id.register_btn)
+        registerBtn.setOnClickListener { view: View? ->
 
-        registerBtn.setOnClickListener() { view ->
+            mProgressBar.visibility = View.VISIBLE
 
-            if (networkUtil.isOnline(context)) {
-
-                registerUser() // snackbar and toast inside
-
-            }
-            else {
-
-                util.onShowErrorMessage("You need internet access to register.", context, view)
-
-            }
-
+//            registerUser()
+            getLocation()
 
         }
 
     }
-
-
 
     private fun initAddOneMoreFriendButton() {
 
@@ -1618,15 +1607,6 @@ class RegisterDetailsActivity() : AppCompatActivity(),
                 window.enterTransition = fade
                 window.exitTransition = fade
             }
-
-        }
-
-        registerBtn.setOnClickListener { view: View? ->
-
-            mProgressBar.visibility = View.VISIBLE
-
-//            registerUser()
-            getLocation()
 
         }
 
