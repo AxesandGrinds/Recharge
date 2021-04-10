@@ -6,6 +6,7 @@ import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -212,34 +213,40 @@ private val TAG: String = "ATTENTION ATTENTION"
 
   private fun askPermissions() {
 
-    CoroutineScope(Dispatchers.IO).launch {
 
-      val result = permissionsBuilder(
-        Manifest.permission.CALL_PHONE,
-        Manifest.permission.ACCESS_WIFI_STATE,
-        Manifest.permission.ACCESS_NETWORK_STATE,
-        Manifest.permission.CHANGE_WIFI_STATE,
-        Manifest.permission.INTERNET,
-        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-        Manifest.permission.READ_EXTERNAL_STORAGE,
-      ).build().sendSuspend()
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
-      if (result.allGranted()) { // All the permissions are granted.
+      CoroutineScope(Dispatchers.IO).launch {
 
-      }
-      else {
+        val result = permissionsBuilder(
+          Manifest.permission.CALL_PHONE,
+          Manifest.permission.ACCESS_WIFI_STATE,
+          Manifest.permission.ACCESS_NETWORK_STATE,
+          Manifest.permission.CHANGE_WIFI_STATE,
+          Manifest.permission.INTERNET,
+          Manifest.permission.WRITE_EXTERNAL_STORAGE,
+          Manifest.permission.READ_EXTERNAL_STORAGE,
+        ).build().sendSuspend()
 
-        withContext(Dispatchers.Main) {
-          //KToasty.info(app, "Using local data", Toast.LENGTH_LONG).show()
-          val message: String = "You have denied some permissions permanently, " +
-                  "if the app force close try granting permission from settings."
-          KToasty.info(requireContext(), message, Toast.LENGTH_LONG, true).show()
+        if (result.allGranted()) { // All the permissions are granted.
+
+        }
+        else {
+
+          withContext(Dispatchers.Main) {
+            //KToasty.info(app, "Using local data", Toast.LENGTH_LONG).show()
+            val message: String = "You have denied some permissions permanently, " +
+                    "if the app force close try granting permission from settings."
+            KToasty.info(requireContext(), message, Toast.LENGTH_LONG, true).show()
+
+          }
 
         }
 
       }
 
     }
+
 
   }
 
@@ -284,39 +291,54 @@ private val TAG: String = "ATTENTION ATTENTION"
 //
 //    }
 
-    CoroutineScope(Dispatchers.IO).launch {
 
-      val result = permissionsBuilder(
-        Manifest.permission.READ_PHONE_STATE,
-        Manifest.permission.CALL_PHONE,
-        Manifest.permission.CAMERA,
-      ).build().sendSuspend()
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
-      if (result.allGranted()) { // All the permissions are granted.
+      CoroutineScope(Dispatchers.IO).launch {
 
-        val intent: Intent = Intent(requireContext(), RecognitionActivityFinal::class.java)
-        intent.putExtra("pAccount", pAccount)
-        intent.putExtra("phone", user.phone)
-        intent.putExtra("network", user.network)
-        startActivity(intent)
+        val result = permissionsBuilder(
+          Manifest.permission.READ_PHONE_STATE,
+          Manifest.permission.CALL_PHONE,
+          Manifest.permission.CAMERA,
+        ).build().sendSuspend()
 
-      }
-      else {
+        if (result.allGranted()) { // All the permissions are granted.
 
-        withContext(Dispatchers.Main) {
+          val intent: Intent = Intent(requireContext(), RecognitionActivityFinal::class.java)
+          intent.putExtra("pAccount", pAccount)
+          intent.putExtra("phone", user.phone)
+          intent.putExtra("network", user.network)
+          startActivity(intent)
 
-          //KToasty.info(app, "Using local data", Toast.LENGTH_LONG).show()
-          val message = "You have denied some " +
-                  "permissions permanently. Camera recognition of recharge " +
-                  "code will not work without Camera permission. Please " +
-                  "grant the permissions for this app in your phone's settings."
-          KToasty.info(requireContext(), message, Toast.LENGTH_LONG, true).show()
+        }
+        else {
+
+          withContext(Dispatchers.Main) {
+
+            //KToasty.info(app, "Using local data", Toast.LENGTH_LONG).show()
+            val message = "You have denied some " +
+                    "permissions permanently. Camera recognition of recharge " +
+                    "code will not work without Camera permission. Please " +
+                    "grant the permissions for this app in your phone's settings."
+            KToasty.info(requireContext(), message, Toast.LENGTH_LONG, true).show()
+
+          }
 
         }
 
       }
 
     }
+    else {
+
+      val intent: Intent = Intent(requireContext(), RecognitionActivityFinal::class.java)
+      intent.putExtra("pAccount", pAccount)
+      intent.putExtra("phone", user.phone)
+      intent.putExtra("network", user.network)
+      startActivity(intent)
+
+    }
+
 
   }
 

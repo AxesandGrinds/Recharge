@@ -36,10 +36,6 @@ class PermissionHelper : OnActivityPermissionCallback {
     }
 
 
-
-
-
-
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String?>,

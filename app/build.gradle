@@ -27,7 +27,7 @@ android {
         applicationId "com.app.ej.cs"
         minSdkVersion 16
         targetSdkVersion 30
-        versionCode 21
+        versionCode 22
         versionName "1.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

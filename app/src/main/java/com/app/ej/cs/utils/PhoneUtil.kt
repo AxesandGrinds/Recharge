@@ -247,40 +247,56 @@ class PhoneUtil {
 
         val util: Util = Util()
 
-        CoroutineScope(Dispatchers.IO).launch {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
-            val result = (activity as FragmentActivity).permissionsBuilder(
-                Manifest.permission.CALL_PHONE,
-            ).build().sendSuspend()
+            CoroutineScope(Dispatchers.IO).launch {
 
-            if (result.allGranted()) { // All the permissions are granted.
+                val result = (activity as FragmentActivity).permissionsBuilder(
+                    Manifest.permission.CALL_PHONE,
+                ).build().sendSuspend()
 
-                withContext(Dispatchers.Main) {
+                if (result.allGranted()) { // All the permissions are granted.
 
-                    val msg: String = "Recharge Requested."
-                    util.onShowMessageSuccess(msg, context)
-                    Log.e(TAG, msg)
+                    withContext(Dispatchers.Main) {
 
-                    context.startActivity(intent)
+                        val msg: String = "Recharge Requested."
+                        util.onShowMessageSuccess(msg, context)
+                        Log.e(TAG, msg)
+
+                        context.startActivity(intent)
+
+                    }
 
                 }
+                else {
 
-            }
-            else {
+                    withContext(Dispatchers.Main) {
 
-                withContext(Dispatchers.Main) {
-                    
-                    val msg = "You have denied some " +
-                            "permissions permanently. Functions will not work without these permission. " +
-                            "Please grant the permissions for this app in your phone's settings."
-                    util.onShowMessage(msg, context)
-                    Log.e(TAG, msg)
+                        val msg = "You have denied some " +
+                                "permissions permanently. Functions will not work without these permission. " +
+                                "Please grant the permissions for this app in your phone's settings."
+                        util.onShowMessage(msg, context)
+                        Log.e(TAG, msg)
+
+                    }
 
                 }
 
             }
 
         }
+        else {
+
+            val msg: String = "Recharge Requested."
+            util.onShowMessageSuccess(msg, context)
+            Log.e(TAG, msg)
+
+            context.startActivity(intent)
+
+
+        }
+
+
 
     }
 
@@ -338,38 +354,51 @@ class PhoneUtil {
 
             intent.setPackage("com.android.server.telecom")
 
-            CoroutineScope(Dispatchers.IO).launch {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
-                val result = fragment.permissionsBuilder(
-                    Manifest.permission.CALL_PHONE,
-                ).build().sendSuspend()
+                CoroutineScope(Dispatchers.IO).launch {
 
-                if (result.allGranted()) { // All the permissions are granted.
+                    val result = fragment.permissionsBuilder(
+                        Manifest.permission.CALL_PHONE,
+                    ).build().sendSuspend()
 
-                    withContext(Dispatchers.Main) {
+                    if (result.allGranted()) { // All the permissions are granted.
 
-                        val msg: String = "Electricity Bill Payment requested."
-                        util.onShowMessageSuccess(msg, context)
-                        Log.e(TAG, msg)
+                        withContext(Dispatchers.Main) {
 
-                        context.startActivity(intent)
+                            val msg: String = "Electricity Bill Payment requested."
+                            util.onShowMessageSuccess(msg, context)
+                            Log.e(TAG, msg)
+
+                            context.startActivity(intent)
+
+                        }
+
+                    }
+                    else {
+
+                        withContext(Dispatchers.Main) {
+
+                            val msg = "You have denied some " +
+                                    "permissions permanently. Functions will not work without these permission. " +
+                                    "Please grant the permissions for this app in your phone's settings."
+                            util.onShowMessage(msg, context)
+                            Log.e(TAG, msg)
+
+                        }
 
                     }
 
                 }
-                else {
 
-                    withContext(Dispatchers.Main) {
-                        
-                        val msg = "You have denied some " +
-                                "permissions permanently. Functions will not work without these permission. " +
-                                "Please grant the permissions for this app in your phone's settings."
-                        util.onShowMessage(msg, context)
-                        Log.e(TAG, msg)
+            }
+            else {
 
-                    }
+                val msg: String = "Electricity Bill Payment requested."
+                util.onShowMessageSuccess(msg, context)
+                Log.e(TAG, msg)
 
-                }
+                context.startActivity(intent)
 
             }
 
@@ -439,40 +468,54 @@ class PhoneUtil {
 
             intent.setPackage("com.android.server.telecom")
 
-            CoroutineScope(Dispatchers.IO).launch {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
-                val result = fragment.permissionsBuilder(
-                    Manifest.permission.CALL_PHONE,
-                ).build().sendSuspend()
+                CoroutineScope(Dispatchers.IO).launch {
 
-                if (result.allGranted()) { // All the permissions are granted.
+                    val result = fragment.permissionsBuilder(
+                        Manifest.permission.CALL_PHONE,
+                    ).build().sendSuspend()
 
-                    withContext(Dispatchers.Main) {
+                    if (result.allGranted()) { // All the permissions are granted.
 
-                        val msg: String = "TV Service Bill Payment requested."
-                        util.onShowMessageSuccess(msg, context)
-                        Log.e(TAG, msg)
+                        withContext(Dispatchers.Main) {
 
-                        context.startActivity(intent)
+                            val msg: String = "TV Service Bill Payment requested."
+                            util.onShowMessageSuccess(msg, context)
+                            Log.e(TAG, msg)
+
+                            context.startActivity(intent)
+
+                        }
 
                     }
+                    else {
 
-                }
-                else {
+                        withContext(Dispatchers.Main) {
 
-                    withContext(Dispatchers.Main) {
-                        
-                        val msg: String = "You have denied some " +
-                                "permissions permanently. Functions will not work without these permission. " +
-                                "Please grant the permissions for this app in your phone's settings."
-                        util.onShowMessage(msg, context)
-                        Log.e(TAG, msg)
+                            val msg: String = "You have denied some " +
+                                    "permissions permanently. Functions will not work without these permission. " +
+                                    "Please grant the permissions for this app in your phone's settings."
+                            util.onShowMessage(msg, context)
+                            Log.e(TAG, msg)
+
+                        }
 
                     }
 
                 }
 
             }
+            else {
+
+                val msg: String = "TV Service Bill Payment requested."
+                util.onShowMessageSuccess(msg, context)
+                Log.e(TAG, msg)
+
+                context.startActivity(intent)
+
+            }
+
 
         }
 
@@ -541,40 +584,54 @@ class PhoneUtil {
 
         intent.setPackage("com.android.server.telecom")
 
-        CoroutineScope(Dispatchers.IO).launch {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
-            val result = fragment.permissionsBuilder(
-                Manifest.permission.CALL_PHONE,
-            ).build().sendSuspend()
+            CoroutineScope(Dispatchers.IO).launch {
 
-            if (result.allGranted()) { // All the permissions are granted.
+                val result = fragment.permissionsBuilder(
+                    Manifest.permission.CALL_PHONE,
+                ).build().sendSuspend()
 
-                withContext(Dispatchers.Main) {
+                if (result.allGranted()) { // All the permissions are granted.
 
-                    val msg: String = "$tvServiceSelection bill payment of $amount was successful."
-                    util.onShowMessageSuccess(msg, context)
-                    Log.e(TAG, msg)
+                    withContext(Dispatchers.Main) {
 
-                    context.startActivity(intent)
+                        val msg: String = "$tvServiceSelection bill payment of $amount was successful."
+                        util.onShowMessageSuccess(msg, context)
+                        Log.e(TAG, msg)
+
+                        context.startActivity(intent)
+
+                    }
 
                 }
+                else {
 
-            }
-            else {
+                    withContext(Dispatchers.Main) {
 
-                withContext(Dispatchers.Main) {
-                    
-                    val msg: String = "You have denied some " +
-                            "permissions permanently. Functions will not work without these permission. " +
-                            "Please grant the permissions for this app in your phone's settings."
-                    util.onShowMessage(msg, context)
-                    Log.e(TAG, msg)
+                        val msg: String = "You have denied some " +
+                                "permissions permanently. Functions will not work without these permission. " +
+                                "Please grant the permissions for this app in your phone's settings."
+                        util.onShowMessage(msg, context)
+                        Log.e(TAG, msg)
+
+                    }
 
                 }
 
             }
 
         }
+        else {
+
+            val msg: String = "$tvServiceSelection bill payment of $amount was successful."
+            util.onShowMessageSuccess(msg, context)
+            Log.e(TAG, msg)
+
+            context.startActivity(intent)
+
+        }
+
 
     }
 
@@ -737,7 +794,7 @@ class PhoneUtil {
 
             intent.setPackage("com.android.server.telecom")
 
-            CoroutineScope(Dispatchers.IO).launch {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {CoroutineScope(Dispatchers.IO).launch {
 
                 val result = fragment.permissionsBuilder(
                     Manifest.permission.CALL_PHONE,
@@ -759,7 +816,7 @@ class PhoneUtil {
                 else {
 
                     withContext(Dispatchers.Main) {
-                        
+
                         val msg: String = "You have denied some " +
                                 "permissions permanently. Functions will not work without these permission. " +
                                 "Please grant the permissions for this app in your phone's settings."
@@ -772,7 +829,18 @@ class PhoneUtil {
 
             }
 
-//            countDown(3000)
+
+            }
+            else {
+
+                val msg: String = "$amount sent to $phone. Completed!"
+                util.onShowMessageSuccess(msg, context)
+                Log.e(TAG, msg)
+
+                context.startActivity(intent)
+
+            }
+
 
         }
         else {
@@ -819,111 +887,192 @@ class PhoneUtil {
             val localSubscriptionManager =
                 context.getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE) as SubscriptionManager
 
-            CoroutineScope(Dispatchers.IO).launch {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
-                val result = fragment.permissionsBuilder(
-                    Manifest.permission.CALL_PHONE,
-                    Manifest.permission.READ_PHONE_STATE,
-                ).build().sendSuspend()
+                CoroutineScope(Dispatchers.IO).launch {
 
-                if (result.allGranted()) { // All the permissions are granted.
+                    val result = fragment.permissionsBuilder(
+                        Manifest.permission.CALL_PHONE,
+                        Manifest.permission.READ_PHONE_STATE,
+                    ).build().sendSuspend()
 
-                    withContext(Dispatchers.Main) {
+                    if (result.allGranted()) { // All the permissions are granted.
 
-                        var simCardsLength = localSubscriptionManager.activeSubscriptionInfoCount
+                        withContext(Dispatchers.Main) {
 
-                        if (simCardsLength == 0) {
-                            simCardsLength = localSubscriptionManager.activeSubscriptionInfoList.size
-                            Log.e(
-                                "ATTENTION ATTENTION",
-                                "getActiveSubscriptionInfoList().size(): " + localSubscriptionManager.activeSubscriptionInfoList.size
-                            )
-                        }
+                            var simCardsLength = localSubscriptionManager.activeSubscriptionInfoCount
 
-                        if (simCardsLength == 0) {
-                            val manager = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-                            simCardsLength = manager.phoneCount
-                            Log.e("ATTENTION ATTENTION", "simCardsLength: $simCardsLength")
-                        }
-
-                        if (simCardsLength > 1) {
-
-                            val localList = localSubscriptionManager.activeSubscriptionInfoList
-                            val simInfo1 = localList[0] as SubscriptionInfo
-                            val simInfo2 = localList[1] as SubscriptionInfo
-                            val sim1 = simInfo1.subscriptionId
-                            val sim2 = simInfo2.subscriptionId
-
-                            smsManager = if (pAccount == "1") {
-                                SmsManager.getSmsManagerForSubscriptionId(sim1)
-                            }
-                            else {
-                                SmsManager.getSmsManagerForSubscriptionId(sim2)
+                            if (simCardsLength == 0) {
+                                simCardsLength = localSubscriptionManager.activeSubscriptionInfoList.size
+                                Log.e(
+                                    "ATTENTION ATTENTION",
+                                    "getActiveSubscriptionInfoList().size(): " + localSubscriptionManager.activeSubscriptionInfoList.size
+                                )
                             }
 
-                            smsManager.sendTextMessage(rechargeCode, null, message, sentPI, deliveredPI)
+                            if (simCardsLength == 0) {
+                                val manager = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+                                simCardsLength = manager.phoneCount
+                                Log.e("ATTENTION ATTENTION", "simCardsLength: $simCardsLength")
+                            }
 
-                            val msg = "$amount sent to $phone. Completed! Press send to complete."
-                            util.onShowMessageSuccess(msg, context)
-                            Log.e(TAG, msg)
+                            if (simCardsLength > 1) {
 
-                        }
-                        else if (simCardsLength == 1) {
+                                val localList = localSubscriptionManager.activeSubscriptionInfoList
+                                val simInfo1 = localList[0] as SubscriptionInfo
+                                val simInfo2 = localList[1] as SubscriptionInfo
+                                val sim1 = simInfo1.subscriptionId
+                                val sim2 = simInfo2.subscriptionId
 
-                            val localList = localSubscriptionManager.activeSubscriptionInfoList
-                            val simInfo1 = localList[0] as SubscriptionInfo
-                            val sim1 = simInfo1.subscriptionId
+                                smsManager = if (pAccount == "1") {
+                                    SmsManager.getSmsManagerForSubscriptionId(sim1)
+                                }
+                                else {
+                                    SmsManager.getSmsManagerForSubscriptionId(sim2)
+                                }
 
-                            if (pAccount == "1") {
-
-                                smsManager = SmsManager.getSmsManagerForSubscriptionId(sim1)
-                                smsManager.sendTextMessage(
-                                    rechargeCode,
-                                    null,
-                                    message,
-                                    sentPI,
-                                    deliveredPI
-                                ) // TODO Use with future update
+                                smsManager.sendTextMessage(rechargeCode, null, message, sentPI, deliveredPI)
 
                                 val msg = "$amount sent to $phone. Completed! Press send to complete."
                                 util.onShowMessageSuccess(msg, context)
                                 Log.e(TAG, msg)
 
                             }
+                            else if (simCardsLength == 1) {
+
+                                val localList = localSubscriptionManager.activeSubscriptionInfoList
+                                val simInfo1 = localList[0] as SubscriptionInfo
+                                val sim1 = simInfo1.subscriptionId
+
+                                if (pAccount == "1") {
+
+                                    smsManager = SmsManager.getSmsManagerForSubscriptionId(sim1)
+                                    smsManager.sendTextMessage(
+                                        rechargeCode,
+                                        null,
+                                        message,
+                                        sentPI,
+                                        deliveredPI
+                                    ) // TODO Use with future update
+
+                                    val msg = "$amount sent to $phone. Completed! Press send to complete."
+                                    util.onShowMessageSuccess(msg, context)
+                                    Log.e(TAG, msg)
+
+                                }
+                                else {
+
+                                    val msg = "You only have one sim card. Please update " +
+                                            "your settings with appropriate info and " +
+                                            "set \"phone 1\" to the correct number."
+                                    util.onShowErrorMessage(msg, context)
+                                    Log.e(TAG, msg)
+
+
+                                }
+
+                            }
                             else {
-
-                                val msg = "You only have one sim card. Please update " +
-                                        "your settings with appropriate info and " +
-                                        "set \"phone 1\" to the correct number."
-                                util.onShowErrorMessage(msg, context)
-                                Log.e(TAG, msg)
-
 
                             }
 
                         }
-                        else {
-
-                        }
 
                     }
+                    else {
 
-                }
-                else {
+                        withContext(Dispatchers.Main) {
 
-                    withContext(Dispatchers.Main) {
+                            val msg = "You have denied some " +
+                                    "permissions permanently. Functions will not work without these permission. " +
+                                    "Please grant the permissions for this app in your phone's settings."
+                            util.onShowMessage(msg, context)
+                            Log.e(TAG, msg)
 
-                        val msg = "You have denied some " +
-                                "permissions permanently. Functions will not work without these permission. " +
-                                "Please grant the permissions for this app in your phone's settings."
-                        util.onShowMessage(msg, context)
-                        Log.e(TAG, msg)
+                        }
 
                     }
 
                 }
 
             }
+            else {
+
+                var simCardsLength = localSubscriptionManager.activeSubscriptionInfoCount
+
+                if (simCardsLength == 0) {
+                    simCardsLength = localSubscriptionManager.activeSubscriptionInfoList.size
+                    Log.e(
+                        "ATTENTION ATTENTION",
+                        "getActiveSubscriptionInfoList().size(): " + localSubscriptionManager.activeSubscriptionInfoList.size
+                    )
+                }
+
+                if (simCardsLength == 0) {
+                    val manager = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+                    simCardsLength = manager.phoneCount
+                    Log.e("ATTENTION ATTENTION", "simCardsLength: $simCardsLength")
+                }
+
+                if (simCardsLength > 1) {
+
+                    val localList = localSubscriptionManager.activeSubscriptionInfoList
+                    val simInfo1 = localList[0] as SubscriptionInfo
+                    val simInfo2 = localList[1] as SubscriptionInfo
+                    val sim1 = simInfo1.subscriptionId
+                    val sim2 = simInfo2.subscriptionId
+
+                    smsManager = if (pAccount == "1") {
+                        SmsManager.getSmsManagerForSubscriptionId(sim1)
+                    }
+                    else {
+                        SmsManager.getSmsManagerForSubscriptionId(sim2)
+                    }
+
+                    smsManager.sendTextMessage(rechargeCode, null, message, sentPI, deliveredPI)
+
+                    val msg = "$amount sent to $phone. Completed! Press send to complete."
+                    util.onShowMessageSuccess(msg, context)
+                    Log.e(TAG, msg)
+
+                }
+                else if (simCardsLength == 1) {
+
+                    val localList = localSubscriptionManager.activeSubscriptionInfoList
+                    val simInfo1 = localList[0] as SubscriptionInfo
+                    val sim1 = simInfo1.subscriptionId
+
+                    if (pAccount == "1") {
+
+                        smsManager = SmsManager.getSmsManagerForSubscriptionId(sim1)
+                        smsManager.sendTextMessage(
+                            rechargeCode,
+                            null,
+                            message,
+                            sentPI,
+                            deliveredPI
+                        ) // TODO Use with future update
+
+                        val msg = "$amount sent to $phone. Completed! Press send to complete."
+                        util.onShowMessageSuccess(msg, context)
+                        Log.e(TAG, msg)
+
+                    }
+                    else {
+
+                        val msg = "You only have one sim card. Please update " +
+                                "your settings with appropriate info and " +
+                                "set \"phone 1\" to the correct number."
+                        util.onShowErrorMessage(msg, context)
+                        Log.e(TAG, msg)
+
+
+                    }
+
+                }
+
+            }
+
 
         }
         else {
@@ -2429,40 +2578,55 @@ class PhoneUtil {
 
         val util: Util = Util()
 
-        CoroutineScope(Dispatchers.IO).launch {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
-            val result = fragment.permissionsBuilder(
-                Manifest.permission.CALL_PHONE,
-            ).build().sendSuspend()
+            CoroutineScope(Dispatchers.IO).launch {
 
-            if (result.allGranted()) { // All the permissions are granted.
+                val result = fragment.permissionsBuilder(
+                    Manifest.permission.CALL_PHONE,
+                ).build().sendSuspend()
 
-                withContext(Dispatchers.Main) {
+                if (result.allGranted()) { // All the permissions are granted.
 
-                    val msg: String = "Airtime transfer requested."
-                    util.onShowMessageSuccess(msg, context)
-                    Log.e(TAG, msg)
+                    withContext(Dispatchers.Main) {
 
-                    context.startActivity(intent)
+                        val msg: String = "Airtime transfer requested."
+                        util.onShowMessageSuccess(msg, context)
+                        Log.e(TAG, msg)
+
+                        context.startActivity(intent)
+
+                    }
 
                 }
+                else {
 
-            }
-            else {
+                    withContext(Dispatchers.Main) {
 
-                withContext(Dispatchers.Main) {
-                    
-                    val msg = "You have denied some " +
-                            "permissions permanently. Functions will not work without these permission. " +
-                            "Please grant the permissions for this app in your phone's settings."
-                    util.onShowMessage(msg, context)
-                    Log.e(TAG, msg)
+                        val msg = "You have denied some " +
+                                "permissions permanently. Functions will not work without these permission. " +
+                                "Please grant the permissions for this app in your phone's settings."
+                        util.onShowMessage(msg, context)
+                        Log.e(TAG, msg)
+
+                    }
 
                 }
 
             }
 
         }
+        else {
+
+            val msg: String = "Airtime transfer requested."
+            util.onShowMessageSuccess(msg, context)
+            Log.e(TAG, msg)
+
+            context.startActivity(intent)
+
+        }
+
+
         
     }
 
@@ -2519,40 +2683,55 @@ class PhoneUtil {
         
         val util: Util = Util()
 
-        CoroutineScope(Dispatchers.IO).launch {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
-            val result = fragment.permissionsBuilder(
-                Manifest.permission.CALL_PHONE,
-            ).build().sendSuspend()
+            CoroutineScope(Dispatchers.IO).launch {
 
-            if (result.allGranted()) { // All the permissions are granted.
+                val result = fragment.permissionsBuilder(
+                    Manifest.permission.CALL_PHONE,
+                ).build().sendSuspend()
 
-                withContext(Dispatchers.Main) {
+                if (result.allGranted()) { // All the permissions are granted.
 
-                    val msg: String = "Airtime transfer requested."
-                    util.onShowMessageSuccess(msg, context)
-                    Log.e(TAG, msg)
+                    withContext(Dispatchers.Main) {
 
-                    context.startActivity(intent)
+                        val msg: String = "Airtime transfer requested."
+                        util.onShowMessageSuccess(msg, context)
+                        Log.e(TAG, msg)
+
+                        context.startActivity(intent)
+
+                    }
 
                 }
+                else {
 
-            }
-            else {
+                    withContext(Dispatchers.Main) {
 
-                withContext(Dispatchers.Main) {
-                    
-                    val msg = "You have denied some " +
-                            "permissions permanently. Functions will not work without these permission. " +
-                            "Please grant the permissions for this app in your phone's settings."
-                    util.onShowMessage(msg, context)
-                    Log.e(TAG, msg)
+                        val msg = "You have denied some " +
+                                "permissions permanently. Functions will not work without these permission. " +
+                                "Please grant the permissions for this app in your phone's settings."
+                        util.onShowMessage(msg, context)
+                        Log.e(TAG, msg)
+
+                    }
 
                 }
 
             }
 
         }
+        else {
+
+            val msg: String = "Airtime transfer requested."
+            util.onShowMessageSuccess(msg, context)
+            Log.e(TAG, msg)
+
+            context.startActivity(intent)
+
+        }
+
+
 
     }
 
@@ -3131,40 +3310,56 @@ class PhoneUtil {
 
         val util: Util = Util()
 
-        CoroutineScope(Dispatchers.IO).launch {
 
-            val result = fragment.permissionsBuilder(
-                Manifest.permission.CALL_PHONE,
-            ).build().sendSuspend()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
-            if (result.allGranted()) { // All the permissions are granted.
+            CoroutineScope(Dispatchers.IO).launch {
 
-                withContext(Dispatchers.Main) {
+                val result = fragment.permissionsBuilder(
+                    Manifest.permission.CALL_PHONE,
+                ).build().sendSuspend()
 
-                    val msg: String = "Airtime transfer requested."
-                    util.onShowMessageSuccess(msg, context)
-                    Log.e(TAG, msg)
+                if (result.allGranted()) { // All the permissions are granted.
 
-                    context.startActivity(intent)
+                    withContext(Dispatchers.Main) {
+
+                        val msg: String = "Airtime transfer requested."
+                        util.onShowMessageSuccess(msg, context)
+                        Log.e(TAG, msg)
+
+                        context.startActivity(intent)
+
+                    }
 
                 }
+                else {
 
-            }
-            else {
+                    withContext(Dispatchers.Main) {
 
-                withContext(Dispatchers.Main) {
-                    
-                    val msg = "You have denied some " +
-                            "permissions permanently. Functions will not work without these permission. " +
-                            "Please grant the permissions for this app in your phone's settings."
-                    util.onShowMessage(msg, context)
-                    Log.e(TAG, msg)
+                        val msg = "You have denied some " +
+                                "permissions permanently. Functions will not work without these permission. " +
+                                "Please grant the permissions for this app in your phone's settings."
+                        util.onShowMessage(msg, context)
+                        Log.e(TAG, msg)
+
+                    }
 
                 }
 
             }
 
         }
+        else {
+
+            val msg: String = "Airtime transfer requested."
+            util.onShowMessageSuccess(msg, context)
+            Log.e(TAG, msg)
+
+            context.startActivity(intent)
+
+        }
+
+
 
     }
 
@@ -3220,38 +3415,51 @@ class PhoneUtil {
 
         val util: Util = Util()
 
-        CoroutineScope(Dispatchers.IO).launch {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
-            val result = fragment.permissionsBuilder(
-                Manifest.permission.CALL_PHONE,
-            ).build().sendSuspend()
+            CoroutineScope(Dispatchers.IO).launch {
 
-            if (result.allGranted()) { // All the permissions are granted.
+                val result = fragment.permissionsBuilder(
+                    Manifest.permission.CALL_PHONE,
+                ).build().sendSuspend()
 
-                withContext(Dispatchers.Main) {
+                if (result.allGranted()) { // All the permissions are granted.
 
-                    val msg: String = "Airtime transfer requested."
-                    util.onShowMessageSuccess(msg, context)
-                    Log.e(TAG, msg)
+                    withContext(Dispatchers.Main) {
 
-                    context.startActivity(intent)
+                        val msg: String = "Airtime transfer requested."
+                        util.onShowMessageSuccess(msg, context)
+                        Log.e(TAG, msg)
+
+                        context.startActivity(intent)
+
+                    }
+
+                }
+                else {
+
+                    withContext(Dispatchers.Main) {
+
+                        val msg = "You have denied some " +
+                                "permissions permanently. Functions will not work without these permission. " +
+                                "Please grant the permissions for this app in your phone's settings."
+                        util.onShowMessage(msg, context)
+                        Log.e(TAG, msg)
+
+                    }
 
                 }
 
             }
-            else {
 
-                withContext(Dispatchers.Main) {
-                    
-                    val msg = "You have denied some " +
-                            "permissions permanently. Functions will not work without these permission. " +
-                            "Please grant the permissions for this app in your phone's settings."
-                    util.onShowMessage(msg, context)
-                    Log.e(TAG, msg)
+        }
+        else {
 
-                }
+            val msg: String = "Airtime transfer requested."
+            util.onShowMessageSuccess(msg, context)
+            Log.e(TAG, msg)
 
-            }
+            context.startActivity(intent)
 
         }
 
@@ -3755,38 +3963,50 @@ class PhoneUtil {
 
         val util: Util = Util()
 
-        CoroutineScope(Dispatchers.IO).launch {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
-            val result = fragment.permissionsBuilder(
-                Manifest.permission.CALL_PHONE,
-            ).build().sendSuspend()
+            CoroutineScope(Dispatchers.IO).launch {
 
-            if (result.allGranted()) { // All the permissions are granted.
+                val result = fragment.permissionsBuilder(
+                    Manifest.permission.CALL_PHONE,
+                ).build().sendSuspend()
 
-                withContext(Dispatchers.Main) {
+                if (result.allGranted()) { // All the permissions are granted.
 
-                    val msg: String = "Bank Topup of $amount to $name with $bank complete."
-                    util.onShowMessageSuccess(msg, context)
-                    Log.e(TAG, msg)
+                    withContext(Dispatchers.Main) {
 
-                    context.startActivity(intent)
+                        val msg: String = "Bank Topup of $amount to $name with $bank complete."
+                        util.onShowMessageSuccess(msg, context)
+                        Log.e(TAG, msg)
+
+                        context.startActivity(intent)
+
+                    }
+
+                }
+                else {
+
+                    withContext(Dispatchers.Main) {
+
+                        val msg = "You have denied some " +
+                                "permissions permanently. Functions will not work without these permission. " +
+                                "Please grant the permissions for this app in your phone's settings."
+                        util.onShowMessage(msg, context)
+                        Log.e(TAG, msg)
+
+                    }
 
                 }
 
             }
-            else {
+        }
+        else {
 
-                withContext(Dispatchers.Main) {
-                    
-                    val msg = "You have denied some " +
-                            "permissions permanently. Functions will not work without these permission. " +
-                            "Please grant the permissions for this app in your phone's settings."
-                    util.onShowMessage(msg, context)
-                    Log.e(TAG, msg)
+            val msg: String = "Bank Topup of $amount to $name with $bank complete."
+            util.onShowMessageSuccess(msg, context)
+            Log.e(TAG, msg)
 
-                }
-
-            }
+            context.startActivity(intent)
 
         }
 
@@ -3850,40 +4070,55 @@ class PhoneUtil {
             
             intent.setPackage("com.android.server.telecom")
 
-            CoroutineScope(Dispatchers.IO).launch {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
-                val result = fragment.permissionsBuilder(
-                    Manifest.permission.CALL_PHONE,
-                ).build().sendSuspend()
+                CoroutineScope(Dispatchers.IO).launch {
 
-                if (result.allGranted()) { // All the permissions are granted.
+                    val result = fragment.permissionsBuilder(
+                        Manifest.permission.CALL_PHONE,
+                    ).build().sendSuspend()
 
-                    withContext(Dispatchers.Main) {
+                    if (result.allGranted()) { // All the permissions are granted.
 
-                        val msg: String = "Bank TopUp of $amount to $name with $bank complete."
-                        util.onShowMessageSuccess(msg, context)
-                        Log.e(TAG, msg)
+                        withContext(Dispatchers.Main) {
 
-                        context.startActivity(intent)
+                            val msg: String = "Bank TopUp of $amount to $name with $bank complete."
+                            util.onShowMessageSuccess(msg, context)
+                            Log.e(TAG, msg)
+
+                            context.startActivity(intent)
+
+                        }
 
                     }
+                    else {
 
-                }
-                else {
+                        withContext(Dispatchers.Main) {
 
-                    withContext(Dispatchers.Main) {
-                        
-                        val msg = "You have denied some " +
-                                "permissions permanently. Functions will not work without these permission. " +
-                                "Please grant the permissions for this app in your phone's settings."
-                        util.onShowMessageSuccess(msg, context)
-                        Log.e(TAG, msg)
+                            val msg = "You have denied some " +
+                                    "permissions permanently. Functions will not work without these permission. " +
+                                    "Please grant the permissions for this app in your phone's settings."
+                            util.onShowMessageSuccess(msg, context)
+                            Log.e(TAG, msg)
+
+                        }
 
                     }
 
                 }
 
             }
+            else {
+
+                val msg: String = "Bank TopUp of $amount to $name with $bank complete."
+                util.onShowMessageSuccess(msg, context)
+                Log.e(TAG, msg)
+
+                context.startActivity(intent)
+
+            }
+
+
 
         }
         else {
@@ -4316,38 +4551,51 @@ class PhoneUtil {
 
         val util: Util = Util()
 
-        CoroutineScope(Dispatchers.IO).launch {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
-            val result = fragment.permissionsBuilder(
-                Manifest.permission.CALL_PHONE,
-            ).build().sendSuspend()
+            CoroutineScope(Dispatchers.IO).launch {
 
-            if (result.allGranted()) { // All the permissions are granted.
+                val result = fragment.permissionsBuilder(
+                    Manifest.permission.CALL_PHONE,
+                ).build().sendSuspend()
 
-                withContext(Dispatchers.Main) {
+                if (result.allGranted()) { // All the permissions are granted.
 
-                    val msg: String = "Balance requested."
-                    util.onShowMessageSuccess(msg, context)
-                    Log.e(TAG, msg)
+                    withContext(Dispatchers.Main) {
 
-                    context.startActivity(intent)
+                        val msg: String = "Balance requested."
+                        util.onShowMessageSuccess(msg, context)
+                        Log.e(TAG, msg)
+
+                        context.startActivity(intent)
+
+                    }
+
+                }
+                else {
+
+                    withContext(Dispatchers.Main) {
+
+                        val msg = "You have denied some " +
+                                "permissions permanently. Functions will not work without these permission. " +
+                                "Please grant the permissions for this app in your phone's settings."
+                        util.onShowMessage(msg, context)
+                        Log.e(TAG, msg)
+
+                    }
 
                 }
 
             }
-            else {
 
-                withContext(Dispatchers.Main) {
-                    
-                    val msg = "You have denied some " +
-                            "permissions permanently. Functions will not work without these permission. " +
-                            "Please grant the permissions for this app in your phone's settings."
-                    util.onShowMessage(msg, context)
-                    Log.e(TAG, msg)
+        }
+        else {
 
-                }
+            val msg: String = "Balance requested."
+            util.onShowMessageSuccess(msg, context)
+            Log.e(TAG, msg)
 
-            }
+            context.startActivity(intent)
 
         }
 
@@ -4538,38 +4786,51 @@ class PhoneUtil {
 
         val util: Util = Util()
 
-        CoroutineScope(Dispatchers.IO).launch {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
-            val result = fragment.permissionsBuilder(
-                Manifest.permission.CALL_PHONE,
-            ).build().sendSuspend()
+            CoroutineScope(Dispatchers.IO).launch {
 
-            if (result.allGranted()) { // All the permissions are granted.
+                val result = fragment.permissionsBuilder(
+                    Manifest.permission.CALL_PHONE,
+                ).build().sendSuspend()
 
-                withContext(Dispatchers.Main) {
+                if (result.allGranted()) { // All the permissions are granted.
 
-                    val msg: String = "$amount requested."
-                    util.onShowMessageSuccess(msg, context)
-                    Log.e(TAG, msg)
+                    withContext(Dispatchers.Main) {
 
-                    context.startActivity(intent)
+                        val msg: String = "$amount requested."
+                        util.onShowMessageSuccess(msg, context)
+                        Log.e(TAG, msg)
+
+                        context.startActivity(intent)
+
+                    }
+
+                }
+                else {
+
+                    withContext(Dispatchers.Main) {
+
+                        val msg: String = "You have denied some " +
+                                "permissions permanently. Functions will not work without these permission. " +
+                                "Please grant the permissions for this app in your phone's settings."
+                        util.onShowMessage(msg, context)
+                        Log.e(TAG, msg)
+
+                    }
 
                 }
 
             }
-            else {
 
-                withContext(Dispatchers.Main) {
-                    
-                    val msg: String = "You have denied some " +
-                            "permissions permanently. Functions will not work without these permission. " +
-                            "Please grant the permissions for this app in your phone's settings."
-                    util.onShowMessage(msg, context)
-                    Log.e(TAG, msg)
+        }
+        else {
 
-                }
+            val msg: String = "$amount requested."
+            util.onShowMessageSuccess(msg, context)
+            Log.e(TAG, msg)
 
-            }
+            context.startActivity(intent)
 
         }
 
@@ -4653,40 +4914,55 @@ class PhoneUtil {
 
         val util: Util = Util()
 
-        CoroutineScope(Dispatchers.IO).launch {
 
-            val result = fragment.permissionsBuilder(
-                Manifest.permission.CALL_PHONE,
-            ).build().sendSuspend()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
-            if (result.allGranted()) { // All the permissions are granted.
+            CoroutineScope(Dispatchers.IO).launch {
 
-                withContext(Dispatchers.Main) {
+                val result = fragment.permissionsBuilder(
+                    Manifest.permission.CALL_PHONE,
+                ).build().sendSuspend()
 
-                    val msg: String = "$amount requested."
-                    util.onShowMessageSuccess(msg, context)
-                    Log.e(TAG, msg)
+                if (result.allGranted()) { // All the permissions are granted.
 
-                    context.startActivity(intent)
+                    withContext(Dispatchers.Main) {
+
+                        val msg: String = "$amount requested."
+                        util.onShowMessageSuccess(msg, context)
+                        Log.e(TAG, msg)
+
+                        context.startActivity(intent)
+
+                    }
 
                 }
+                else {
 
-            }
-            else {
+                    withContext(Dispatchers.Main) {
 
-                withContext(Dispatchers.Main) {
-                    
-                    val msg = "You have denied some " +
-                            "permissions permanently. Functions will not work without these permission. " +
-                            "Please grant the permissions for this app in your phone's settings."
-                    util.onShowMessage(msg, context)
-                    Log.e(TAG, msg)
+                        val msg = "You have denied some " +
+                                "permissions permanently. Functions will not work without these permission. " +
+                                "Please grant the permissions for this app in your phone's settings."
+                        util.onShowMessage(msg, context)
+                        Log.e(TAG, msg)
+
+                    }
 
                 }
 
             }
 
         }
+        else {
+
+            val msg: String = "$amount requested."
+            util.onShowMessageSuccess(msg, context)
+            Log.e(TAG, msg)
+
+            context.startActivity(intent)
+
+        }
+
 
     }
 

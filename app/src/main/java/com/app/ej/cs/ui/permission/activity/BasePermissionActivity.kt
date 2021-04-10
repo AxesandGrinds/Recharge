@@ -20,9 +20,9 @@ import com.app.ej.cs.ui.permission.callback.OnPermissionCallback
 import com.app.ej.cs.ui.permission.model.PermissionModel
 import com.app.ej.cs.ui.permission.utils.ThemeUtil
 import com.app.ej.cs.ui.permission.widget.CirclePageIndicator
-import com.app.ej.cs.ui.permission.fragment.PermissionFragment;
-import com.app.ej.cs.ui.permission.utils.FontTypeHelper;
-import com.app.ej.cs.ui.permission.adapter.PagerAdapter;
+import com.app.ej.cs.ui.permission.fragment.PermissionFragment
+import com.app.ej.cs.ui.permission.utils.FontTypeHelper
+import com.app.ej.cs.ui.permission.adapter.PagerAdapter
 
 
 

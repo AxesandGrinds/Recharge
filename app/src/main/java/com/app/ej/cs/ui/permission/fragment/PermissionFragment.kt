@@ -29,13 +29,17 @@ class PermissionFragment : Fragment(), View.OnClickListener {
     private var request: ImageButton? = null
     private var next: ImageButton? = null
     private var title: TextView? = null
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
+
         callback = if (context is BaseCallback) {
             context as BaseCallback
-        } else {
+        }
+        else {
             throw IllegalArgumentException("Activity must Implement BaseCallback.")
         }
+
     }
 
     override fun onDetach() {
@@ -45,29 +49,44 @@ class PermissionFragment : Fragment(), View.OnClickListener {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
+
         if (permissionModel != null) {
+
             outState.putParcelable(PERMISSION_INSTANCE, permissionModel)
+
         }
+
     }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+        savedInstanceState: Bundle?): View? {
+
         return inflater.inflate(R.layout.permissionhelper_fragment_layout, container, false)
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         if (savedInstanceState != null) {
+
             permissionModel = savedInstanceState.getParcelable(PERMISSION_INSTANCE)
-        } else {
+
+        }
+        else {
+
             permissionModel = requireArguments().getParcelable(PERMISSION_INSTANCE)
+
         }
+
         if (permissionModel == null) {
+
             throw NullPointerException("Permission Model some how went nuts and become null or was it?.")
+
         }
+
         title = view.findViewById<View>(R.id.title) as TextView
         image = view.findViewById<View>(R.id.image) as ImageView
         message = view.findViewById<View>(R.id.message) as TextView
@@ -77,7 +96,9 @@ class PermissionFragment : Fragment(), View.OnClickListener {
         next!!.setOnClickListener(this)
         previous!!.setOnClickListener(this)
         request!!.setOnClickListener(this)
+
         initViews()
+
     }
 
     override fun onClick(v: View) {
@@ -194,5 +215,7 @@ class PermissionFragment : Fragment(), View.OnClickListener {
             fragment.arguments = localBundle
             return fragment
         }
+
     }
+
 }

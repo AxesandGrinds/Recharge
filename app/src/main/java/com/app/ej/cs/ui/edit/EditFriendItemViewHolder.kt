@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.database.Cursor
+import android.os.Build
 import android.provider.ContactsContract
 import android.text.Editable
 import android.text.TextWatcher
@@ -474,21 +475,26 @@ class EditFriendItemViewHolder(
     pickFriendIB.setOnClickListener{
 
 
-      if (ActivityCompat.checkSelfPermission(view.context, Manifest.permission.READ_CONTACTS) !=
-        PackageManager.PERMISSION_GRANTED) {
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
-        KToasty.info(
-          view.context,
-          "Allow Recharge App to read contacts in order to select friend.",
-          Toast.LENGTH_LONG
-        ).show()
+        if (ActivityCompat.checkSelfPermission(view.context, Manifest.permission.READ_CONTACTS) !=
+          PackageManager.PERMISSION_GRANTED) {
 
-        ActivityCompat.requestPermissions(
-          activity, arrayOf(
-            Manifest.permission.READ_CONTACTS
-          ),
-          REQUEST_READ_CONTACTS_PERMISSION
-        )
+          KToasty.info(view.context,
+            "Allow Recharge App to read contacts in order to select friend.",
+            Toast.LENGTH_LONG).show()
+
+          ActivityCompat.requestPermissions(
+            activity, arrayOf(
+              Manifest.permission.READ_CONTACTS),
+            REQUEST_READ_CONTACTS_PERMISSION)
+
+        }
+        else {
+
+          pickContact()
+
+        }
 
       }
       else {
@@ -496,6 +502,8 @@ class EditFriendItemViewHolder(
         pickContact()
 
       }
+
+
 
 
 //      CoroutineScope(Dispatchers.Main).launch {

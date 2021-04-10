@@ -246,9 +246,11 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
     init {
 
-        CoroutineScope(Dispatchers.IO).launch {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
-            val result = permissionsBuilder(
+            CoroutineScope(Dispatchers.IO).launch {
+
+                val result = permissionsBuilder(
 //                    Manifest.permission.CAMERA,
                     Manifest.permission.CALL_PHONE,
                     Manifest.permission.ACCESS_WIFI_STATE,
@@ -259,20 +261,19 @@ class RegisterDetailsActivity() : AppCompatActivity(),
                     Manifest.permission.READ_EXTERNAL_STORAGE,
                     Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.ACCESS_COARSE_LOCATION,
-            ).build().sendSuspend()
+                ).build().sendSuspend()
 
-            context = this@RegisterDetailsActivity
+                context = this@RegisterDetailsActivity
 
-            if (result.allGranted()) { // All the permissions are granted.
+                if (!result.allGranted()) { // All the permissions are not granted.
 
-            }
-            else {
+                    withContext(Dispatchers.Main) {
+                        //KToasty.info(app, "Using local data", Toast.LENGTH_LONG).show()
+                        val message: String = "You have denied some permissions permanently, " +
+                                "if the app force close try granting permission from settings."
+                        KToasty.info(context, message, Toast.LENGTH_LONG, true).show()
 
-                withContext(Dispatchers.Main) {
-                    //KToasty.info(app, "Using local data", Toast.LENGTH_LONG).show()
-                    val message: String = "You have denied some permissions permanently, " +
-                            "if the app force close try granting permission from settings."
-                    KToasty.info(context, message, Toast.LENGTH_LONG, true).show()
+                    }
 
                 }
 
@@ -410,12 +411,15 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
                 val localSubscriptionManager = getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE) as SubscriptionManager
 
-                CoroutineScope(Dispatchers.IO).launch {
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+                    CoroutineScope(Dispatchers.IO).launch {
 
                     val result = permissionsBuilder(
-                            Manifest.permission.READ_PHONE_STATE,
-                            Manifest.permission.CALL_PHONE,
-                            Manifest.permission.SEND_SMS,
+                        Manifest.permission.READ_PHONE_STATE,
+                        Manifest.permission.CALL_PHONE,
+                        Manifest.permission.SEND_SMS,
                     ).build().sendSuspend()
 
                     if (result.allGranted()) { // All the permissions are granted.
@@ -477,18 +481,69 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
                 }
 
+                }
+                else {
+
+                    if (localSubscriptionManager.activeSubscriptionInfoCount > 1) {
+                        val localList: List<SubscriptionInfo> = localSubscriptionManager.activeSubscriptionInfoList
+                        val simInfo1: SubscriptionInfo = localList[0] as SubscriptionInfo
+                        val simInfo2: SubscriptionInfo = localList[1] as SubscriptionInfo
+                        val sim1: Int = simInfo1.subscriptionId
+                        val sim2: Int = simInfo2.subscriptionId
+
+                        if (pAccount == "1") {
+                            smsManager = SmsManager.getSmsManagerForSubscriptionId(sim1) as SmsManager
+                            smsManager.sendTextMessage(code, null, message, sentPI, deliveredPI)
+                            generalUpdatePinInDatabase("1")
+                            pin1Et!!.setText(newPin)
+                        }
+                        else {
+                            smsManager = SmsManager.getSmsManagerForSubscriptionId(sim2) as SmsManager
+                            smsManager.sendTextMessage(code, null, message, sentPI, deliveredPI)
+                            generalUpdatePinInDatabase("2")
+                            pin2Et!!.setText(newPin)
+                        }
+                        showPinUpdateMessage(newPin)
+
+                    }
+                    else if (localSubscriptionManager.activeSubscriptionInfoCount == 1) {
+
+                        val localList: List<SubscriptionInfo> = localSubscriptionManager.activeSubscriptionInfoList
+                        val simInfo1: SubscriptionInfo = localList[0] as SubscriptionInfo
+                        val sim1: Int = simInfo1.subscriptionId
+
+                        if (pAccount == "1"){
+//                                smsManager = SmsManager.getSmsManagerForSubscriptionId(sim1)
+                            smsManager = SmsManager.getSmsManagerForSubscriptionId(sim1)
+                            smsManager.sendTextMessage(code, null, message, sentPI, deliveredPI)
+                            generalUpdatePinInDatabase("1")
+                            pin1Et!!.setText(newPin)
+                            showPinUpdateMessage(newPin)
+                        } else {
+                            val msg: String = "You only have one sim card. Please update your settings with " +
+                                    "appropriate info and set \"phone 1\" to the correct number."
+                            showErrorMessage(msg)
+                        }
+                    }
+
+                }
+
             }
             else {
+
                 if ((pAccount == "1")){
                     SimUtil.sendSMS(context, 0, code, null, message, sentPI, deliveredPI)
                     generalUpdatePinInDatabase("1")
                     pin1Et!!.setText(newPin)
-                } else {
+                }
+                else {
                     SimUtil.sendSMS(context, 1, code, null, message, sentPI, deliveredPI)
                     generalUpdatePinInDatabase("2")
                     pin2Et!!.setText(newPin)
                 }
+
                 showPinUpdateMessage(newPin)
+
             }
 
         }
@@ -496,6 +551,8 @@ class RegisterDetailsActivity() : AppCompatActivity(),
             val msg: String = "Your pin must be a 4 digit number. Please fix pin."
             showErrorMessage(msg)
         }
+
+
     }
 
     // TODO Updated with SMS Intent: Fixed temporally for SMS Policy
@@ -532,76 +589,131 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
                 val localSubscriptionManager = getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE) as SubscriptionManager
 
-                CoroutineScope(Dispatchers.IO).launch {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
-                    val result = permissionsBuilder(
+                    CoroutineScope(Dispatchers.IO).launch {
+
+                        val result = permissionsBuilder(
                             Manifest.permission.READ_PHONE_STATE,
                             Manifest.permission.CALL_PHONE,
                             Manifest.permission.SEND_SMS,
-                    ).build().sendSuspend()
+                        ).build().sendSuspend()
 
-                    if (result.allGranted()) { // All the permissions are granted.
+                        if (result.allGranted()) { // All the permissions are granted.
 
-                        if (localSubscriptionManager.activeSubscriptionInfoCount > 1){
-                            if ((pAccount == "1")){
-                                sendSmsIntent.putExtra("simSlot", 0)
-                                generalUpdatePinInDatabase("1")
-                                pin1Et!!.setText(newPin)
-                            } else {
-                                sendSmsIntent.putExtra("simSlot", 1)
-                                generalUpdatePinInDatabase("2")
-                                pin2Et!!.setText(newPin)
-                            }
-                            showPinUpdateMessage(newPin)
-                            sendSmsIntent.putExtra("sms_body", message)
-                            //startActivity(sendSmsIntent);
-                            startActivityForResult(
-                                    Intent.createChooser(
-                                            sendSmsIntent,
-                                            getString(R.string.choose_messenger_instructions)
-                                    ), 5
-                            )
-                        }
-                        else if (localSubscriptionManager.activeSubscriptionInfoCount == 1) {
-
-                            sendSmsIntent.putExtra("sms_body", message)
-
-                            if ((pAccount == "1")){
-                                sendSmsIntent.putExtra("simSlot", 0)
-                                generalUpdatePinInDatabase("1")
-                                pin1Et!!.setText(newPin)
+                            if (localSubscriptionManager.activeSubscriptionInfoCount > 1){
+                                if ((pAccount == "1")){
+                                    sendSmsIntent.putExtra("simSlot", 0)
+                                    generalUpdatePinInDatabase("1")
+                                    pin1Et!!.setText(newPin)
+                                } else {
+                                    sendSmsIntent.putExtra("simSlot", 1)
+                                    generalUpdatePinInDatabase("2")
+                                    pin2Et!!.setText(newPin)
+                                }
                                 showPinUpdateMessage(newPin)
-
+                                sendSmsIntent.putExtra("sms_body", message)
                                 //startActivity(sendSmsIntent);
                                 startActivityForResult(
-                                        Intent.createChooser(
-                                                sendSmsIntent, getString(
-                                                R.string.choose_messenger_instructions
-                                        )
-                                        ), 5
+                                    Intent.createChooser(
+                                        sendSmsIntent,
+                                        getString(R.string.choose_messenger_instructions)
+                                    ), 5
                                 )
-                            } else {
-                                val msg: String = ("You only have one sim card. Please update " +
-                                        "your settings with appropriate info and " +
-                                        "set \"phone 1\" to the correct number.")
-                                showErrorMessage(msg)
                             }
+                            else if (localSubscriptionManager.activeSubscriptionInfoCount == 1) {
+
+                                sendSmsIntent.putExtra("sms_body", message)
+
+                                if ((pAccount == "1")){
+                                    sendSmsIntent.putExtra("simSlot", 0)
+                                    generalUpdatePinInDatabase("1")
+                                    pin1Et!!.setText(newPin)
+                                    showPinUpdateMessage(newPin)
+
+                                    //startActivity(sendSmsIntent);
+                                    startActivityForResult(
+                                        Intent.createChooser(
+                                            sendSmsIntent, getString(
+                                                R.string.choose_messenger_instructions
+                                            )
+                                        ), 5
+                                    )
+                                } else {
+                                    val msg: String = ("You only have one sim card. Please update " +
+                                            "your settings with appropriate info and " +
+                                            "set \"phone 1\" to the correct number.")
+                                    showErrorMessage(msg)
+                                }
+                            }
+
                         }
+                        else {
 
-                    }
-                    else {
+                            withContext(Dispatchers.Main) {
+                                //KToasty.info(app, "Using local data", Toast.LENGTH_LONG).show()
+                                val message2: String = "You have denied some permissions permanently, " +
+                                        "if the app force close try granting permission from settings."
+                                KToasty.info(context, message2, Toast.LENGTH_LONG, true).show()
 
-                        withContext(Dispatchers.Main) {
-                            //KToasty.info(app, "Using local data", Toast.LENGTH_LONG).show()
-                            val message2: String = "You have denied some permissions permanently, " +
-                                    "if the app force close try granting permission from settings."
-                            KToasty.info(context, message2, Toast.LENGTH_LONG, true).show()
+                            }
 
                         }
 
                     }
 
                 }
+                else {
+
+                    if (localSubscriptionManager.activeSubscriptionInfoCount > 1){
+                        if ((pAccount == "1")){
+                            sendSmsIntent.putExtra("simSlot", 0)
+                            generalUpdatePinInDatabase("1")
+                            pin1Et!!.setText(newPin)
+                        } else {
+                            sendSmsIntent.putExtra("simSlot", 1)
+                            generalUpdatePinInDatabase("2")
+                            pin2Et!!.setText(newPin)
+                        }
+                        showPinUpdateMessage(newPin)
+                        sendSmsIntent.putExtra("sms_body", message)
+                        //startActivity(sendSmsIntent);
+                        startActivityForResult(
+                            Intent.createChooser(
+                                sendSmsIntent,
+                                getString(R.string.choose_messenger_instructions)
+                            ), 5
+                        )
+                    }
+                    else if (localSubscriptionManager.activeSubscriptionInfoCount == 1) {
+
+                        sendSmsIntent.putExtra("sms_body", message)
+
+                        if ((pAccount == "1")){
+                            sendSmsIntent.putExtra("simSlot", 0)
+                            generalUpdatePinInDatabase("1")
+                            pin1Et!!.setText(newPin)
+                            showPinUpdateMessage(newPin)
+
+                            //startActivity(sendSmsIntent);
+                            startActivityForResult(
+                                Intent.createChooser(
+                                    sendSmsIntent, getString(
+                                        R.string.choose_messenger_instructions
+                                    )
+                                ), 5
+                            )
+                        } else {
+                            val msg: String = ("You only have one sim card. Please update " +
+                                    "your settings with appropriate info and " +
+                                    "set \"phone 1\" to the correct number.")
+                            showErrorMessage(msg)
+                        }
+                    }
+
+                }
+
+
 
             }
             else {
@@ -691,35 +803,48 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
         if (newPin.length == 4 && network == "Glo Mobile") {
 
-            CoroutineScope(Dispatchers.IO).launch {
 
-                val result = permissionsBuilder(
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+                CoroutineScope(Dispatchers.IO).launch {
+
+                    val result = permissionsBuilder(
                         Manifest.permission.READ_PHONE_STATE,
                         Manifest.permission.CALL_PHONE,
-                ).build().sendSuspend()
+                    ).build().sendSuspend()
 
-                if (result.allGranted()) { // All the permissions are granted.
+                    if (result.allGranted()) { // All the permissions are granted.
 
-                    startActivity(intent)
-                    KToasty.success(
-                            context,
-                            "Your pin $newPin has been set.",
-                            Toast.LENGTH_LONG,
-                            true
-                    ).show()
+                        startActivity(intent)
+                        KToasty.success(context,
+                            "Your pin $newPin has been set.", Toast.LENGTH_LONG, true
+                        ).show()
 
-                }
-                else {
+                    }
+                    else {
 
-                    withContext(Dispatchers.Main) {
-                        //KToasty.info(app, "Using local data", Toast.LENGTH_LONG).show()
-                        val message: String = "You have denied some permissions permanently, " +
-                                "if the app force close try granting permission from settings."
-                        KToasty.info(context, message, Toast.LENGTH_LONG, true).show()
+                        withContext(Dispatchers.Main) {
+                            //KToasty.info(app, "Using local data", Toast.LENGTH_LONG).show()
+                            val message: String = "You have denied some permissions permanently, " +
+                                    "if the app force close try granting permission from settings."
+                            KToasty.info(context, message, Toast.LENGTH_LONG, true).show()
+
+                        }
 
                     }
 
                 }
+
+            }
+            else {
+
+                startActivity(intent)
+                KToasty.success(
+                    context,
+                    "Your pin $newPin has been set.",
+                    Toast.LENGTH_LONG,
+                    true
+                ).show()
 
             }
 
@@ -732,48 +857,59 @@ class RegisterDetailsActivity() : AppCompatActivity(),
                     true
             ).show()
         }
+
         if (newPin.length == 3 && (network == "Etisalat(9Mobile)")){
 
-            CoroutineScope(Dispatchers.IO).launch {
 
-                val result = permissionsBuilder(
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+                CoroutineScope(Dispatchers.IO).launch {
+
+                    val result = permissionsBuilder(
                         Manifest.permission.READ_PHONE_STATE,
                         Manifest.permission.CALL_PHONE,
-                ).build().sendSuspend()
+                    ).build().sendSuspend()
 
-                if (result.allGranted()) { // All the permissions are granted.
+                    if (result.allGranted()) { // All the permissions are granted.
 
-                    startActivity(intent)
-                    KToasty.success(
+                        startActivity(intent)
+                        KToasty.success(
                             context,
                             "Your pin $newPin has been set.",
                             Toast.LENGTH_LONG,
                             true
-                    ).show()
+                        ).show()
 
-                }
-                else {
+                    }
+                    else {
 
-                    withContext(Dispatchers.Main) {
-                        //KToasty.info(app, "Using local data", Toast.LENGTH_LONG).show()
-                        val message: String = "You have denied some permissions permanently, " +
-                                "if the app force close try granting permission from settings."
-                        KToasty.info(context, message, Toast.LENGTH_LONG, true).show()
+                        withContext(Dispatchers.Main) {
+                            //KToasty.info(app, "Using local data", Toast.LENGTH_LONG).show()
+                            val message: String = "You have denied some permissions permanently, " +
+                                    "if the app force close try granting permission from settings."
+                            KToasty.info(context, message, Toast.LENGTH_LONG, true).show()
+
+                        }
 
                     }
 
                 }
 
             }
+            else {
+
+                startActivity(intent)
+                KToasty.success(context, "Your pin $newPin has been set.",
+                    Toast.LENGTH_LONG, true).show()
+
+            }
 
         }
-        else if (newPin.length != 3 && (network == "Etisalat(9Mobile)")){
-            KToasty.success(
-                    context,
-                    "Your pin must be a 5 digit number for Etisalat(9Mobile). Please fix pin.",
-                    Toast.LENGTH_LONG,
-                    true
-            ).show()
+        else if (newPin.length != 3 && (network == "Etisalat(9Mobile)")) {
+
+            KToasty.success(context, "Your pin must be a 5 digit number for Etisalat(9Mobile). Please fix pin.",
+                    Toast.LENGTH_LONG, true).show()
+
         }
 
     }
@@ -1369,6 +1505,8 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
     }
 
+    var token: String = ""
+
     override  fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -1389,51 +1527,59 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
         context = this
 
-        db    = Firebase.firestore
-        auth = Firebase.auth
+        val pref = context.getSharedPreferences(PREFNAME, Context.MODE_PRIVATE)
 
-        try {
+        token = pref.getString("token", "defaultAll")!!
 
-            if (auth.currentUser == null) {
+        if (auth.currentUser == null) {
 
-                goToLogin()
-
-            }
-            else {
-
-                firebaseUser = auth.currentUser as FirebaseUser
-
-            }
-
-            if (firebaseUser == null) {
-
-                goToLogin()
-
-            }
-            else {
-
-                firebaseUser = auth.currentUser as FirebaseUser
-
-                if (firebaseUser != null) {
-
-                    userId = firebaseUser?.uid
-
-                }
-                else {
-
-                    goToLogin()
-
-                }
-
-            }
+            goToLogin()
 
         }
-        catch (e: Exception) {
+        else {
 
-            KToasty.info(context, "Sorry! You can't use this app because your API level is too low.", Toast.LENGTH_LONG).show()
+            firebaseUser = auth.currentUser as FirebaseUser
 
         }
 
+        if (firebaseUser == null) {
+
+            goToLogin()
+
+        }
+        else {
+
+            userId = firebaseUser!!.uid
+
+        }
+
+//        FirebaseAuth.getInstance().signInWithCustomToken(token).addOnSuccessListener {
+//
+//            try {
+//
+//                if (it.user != null) {
+//
+//                    firebaseUser = it.user
+//                    userId = it.user?.uid
+//
+//                }
+//                else {
+//
+//                    goToLogin()
+//
+//                }
+//
+//            }
+//            catch (e: Exception) {
+//
+//                KToasty.info(context, "Sorry! You can't use this app because your API level is too low.", Toast.LENGTH_LONG).show()
+//
+//            }
+//
+//        }
+
+//        db    = Firebase.firestore
+//        auth = Firebase.auth
 
 
         rda_coordinatorLayout = findViewById<View>(R.id.rda_coordinatorLayout) as CoordinatorLayout
@@ -1517,28 +1663,47 @@ class RegisterDetailsActivity() : AppCompatActivity(),
             permissions: Array<out String>,
             grantResults: IntArray
     ) {
-        if (requestCode == REQUEST_LOCATION_PERMISSION){
-            if (grantResults[0] == PackageManager.PERMISSION_DENIED){
-                KToasty.info(
-                        context,
-                        "Sorry! You can't use this app without " +
+
+        if (requestCode == REQUEST_LOCATION_PERMISSION) {
+
+            if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
+
+                KToasty.info(context, "Sorry! You can't use this app without " +
                                 "granting location permission for a one time only check of location.",
-                        Toast.LENGTH_LONG
-                ).show()
-            } else {
-                registerUser()
+                        Toast.LENGTH_LONG).show()
+
             }
+            else {
+
+                registerUser()
+
+            }
+
         }
         else if (requestCode == REQUEST_LOCATION_PERMISSIONCHECK) {
+
             if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
-                KToasty.info(
-                        context,
-                        "Sorry! You can't use this app without " +
-                                "granting location permission for a one time only check of location.",
-                        Toast.LENGTH_LONG
-                ).show()
+
+                KToasty.info(context, "Sorry! You can't use this app without " +
+                                "granting location permission for a one-time-only check of location.",
+                        Toast.LENGTH_LONG).show()
+
             }
+
         }
+        else if (requestCode == REQUEST_LOCATION_PERMISSION_BEGINNING) {
+
+            if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
+
+                KToasty.info(context, "Sorry! You can't use this app without " +
+                        "granting location permission for a one-time-only check of location.",
+                    Toast.LENGTH_LONG).show()
+
+            }
+
+
+        }
+
     }
 
     fun getAddressFromLocation(
@@ -1808,49 +1973,53 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
                 PERMISSION_GRANTED ||
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) !=
                 PERMISSION_GRANTED) {
 
-            KToasty.info(
+                KToasty.info(
                     context,
                     "First enable LOCATION ACCESS in settings for a one time check.",
                     Toast.LENGTH_LONG
-            ).show()
+                ).show()
 
-            mProgressBar.visibility = View.GONE
+                mProgressBar.visibility = View.GONE
 
-            ActivityCompat.requestPermissions(
+                ActivityCompat.requestPermissions(
                     this, arrayOf(
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-            ),
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    ),
                     REQUEST_LOCATION_PERMISSION
-            )
+                )
 
-        }
-        else {
-            try {
+            }
+            else {
 
-                fusedLocationClient.lastLocation
+                try {
+
+                    fusedLocationClient.lastLocation
                         .addOnSuccessListener(this) { bestLocation1 ->
                             //Location bestLocation = null; //locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                             var bestLocation = bestLocation1
                             val providers = locationManager.getProviders(true)
                             for (provider in providers) {
                                 locationManager.requestLocationUpdates(provider!!, 1000, 0f,
-                                        object : LocationListener {
-                                            override fun onLocationChanged(location: Location) {}
-                                            override fun onProviderDisabled(provider: String) {}
-                                            override fun onProviderEnabled(provider: String) {}
-                                            override fun onStatusChanged(
-                                                    provider: String, status: Int,
-                                                    extras: Bundle) {}
-                                        })
+                                    object : LocationListener {
+                                        override fun onLocationChanged(location: Location) {}
+                                        override fun onProviderDisabled(provider: String) {}
+                                        override fun onProviderEnabled(provider: String) {}
+                                        override fun onStatusChanged(
+                                            provider: String, status: Int,
+                                            extras: Bundle) {}
+                                    })
                                 val l = locationManager.getLastKnownLocation(provider) ?: continue
                                 if (bestLocation == null
-                                        || l.accuracy < bestLocation.accuracy) {
+                                    || l.accuracy < bestLocation.accuracy) {
                                     bestLocation = l
                                 }
                             }
@@ -1871,8 +2040,8 @@ class RegisterDetailsActivity() : AppCompatActivity(),
                                 }
 
                                 Log.e(
-                                        "ATTENTION ATTENTION",
-                                        "Inside getLocationPoints. Got Location."
+                                    "ATTENTION ATTENTION",
+                                    "Inside getLocationPoints. Got Location."
                                 )
 
                                 //KToasty.success(RegisterDetailsActivity.this, "Got Location.", Toast.LENGTH_LONG,true).show()
@@ -1894,24 +2063,111 @@ class RegisterDetailsActivity() : AppCompatActivity(),
                             }
                         }
 
+                }
+                catch (e: SecurityException) {
+                    e.printStackTrace()
+                    Toasty.error(
+                        this@RegisterDetailsActivity,
+                        "Error: " + e.message,
+                        Toasty.LENGTH_LONG
+                    ).show()
+                }
+                catch (e: java.lang.NullPointerException) {
+                    e.printStackTrace()
+                    Toasty.error(
+                        this@RegisterDetailsActivity,
+                        "Error: " + e.message,
+                        Toasty.LENGTH_LONG
+                    ).show()
+                }
+            }
+
+        }
+        else {
+
+            try {
+
+                fusedLocationClient.lastLocation
+                    .addOnSuccessListener(this) { bestLocation1 ->
+                        //Location bestLocation = null; //locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                        var bestLocation = bestLocation1
+                        val providers = locationManager.getProviders(true)
+                        for (provider in providers) {
+                            locationManager.requestLocationUpdates(provider!!, 1000, 0f,
+                                object : LocationListener {
+                                    override fun onLocationChanged(location: Location) {}
+                                    override fun onProviderDisabled(provider: String) {}
+                                    override fun onProviderEnabled(provider: String) {}
+                                    override fun onStatusChanged(
+                                        provider: String, status: Int,
+                                        extras: Bundle) {}
+                                })
+                            val l = locationManager.getLastKnownLocation(provider) ?: continue
+                            if (bestLocation == null
+                                || l.accuracy < bestLocation.accuracy) {
+                                bestLocation = l
+                            }
+                        }
+
+                        // Got last known location. In some rare situations this can be null.
+                        if (bestLocation != null) {
+                            // Logic to handle location object
+                            Log.e("ATTENTION ATTENTION", "Location Received")
+                            longitude = bestLocation.longitude
+                            latitude = bestLocation.latitude
+                            val addressRun = getAddress(longitude, latitude)
+
+                            finalAddress = if (addressRun != "failed") {
+                                "$address, $city, $statee, $country"
+                            }
+                            else {
+                                "unknown"
+                            }
+
+                            Log.e(
+                                "ATTENTION ATTENTION",
+                                "Inside getLocationPoints. Got Location."
+                            )
+
+                            //KToasty.success(RegisterDetailsActivity.this, "Got Location.", Toast.LENGTH_LONG,true).show()
+                            Log.e("ATTENTION ATTENTION", "longitude: $longitude")
+                            Log.e("ATTENTION ATTENTION", "latitude: $latitude")
+                            Log.e("ATTENTION ATTENTION", "Location: $finalAddress")
+                            mProgressBar.visibility = View.GONE
+                            mProgressBarLocation.visibility = View.GONE
+                            registerUser()
+
+                        }
+                        else {
+                            getLocationPoints()
+                            Log.e("ATTENTION ATTENTION", "Location Not Received.")
+                            Log.e("ATTENTION ATTENTION", "Will Try Again.")
+                            val errorMessage = "Please register after granting permissions in settings."
+
+                            //KToasty.error(RegisterDetailsActivity.this, errorMessage, Toast.LENGTH_LONG,true).show()
+                        }
+                    }
+
             }
             catch (e: SecurityException) {
                 e.printStackTrace()
                 Toasty.error(
-                        this@RegisterDetailsActivity,
-                        "Error: " + e.message,
-                        Toasty.LENGTH_LONG
+                    this@RegisterDetailsActivity,
+                    "Error: " + e.message,
+                    Toasty.LENGTH_LONG
                 ).show()
             }
             catch (e: java.lang.NullPointerException) {
                 e.printStackTrace()
                 Toasty.error(
-                        this@RegisterDetailsActivity,
-                        "Error: " + e.message,
-                        Toasty.LENGTH_LONG
+                    this@RegisterDetailsActivity,
+                    "Error: " + e.message,
+                    Toasty.LENGTH_LONG
                 ).show()
             }
+
         }
+
     }
 
 
@@ -2241,6 +2497,9 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
             this@RegisterDetailsActivity.runOnUiThread {
 
+                db    = Firebase.firestore
+                auth = Firebase.auth
+
                 val userTask: Task<Void> = Objects.requireNonNull(auth.currentUser)!!.reload()
 
                 userTask.addOnSuccessListener {
@@ -2436,6 +2695,8 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
     }
 
+
+
     public  override  fun onDestroy(){
         super.onDestroy()
 
@@ -2511,6 +2772,7 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
         private val PERMISSION_READ_PHONE_STATE: Int = 18
         private val PERMISSION_CALL_PHONE: Int = 19
+        private val REQUEST_LOCATION_PERMISSION_BEGINNING: Int = 10
         private val REQUEST_LOCATION_PERMISSION: Int = 20
         private val REQUEST_LOCATION_PERMISSIONCHECK: Int = 21
         private val REQUEST_CHECK_SETTINGS: Int = 214
