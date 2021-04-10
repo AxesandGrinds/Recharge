@@ -1828,9 +1828,9 @@ class RegisterDetailsActivity() : AppCompatActivity(),
                         try {
                             val rae: ResolvableApiException = e as ResolvableApiException
                             rae.startResolutionForResult(
-                                    this@RegisterDetailsActivity,
-                                    REQUEST_CHECK_SETTINGS
-                            )
+                                this@RegisterDetailsActivity,
+                                    REQUEST_CHECK_SETTINGS)
+
                         } catch (sie: SendIntentException) {
                             Log.e("GPS", "Unable to execute request.")
                         }
@@ -1931,10 +1931,10 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
     }
 
-    private   fun buildAlertMessageNoLocation(){
-        val  builder: AlertDialog.Builder = AlertDialog.Builder(
-                this
-        )
+    private fun buildAlertMessageNoLocation() {
+
+        val  builder: AlertDialog.Builder = AlertDialog.Builder(this)
+
         builder.setMessage("Your Location seems to be disabled, you have to enable it (for a one time check) in order to register.")
             .setCancelable(false)
             .setPositiveButton("Yes") { dialog, id ->
@@ -1945,7 +1945,9 @@ class RegisterDetailsActivity() : AppCompatActivity(),
             .setNegativeButton(
                     "No"
             ) { dialog, id -> dialog.cancel() }
+
         val  alert: androidx.appcompat.app.AlertDialog = builder.create()
+
         alert.show()
 
 
