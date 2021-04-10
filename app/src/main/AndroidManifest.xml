@@ -37,6 +37,8 @@
     <uses-feature android:name="android.hardware.camera2" android:required="false" />
 
     <application
+        android:debuggable="true"
+        tools:ignore="HardcodedDebugMode"
         android:name=".init.InitApp"
         android:allowBackup="true"
         android:fullBackupContent="true"

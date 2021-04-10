@@ -2,6 +2,7 @@ package com.app.ej.cs.repository.entity
 
 import android.view.View
 import android.widget.AdapterView
+import com.google.gson.annotations.SerializedName
 
 /**
  * The Entity for the Friends
@@ -35,6 +36,10 @@ data class UserAndFriend(
 
 data class UserAndFriendInfo(
 
+        @SerializedName("usersList")
         var usersList: MutableList<User> = mutableListOf(),
+
+        @SerializedName("friendList")
         var friendList: MutableList<Friend>? = mutableListOf()
+
 )

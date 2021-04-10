@@ -121,7 +121,6 @@ class ScanFragment : Fragment(), ScanFragmentView {
 
     }
 
-
   }
 
   override fun displayFriends(friendList: FriendListModel) {
@@ -761,8 +760,12 @@ private val TAG: String = "ATTENTION ATTENTION"
 
       Log.e("ATTENTION ATTENTION", "allInfoSaved: ${allInfoSaved.toString()}")
 
-      userMainListModel.userList = mutableListOf(allInfoSaved.usersList[0])
-      scanFragmentUserMainViewAdapter.notifyDataSetChanged()
+      if (allInfoSaved.usersList.size > 0) {
+
+        userMainListModel.userList = mutableListOf(allInfoSaved.usersList[0])
+        scanFragmentUserMainViewAdapter.notifyDataSetChanged()
+
+      }
 
       if (allInfoSaved.usersList.size > 1) {
 
@@ -773,7 +776,10 @@ private val TAG: String = "ATTENTION ATTENTION"
 
       loadFriends(allInfoSaved.friendList)
 
-      if (userMainListModel.userList.isEmpty()) {
+      val emailVerified   = sharedPref.getBoolean("email_verified", false)
+      val locationReceived = sharedPref.getBoolean("location_received", false)
+
+      if (userMainListModel.userList.isEmpty() && (!emailVerified || !locationReceived)) {
 
         (activity as MainActivity).let{
 

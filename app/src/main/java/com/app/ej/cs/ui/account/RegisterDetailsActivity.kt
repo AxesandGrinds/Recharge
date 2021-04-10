@@ -92,7 +92,6 @@ class RegisterDetailsActivity() : AppCompatActivity(),
     private lateinit var addFriendDoneListener: AddFriendDoneListener
 
     private val TAG: String = RegisterDetailsActivity::class.java.simpleName
-    private val SHARED_PREFERENCES: String = "SHARED_PREFERENCES"
     private lateinit var  context: Context
 
     var registrationComplete: Boolean = false
@@ -308,7 +307,7 @@ class RegisterDetailsActivity() : AppCompatActivity(),
                 .addOnSuccessListener(OnSuccessListener<Void?> {
 
                     val pref: SharedPreferences = context
-                            .getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE)
+                            .getSharedPreferences(PREFNAME, Context.MODE_PRIVATE)
                     val editor: SharedPreferences.Editor = pref.edit()
                     editor.putString("pin1", pin1Et!!.text.toString())
                     editor.apply()
@@ -334,7 +333,7 @@ class RegisterDetailsActivity() : AppCompatActivity(),
                 .addOnSuccessListener(OnSuccessListener<Void?> {
 
                     val pref: SharedPreferences = context
-                            .getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE)
+                            .getSharedPreferences(PREFNAME, Context.MODE_PRIVATE)
                     val editor: SharedPreferences.Editor = pref.edit()
                     editor.putString("pin2", pin2Et!!.text.toString())
                     editor.apply()
@@ -557,7 +556,7 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
     // TODO Updated with SMS Intent: Fixed temporally for SMS Policy
     @SuppressLint("MissingPermission")
-    private   fun smsNewPin(pAccount: String, network: String, newPin: String) {
+   /* private   fun smsNewPin(pAccount: String, network: String, newPin: String) {
 
         val code: String
         val message: String
@@ -742,7 +741,7 @@ class RegisterDetailsActivity() : AppCompatActivity(),
             showErrorMessage(msg)
         }
 
-    }
+    }*/
 
 
 
@@ -914,7 +913,7 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
     }
 
-    private fun createNewPin(pAccount: String, newPin: String, network: String){
+    /*private fun createNewPin(pAccount: String, newPin: String, network: String){
 
         when (network) {
 
@@ -942,9 +941,9 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
         }
 
-    }
+    }*/
 
-    private fun setupNewPin(pAccount: String) {
+    /*private fun setupNewPin(pAccount: String) {
 
         pinBuilder = AlertDialog.Builder(context, R.style.MyDialogTheme)
         pinBuilder.setTitle("Confirm")
@@ -1066,7 +1065,7 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
         pinBuilder.create().show()
 
-    }
+    }*/
 
     private fun returnToLogin(context: Context){
         val intent: Intent = Intent(context, LoginActivity::class.java)
@@ -1134,7 +1133,7 @@ class RegisterDetailsActivity() : AppCompatActivity(),
             }
             else {
 
-                util.onShowErrorMessage("You need internet access to save.", context, view)
+                util.onShowErrorMessage("You need internet access to register.", context, view)
 
             }
 
@@ -1409,7 +1408,7 @@ class RegisterDetailsActivity() : AppCompatActivity(),
                 uid = userId!!,
                 index = 0,
                 description = "User 1",
-                folded = false,
+                folded = true,
                 created = created,
                 name = null,
                 email = null,
@@ -1435,7 +1434,7 @@ class RegisterDetailsActivity() : AppCompatActivity(),
                 uid = userId!!,
                 index = 1,
                 description = "User 2",
-                folded = false,
+                folded = true,
                 created = created,
                 name = null,
                 email = null,
@@ -1460,7 +1459,7 @@ class RegisterDetailsActivity() : AppCompatActivity(),
             Friend(
                 index = 0,
                 description = "Friend ${0 + 1}",
-                folded = false,
+                folded = true,
                 name = null,
                 phone1 = null,
                 phone2 = null,
@@ -1515,7 +1514,7 @@ class RegisterDetailsActivity() : AppCompatActivity(),
                         .addInterceptor(
                                 CalligraphyInterceptor(
                                         CalligraphyConfig.Builder()
-                                                .setDefaultFontPath("fonts/bold.ttf")
+                                                .setDefaultFontPath("font/bold.ttf")
                                                 .setFontAttrId(R.attr.fontPath)
                                                 .build()
                                 )
@@ -1770,17 +1769,26 @@ class RegisterDetailsActivity() : AppCompatActivity(),
         //getAddressFromLocation(lons, lats, context, GeoCodeHandler())
 
         val geocoder: Geocoder
+
         val lon: Double = lons
         val lat: Double = lats
+
         geocoder = Geocoder(context, Locale.getDefault())
+
         var  addresses: List<android.location.Address>? = null
+
         try {
+
             addresses = geocoder.getFromLocation(lat, lon, 1)
+
         }
-        catch (e: java.io.IOException){
+        catch (e: Exception) {
+
             e.printStackTrace()
+
         }
-        return if (addresses != null){
+        return if (addresses != null) {
+
             address = addresses[0].getAddressLine(0)
             city = addresses[0].locality
             statee = addresses[0].adminArea
@@ -1788,9 +1796,12 @@ class RegisterDetailsActivity() : AppCompatActivity(),
             postalCode = addresses[0].postalCode
             knownName = addresses[0].featureName
             address
+
         }
         else {
+
             "failed"
+
         }
 
     }
@@ -2054,32 +2065,41 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
                             }
                             else {
+
                                 getLocationPoints()
                                 Log.e("ATTENTION ATTENTION", "Location Not Received.")
                                 Log.e("ATTENTION ATTENTION", "Will Try Again.")
                                 val errorMessage = "Please register after granting permissions in settings."
 
                                 //KToasty.error(RegisterDetailsActivity.this, errorMessage, Toast.LENGTH_LONG,true).show()
+
                             }
+
                         }
 
                 }
                 catch (e: SecurityException) {
+
                     e.printStackTrace()
                     Toasty.error(
                         this@RegisterDetailsActivity,
                         "Error: " + e.message,
                         Toasty.LENGTH_LONG
                     ).show()
+
                 }
                 catch (e: java.lang.NullPointerException) {
+
                     e.printStackTrace()
+
                     Toasty.error(
                         this@RegisterDetailsActivity,
                         "Error: " + e.message,
                         Toasty.LENGTH_LONG
                     ).show()
+
                 }
+
             }
 
         }
@@ -2150,20 +2170,26 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
             }
             catch (e: SecurityException) {
+
                 e.printStackTrace()
+
                 Toasty.error(
                     this@RegisterDetailsActivity,
                     "Error: " + e.message,
                     Toasty.LENGTH_LONG
                 ).show()
+
             }
             catch (e: java.lang.NullPointerException) {
+
                 e.printStackTrace()
+
                 Toasty.error(
                     this@RegisterDetailsActivity,
                     "Error: " + e.message,
                     Toasty.LENGTH_LONG
                 ).show()
+
             }
 
         }
@@ -2253,50 +2279,33 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 //            userAndFriendInfoUnsaved =  UserAndFriendInfo()
 //            userAndFriendInfoUnsaved.usersList = arrayListOf()
 
-            val message: String = "Internal Initialization Error. Error retrieving local data."
+            val message: String = "Error registering. Please try again later."
             util.onShowErrorMessage(message, context)
-            return
 
         }
+        else {
 
-        userAndFriendInfoSaved = gson.fromJson(allInfoJsonUnsaved, UserAndFriendInfo::class.java)
-        userAndFriendInfoUnsaved = gson.fromJson(allInfoJsonUnsaved, UserAndFriendInfo::class.java)
+            userAndFriendInfoSaved = gson.fromJson(allInfoJsonUnsaved, UserAndFriendInfo::class.java)
+            userAndFriendInfoUnsaved = gson.fromJson(allInfoJsonUnsaved, UserAndFriendInfo::class.java)
 
-        val user = auth.currentUser
+            val user = auth.currentUser
 
-        if (user != null) userId = user.uid
+            if (user != null) userId = user.uid
 
-        userAndFriendInfoUnsaved.usersList[0].created = created
-        userAndFriendInfoSaved.usersList[0].created = created
-        userAndFriendInfoUnsaved.usersList[0].created = created
-        userAndFriendInfoSaved.usersList[0].created = created
+            if (userAndFriendInfoUnsaved.usersList.size > 0) {
 
-        userAndFriendInfoUnsaved.usersList[0].uid = userId!!
-        userAndFriendInfoSaved.usersList[0].uid = userId!!
-
-        if (userAndFriendInfoSaved.usersList.size > 1) {
-
-            userAndFriendInfoUnsaved.usersList[1].created = created
-            userAndFriendInfoSaved.usersList[1].created = created
-            userAndFriendInfoUnsaved.usersList[1].created = created
-            userAndFriendInfoSaved.usersList[1].created = created
-
-            userAndFriendInfoUnsaved.usersList[1].uid = userId!!
-            userAndFriendInfoSaved.usersList[1].uid = userId!!
-
-        }
-
-        if (util.checkIfAllMandatoryExist(userAndFriendInfoUnsaved)) {
+                userAndFriendInfoUnsaved.usersList[0].created = created
+                userAndFriendInfoUnsaved.usersList[0].uid = userId!!
 
 
-            Log.w("ATTENTION ATTENTION", "registerUser() ran.")
+            }
 
-//            val sharedPref = context.getSharedPreferences(PREFNAME, Context.MODE_PRIVATE)
+            if (userAndFriendInfoSaved.usersList.size > 0) {
 
-            val editor = sharedPref.edit()
+                userAndFriendInfoSaved.usersList[0].created = created
+                userAndFriendInfoSaved.usersList[0].uid = userId!!
 
-            userAndFriendInfoUnsaved.usersList[0].created = created
-            userAndFriendInfoUnsaved.usersList[0].uid = userId!!
+            }
 
             if (userAndFriendInfoUnsaved.usersList.size > 1) {
 
@@ -2305,180 +2314,206 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
             }
 
-            if (registerCount == 0) {
+            if (userAndFriendInfoSaved.usersList.size > 1) {
 
-                var phone2: String?
-                var network2: String?
 
-                if (userAndFriendInfoUnsaved.usersList.size > 1 && userAndFriendInfoUnsaved.usersList[1].phone != null) {
-                    phone2   = userAndFriendInfoUnsaved.usersList[1].phone!!
-                    network2 = userAndFriendInfoUnsaved.usersList[1].network!!
+                userAndFriendInfoSaved.usersList[1].uid = userId!!
+                userAndFriendInfoSaved.usersList[1].created = created
+
+            }
+
+            if (util.checkIfAllMandatoryExist(userAndFriendInfoUnsaved)) {
+
+                Log.w("ATTENTION ATTENTION", "registerUser() ran.")
+
+    //            val sharedPref = context.getSharedPreferences(PREFNAME, Context.MODE_PRIVATE)
+
+                val editor = sharedPref.edit()
+
+                if (registerCount == 0) {
+
+                    var phone2: String?
+                    var network2: String?
+
+                    if (userAndFriendInfoUnsaved.usersList.size > 1 &&
+                        userAndFriendInfoUnsaved.usersList[1].phone != null
+                        && userAndFriendInfoUnsaved.usersList[1].phone?.trim() != "") {
+
+                        phone2   = userAndFriendInfoUnsaved.usersList[1].phone!!
+                        network2 = userAndFriendInfoUnsaved.usersList[1].network!!
+
+                    }
+                    else {
+                        phone2   = null
+                        network2 = null
+                    }
+
+                    val locationUser: LocationUser =
+
+                        LocationUser(
+                            uid = userId!!,
+                            created = created,
+                            name = userAndFriendInfoUnsaved.usersList[0].name!!,
+                            email = userAndFriendInfoUnsaved.usersList[0].email!!,
+                            phone = userAndFriendInfoUnsaved.usersList[0].phone!!,
+                            network = userAndFriendInfoUnsaved.usersList[0].network!!,
+                            phone2 = phone2,
+                            network2 = network2,
+                            longitude = longitude,
+                            latitude = latitude,
+                            address = address!!,
+                            city = city!!,
+                            state = statee!!,
+                            country = country!!,
+                            postalCode = postalCode!!,
+                            knownName = knownName!!,
+                        )
+
+                    allInfoJsonSaved = Gson().toJson(userAndFriendInfoUnsaved)
+                    allInfoJsonUnsaved = Gson().toJson(userAndFriendInfoUnsaved)
+
+                    val editor = sharedPref!!.edit()
+
+                    editor.putString("allInfoSaved", allInfoJsonUnsaved)
+                    editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
+                    editor.putBoolean("email_verified", true)
+                    editor.putBoolean("location_received", true)
+
+                    editor.apply()
+
+                    db
+                        .collection("locations")
+                        .document(userId!!)
+                        .set(locationUser)
+                        .addOnSuccessListener {
+
+                            db
+                                .collection("users")
+                                .document(userId!!)
+                                .set(userAndFriendInfoUnsaved)
+                                .addOnSuccessListener {
+
+                                    email = userAndFriendInfoUnsaved.usersList[0].email
+                                    currentEmail = email!!
+
+                                    firebaseUser!!.updateEmail(email!!)
+                                        .addOnSuccessListener(OnSuccessListener<Void?> {
+
+                                            firebaseUser!!.sendEmailVerification()
+                                                .addOnSuccessListener(OnSuccessListener<Void?> {
+
+                                                    allInfoJsonSaved = Gson().toJson(userAndFriendInfoUnsaved)
+                                                    allInfoJsonUnsaved = Gson().toJson(userAndFriendInfoUnsaved)
+
+                                                    val editor = sharedPref!!.edit()
+
+                                                    editor.putString("allInfoSaved", allInfoJsonUnsaved)
+                                                    editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
+
+                                                    editor.apply()
+
+                                                    val message: String = "Please go to email: $email and verify your address to continue. Thank you."
+                                                    util.onShowMessage(message, context)
+
+                                                    registerCount++
+
+                                                    runEmailCheck(editor)
+
+                                                })
+                                                .addOnFailureListener(OnFailureListener { })
+                                        })
+                                        .addOnFailureListener(OnFailureListener { e ->
+
+                                            mProgressBar.visibility = View.GONE
+                                            mProgressBarLocation.visibility = View.GONE
+
+                                            val message: String = "Error updating email: " + e.message
+                                            util.onShowErrorMessage(message, context)
+
+                                        })
+
+                                }
+                                .addOnFailureListener { e ->
+
+                                    mProgressBar.visibility = View.GONE
+                                    mProgressBarLocation.visibility = View.GONE
+
+                                    val message: String = "Error saving details: " + e.message
+                                    util.onShowErrorMessage(message, context)
+                                    Log.e(TAG, "Error saving", e)
+
+                                }
+
+                        }
+                        .addOnFailureListener { e ->
+
+                            mProgressBar.visibility = View.GONE
+                            mProgressBarLocation.visibility = View.GONE
+
+                            val message: String = "Error saving details: " + e.message
+                            util.onShowErrorMessage(message, context)
+                            Log.e(TAG, "Error saving", e)
+
+                        }
+
                 }
                 else {
-                    phone2   = null
-                    network2 = null
+
+                    email = userAndFriendInfoUnsaved.usersList[0].email
+    //                currentEmail = email!!
+
+                    if (myFixedRateTimer != null) {
+                        myFixedRateTimer!!.cancel()
+                    }
+
+                    var message: String
+
+                    if (email!! != currentEmail) {
+
+                        registerCount = 0
+
+                        registerUser()
+
+                    }
+                    else {
+
+                        registerCount++
+
+                        message = "Please go to email: $email and verify your address to continue. Thank you."
+
+                        util.onShowMessage(message, context)
+
+                        runEmailCheck(editor)
+
+                    }
+
                 }
 
-                val locationUser: LocationUser =
 
-                    LocationUser(
-                        uid = userId!!,
-                        created = created,
-                        name = userAndFriendInfoUnsaved.usersList[0].name!!,
-                        email = userAndFriendInfoUnsaved.usersList[0].email!!,
-                        phone = userAndFriendInfoUnsaved.usersList[0].phone!!,
-                        network = userAndFriendInfoUnsaved.usersList[0].network!!,
-                        phone2 = phone2,
-                        network2 = network2,
-                        longitude = longitude,
-                        latitude = latitude,
-                        address = address!!,
-                        city = city!!,
-                        state = statee!!,
-                        country = country!!,
-                        postalCode = postalCode!!,
-                        knownName = knownName!!,
-                    )
-
-                allInfoJsonSaved = Gson().toJson(userAndFriendInfoUnsaved)
-                allInfoJsonUnsaved = Gson().toJson(userAndFriendInfoUnsaved)
-
-                val editor = sharedPref!!.edit()
-
-                editor.putString("allInfoSaved", allInfoJsonUnsaved)
-                editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
-
-                editor.apply()
-
-                db
-                    .collection("locations")
-                    .document(userId!!)
-                    .set(locationUser)
-                    .addOnSuccessListener {
-
-                        db
-                            .collection("users")
-                            .document(userId!!)
-                            .set(userAndFriendInfoUnsaved)
-                            .addOnSuccessListener {
-
-                                email = userAndFriendInfoUnsaved.usersList[0].email
-                                currentEmail = email!!
-
-                                firebaseUser!!.updateEmail(email!!)
-                                    .addOnSuccessListener(OnSuccessListener<Void?> {
-
-                                        firebaseUser!!.sendEmailVerification()
-                                            .addOnSuccessListener(OnSuccessListener<Void?> {
-
-                                                allInfoJsonSaved = Gson().toJson(userAndFriendInfoUnsaved)
-                                                allInfoJsonUnsaved = Gson().toJson(userAndFriendInfoUnsaved)
-
-                                                val editor = sharedPref!!.edit()
-
-                                                editor.putString("allInfoSaved", allInfoJsonUnsaved)
-                                                editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
-
-                                                editor.apply()
-
-                                                val message: String = "Please go to email: $email and verify your address to continue. Thank you."
-                                                util.onShowMessage(message, context)
-
-                                                registerCount++
-
-                                                runEmailCheck(editor)
-
-                                            })
-                                            .addOnFailureListener(OnFailureListener { })
-                                    })
-                                    .addOnFailureListener(OnFailureListener { e ->
-
-                                        mProgressBar.visibility = View.GONE
-                                        mProgressBarLocation.visibility = View.GONE
-
-                                        val message: String = "Error updating email: " + e.message
-                                        util.onShowErrorMessage(message, context)
-
-                                    })
-
-                            }
-                            .addOnFailureListener { e ->
-
-                                mProgressBar.visibility = View.GONE
-                                mProgressBarLocation.visibility = View.GONE
-
-                                val message: String = "Error saving details: " + e.message
-                                util.onShowErrorMessage(message, context)
-                                Log.e(TAG, "Error saving", e)
-
-                            }
-
-                    }
-                    .addOnFailureListener { e ->
-
-                        mProgressBar.visibility = View.GONE
-                        mProgressBarLocation.visibility = View.GONE
-
-                        val message: String = "Error saving details: " + e.message
-                        util.onShowErrorMessage(message, context)
-                        Log.e(TAG, "Error saving", e)
-
-                    }
 
             }
             else {
 
-                email = userAndFriendInfoUnsaved.usersList[0].email
-//                currentEmail = email!!
+                if (userAndFriendInfoUnsaved.usersList[0].name == null  || userAndFriendInfoUnsaved.usersList[0].name  == "") {
 
-                if (myFixedRateTimer != null) {
-                    myFixedRateTimer!!.cancel()
-                }
-
-                var message: String
-
-                if (email!! != currentEmail) {
-
-                    registerCount = 0
-
-                    registerUser()
+                    util.onShowErrorMessage("You must set name", context)
 
                 }
-                else {
+                else if (userAndFriendInfoUnsaved.usersList[0].phone == null || userAndFriendInfoUnsaved.usersList[0].phone == "") {
 
-                    registerCount++
-
-                    message = "Please go to email: $email and verify your address to continue. Thank you."
-
-                    util.onShowMessage(message, context)
-
-                    runEmailCheck(editor)
+                    util.onShowErrorMessage("You must set phone 1", context)
 
                 }
+                else if (userAndFriendInfoUnsaved.usersList[0].network != null && userAndFriendInfoUnsaved.usersList[0].network != "") {
 
-            }
+                    util.onShowErrorMessage("You must set network 1", context)
 
-        }
-        else {
+                }
+                else if (userAndFriendInfoUnsaved.usersList[0].email == null || userAndFriendInfoUnsaved.usersList[0].email == "") {
 
-            if (userAndFriendInfoUnsaved.usersList[0].name == null  || userAndFriendInfoUnsaved.usersList[0].name  == "") {
+                    util.onShowErrorMessage("You must set email", context)
 
-                util.onShowErrorMessage("You must set name", context)
-
-            }
-            else if (userAndFriendInfoUnsaved.usersList[0].phone == null || userAndFriendInfoUnsaved.usersList[0].phone == "") {
-
-                util.onShowErrorMessage("You must set phone 1", context)
-
-            }
-            else if (userAndFriendInfoUnsaved.usersList[0].network != null && userAndFriendInfoUnsaved.usersList[0].network != "") {
-
-                util.onShowErrorMessage("You must set network 1", context)
-
-            }
-            else if (userAndFriendInfoUnsaved.usersList[0].email == null || userAndFriendInfoUnsaved.usersList[0].email == "") {
-
-                util.onShowErrorMessage("You must set email", context)
+                }
 
             }
 

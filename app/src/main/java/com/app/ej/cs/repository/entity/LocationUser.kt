@@ -1,31 +1,69 @@
 package com.app.ej.cs.repository.entity
 
+import com.google.gson.annotations.SerializedName
+
 /**
  * The Entity for the Users
  */
 
 data class LocationUser(
 
-        var uid:      String,
-        var created:  String,
-        var name:     String,
-        var email:    String,
-        var phone:    String,
-        var network:  String,
+        @SerializedName("uid")
+        var uid:      String?,
+
+        @SerializedName("created")
+        var created:  String?,
+
+        @SerializedName("name")
+        var name:     String?,
+
+        @SerializedName("email")
+        var email:    String?,
+
+        @SerializedName("phone")
+        var phone:    String?,
+
+        @SerializedName("network")
+        var network:  String?,
+
+        @SerializedName("phone2")
         var phone2:   String?,
+
+        @SerializedName("network2")
         var network2: String?,
 
-        var longitude: Double,
-        var latitude:  Double,
+        @SerializedName("longitude")
+        var longitude: Double?,
 
-        var address:    String,
-        var city:       String,
-        var state:     String,
-        var country:    String,
-        var postalCode: String,
-        var knownName:  String,
+        @SerializedName("latitude")
+        var latitude:  Double?,
 
-        )
+        @SerializedName("address")
+        var address:    String?,
+
+        @SerializedName("city")
+        var city:       String?,
+
+        @SerializedName("state")
+        var state:     String?,
+
+        @SerializedName("country")
+        var country:    String?,
+
+        @SerializedName("postalCode")
+        var postalCode: String?,
+
+        @SerializedName("knownName")
+        var knownName:  String?,
+
+        ) {
+
+        constructor() : this(
+                "", "", "", "", "",
+                "", null, null, null, null,
+                "", "", "", "",
+                "", "")
+}
 
 data class LocationUserInfo(
         var userLocationList: ArrayList<LocationUser> = arrayListOf()

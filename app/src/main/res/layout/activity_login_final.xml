@@ -44,7 +44,7 @@
             android:paddingTop="00dp"
             android:background="@color/login_background_color">
 
-            <!--fontPath="fonts/bold.ttf"-->
+            <!--fontPath="font/bold.ttf"-->
 
 
             <FrameLayout

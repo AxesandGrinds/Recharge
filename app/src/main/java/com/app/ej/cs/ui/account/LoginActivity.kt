@@ -54,7 +54,6 @@ import kotlin.concurrent.timerTask
 
 class LoginActivity : AppCompatActivity() {
 
-
   var activity: Activity? = null
   private lateinit var context: Context
 
@@ -222,7 +221,9 @@ class LoginActivity : AppCompatActivity() {
         user.getIdToken(true).addOnSuccessListener { result ->
 
           val token_id = result.token
+
           Log.d(TAG, "GetTokenResult result = $token_id")
+
           updateUI(STATE_SIGNIN_SUCCESS, user)
 
           mFirestore
@@ -237,45 +238,47 @@ class LoginActivity : AppCompatActivity() {
               editor?.putString("token", token_id)
               editor?.apply()
 
+
               val uid = documentSnapshot.getString("uid")
 
-              if (uid != null) {
+              mFirestore
+                .collection("users")
+                .document(myUserId)
+                .get()
+                .addOnSuccessListener {
 
-                mFirestore
-                        .collection("users")
-                        .document(myUserId)
-                        .get()
-                        .addOnSuccessListener { userDocumentSnapshot ->
+                    userDocumentSnapshot ->
 
-                          val message: String = "Login successful."
-                          util.onShowMessage(message, context)
+                  val allInfo = userDocumentSnapshot.toObject(UserAndFriendInfo::class.java) ?: UserAndFriendInfo()
 
-                          readDataFromFirestoreSaveToLocal(userDocumentSnapshot)
+                  if (allInfo.usersList.size > 0 && allInfo.usersList[0].uid == myUserId) {
 
-                          goToMain()
+                    val message: String = "Login successful."
+                    util.onShowMessage(message, context)
+                    readDataFromFirestoreSaveToLocal(userDocumentSnapshot)
 
-                        }
-                        .addOnFailureListener { e ->
+                  }
+                  else {
 
-                          val message: String = "Requesting more registration details."
-                          util.onShowMessage(message, context)
+                    val message: String = "Requesting more registration details."
+                    util.onShowMessage(message, context)
+                    requestRegistration()
 
-                          requestRegistration()
+                  }
 
-                          Log.e("Error", ".." + e.message)
-                          mProgressBar.visibility = View.GONE
+                }
+                .addOnFailureListener { e ->
 
-                        }
+                  val message: String = "Requesting more registration details."
+                  util.onShowMessage(message, context)
 
-              }
-              else {
+                  requestRegistration()
 
-                val message: String = "Requesting more registration details."
-                util.onShowMessage(message, context)
+                  Log.e("Error", ".." + e.message)
+                  mProgressBar.visibility = View.GONE
 
-                requestRegistration()
+                }
 
-              }
             }
             .addOnFailureListener { e ->
 
@@ -293,11 +296,17 @@ class LoginActivity : AppCompatActivity() {
 
       }
       else {
+
         Log.w(TAG, "signInWithCredential:failure", task.exception)
+
         if (task.exception is FirebaseAuthInvalidCredentialsException) {
+
           verification_codeEt.error = "Invalid code."
+
         }
+
         updateUI(STATE_SIGNIN_FAILED)
+
       }
 
     }
@@ -341,12 +350,18 @@ class LoginActivity : AppCompatActivity() {
 
       editor.putString("allInfoSaved", allInfoJsonSaved)
       editor.putString("allInfoUnsaved", allInfoJsonSaved)
+      editor.putBoolean("email_verified", true)
+      editor.putBoolean("location_received", true)
 
       editor.apply()
 
+      goToMain()
+
     }
-    catch (ex: Exception){
+    catch (ex: Exception) {
+
       Log.e(TAG, ex.toString())
+
     }
 
   }
@@ -456,9 +471,13 @@ class LoginActivity : AppCompatActivity() {
   }
 
   private fun goToMain() {
+
     val i = Intent(this@LoginActivity, MainActivity::class.java)
+
     startActivity(i)
+
     finish()
+
   }
 
   private fun isOnline(context: Context) : Boolean {
@@ -597,7 +616,7 @@ class LoginActivity : AppCompatActivity() {
         .addInterceptor(
           CalligraphyInterceptor(
             CalligraphyConfig.Builder()
-              .setDefaultFontPath("fonts/bold.ttf")
+              .setDefaultFontPath("font/bold.ttf")
               .setFontAttrId(R.attr.fontPath)
               .build()
           )

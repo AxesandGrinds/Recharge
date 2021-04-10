@@ -47,7 +47,7 @@ import kotlinx.coroutines.*
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-class MainActivity : AppCompatActivity(), CheckLoggedIn {
+class MainActivity : AppCompatActivity() {
 
 //  override fun onCreate(savedInstanceState: Bundle?) {
 //    super.onCreate(savedInstanceState)
@@ -79,8 +79,6 @@ class MainActivity : AppCompatActivity(), CheckLoggedIn {
   private lateinit var context: Context
 
 
-  private val SHARED_PREFERENCES = "SHARED_PREFERENCES"
-
 
   private lateinit var firestore:    FirebaseFirestore
   private lateinit var auth:         FirebaseAuth
@@ -96,26 +94,6 @@ class MainActivity : AppCompatActivity(), CheckLoggedIn {
 
 
 
-
-
-
-
-
-
-
-  override fun startLogin(i: Intent?) {
-
-    startActivity(i)
-    finish()
-
-  }
-
-  override fun startRegister(i: Intent?) {
-
-    startActivity(i)
-    finish()
-
-  }
 
   private fun loadFragment(fragment: Fragment) {
 
@@ -152,32 +130,27 @@ class MainActivity : AppCompatActivity(), CheckLoggedIn {
 
     }
 
+  }
+
+  private fun returnToRegistrationCountDown(duration: Long) {
+
+    GlobalScope.launch(Dispatchers.Main) {
+      val totalSeconds = TimeUnit.MILLISECONDS.toSeconds(duration)
+      val tickSeconds = 1
+      for (second in totalSeconds downTo tickSeconds) {
+
+        delay(1000)
+
+      }
+
+      CoroutineScope(Dispatchers.Main).launch {
+
+        returnToRegister(context)
+
+      }
 
 
-
-
-
-
-
-
-//
-//    val tickerChannel = ticker(delayMillis = 2000, initialDelayMillis = 0)
-//
-//    CoroutineScope(Dispatchers.IO).launch {
-//
-//      for (event in tickerChannel) {
-//        // the 'event' variable is of type Unit, so we don't really care about it
-//        val currentTime = LocalDateTime.now()
-//        println(currentTime)
-//      }
-//
-//
-//    }
-//
-//    delay(1000)
-//
-//// when you're done with the ticker and don't want more events
-//    tickerChannel.cancel()
+    }
 
   }
 
@@ -222,6 +195,17 @@ class MainActivity : AppCompatActivity(), CheckLoggedIn {
   }
 
 
+
+  private fun goToRegistration() {
+
+    val i = Intent(this@MainActivity, RegisterActivity::class.java)
+
+    startActivity(i)
+
+    finish()
+
+  }
+
   private val PREFNAME: String = "local_user"
 
   // [START on_start_check_user]
@@ -236,46 +220,49 @@ class MainActivity : AppCompatActivity(), CheckLoggedIn {
     firebaseUser = auth.currentUser
     userId       = firebaseUser?.uid
 
-    val prefs = context.getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE)
+    val prefs = context.getSharedPreferences(PREFNAME, MODE_PRIVATE)
     val registeredFullyEmail    = prefs.getBoolean("email_verified", false)
     val registeredFullyLocation = prefs.getBoolean("location_received", false)
 
-    if (firebaseUser != null) {
+    if (!registeredFullyEmail && !registeredFullyLocation) {
 
-      if (!firebaseUser!!.isEmailVerified) {
-
-        returnToLoginCountDown(600)
-
-      }
+      returnToLoginCountDown(1000)
 
     }
-    else {
+//    else {
 
-      val sharedPref = context.getSharedPreferences(PREFNAME, Context.MODE_PRIVATE)
-
-      val gson = Gson()
-
-      var allInfoJson: String? = null
-
-      allInfoJson = sharedPref.getString("allInfoSaved", "defaultAll")
-
-      if (allInfoJson != "defaultAll") {
-
-        val allInfo = gson.fromJson(allInfoJson, UserAndFriendInfo::class.java)
-
-        Log.e("ATTENTION ATTENTION", "local allInfo.toString(): ${allInfo.toString()}")
-
-        if (allInfo.usersList[0].created == null || allInfo.usersList[0].created == "") {
-          returnToLoginCountDown(600)
-        }
-
-      }
-
-      if (!registeredFullyLocation || !registeredFullyEmail) {
-        returnToLoginCountDown(600)
-      }
-
-    }
+//      val sharedPref = context.getSharedPreferences(PREFNAME, Context.MODE_PRIVATE)
+//
+//      val gson = Gson()
+//
+//      var allInfoJson: String? = null
+//
+//      allInfoJson = sharedPref.getString("allInfoSaved", "defaultAll")
+//
+//      if (allInfoJson != "defaultAll") {
+//
+//        val allInfo = gson.fromJson(allInfoJson, UserAndFriendInfo::class.java)
+//
+//        Log.e("ATTENTION ATTENTION", "local allInfo.toString(): ${allInfo.toString()}")
+//
+//        if (allInfo.usersList.size > 0) {
+//
+////          if (allInfo.usersList[0].created == null || allInfo.usersList[0].created == "") {
+////            returnToLoginCountDown(600)
+////          }
+//
+//        }
+//        else {
+////          returnToLoginCountDown(600)
+//        }
+//
+//      }
+//
+////      if (!registeredFullyLocation || !registeredFullyEmail) {
+////        returnToLoginCountDown(600)
+////      }
+//
+//    }
 
 
   }
@@ -289,6 +276,7 @@ class MainActivity : AppCompatActivity(), CheckLoggedIn {
   @SuppressLint("SetTextI18n")
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+
     setContentView(R.layout.activity_main_final)
 
     context = this
@@ -340,7 +328,10 @@ class MainActivity : AppCompatActivity(), CheckLoggedIn {
     val navView = findViewById<BottomNavigationView>(R.id.nav_view)
     deleteBuilder = AlertDialog.Builder(context, R.style.MyDialogTheme)
     deleteBuilder.setTitle("Are you sure you want to delete this account?")
-    deleteBuilder.setPositiveButton(android.R.string.ok) { dialog, which ->
+
+    deleteBuilder.setPositiveButton(android.R.string.ok) {
+
+        dialog, which ->
 
       dialog.dismiss()
 
@@ -348,10 +339,8 @@ class MainActivity : AppCompatActivity(), CheckLoggedIn {
         deleteAccount()
       }
       else {
-
         val message: String = "You need internet access in order to delete account. Make sure internet is working."
         util.onShowErrorMessage(message, context)
-
       }
 
     }
@@ -379,12 +368,16 @@ class MainActivity : AppCompatActivity(), CheckLoggedIn {
         util.onShowMessage(message, context)
 
         returnToLoginCountDown(3000)
+
       }
       else {
 
         KToasty.error(context, "Error: " + task.exception, Toast.LENGTH_LONG).show()
+
       }
+
     }
+
   }
 
   private val mOnNavigationItemSelectedListener =

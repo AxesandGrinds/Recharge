@@ -15,7 +15,23 @@
       },
       "oauth_client": [
         {
-          "client_id": "927325322480-0o09jcvdovqu4m79i6nn0u5l1hhdi85c.apps.googleusercontent.com",
+          "client_id": "927325322480-1t89m96t5fe9kdup8adtaduaubpc7a2c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.ej.cs",
+            "certificate_hash": "a920e13eab815600d0d83f10dff3ae99d92593ea"
+          }
+        },
+        {
+          "client_id": "927325322480-gskvkcj3j3hfab3d2i1o5hagf63jg20b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.ej.cs",
+            "certificate_hash": "3688a233018aad634814ec11ec771d2d05d3ba1c"
+          }
+        },
+        {
+          "client_id": "927325322480-q5m837lukom2runv24s9lqru2absjkjh.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.app.ej.cs",
@@ -23,11 +39,11 @@
           }
         },
         {
-          "client_id": "927325322480-69bc7mbe2l64qqos3q8jh8k097lc4rvd.apps.googleusercontent.com",
+          "client_id": "927325322480-t85af91s4nj5jj3l0r34mc9qhmt1eqm0.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.app.ej.cs",
-            "certificate_hash": "b87235ce2a4fd2643d3e44e4698f505c64855fba"
+            "certificate_hash": "d5a16566eadcdebc9428f93aedfa3300f5ad9a75"
           }
         },
         {

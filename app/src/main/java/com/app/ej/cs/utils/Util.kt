@@ -83,8 +83,8 @@ class Util {
 
     fun onShowMessageSuccess(message: String, context: Context, view: View) {
 
-        val snackbar = Snackbar.make(view, "", Snackbar.LENGTH_LONG)
-        val toast    = KToasty.success(context, message, Toast.LENGTH_LONG, true)
+        val snackbar = Snackbar.make(view, "", Snackbar.LENGTH_SHORT)
+        val toast    = KToasty.success(context, message, Toast.LENGTH_SHORT, true)
 
         snackbar.show()
         toast.show()
@@ -101,8 +101,8 @@ class Util {
 
     fun onShowErrorMessage(message: String, context: Context, view: View) {
 
-        val snackbar = Snackbar.make(view, "", Snackbar.LENGTH_LONG)
-        val toast    = KToasty.error(context, message, Toast.LENGTH_LONG, true)
+        val snackbar = Snackbar.make(view, "", Snackbar.LENGTH_SHORT)
+        val toast    = KToasty.error(context, message, Toast.LENGTH_SHORT, true)
 
         snackbar.show()
         toast.show()
