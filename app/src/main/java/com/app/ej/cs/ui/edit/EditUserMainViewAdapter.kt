@@ -64,7 +64,7 @@ class EditUserMainViewAdapter(
                       uid= "",
                       index = 0,
                       description = "User 1",
-                      folded = false,
+                      folded = true,
                       created = null,
                       name = "",
                       email = "",

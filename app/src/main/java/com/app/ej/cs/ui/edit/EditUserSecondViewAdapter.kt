@@ -62,7 +62,7 @@ class EditUserSecondViewAdapter(
                       uid= "",
                       index = 1,
                       description = "User 2",
-                      folded = false,
+                      folded = true,
                       created = null,
                       name = "",
                       email = "",

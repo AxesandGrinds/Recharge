@@ -229,6 +229,7 @@ class MainActivity : AppCompatActivity() {
       returnToLoginCountDown(1000)
 
     }
+
 //    else {
 
 //      val sharedPref = context.getSharedPreferences(PREFNAME, Context.MODE_PRIVATE)
@@ -367,6 +368,14 @@ class MainActivity : AppCompatActivity() {
         val message: String = "You have successfully deleted your account."
         util.onShowMessage(message, context)
 
+        val sharedPref = context.getSharedPreferences(PREFNAME, Context.MODE_PRIVATE)
+
+        val editor = sharedPref!!.edit()
+
+        editor.clear()
+
+        editor.apply()
+
         returnToLoginCountDown(3000)
 
       }
@@ -436,19 +445,29 @@ class MainActivity : AppCompatActivity() {
   }
 
   override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
     when (item.itemId) {
+
       R.id.sign_out -> {
+
         Toasty.info(this, "Signing out.", Toasty.LENGTH_SHORT).show()
         signOut()
+
       }
       R.id.delete_account -> {
-        Toasty.info(this, "Deleting Account.", Toasty.LENGTH_LONG).show()
-        deleteBuilder.show()
+        runDelete()
       }
-      else -> {
-      }
+      else -> { }
+
     }
     return super.onOptionsItemSelected(item)
+  }
+
+  private fun runDelete() {
+
+    Toasty.info(this, "Deleting Account.", Toasty.LENGTH_LONG).show()
+    deleteBuilder.show()
+
   }
 
   fun returnToLogin(context: Context) {
@@ -470,6 +489,14 @@ class MainActivity : AppCompatActivity() {
   private fun signOut() {
 
     FirebaseAuth.getInstance().signOut()
+
+    val sharedPref = context.getSharedPreferences(PREFNAME, Context.MODE_PRIVATE)
+
+    val editor = sharedPref!!.edit()
+
+    editor.clear()
+
+    editor.apply()
 
     returnToLoginCountDown(600)
 

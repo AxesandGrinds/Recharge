@@ -1250,28 +1250,42 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
     private fun initEditSecondRecyclerView() {
 
-
         userSecondRecyclerView = findViewById(R.id.edit_user_second_recycler_view)
-        userSecondRecyclerView.layoutManager = LinearLayoutManager(
+
+        val phoneUtil: PhoneUtil = PhoneUtil()
+
+        val isDualSimPhone: Boolean = phoneUtil.isDualSim(this)
+
+        if (isDualSimPhone) {
+
+            userSecondRecyclerView.layoutManager = LinearLayoutManager(
                 context,
                 LinearLayoutManager.VERTICAL,
                 false
-        )
+            )
 
-        val dividerItemDecoration = DividerItemDecoration(
+            val dividerItemDecoration = DividerItemDecoration(
                 context,
                 LinearLayoutManager.VERTICAL
-        )
+            )
 
-        userSecondRecyclerView.addItemDecoration(dividerItemDecoration)
+            userSecondRecyclerView.addItemDecoration(dividerItemDecoration)
 
-        userSecondRecyclerView.isNestedScrollingEnabled = false
+            userSecondRecyclerView.isNestedScrollingEnabled = false
 
-        editFragmentUserSecondViewAdapter = EditUserSecondViewAdapter(userSecondListModel) {
+            editFragmentUserSecondViewAdapter = EditUserSecondViewAdapter(userSecondListModel) {
 //            KToasty.info(context, "${it?.name}@${it?.phone} Clicked", Toast.LENGTH_LONG).show()
+            }
+
+            userSecondRecyclerView.adapter = editFragmentUserSecondViewAdapter
+
+        }
+        else {
+
+            userSecondRecyclerView.visibility = View.GONE
+
         }
 
-        userSecondRecyclerView.adapter = editFragmentUserSecondViewAdapter
 
     }
 

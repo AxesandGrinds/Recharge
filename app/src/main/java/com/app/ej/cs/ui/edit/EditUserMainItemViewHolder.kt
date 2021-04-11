@@ -72,8 +72,6 @@ class EditUserMainItemViewHolder(
 
   private val PREFNAME: String = "local_user"
 
-  private val PREFNAMEUNSAVED: String = "local_user_unsaved"
-
   private var userAndFriendInfo: UserAndFriendInfo = UserAndFriendInfo()
 
   private val gson = Gson()
@@ -116,7 +114,7 @@ class EditUserMainItemViewHolder(
           uid= "",
           index = 0,
           description = "User 1",
-          folded = false,
+          folded = true,
           created = null,
           name = null,
           email = null,
@@ -140,7 +138,7 @@ class EditUserMainItemViewHolder(
           uid= "",
           index = 1,
           description = "User 2",
-          folded = false,
+          folded = true,
           created = null,
           name = null,
           email = null,
@@ -169,7 +167,7 @@ class EditUserMainItemViewHolder(
                 index = 0,
                 description = "Friend ${0 + 1}",
 
-                folded = false,
+                folded = true,
 
                 name = null,
                 phone1 = null,
@@ -384,7 +382,8 @@ class EditUserMainItemViewHolder(
 
       userAndFriendInfo.usersList[model.index].folded = folded
       allInfoUnsaved.usersList[model.index].folded = folded
-      allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+
+      allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
 
       val editor = sharedPref!!.edit()
       editor.putString("allInfoUnsaved", allInfoJsonUnsaved)

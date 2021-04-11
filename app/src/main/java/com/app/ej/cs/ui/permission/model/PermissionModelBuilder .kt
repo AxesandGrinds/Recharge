@@ -119,6 +119,7 @@ class PermissionModelBuilder private constructor(private val context: Context) {
   }
 
   init {
+
     permissionModel = PermissionModel() // Generate sane default values
     withTextColor(Color.WHITE)
     withTextSize(R.dimen.permissions_text_size)
@@ -128,6 +129,7 @@ class PermissionModelBuilder private constructor(private val context: Context) {
 //    withRequestIcon(R.drawable.ic_baseline_check_circle_60)
 //    withPreviousIcon(R.drawable.ic_baseline_arrow_back_60)
 //    withNextIcon(R.drawable.ic_baseline_arrow_forward_60)
+
   }
 
 }

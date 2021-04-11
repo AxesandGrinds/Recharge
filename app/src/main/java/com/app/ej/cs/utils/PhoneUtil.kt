@@ -67,6 +67,47 @@ class PhoneUtil {
         "slotIdx"
     )
 
+    fun isDualSim(context: Context): Boolean {
+
+        val telephonyManager = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+
+        var simCount: Int
+
+        when {
+
+            Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP_MR1 -> {
+
+                val subscriptionManager = context.getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE) as SubscriptionManager
+
+                val activeSubscriptionInfoList = subscriptionManager.activeSubscriptionInfoList
+                simCount = activeSubscriptionInfoList.size
+
+            }
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> {
+
+                simCount = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+
+                    telephonyManager.phoneCount
+
+                }
+                else {
+
+                    telephonyManager.activeModemCount
+
+                }
+
+            }
+            else -> {
+
+                simCount = 1
+
+            }
+
+        }
+
+        return simCount > 1
+
+    }
 
 
     fun getDetails(data: Intent?, context: Context): Array<String> {
@@ -173,7 +214,8 @@ class PhoneUtil {
 
                         intent.putExtra(
                             "android.telecom.extra.PHONE_ACCOUNT_HANDLE",
-                            phoneAccountHandle as Parcelable)
+                            phoneAccountHandle as Parcelable
+                        )
 
                         return
 
@@ -188,7 +230,8 @@ class PhoneUtil {
 
                         intent.putExtra(
                             "android.telecom.extra.PHONE_ACCOUNT_HANDLE",
-                            phoneAccountHandle as Parcelable)
+                            phoneAccountHandle as Parcelable
+                        )
 
                         return
 
@@ -207,7 +250,8 @@ class PhoneUtil {
 
                         intent.putExtra(
                             "android.telecom.extra.PHONE_ACCOUNT_HANDLE",
-                            phoneAccountHandle as Parcelable)
+                            phoneAccountHandle as Parcelable
+                        )
 
                         return
 
@@ -310,7 +354,10 @@ class PhoneUtil {
         pAccount: String,
     ) {
 
-        val meterNumberChoiceBuilder: AlertDialog.Builder = AlertDialog.Builder(context, R.style.MyDialogTheme)
+        val meterNumberChoiceBuilder: AlertDialog.Builder = AlertDialog.Builder(
+            context,
+            R.style.MyDialogTheme
+        )
         meterNumberChoiceBuilder.setTitle("Choose your Meter Number")
 
         val pMeterNumbers = mutableListOf<String>()
@@ -419,7 +466,10 @@ class PhoneUtil {
     ) {
 
 
-        val smartCardNumberChoiceBuilder: AlertDialog.Builder = AlertDialog.Builder(context, R.style.MyDialogTheme)
+        val smartCardNumberChoiceBuilder: AlertDialog.Builder = AlertDialog.Builder(
+            context,
+            R.style.MyDialogTheme
+        )
         smartCardNumberChoiceBuilder.setTitle("Choose your Smart Card Number")
 
         val pSmartCardNumbers = mutableListOf<String>()
@@ -670,7 +720,10 @@ class PhoneUtil {
 
                 val tvServiceSelection = tv_bill[i]
 
-                val amountBuilder: AlertDialog.Builder = AlertDialog.Builder(context, R.style.MyDialogTheme)
+                val amountBuilder: AlertDialog.Builder = AlertDialog.Builder(
+                    context,
+                    R.style.MyDialogTheme
+                )
 
                 amountBuilder.setTitle("Amount")
                 val amountViewInflated: View =
@@ -931,7 +984,13 @@ class PhoneUtil {
                                     SmsManager.getSmsManagerForSubscriptionId(sim2)
                                 }
 
-                                smsManager.sendTextMessage(rechargeCode, null, message, sentPI, deliveredPI)
+                                smsManager.sendTextMessage(
+                                    rechargeCode,
+                                    null,
+                                    message,
+                                    sentPI,
+                                    deliveredPI
+                                )
 
                                 val msg = "$amount sent to $phone. Completed! Press send to complete."
                                 util.onShowMessageSuccess(msg, context)
@@ -1269,7 +1328,16 @@ class PhoneUtil {
                 util.amountTemp = amount
                 util.passwordTemp = password
 
-                smsShare(context, fragment, activity, pAccount, rechargeCode, phoneNumber, amount, password)
+                smsShare(
+                    context,
+                    fragment,
+                    activity,
+                    pAccount,
+                    rechargeCode,
+                    phoneNumber,
+                    amount,
+                    password
+                )
                 Log.e(TAG, "$network: from key to rechargeBool")
 
             }
@@ -1389,7 +1457,10 @@ class PhoneUtil {
 
         }*/
 
-        val accountChoiceBuilder: AlertDialog.Builder = AlertDialog.Builder(context, R.style.MyDialogTheme)
+        val accountChoiceBuilder: AlertDialog.Builder = AlertDialog.Builder(
+            context,
+            R.style.MyDialogTheme
+        )
 
         accountChoiceBuilder.setTitle("Choose the phone and bank you want to transfer from")
 
@@ -1540,12 +1611,18 @@ class PhoneUtil {
                 banksAndAccountNumbers.add("${friend.accountNumber1}: ${friend.bank1}")
             }
 
-            val friendBankChoiceBuilder: AlertDialog.Builder = AlertDialog.Builder(context, R.style.MyDialogTheme)
+            val friendBankChoiceBuilder: AlertDialog.Builder = AlertDialog.Builder(
+                context,
+                R.style.MyDialogTheme
+            )
 
             friendBankChoiceBuilder.setTitle("Choose your friend's account")
             //Choose your Friend's Phone Number
             Log.e("ATTENTION ATTENTION", "Choose your friend's account")
-            Log.e("ATTENTION ATTENTION", "\n\n\nFriend's account numbers: ${banksAndAccountNumbers.toString()}")
+            Log.e(
+                "ATTENTION ATTENTION",
+                "\n\n\nFriend's account numbers: ${banksAndAccountNumbers.toString()}"
+            )
 
 
             friendBankChoiceBuilder.setSingleChoiceItems(banksAndAccountNumbers.toTypedArray(), -1) {
@@ -1558,10 +1635,16 @@ class PhoneUtil {
                 val accountNumber: String = accountNumbers[i]
 
 
-                val amountBuilder: AlertDialog.Builder = AlertDialog.Builder(context, R.style.MyDialogTheme)
+                val amountBuilder: AlertDialog.Builder = AlertDialog.Builder(
+                    context,
+                    R.style.MyDialogTheme
+                )
                 amountBuilder.setTitle("Amount")
 
-                val amountViewInflated: View = LayoutInflater.from(context).inflate(R.layout.input_amount, null)
+                val amountViewInflated: View = LayoutInflater.from(context).inflate(
+                    R.layout.input_amount,
+                    null
+                )
 
                 val amountInput = amountViewInflated.findViewById<View>(R.id.input_amount) as TextInputEditText
                 amountBuilder.setView(amountViewInflated)
@@ -1573,7 +1656,8 @@ class PhoneUtil {
 
                     bankChoiceTransfer(
                         context, fragment, activity, user, pAccount,
-                        name, accountNumber, amountInputStr, bank)
+                        name, accountNumber, amountInputStr, bank
+                    )
 
                 }
 
@@ -1607,7 +1691,10 @@ class PhoneUtil {
         bank: String,
     ) {
 
-        val bankChoiceBuilder: AlertDialog.Builder = AlertDialog.Builder(context, R.style.MyDialogTheme)
+        val bankChoiceBuilder: AlertDialog.Builder = AlertDialog.Builder(
+            context,
+            R.style.MyDialogTheme
+        )
         bankChoiceBuilder.setTitle("Choose your Bank")
 
         val pBanks = mutableListOf<String>()
@@ -2847,12 +2934,18 @@ class PhoneUtil {
             phonesAndNetworks.add("${friend.phone1}: ${friend.network1}")
         }
 
-        val friendPhoneChoiceBuilder: AlertDialog.Builder = AlertDialog.Builder(context, R.style.MyDialogTheme)
+        val friendPhoneChoiceBuilder: AlertDialog.Builder = AlertDialog.Builder(
+            context,
+            R.style.MyDialogTheme
+        )
 
         friendPhoneChoiceBuilder.setTitle("Choose your Friend's Phone Number")
 
         Log.e("ATTENTION ATTENTION", "Choose your Friend's Phone Number")
-        Log.e("ATTENTION ATTENTION", "\n\n\nFriend's Phone Numbers: ${phonesAndNetworks.toString()}")
+        Log.e(
+            "ATTENTION ATTENTION",
+            "\n\n\nFriend's Phone Numbers: ${phonesAndNetworks.toString()}"
+        )
 
         friendPhoneChoiceBuilder.setSingleChoiceItems(phonesAndNetworks.toTypedArray(), -1) {
 
@@ -2863,7 +2956,10 @@ class PhoneUtil {
             val network: String = networks[i]
             val phone: String = phones[i]
 
-            val accountChoiceBuilder: AlertDialog.Builder = AlertDialog.Builder(context, R.style.MyDialogTheme)
+            val accountChoiceBuilder: AlertDialog.Builder = AlertDialog.Builder(
+                context,
+                R.style.MyDialogTheme
+            )
 
             accountChoiceBuilder.setTitle("Choose the Phone Number from which you want to make the airtime transfer.")
 
@@ -2892,7 +2988,10 @@ class PhoneUtil {
                 var user: User = modelList[i]
                 val pAccount: String = pAccountList[i]
 
-                val amountBuilder: AlertDialog.Builder = AlertDialog.Builder(context, R.style.MyDialogTheme)
+                val amountBuilder: AlertDialog.Builder = AlertDialog.Builder(
+                    context,
+                    R.style.MyDialogTheme
+                )
 
                 amountBuilder.setTitle("Amount")
 
@@ -2916,7 +3015,8 @@ class PhoneUtil {
 
                     airtimeTransfer(
                         context, fragment, activity, modelList, pAccount,
-                        name, network, phone, amountInputStr)
+                        name, network, phone, amountInputStr
+                    )
 
                 }
 
@@ -3526,7 +3626,8 @@ class PhoneUtil {
                         code,
                         phoneNumber,
                         amount,
-                        pin)
+                        pin
+                    )
 
                     Toasty.success(
                         context, "Transferring airtime to $name with $network complete.",
@@ -3668,7 +3769,10 @@ class PhoneUtil {
         friend: Friend,
     ) {
 
-        val accountChoiceBuilder: AlertDialog.Builder = AlertDialog.Builder(context, R.style.MyDialogTheme)
+        val accountChoiceBuilder: AlertDialog.Builder = AlertDialog.Builder(
+            context,
+            R.style.MyDialogTheme
+        )
 
         accountChoiceBuilder.setTitle("Choose the account you want to Topup Transfer from")
 
@@ -3781,7 +3885,10 @@ class PhoneUtil {
             val user: User = modelList[i]
             val pAccount: String = pAccountList[i]
 
-            val bankChoiceBuilder: AlertDialog.Builder = AlertDialog.Builder(context, R.style.MyDialogTheme)
+            val bankChoiceBuilder: AlertDialog.Builder = AlertDialog.Builder(
+                context,
+                R.style.MyDialogTheme
+            )
             bankChoiceBuilder.setTitle("Choose your Bank")
 
             val pBanks = mutableListOf<String>()
@@ -3813,7 +3920,10 @@ class PhoneUtil {
 
                 dialogInterface.dismiss()
 
-                val amountBuilder: AlertDialog.Builder = AlertDialog.Builder(context, R.style.MyDialogTheme)
+                val amountBuilder: AlertDialog.Builder = AlertDialog.Builder(
+                    context,
+                    R.style.MyDialogTheme
+                )
 
                 amountBuilder.setTitle("Amount")
 
@@ -3866,14 +3976,23 @@ class PhoneUtil {
                         phonesAndNetworks.add("${friend.phone1}: ${friend.network1}")
                     }
 
-                    val friendPhoneChoiceBuilder: AlertDialog.Builder = AlertDialog.Builder(context, R.style.MyDialogTheme)
+                    val friendPhoneChoiceBuilder: AlertDialog.Builder = AlertDialog.Builder(
+                        context,
+                        R.style.MyDialogTheme
+                    )
 
                     friendPhoneChoiceBuilder.setTitle("Choose your friend's phone number")
 
                     Log.e("ATTENTION ATTENTION", "Choose your friend's phone number")
-                    Log.e("ATTENTION ATTENTION", "\n\n\nFriend's Phone Numbers: ${phonesAndNetworks.toString()}")
+                    Log.e(
+                        "ATTENTION ATTENTION",
+                        "\n\n\nFriend's Phone Numbers: ${phonesAndNetworks.toString()}"
+                    )
 
-                    friendPhoneChoiceBuilder.setSingleChoiceItems(phonesAndNetworks.toTypedArray(), -1) {
+                    friendPhoneChoiceBuilder.setSingleChoiceItems(
+                        phonesAndNetworks.toTypedArray(),
+                        -1
+                    ) {
 
                             dialogInterface, i ->
 
@@ -3884,7 +4003,8 @@ class PhoneUtil {
 
                         bankTopupTransfer(
                             context, fragment, activity, pAccount, name, amountInputStr,
-                            phone, pBanks[i], network)
+                            phone, pBanks[i], network
+                        )
 
                     }
 
@@ -4507,7 +4627,8 @@ class PhoneUtil {
 
                         intent.putExtra(
                             "android.telecom.extra.PHONE_ACCOUNT_HANDLE",
-                            phoneAccountHandle as Parcelable)
+                            phoneAccountHandle as Parcelable
+                        )
 
 //                    return
 
@@ -4979,7 +5100,10 @@ class PhoneUtil {
         val password: String? = user.pin
         val network: String? = user.network
 
-        val bankChoiceBuilder: AlertDialog.Builder = AlertDialog.Builder(context, R.style.MyDialogTheme)
+        val bankChoiceBuilder: AlertDialog.Builder = AlertDialog.Builder(
+            context,
+            R.style.MyDialogTheme
+        )
         bankChoiceBuilder.setTitle("Choose your Bank")
 
         val pBanks = mutableListOf<String>()
@@ -5012,7 +5136,10 @@ class PhoneUtil {
 
             dialogInterface.dismiss()
 
-            val amountBuilder: AlertDialog.Builder = AlertDialog.Builder(context, R.style.MyDialogTheme)
+            val amountBuilder: AlertDialog.Builder = AlertDialog.Builder(
+                context,
+                R.style.MyDialogTheme
+            )
             amountBuilder.setTitle("Amount")
 
             val amountViewInflated: View = LayoutInflater
@@ -5034,136 +5161,170 @@ class PhoneUtil {
                     "Access Bank" -> {
 
                         val requestMoneyCode = "901"
-                        requestMoney(context, fragment, activity, pAccount, requestMoneyCode,
-                            null, amount, null, null)
+                        requestMoney(
+                            context, fragment, activity, pAccount, requestMoneyCode,
+                            null, amount, null, null
+                        )
                         Log.e(TAG, "Recharge from " + pBanks[i] + " was successful")
 
                     }
                     "Diamond Bank" -> {
 
                         val requestMoneyCode = "710*555"
-                        requestMoney(context, fragment, activity, pAccount, requestMoneyCode,
-                            phone, amount, password, null)
+                        requestMoney(
+                            context, fragment, activity, pAccount, requestMoneyCode,
+                            phone, amount, password, null
+                        )
                         Log.e(TAG, "Recharge from " + pBanks[i] + " was successful")
 
                     }
                     "EcoBank" -> {
 
                         val requestMoneyCode = "326"
-                        requestMoney(context, fragment, activity, pAccount, requestMoneyCode,
-                            null, amount, null, null)
+                        requestMoney(
+                            context, fragment, activity, pAccount, requestMoneyCode,
+                            null, amount, null, null
+                        )
                         Log.e(TAG, "Recharge from " + pBanks[i] + " was successful")
 
                     }
                     "FCMB Bank" -> {
 
                         val requestMoneyCode = "389*214"
-                        requestMoney(context, fragment, activity, pAccount, requestMoneyCode,
-                            null, amount, null, null)
+                        requestMoney(
+                            context, fragment, activity, pAccount, requestMoneyCode,
+                            null, amount, null, null
+                        )
                         Log.e(TAG, "Recharge from " + pBanks[i] + " was successful")
 
                     }
                     "Fidelity Bank" -> {
 
                         val requestMoneyCode = "770"
-                        requestMoney(context, fragment, activity, pAccount, requestMoneyCode,
-                            null, amount, null, null)
+                        requestMoney(
+                            context, fragment, activity, pAccount, requestMoneyCode,
+                            null, amount, null, null
+                        )
                         Log.e(TAG, "Recharge from " + pBanks[i] + " was successful")
 
                     }
                     "First Bank" -> {
 
                         val requestMoneyCode = "894"
-                        requestMoney(context, fragment, activity, pAccount, requestMoneyCode,
-                            null, amount, null, null)
+                        requestMoney(
+                            context, fragment, activity, pAccount, requestMoneyCode,
+                            null, amount, null, null
+                        )
                         Log.e(TAG, "Recharge from " + pBanks[i] + " was successful")
 
                     }
                     "GTBank" -> {
 
                         val requestMoneyCode = "737"
-                        requestMoney(context, fragment, activity, pAccount, requestMoneyCode,
-                            null, amount, null, null)
+                        requestMoney(
+                            context, fragment, activity, pAccount, requestMoneyCode,
+                            null, amount, null, null
+                        )
                         Log.e(TAG, "Recharge from " + pBanks[i] + " was successful")
 
                     }
                     "Heritage Bank" -> {
 
                         val requestMoneyCode = "322*030"
-                        requestMoney(context, fragment, activity, pAccount, requestMoneyCode,
-                            null, amount, null, null)
+                        requestMoney(
+                            context, fragment, activity, pAccount, requestMoneyCode,
+                            null, amount, null, null
+                        )
                         Log.e(TAG, "Recharge from " + pBanks[i] + " was successful")
 
                     }
                     "Jaiz Bank" -> {
 
                         val requestMoneyCode = "389*301"
-                        requestMoney(context, fragment, activity, pAccount, requestMoneyCode,
-                            null, amount, null, null)
+                        requestMoney(
+                            context, fragment, activity, pAccount, requestMoneyCode,
+                            null, amount, null, null
+                        )
                         Log.e(TAG, "Recharge from " + pBanks[i] + " was successful")
 
                     }
                     "Keystone Bank" -> {
 
                         val requestMoneyCode = "124"
-                        requestMoney(context, fragment, activity, pAccount, requestMoneyCode,
-                            null, amount, null, network)
+                        requestMoney(
+                            context, fragment, activity, pAccount, requestMoneyCode,
+                            null, amount, null, network
+                        )
                         Log.e(TAG, "Recharge from " + pBanks[i] + " was successful")
 
                     }
                     "Polaris Bank" -> {
 
                         val requestMoneyCode = "389*076*1"
-                        requestMoney(context, fragment, activity, pAccount, requestMoneyCode,
-                            null, amount, null, null)
+                        requestMoney(
+                            context, fragment, activity, pAccount, requestMoneyCode,
+                            null, amount, null, null
+                        )
                         Log.e(TAG, "Recharge from " + pBanks[i] + " was successful")
 
                     }
                     "Stanbic IBTC Bank" -> {
 
                         val requestMoneyCode = "909"
-                        requestMoney(context, fragment, activity, pAccount, requestMoneyCode,
-                            null, amount, null, null)
+                        requestMoney(
+                            context, fragment, activity, pAccount, requestMoneyCode,
+                            null, amount, null, null
+                        )
                         Log.e(TAG, "Recharge from " + pBanks[i] + " was successful")
 
                     }
                     "Sterling Bank" -> {
 
                         val requestMoneyCode = "822"
-                        requestMoney(context, fragment, activity, pAccount, requestMoneyCode,
-                            null, amount, null, null)
+                        requestMoney(
+                            context, fragment, activity, pAccount, requestMoneyCode,
+                            null, amount, null, null
+                        )
                         Log.e(TAG, "Recharge from " + pBanks[i] + " was successful")
 
                     }
                     "UBA Bank" -> {
 
                         val requestMoneyCode = "389*033*1"
-                        requestMoney(context, fragment, activity, pAccount, requestMoneyCode,
-                            null, amount, null, null)
+                        requestMoney(
+                            context, fragment, activity, pAccount, requestMoneyCode,
+                            null, amount, null, null
+                        )
                         Log.e(TAG, "Recharge from " + pBanks[i] + " was successful")
 
                     }
                     "Union Bank" -> {
 
                         val requestMoneyCode = "389*032"
-                        requestMoney(context, fragment, activity, pAccount, requestMoneyCode,
-                            null, amount, null, null)
+                        requestMoney(
+                            context, fragment, activity, pAccount, requestMoneyCode,
+                            null, amount, null, null
+                        )
                         Log.e(TAG, "Recharge from " + pBanks[i] + " was successful")
 
                     }
                     "Unity Bank" -> {
 
                         val requestMoneyCode = "322*215"
-                        requestMoney(context, fragment, activity, pAccount, requestMoneyCode,
-                            null, amount, null, null)
+                        requestMoney(
+                            context, fragment, activity, pAccount, requestMoneyCode,
+                            null, amount, null, null
+                        )
                         Log.e(TAG, "Recharge from " + pBanks[i] + " was successful")
 
                     }
                     "Wema Bank" -> {
 
                         val requestMoneyCode = "322*035"
-                        requestMoney(context, fragment, activity, pAccount, requestMoneyCode,
-                            null, amount, null, null)
+                        requestMoney(
+                            context, fragment, activity, pAccount, requestMoneyCode,
+                            null, amount, null, null
+                        )
                         Log.e(TAG, "Recharge from " + pBanks[i] + " was successful")
 
                     }
@@ -5206,8 +5367,8 @@ class PhoneUtil {
         val reviewActivityIntent: Intent = Intent(context, CodeInputActivity::class.java)
 
         reviewActivityIntent.putExtra("pAccount", pAccount)
-        reviewActivityIntent.putExtra("phone",    user.phone)
-        reviewActivityIntent.putExtra("network",  user.network)
+        reviewActivityIntent.putExtra("phone", user.phone)
+        reviewActivityIntent.putExtra("network", user.network)
 
         activity.startActivity(reviewActivityIntent)
 
@@ -5236,7 +5397,10 @@ class PhoneUtil {
                 .commit();*/
 
         try {
-            fragment.show((activity as AppCompatActivity).supportFragmentManager, "DataRechargeDialog")
+            fragment.show(
+                (activity as AppCompatActivity).supportFragmentManager,
+                "DataRechargeDialog"
+            )
         }
         catch (e: NullPointerException) {
             e.printStackTrace()

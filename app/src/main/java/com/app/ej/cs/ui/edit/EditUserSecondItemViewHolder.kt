@@ -63,11 +63,9 @@ class EditUserSecondItemViewHolder(
   private val meterNumberTil2: TextInputLayout = view.findViewById(R.id.h_meterNumber22)
   private val meterNumberTil3: TextInputLayout = view.findViewById(R.id.h_meterNumber23)
 
-  private var currentUser: User? = null
-
   private val PREFNAME: String = "local_user"
 
-  private val PREFNAMEUNSAVED: String = "local_user_unsaved"
+  private var currentUser: User? = null
 
   private var userAndFriendInfo: UserAndFriendInfo = UserAndFriendInfo()
 

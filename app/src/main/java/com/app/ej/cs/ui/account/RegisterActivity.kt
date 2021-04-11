@@ -57,6 +57,7 @@ class RegisterActivity : BasePermissionActivity() {
 //                .withLayoutColorRes(R.color.light_grey)
                 //.withImageResourceId(R.drawable.permission_two)
                 .withImageResourceId(R.drawable.folder)
+                .withPreviousIcon(R.drawable.ic_transparent_icon_60)
                 .build()
 
         )

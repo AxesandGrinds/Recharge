@@ -421,7 +421,7 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
           index = index,
           description = "Friend ${index + 1}",
 
-          folded = false,
+          folded = true,
 
           name = null,
           phone1 = null,
@@ -488,7 +488,7 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
         uid= "",
         index = 0,
         description = "User 1",
-        folded = false,
+        folded = true,
         created = null,
         name = null,
         email = null,
@@ -534,53 +534,68 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
 
   private fun initEditSecondRecyclerView(view: View) {
 
-    if (userSecondListModel.userList.size == 0) {
+    userSecondRecyclerView = view.findViewById(R.id.edit_user_second_recycler_view)
 
-      val newUser2: User = User(
-        uid= "",
-        index = 1,
-        description = "User 2",
-        folded = false,
-        created = null,
-        name = null,
-        email = null,
-        phone = null,
-        network = null,
-        pin = null,
-        bank1 = null,
-        bank2 = null,
-        bank3 = null,
-        bank4 = null,
-        smartCardNumber1 = null,
-        smartCardNumber2 = null,
-        smartCardNumber3 = null,
-        smartCardNumber4 = null,
-        meterNumber1 = null,
-        meterNumber2 = null,
-        meterNumber3 = null
+    val phoneUtil: PhoneUtil = PhoneUtil()
+
+    val isDualSimPhone: Boolean = phoneUtil.isDualSim(requireContext())
+
+    if (isDualSimPhone) {
+
+      if (userSecondListModel.userList.size == 0) {
+
+        val newUser2: User = User(
+          uid= "",
+          index = 1,
+          description = "User 2",
+          folded = true,
+          created = null,
+          name = null,
+          email = null,
+          phone = null,
+          network = null,
+          pin = null,
+          bank1 = null,
+          bank2 = null,
+          bank3 = null,
+          bank4 = null,
+          smartCardNumber1 = null,
+          smartCardNumber2 = null,
+          smartCardNumber3 = null,
+          smartCardNumber4 = null,
+          meterNumber1 = null,
+          meterNumber2 = null,
+          meterNumber3 = null
+        )
+
+        userSecondListModel.userList.add(newUser2)
+
+      }
+
+      userSecondRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
+      val dividerItemDecoration = DividerItemDecoration(
+        context,
+        LinearLayoutManager.VERTICAL
       )
 
-      userSecondListModel.userList.add(newUser2)
+      userSecondRecyclerView.addItemDecoration(dividerItemDecoration)
 
-    }
+      userSecondRecyclerView.isNestedScrollingEnabled = false
 
-    userSecondRecyclerView = view.findViewById(R.id.edit_user_second_recycler_view)
-    userSecondRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-
-    val dividerItemDecoration = DividerItemDecoration(
-            context,
-            LinearLayoutManager.VERTICAL
-    )
-
-    userSecondRecyclerView.addItemDecoration(dividerItemDecoration)
-
-    userSecondRecyclerView.isNestedScrollingEnabled = false
-
-    editFragmentUserSecondViewAdapter = EditUserSecondViewAdapter(userSecondListModel) {
+      editFragmentUserSecondViewAdapter = EditUserSecondViewAdapter(userSecondListModel) {
 //      KToasty.info(view.context, "${it?.name}@${it?.phone} Clicked", Toast.LENGTH_LONG).show()
+      }
+
+      userSecondRecyclerView.adapter = editFragmentUserSecondViewAdapter
+
+    }
+    else {
+
+      userSecondRecyclerView.visibility = View.GONE
+
     }
 
-    userSecondRecyclerView.adapter = editFragmentUserSecondViewAdapter
 
   }
 
@@ -646,7 +661,7 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
           index = index,
           description = "Friend ${index + 1}",
 
-          folded = false,
+          folded = true,
 
           name = null,
           phone1 = null,
@@ -875,7 +890,7 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
           index = i,
           description = "Friend ${i + 1}",
 
-          folded = false,
+          folded = true,
 
           name = null,
           phone1 = null,
