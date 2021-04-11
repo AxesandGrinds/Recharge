@@ -30,7 +30,7 @@ android {
         applicationId "com.app.ej.cs"
         minSdkVersion 16
         targetSdkVersion 30
-        versionCode 23
+        versionCode 24
         versionName "1.0.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -42,7 +42,7 @@ android {
     buildTypes {
 
         release {
-            debuggable true
+            debuggable false
             shrinkResources false
             minifyEnabled false
             signingConfig signingConfigs.release
