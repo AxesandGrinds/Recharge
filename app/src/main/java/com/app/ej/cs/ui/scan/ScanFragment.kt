@@ -516,11 +516,7 @@ private val TAG: String = "ATTENTION ATTENTION"
 
 
     // https://developers.google.com/ad-manager/mobile-ads-sdk/android/banner
-    MobileAds.initialize(
-      context
-    ) {
-
-    }
+    MobileAds.initialize(context)
 
     /// TODO Remove For Release vvv
 //    val testDeviceIds: List<String> = listOf("E9DEDC61204CFB33008E54C7F35245C8") // listOf("78D47CB8E8C50C8391083ABA46D59A17")
@@ -552,8 +548,12 @@ private val TAG: String = "ATTENTION ATTENTION"
         // Code to be executed when the user clicks on an ad.
       }
 
-      override fun onAdLeftApplication() {
-        // Code to be executed when the user has left the app.
+//      override fun onAdLeftApplication() {
+//        // Code to be executed when the user has left the app.
+//      }
+
+      override fun onAdImpression() {
+        super.onAdImpression()
       }
 
       override fun onAdClosed() {

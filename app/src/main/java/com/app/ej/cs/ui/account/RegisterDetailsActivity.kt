@@ -2330,6 +2330,53 @@ class RegisterDetailsActivity() : AppCompatActivity(),
                         network2 = null
                     }
 
+                    if (
+
+                        longitude == null ||
+                        latitude == null ||
+                        address == null ||
+                        city == null ||
+                        statee == null ||
+                        country == null ||
+                        postalCode == null ||
+                        knownName == null
+
+                    ) {
+
+                        if (longitude == null) {
+                            longitude = 1.0
+                        }
+
+                        if (latitude == null) {
+                            latitude = 1.0
+                        }
+
+                        if (address == null) {
+                            address = "Unknown"
+                        }
+
+                        if (city == null) {
+                            city = "Unknown"
+                        }
+
+                        if (statee == null) {
+                            statee = "Unknown"
+                        }
+
+                        if (country == null) {
+                            country = "Unknown"
+                        }
+
+                        if (postalCode == null) {
+                            postalCode = "Unknown"
+                        }
+
+                        if (knownName == null) {
+                            knownName = "Unknown"
+                        }
+
+                    }
+
                     val locationUser: LocationUser =
 
                         LocationUser(
@@ -2354,15 +2401,6 @@ class RegisterDetailsActivity() : AppCompatActivity(),
                     allInfoJsonSaved = Gson().toJson(userAndFriendInfoUnsaved)
                     allInfoJsonUnsaved = Gson().toJson(userAndFriendInfoUnsaved)
 
-                    val editor = sharedPref!!.edit()
-
-                    editor.putString("allInfoSaved", allInfoJsonUnsaved)
-                    editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
-                    editor.putBoolean("email_verified", true)
-                    editor.putBoolean("location_received", true)
-
-                    editor.apply()
-
                     db
                         .collection("locations")
                         .document(userId!!)
@@ -2384,18 +2422,28 @@ class RegisterDetailsActivity() : AppCompatActivity(),
                                             firebaseUser!!.sendEmailVerification()
                                                 .addOnSuccessListener(OnSuccessListener<Void?> {
 
-                                                    allInfoJsonSaved = Gson().toJson(userAndFriendInfoUnsaved)
-                                                    allInfoJsonUnsaved = Gson().toJson(userAndFriendInfoUnsaved)
+                                                    val message: String = "Please go to email: $email and verify your email address to continue."
 
-                                                    val editor = sharedPref!!.edit()
+                                                    val verifyEmailAlertDialogBuilder = AlertDialog.Builder(context, R.style.MyDialogTheme)
 
-                                                    editor.putString("allInfoSaved", allInfoJsonUnsaved)
-                                                    editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
+                                                    verifyEmailAlertDialogBuilder.setTitle("Email Verification")
+                                                    verifyEmailAlertDialogBuilder.setMessage(message)
+//                                                    verifyEmailAlertDialogBuilder.setIcon(android.R.drawable.ic_dialog_alert)
 
-                                                    editor.apply()
+                                                    verifyEmailAlertDialogBuilder.setPositiveButton("Ok") {
 
-                                                    val message: String = "Please go to email: $email and verify your address to continue. Thank you."
-                                                    util.onShowMessage(message, context)
+                                                            dialogInterface, which ->
+
+                                                        dialogInterface.dismiss()
+
+                                                    }
+
+                                                    val verifyEmailAlertDialog: AlertDialog = verifyEmailAlertDialogBuilder.create()
+                                                    verifyEmailAlertDialog.setCancelable(false)
+                                                    verifyEmailAlertDialog.show()
+
+//                                                    val message: String = "Please go to email: $email and verify your address to continue. Thank you."
+//                                                    util.onShowMessageLong(message, context)
 
                                                     registerCount++
 
@@ -2409,8 +2457,37 @@ class RegisterDetailsActivity() : AppCompatActivity(),
                                             mProgressBar.visibility = View.GONE
                                             mProgressBarLocation.visibility = View.GONE
 
-                                            val message: String = "Error updating email: " + e.message
-                                            util.onShowErrorMessage(message, context)
+
+                                            if (e.message != null) {
+
+                                                if (e.message!!.contains("This operation is sensitive")) {
+
+                                                    val message: String = "You took too long to register. Optional information (in gray) can be added after registration. Please log in again to register."
+
+                                                    val tookTooLongAlertDialogBuilder = AlertDialog.Builder(context, R.style.MyDialogTheme)
+
+                                                    tookTooLongAlertDialogBuilder.setTitle("Registration Timeout")
+                                                    tookTooLongAlertDialogBuilder.setMessage(message)
+//                                                    verifyEmailAlertDialogBuilder.setIcon(android.R.drawable.ic_dialog_alert)
+
+                                                    tookTooLongAlertDialogBuilder.setPositiveButton("Ok") {
+
+                                                            dialogInterface, which ->
+
+                                                        goToLogin()
+
+                                                    }
+
+                                                    val tookTooLongAlertDialog: AlertDialog = tookTooLongAlertDialogBuilder.create()
+                                                    tookTooLongAlertDialog.setCancelable(false)
+                                                    tookTooLongAlertDialog.show()
+
+                                                }
+
+                                            }
+
+//                                            val message: String = "Error updating email: " + e.message
+//                                            util.onShowErrorMessage(message, context)
 
                                         })
 
@@ -2536,11 +2613,25 @@ class RegisterDetailsActivity() : AppCompatActivity(),
                     }
                     else {
 
+                        allInfoJsonSaved = Gson().toJson(userAndFriendInfoUnsaved)
+                        allInfoJsonUnsaved = Gson().toJson(userAndFriendInfoUnsaved)
+
+                        val sharedPref = context.getSharedPreferences(PREFNAME, Context.MODE_PRIVATE)
+
+                        val editor = sharedPref!!.edit()
+
+                        editor.putString("allInfoSaved", allInfoJsonUnsaved)
+                        editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
+                        editor.putBoolean("email_verified", true)
+                        editor.putBoolean("location_received", true)
+
+                        editor.apply()
+
                         myFixedRateTimer?.cancel()
 
                         val message: String = "Email verified. Account created."
 
-                        util.onShowMessageSuccess(message, context)
+                        util.onShowMessageSuccessLong(message, context)
 
                         registrationComplete = true
 

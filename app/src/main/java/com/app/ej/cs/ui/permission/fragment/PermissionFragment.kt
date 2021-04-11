@@ -128,13 +128,17 @@ class PermissionFragment : Fragment(), View.OnClickListener {
 
     private fun initViews() {
 
-        request?.visibility = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) View.GONE else View.VISIBLE
+        request?.visibility = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
+            View.INVISIBLE else View.VISIBLE
+
+        request?.isEnabled = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
 
         permissionModel?.let { image?.setImageResource(it.imageResourceId) }
 
         title?.text = permissionModel?.title
 
-        if (permissionModel?.textColor === 0) Color.WHITE else permissionModel?.textColor?.let {
+        if (permissionModel?.textColor === 0)
+            Color.WHITE else permissionModel?.textColor?.let {
 
             title?.setTextColor(it)
 

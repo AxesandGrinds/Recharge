@@ -155,11 +155,7 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
 
 
     // https://developers.google.com/ad-manager/mobile-ads-sdk/android/banner
-    MobileAds.initialize(
-      context
-    ) {
-
-    }
+    MobileAds.initialize(context)
 
     /*/// TODO Remove For Release vvv
     val testDeviceIds: List<String> = listOf("B3EEABB8EE11C2BE770B684D95219ECB")
@@ -190,8 +186,12 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
         // Code to be executed when the user clicks on an ad.
       }
 
-      override fun onAdLeftApplication() {
-        // Code to be executed when the user has left the app.
+//      override fun onAdLeftApplication() {
+//        // Code to be executed when the user has left the app.
+//      }
+
+      override fun onAdImpression() {
+        super.onAdImpression()
       }
 
       override fun onAdClosed() {

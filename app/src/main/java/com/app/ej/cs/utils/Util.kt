@@ -63,6 +63,14 @@ class Util {
 
     }
 
+    fun onShowMessageLong(message: String, context: Context) {
+
+        val toast    = KToasty.info(context, message, Toast.LENGTH_LONG, true)
+
+        toast.show()
+
+    }
+
     fun onShowMessage(message: String, context: Context, view: View) {
 
         val snackbar = Snackbar.make(view, "", Snackbar.LENGTH_SHORT)
@@ -76,6 +84,14 @@ class Util {
     fun onShowMessageSuccess(message: String, context: Context) {
 
         val toast    = KToasty.success(context, message, Toast.LENGTH_SHORT, true)
+
+        toast.show()
+
+    }
+
+    fun onShowMessageSuccessLong(message: String, context: Context) {
+
+        val toast    = KToasty.success(context, message, Toast.LENGTH_LONG, true)
 
         toast.show()
 

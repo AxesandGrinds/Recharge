@@ -221,7 +221,7 @@ class RecognitionActivityReviewFinal :
 
 
     // https://developers.google.com/ad-manager/mobile-ads-sdk/android/banner
-    MobileAds.initialize(this) { }
+    MobileAds.initialize(this)
 
 
     /// TODO Remove For Release vvv
@@ -255,8 +255,12 @@ class RecognitionActivityReviewFinal :
         // Code to be executed when the user clicks on an ad.
       }
 
-      override fun onAdLeftApplication() {
-        // Code to be executed when the user has left the app.
+//      override fun onAdLeftApplication() {
+//        // Code to be executed when the user has left the app.
+//      }
+
+      override fun onAdImpression() {
+        super.onAdImpression()
       }
 
       override fun onAdClosed() {
