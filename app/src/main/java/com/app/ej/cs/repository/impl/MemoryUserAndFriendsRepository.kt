@@ -2,9 +2,6 @@ package com.app.ej.cs.repository.impl
 
 import android.content.Context
 import android.content.Intent
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
-import android.os.Build
 import android.os.Handler
 import android.util.Log
 import com.app.ej.cs.conf.TAG
@@ -19,15 +16,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
-import java.io.IOException
-import java.net.HttpURLConnection
-import java.net.URL
 
-//import com.google.firebase.auth.FirebaseAuth
 
-/**
- * Repository implementation in memory
- */
 class MemoryUserAndFriendsRepository(appContext: Context) : UsersAndFriendsRepository {
 
   private val PREFNAME: String = "local_user"
@@ -35,7 +25,6 @@ class MemoryUserAndFriendsRepository(appContext: Context) : UsersAndFriendsRepos
   private var usersMap   = mutableMapOf<Int, User>()
   private var friendsMap = mutableMapOf<Int, Friend>()
 
-  // Access a Cloud Firestore instance from your Activity
   private val mFirestore: FirebaseFirestore = Firebase.firestore
   private lateinit var auth: FirebaseAuth
 
@@ -52,7 +41,6 @@ class MemoryUserAndFriendsRepository(appContext: Context) : UsersAndFriendsRepos
         val user = auth.currentUser
 
         if (user == null) {
-//            returnToLogin()
             Log.e("ATTENTION ATTENTION", "user == null")
             return
         }
@@ -89,17 +77,6 @@ class MemoryUserAndFriendsRepository(appContext: Context) : UsersAndFriendsRepos
                             assignValues("Friend")
                         }
 
-//                  val data = Gson().toJson(userHashMap)
-//                  val docsData = Gson().fromJson<UserAndFriendInfo>(data, UserAndFriendInfo::class.java)
-//
-//                  usersList = docsData.usersList
-//                  assignValues("User")
-//
-//                  if (docsData.friendsList != null) {
-//                    friendsList = docsData.friendsList!!
-//                    assignValues("Friend")
-//                  }
-
                     }
 
                 }
@@ -109,8 +86,7 @@ class MemoryUserAndFriendsRepository(appContext: Context) : UsersAndFriendsRepos
 
 
             }
-            .addOnFailureListener { e -> Log.e(TAG, "Error writing document", e)
-            }
+            .addOnFailureListener { e -> Log.e(TAG, "Error writing document", e) }
 
 
     }
@@ -213,7 +189,6 @@ private fun returnToLogin() {
       val sharedPref = context.getSharedPreferences(PREFNAME, Context.MODE_PRIVATE)
 
       if (!sharedPref.getBoolean(PREFNAME, false)) {
-//          returnToLogin()
           return
       }
       val gson = Gson()
@@ -238,59 +213,17 @@ private fun returnToLogin() {
 
       }
 
-//    var usersJson:   String? = null
-//    var friendsJson: String? = null
-//    usersJson   = sharedPref.getString("users",   "defaultUser")
-//    friendsJson = sharedPref.getString("friends", "defaultFriend")
-//    val usersInfo   = gson.fromJson(usersJson,   UsersInfo::class.java)
-//    val friendsInfo = gson.fromJson(friendsJson, FriendInfo::class.java)
-//    usersList   = usersInfo.userList
-//    friendsList = friendsInfo.friendsList
-
   }
 
 
   fun isNetworkAvailable(handler: Handler, timeout: Int)  {
-    // ask fo message '0' (not connected) or '1' (connected) on 'handler'
-    // the answer must be send before before within the 'timeout' (in milliseconds)
+
     object : Thread() {
       private var responded: Boolean = false
       override fun run() {
-        // set 'responded' to TRUE if is able to connect with google mobile (responds fast)
+
         object : Thread() {
-          override fun run() {
-
-              /// New but not sure
-//            val url = URL("http://www.google.com/")
-//
-//            with(url.openConnection() as HttpURLConnection) {
-//
-//              requestMethod = "GET"  // optional default is GET
-//
-//              println("\nSent 'GET' request to URL : $url; Response Code : $responseCode")
-//
-//              inputStream.bufferedReader().use {
-//
-//                var googleString: String = it.readText()
-//
-//                }
-//
-//              }
-
-
-              /// Original but outdated
-//            val requestForTest: HttpGet = HttpGet("http://m.google.com")
-//
-//            try {
-//              DefaultHttpClient().execute(requestForTest) // can last...
-//              responded = true
-//            }
-//            catch (e: java.lang.Exception) {
-//            }
-
-
-
-          }
+          override fun run() {}
         }.start()
         try {
           var waited: Int = 0
@@ -301,7 +234,7 @@ private fun returnToLogin() {
             }
           }
         } catch (e: InterruptedException) {
-        } // do nothing
+        }
         finally {
           if (!responded) {
             handler.sendEmptyMessage(0)
@@ -374,8 +307,6 @@ private fun returnToLogin() {
 
         }
 
-//      return friendsMap.values.sortedBy { it.index }.toMutableList()
-
   }
 
   override fun friendInsert(friend: Friend) {
@@ -384,7 +315,6 @@ private fun returnToLogin() {
 
   override fun userById(id: Int): User? = usersMap[id]
 
-    // TODO DONE
   override fun userList(): MutableList<User> {
 
       val sharedPref = context.getSharedPreferences(PREFNAME, Context.MODE_PRIVATE)
@@ -411,14 +341,6 @@ private fun returnToLogin() {
 
       }
 
-//        try {
-//
-//        }
-//        catch (e: Exception) {
-//
-//
-//        }
-
         return if (usersList != null) {
 
             usersList!!
@@ -428,8 +350,6 @@ private fun returnToLogin() {
             mutableListOf()
 
         }
-
-//      return usersMap.values.sortedBy { it.index }.toMutableList()
 
   }
 

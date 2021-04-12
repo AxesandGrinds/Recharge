@@ -64,8 +64,7 @@ class PhoneUtil {
         "simnum",
         "phone_type",
         "slotId",
-        "slotIdx"
-    )
+        "slotIdx")
 
     fun isDualSim(context: Context): Boolean {
 
@@ -113,22 +112,11 @@ class PhoneUtil {
     fun getDetails(data: Intent?, context: Context): Array<String> {
 
 
-//        val uri: Uri = ContactsContract.Data.CONTENT_URI
-//        val uri: Uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI
-
-        // Get the URI that points to the selected contact
         val contactUri: Uri? = data!!.data
-        // We only need the NUMBER column, because there will be only one row in the result
         val projection: Array<String> = arrayOf<String>(
             ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
             ContactsContract.CommonDataKinds.Phone.NUMBER,
         )
-
-        // Perform the query on the contact to get the NUMBER column
-        // We don't need a selection or sort order (there's only one result for the given URI)
-        // CAUTION: The query() method should be called from a separate thread to avoid blocking
-        // your app's UI thread. (For simplicity of the sample, this code doesn't do that.)
-        // Consider using CursorLoader to perform the query.
 
         var person: Array<String>
 

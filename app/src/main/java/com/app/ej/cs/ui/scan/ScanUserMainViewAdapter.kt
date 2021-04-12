@@ -11,9 +11,6 @@ import com.app.ej.cs.R
 import com.app.ej.cs.model.UserListModel
 import com.app.ej.cs.repository.entity.User
 
-/**
- * The Adapter for the RecyclerView of the news
- */
 class ScanUserMainViewAdapter(
   private val model: UserListModel,
   private val context: Context,

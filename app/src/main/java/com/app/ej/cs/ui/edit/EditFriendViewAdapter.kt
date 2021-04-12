@@ -17,9 +17,7 @@ import com.app.ej.cs.repository.entity.UserAndFriendInfo
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.edit_friend_list_item_layout.view.*
 
-/**
- * The Adapter for the RecyclerView of the news
- */
+
 class EditFriendViewAdapter(
         private val model: FriendListModel,
         private val activity: Activity,
@@ -34,16 +32,6 @@ class EditFriendViewAdapter(
     private val PREFNAME: String = "local_user"
 
     fun moveItem(from: Int, to: Int) {
-
-//        val fromEmoji = emojis[from]
-//
-//        emojis.removeAt(from)
-//
-//        if (to < from) {
-//            emojis.add(to, fromEmoji)
-//        } else {
-//            emojis.add(to - 1, fromEmoji)
-//        }
 
         val gson = Gson()
         val sharedPref = activity.getSharedPreferences(PREFNAME, Context.MODE_PRIVATE)
@@ -76,46 +64,9 @@ class EditFriendViewAdapter(
         allInfoUnsaved.friendList!![from].name = allInfoUnsaved.friendList!![to].name
         allInfoUnsaved.friendList!![from].description = allInfoUnsaved.friendList!![to].description
 
-//        allInfoUnsaved.friendList!![from].accountNumber1 = allInfoUnsaved.friendList!![to].accountNumber1
-//        allInfoUnsaved.friendList!![from].accountNumber2 = allInfoUnsaved.friendList!![to].accountNumber2
-//        allInfoUnsaved.friendList!![from].accountNumber3 = allInfoUnsaved.friendList!![to].accountNumber3
-//        allInfoUnsaved.friendList!![from].accountNumber4 = allInfoUnsaved.friendList!![to].accountNumber4
-//
-//        allInfoUnsaved.friendList!![from].bank1 = allInfoUnsaved.friendList!![to].bank1
-//        allInfoUnsaved.friendList!![from].bank2 = allInfoUnsaved.friendList!![to].bank2
-//        allInfoUnsaved.friendList!![from].bank3 = allInfoUnsaved.friendList!![to].bank3
-//        allInfoUnsaved.friendList!![from].bank4 = allInfoUnsaved.friendList!![to].bank4
-//
-//        allInfoUnsaved.friendList!![from].network1 = allInfoUnsaved.friendList!![to].network1
-//        allInfoUnsaved.friendList!![from].network2 = allInfoUnsaved.friendList!![to].network2
-//        allInfoUnsaved.friendList!![from].network3 = allInfoUnsaved.friendList!![to].network3
-//
-//
-//        allInfoUnsaved.friendList!![from].phone1 = allInfoUnsaved.friendList!![to].phone1
-//        allInfoUnsaved.friendList!![from].phone2 = allInfoUnsaved.friendList!![to].phone2
-//        allInfoUnsaved.friendList!![from].phone3 = allInfoUnsaved.friendList!![to].phone3
-
         allInfoUnsaved.friendList!![to].index = from
         allInfoUnsaved.friendList!![to].name = tempFromName
         allInfoUnsaved.friendList!![to].description = tempFromDescription!!
-
-//        allInfoUnsaved.friendList!![to].accountNumber1 = tempFromAccountNumber1
-//        allInfoUnsaved.friendList!![to].accountNumber2 = tempFromAccountNumber2
-//        allInfoUnsaved.friendList!![to].accountNumber3 = tempFromAccountNumber3
-//        allInfoUnsaved.friendList!![to].accountNumber4 = tempFromAccountNumber4
-//
-//        allInfoUnsaved.friendList!![to].bank1 = tempFromBank1
-//        allInfoUnsaved.friendList!![to].bank2 = tempFromBank2
-//        allInfoUnsaved.friendList!![to].bank3 = tempFromBank3
-//        allInfoUnsaved.friendList!![to].bank4 = tempFromBank4
-//
-//        allInfoUnsaved.friendList!![to].network1 = tempFromNetwork1
-//        allInfoUnsaved.friendList!![to].network2 = tempFromNetwork2
-//        allInfoUnsaved.friendList!![to].network3 = tempFromNetwork3
-//
-//        allInfoUnsaved.friendList!![to].phone1 = tempFromPhone1
-//        allInfoUnsaved.friendList!![to].phone2 = tempFromPhone2
-//        allInfoUnsaved.friendList!![to].phone3 = tempFromPhone3
 
         val fromFriend = allInfoUnsaved.friendList?.get(from)
 
@@ -150,10 +101,7 @@ class EditFriendViewAdapter(
               view, event ->
 
           if (event.actionMasked == MotionEvent.ACTION_DOWN) {
-              // 2. When we detect touch-down event, we call the
-              //    startDragging(...) method we prepared above
               editFragment?.startDragging(viewHolder)
-
           }
 
           return@setOnTouchListener true
@@ -172,7 +120,7 @@ class EditFriendViewAdapter(
         0
 
       }
-      else -> { // 0 case
+      else -> {
 
         model.friendList!!.size
 
@@ -183,10 +131,6 @@ class EditFriendViewAdapter(
   }
 
   override fun onBindViewHolder(holderEdit: EditFriendItemViewHolder, position: Int) {
-
-//    model.friendList?.get(position)?.let { holderEdit.bind(it) }
-
-//    holderEdit.bind(model.friendList[position])
 
     val friends: List<Friend> = listOf(
 
@@ -248,8 +192,6 @@ class EditFriendViewAdapter(
     return when (model.friendList?.size) {
 
       0 -> {
-
-//        holderEdit.bind(friends[position])
 
       }
       else -> {

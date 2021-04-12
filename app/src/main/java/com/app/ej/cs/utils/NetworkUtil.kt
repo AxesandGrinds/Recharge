@@ -9,10 +9,6 @@ import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
 
-/**
- * Created by Victor Lekweuwa on 09/3/19.
- */
-
 class NetworkUtil {
 
     private val TYPE_WIFI                    = 1
@@ -44,18 +40,6 @@ class NetworkUtil {
         }
         return status
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
     fun isOnline(context: Context) : Boolean {
 
@@ -96,18 +80,13 @@ class NetworkUtil {
 
                     if (activeNetwork != null) {
 
-                        // connected to the internet
                         if (activeNetwork.type == ConnectivityManager.TYPE_WIFI) {
 
-                            //result = true;
-                            //result = canAccessInternet();
                             result = isConnected(context)
 
                         }
                         else if (activeNetwork.type == ConnectivityManager.TYPE_MOBILE) {
 
-                            //result = true;
-                            //result = canAccessInternet();
                             result = isConnected(context)
 
                         }
@@ -141,7 +120,7 @@ class NetworkUtil {
                 val urlc = url.openConnection() as HttpURLConnection
                 urlc.setRequestProperty("User-Agent", "test")
                 urlc.setRequestProperty("Connection", "close")
-                urlc.connectTimeout = 1000 // mTimeout is in seconds
+                urlc.connectTimeout = 1000
                 urlc.connect()
                 return when (urlc.responseCode) {
                     200 -> {

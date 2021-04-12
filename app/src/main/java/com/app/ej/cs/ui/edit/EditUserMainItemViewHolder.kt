@@ -24,11 +24,6 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.gson.Gson
 import java.lang.Exception
 
-
-/**
- * The ViewHolder for the NewsList RecyclerView Adapter
- */
-
 class EditUserMainItemViewHolder(
 
   private val view: View,
@@ -225,7 +220,6 @@ class EditUserMainItemViewHolder(
       override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
 
         mBankSpinner.setSelection(position)
-        //view?.context?.let { KToasty.info(it, position.toString(), Toast.LENGTH_SHORT).show() }
 
       }
 
@@ -250,7 +244,6 @@ class EditUserMainItemViewHolder(
       override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
 
         mNetworkSpinner.setSelection(position)
-        //view?.context?.let { KToasty.info(it, position.toString(), Toast.LENGTH_SHORT).show() }
 
       }
 
@@ -289,7 +282,7 @@ class EditUserMainItemViewHolder(
 
     userAndFriendInfo.usersList[index].phone = phone
     allInfoUnsaved.usersList[index].phone = phone
-    allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+    allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
 
     val editor = sharedPref!!.edit()
     editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
@@ -413,7 +406,7 @@ class EditUserMainItemViewHolder(
         val name: String = nameEt.text.toString()
         userAndFriendInfo.usersList[model.index].name = name
         allInfoUnsaved.usersList[model.index].name = name
-        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
 
         val editor = sharedPref!!.edit()
         editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
@@ -443,7 +436,7 @@ class EditUserMainItemViewHolder(
         val email: String = emailEt.text.toString()
         userAndFriendInfo.usersList[model.index].email = email
         allInfoUnsaved.usersList[model.index].email = email
-        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
 
         val editor = sharedPref!!.edit()
         editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
@@ -473,7 +466,7 @@ class EditUserMainItemViewHolder(
         val phone: String = phone1Et.text.toString()
         userAndFriendInfo.usersList[model.index].phone = phone
         allInfoUnsaved.usersList[model.index].phone = phone
-        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
 
         val editor = sharedPref!!.edit()
         editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
@@ -503,7 +496,7 @@ class EditUserMainItemViewHolder(
         val pin: String = pin1Et.text.toString()
         userAndFriendInfo.usersList[model.index].pin = pin
         allInfoUnsaved.usersList[model.index].pin = pin
-        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
 
         val editor = sharedPref!!.edit()
         editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
@@ -533,7 +526,7 @@ class EditUserMainItemViewHolder(
         val smartCardNumber: String = smartCardNumber1Et.text.toString()
         userAndFriendInfo.usersList[model.index].smartCardNumber1 = smartCardNumber
         allInfoUnsaved.usersList[model.index].smartCardNumber1 = smartCardNumber
-        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
 
         val editor = sharedPref!!.edit()
         editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
@@ -563,7 +556,7 @@ class EditUserMainItemViewHolder(
         val smartCardNumber: String = smartCardNumber2Et.text.toString()
         userAndFriendInfo.usersList[model.index].smartCardNumber2 = smartCardNumber
         allInfoUnsaved.usersList[model.index].smartCardNumber2 = smartCardNumber
-        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
 
         val editor = sharedPref!!.edit()
         editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
@@ -593,7 +586,7 @@ class EditUserMainItemViewHolder(
         val smartCardNumber: String = smartCardNumber3Et.text.toString()
         userAndFriendInfo.usersList[model.index].smartCardNumber3 = smartCardNumber
         allInfoUnsaved.usersList[model.index].smartCardNumber3 = smartCardNumber
-        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
 
         val editor = sharedPref!!.edit()
         editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
@@ -623,7 +616,7 @@ class EditUserMainItemViewHolder(
         val smartCardNumber: String = smartCardNumber1Et.text.toString()
         userAndFriendInfo.usersList[model.index].smartCardNumber4 = smartCardNumber
         allInfoUnsaved.usersList[model.index].smartCardNumber4 = smartCardNumber
-        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
 
         val editor = sharedPref!!.edit()
         editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
@@ -653,7 +646,7 @@ class EditUserMainItemViewHolder(
         val meterNumber: String = meterNumber1Et.text.toString()
         userAndFriendInfo.usersList[model.index].meterNumber1 = meterNumber
         allInfoUnsaved.usersList[model.index].meterNumber1 = meterNumber
-        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
 
         val editor = sharedPref!!.edit()
         editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
@@ -683,7 +676,7 @@ class EditUserMainItemViewHolder(
         val meterNumber: String = meterNumber2Et.text.toString()
         userAndFriendInfo.usersList[model.index].meterNumber2 = meterNumber
         allInfoUnsaved.usersList[model.index].meterNumber2 = meterNumber
-        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
 
         val editor = sharedPref!!.edit()
         editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
@@ -713,7 +706,7 @@ class EditUserMainItemViewHolder(
         val meterNumber: String = meterNumber3Et.text.toString()
         userAndFriendInfo.usersList[model.index].meterNumber3 = meterNumber
         allInfoUnsaved.usersList[model.index].meterNumber3 = meterNumber
-        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
 
         val editor = sharedPref!!.edit()
         editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
@@ -746,7 +739,7 @@ class EditUserMainItemViewHolder(
           allInfoUnsaved.usersList[model.index].network = null
         }
 
-        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
         val editor = sharedPref!!.edit()
         editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
         editor.apply()
@@ -778,7 +771,7 @@ class EditUserMainItemViewHolder(
           allInfoUnsaved.usersList[model.index].bank1 = null
         }
 
-        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
         val editor = sharedPref!!.edit()
         editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
         editor.apply()
@@ -810,7 +803,7 @@ class EditUserMainItemViewHolder(
           allInfoUnsaved.usersList[model.index].bank2 = null
         }
 
-        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
         val editor = sharedPref!!.edit()
         editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
         editor.apply()
@@ -842,7 +835,7 @@ class EditUserMainItemViewHolder(
           allInfoUnsaved.usersList[model.index].bank3 = null
         }
 
-        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
         val editor = sharedPref!!.edit()
         editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
         editor.apply()
@@ -874,7 +867,7 @@ class EditUserMainItemViewHolder(
           allInfoUnsaved.usersList[model.index].bank4 = null
         }
 
-        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
         val editor = sharedPref!!.edit()
         editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
         editor.apply()
@@ -895,7 +888,6 @@ class EditUserMainItemViewHolder(
         emailEt.setText(email)
       }
 
-      //-----------------------------------------------------
 
       if (pin != null) {
         pin1Et.setText(pin)
@@ -929,7 +921,6 @@ class EditUserMainItemViewHolder(
         meterNumber3Et.setText(meterNumber3)
       }
 
-      //-----------------------------------------------------
 
       if (network != null) {
         val networkItemPosition: Int = networkStringArray.indexOf(network)
@@ -958,7 +949,6 @@ class EditUserMainItemViewHolder(
 
       transition(folded)
 
-      //-----------------------------------------------------
 
     }
 

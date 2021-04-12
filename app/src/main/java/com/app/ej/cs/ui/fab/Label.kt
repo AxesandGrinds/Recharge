@@ -44,12 +44,7 @@ class Label : TextView {
     context,
     attrs,
     defStyleAttr
-  ) {
-  }
-
-//  fun setHandleVisibilityChanges(handle: Boolean) {
-//    isHandleVisibilityChanges = handle
-//  }
+  ) {}
 
   override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
     super.onMeasure(widthMeasureSpec, heightMeasureSpec)
@@ -198,7 +193,6 @@ class Label : TextView {
       ripple.setHotspot((measuredWidth / 2).toFloat(), (measuredHeight / 2).toFloat())
       ripple.setVisible(true, true)
     }
-    //        setPressed(true);
   }
 
   @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -215,7 +209,6 @@ class Label : TextView {
       ripple.setHotspot((measuredWidth / 2).toFloat(), (measuredHeight / 2).toFloat())
       ripple.setVisible(true, true)
     }
-    //        setPressed(false);
   }
 
   fun setFab(fab: FloatingActionButton) {

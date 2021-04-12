@@ -1,19 +1,3 @@
-/*
- * Copyright 2020 Google LLC. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.app.ej.cs.ui
 
 import android.os.Bundle
@@ -26,10 +10,6 @@ import com.app.ej.cs.utils.PhoneUtil
 import com.app.ej.cs.utils.Util
 import com.google.android.gms.ads.*
 
-/**
- * Demo app chooser which takes care of runtime permission requesting and allow you pick from all
- * available testing Activities.
- */
 class CodeInputActivity : AppCompatActivity(),
   ActivityCompat.OnRequestPermissionsResultCallback {
 
@@ -119,23 +99,20 @@ class CodeInputActivity : AppCompatActivity(),
 
       "Airtel" -> {
 
-        if ((code.length == 19 || code.length == 14) && isDigit) {
-        } else if (isDigit) {
-        }
+        if ((code.length == 19 || code.length == 14) && isDigit) { }
+        else if (isDigit) { }
 
       }
       "Etisalat(9Mobile)" -> {
 
-        if ((code.length == 19 || code.length == 15) && isDigit) {
-        } else if (isDigit) {
-        }
+        if ((code.length == 19 || code.length == 15) && isDigit) { }
+        else if (isDigit) { }
 
       }
       "Glo Mobile" -> {
 
-        if (code.length == 17 && isDigit) {
-        } else if (isDigit) {
-        }
+        if (code.length == 17 && isDigit) { }
+        else if (isDigit) { }
 
       }
       "MTN Nigeria" -> {
@@ -144,25 +121,20 @@ class CodeInputActivity : AppCompatActivity(),
                   code.length == 14 ||
                   code.length == 12 ||
                   code.length == 11) && isDigit
-        ) {
-        } else if (isDigit) {
-        }
+        ) { }
+        else if (isDigit) { }
 
       }
       "Visafone" -> {
 
-        if (code.length == 19 && isDigit) {
-        } else if (isDigit) {
-        }
+        if (code.length == 19 && isDigit) { }
+        else if (isDigit) { }
 
       }
 
       else -> println("no match")
 
     }
-
-
-
 
   }
 
@@ -191,16 +163,7 @@ class CodeInputActivity : AppCompatActivity(),
 
     }
 
-    // https://developers.google.com/ad-manager/mobile-ads-sdk/android/banner
     MobileAds.initialize(this)
-
-
-    /// TODO Remove For Release vvv
-//    val testDeviceIds: List<String> = listOf("6638E8A228E3CC5D4711029B8808E246") // listOf("78D47CB8E8C50C8391083ABA46D59A17")
-//    val configuration = RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build()
-//    MobileAds.setRequestConfiguration(configuration)
-    /// TODO Remove For Release ^^^
-
 
     val mAdView: AdView = findViewById(R.id.ciact_adView)
 
@@ -209,45 +172,22 @@ class CodeInputActivity : AppCompatActivity(),
 
     mAdView.adListener = object : AdListener() {
 
-      override fun onAdLoaded() {
-        // Code to be executed when an ad finishes loading.
-      }
+      override fun onAdLoaded() {}
 
-      override fun onAdFailedToLoad(adError: LoadAdError) {
-        // Code to be executed when an ad request fails.
-      }
+      override fun onAdFailedToLoad(adError: LoadAdError) {}
 
-      override fun onAdOpened() {
-        // Code to be executed when an ad opens an overlay that
-        // covers the screen.
-      }
+      override fun onAdOpened() {}
 
-      override fun onAdClicked() {
-        // Code to be executed when the user clicks on an ad.
-      }
+      override fun onAdClicked() {}
 
       override fun onAdImpression() {
         super.onAdImpression()
       }
 
-      override fun onAdClosed() {
-        // Code to be executed when the user is about to return
-        // to the app after tapping on an ad.
-      }
+      override fun onAdClosed() {}
 
     }
 
-
-
   }
-
-
-
-
-
-
-
-
-
 
 }

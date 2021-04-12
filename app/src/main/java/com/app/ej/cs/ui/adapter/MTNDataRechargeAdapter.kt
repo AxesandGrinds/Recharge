@@ -1,6 +1,5 @@
 package com.app.ej.cs.ui.adapter
 
-
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.CountDownTimer
@@ -20,9 +19,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import java.util.*
 
 
-/**
- * Created by amsavarthan on 22/2/18.
- */
 class MTNDataRechargeAdapter(
   private val context: Context,
   private val onDataAmountClickListener: OnMTNDataAmountClickListener
@@ -81,14 +77,11 @@ class MTNDataRechargeAdapter(
 
       val action = event.actionMasked
 
-      // single tap
       if (gestureDetector!!.onTouchEvent(event)) {
 
-        //holder.mView.setAlpha(0f);
         holder.mView.setBackgroundResource(R.color.colorPrimary3)
         colorCountDown(position, 200)
 
-        //onDataAmountClickListener.onMTNDataAmountClicked(code.get(position), data_values.get(position), amount_values.get(position));
         return@OnTouchListener true
 
       }
@@ -99,14 +92,12 @@ class MTNDataRechargeAdapter(
 
           Log.d(DEBUG_TAG, "Action was DOWN")
           holder.mView.setBackgroundResource(R.color.colorPrimary3)
-          //holder.mView.setAlpha(0f);
           true
 
         }
         MotionEvent.ACTION_MOVE -> {
 
           Log.d(DEBUG_TAG, "Action was MOVE")
-          //holder.mView.setAlpha(1f);
           holder.mView.setBackgroundResource(R.color.colorPrimary3)
           true
 
@@ -114,7 +105,6 @@ class MTNDataRechargeAdapter(
         MotionEvent.ACTION_UP -> {
 
           Log.d(DEBUG_TAG, "Action was UP")
-          //holder.mView.setAlpha(1f);
           holder.mView.setBackgroundResource(R.color.accent)
           true
 
@@ -122,7 +112,6 @@ class MTNDataRechargeAdapter(
         MotionEvent.ACTION_CANCEL -> {
 
           Log.d(DEBUG_TAG, "Action was CANCEL")
-          //holder.mView.setAlpha(1f);
           holder.mView.setBackgroundResource(R.color.accent)
           true
 
@@ -141,16 +130,6 @@ class MTNDataRechargeAdapter(
 
     })
 
-    /*holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                holder.mView.setAlpha(0f);
-                onDataAmountClickListener.onMTNDataAmountClicked(code.get(position), data_values.get(position), amount_values.get(position));
-
-            }
-        });*/
-
   }
 
   override fun getItemCount(): Int {
@@ -165,7 +144,7 @@ class MTNDataRechargeAdapter(
 
   private fun colorCountDown(position: Int, duration: Long) {
 
-    Handler().postDelayed({ // count down timer start
+    Handler().postDelayed({
 
       object : CountDownTimer(duration, 50) {
         override fun onTick(millisUntilFinished: Long) {}

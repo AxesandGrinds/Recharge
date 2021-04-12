@@ -49,36 +49,7 @@ import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
 
-//  override fun onCreate(savedInstanceState: Bundle?) {
-//    super.onCreate(savedInstanceState)
-//
-////        if (savedInstanceState == null) {
-////            supportFragmentManager.beginTransaction()
-////                .replace(R.id.anchor, ScanFragment())
-////                .commit();
-////        }
-//
-//    setContentView(R.layout.news_activity_main)
-//
-//    val navView: BottomNavigationView = findViewById(R.id.nav_view)
-//
-//    val navController = findNavController(R.id.nav_host_fragment)
-//    // Passing each menu ID as a set of Ids because each
-//    // menu should be considered as top level destinations.
-//    val appBarConfiguration = AppBarConfiguration(
-//      setOf(
-//        R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications
-//      )
-//    )
-//    setupActionBarWithNavController(navController, appBarConfiguration)
-//    navView.setupWithNavController(navController)
-//
-//  }
-
-
   private lateinit var context: Context
-
-
 
   private lateinit var firestore:    FirebaseFirestore
   private lateinit var auth:         FirebaseAuth
@@ -99,14 +70,8 @@ class MainActivity : AppCompatActivity() {
 
     supportFragmentManager.commit {
       replace(R.id.frame_container, fragment)
-//      setReorderingAllowed(true)
-//      addToBackStack("name") // name can be null
-    }
 
-//    supportFragmentManager
-//      .beginTransaction()
-//      .replace(R.id.frame_container, fragment)
-//      .commit()
+    }
 
   }
 
@@ -208,7 +173,6 @@ class MainActivity : AppCompatActivity() {
 
   private val PREFNAME: String = "local_user"
 
-  // [START on_start_check_user]
   override fun onStart() {
     super.onStart()
 
@@ -230,42 +194,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-//    else {
-
-//      val sharedPref = context.getSharedPreferences(PREFNAME, Context.MODE_PRIVATE)
-//
-//      val gson = Gson()
-//
-//      var allInfoJson: String? = null
-//
-//      allInfoJson = sharedPref.getString("allInfoSaved", "defaultAll")
-//
-//      if (allInfoJson != "defaultAll") {
-//
-//        val allInfo = gson.fromJson(allInfoJson, UserAndFriendInfo::class.java)
-//
-//        Log.e("ATTENTION ATTENTION", "local allInfo.toString(): ${allInfo.toString()}")
-//
-//        if (allInfo.usersList.size > 0) {
-//
-////          if (allInfo.usersList[0].created == null || allInfo.usersList[0].created == "") {
-////            returnToLoginCountDown(600)
-////          }
-//
-//        }
-//        else {
-////          returnToLoginCountDown(600)
-//        }
-//
-//      }
-//
-////      if (!registeredFullyLocation || !registeredFullyEmail) {
-////        returnToLoginCountDown(600)
-////      }
-//
-//    }
-
-
   }
 
 
@@ -283,48 +211,6 @@ class MainActivity : AppCompatActivity() {
     context = this
 
     util.addFontToAppBarTitle(supportActionBar!!, applicationContext)
-
-    /*myViewPager = (ViewPager2) findViewById(R.id.viewpager);
-
-        tabLayout   = (TabLayout)  findViewById(R.id.tabLayout);
-
-        myViewPager.setOffscreenPageLimit(2);
-        myViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
-      //myViewPager.setPageTransformer(new DepthPageTransformer());
-        myViewPager.setPageTransformer(new ZoomOutPageTransformer());
-
-      //tabLayout.setupWithViewPager(myViewPager);
-
-        fragmentList          = new ArrayList<>();
-        fragmentTitleList     = new ArrayList<>();
-        fragmentTitleIconList = new ArrayList<>();
-
-        fragmentList.add(new ScanFragment());
-        fragmentList.add(new ContactsFragment());
-        fragmentList.add(new EditFragment());
-
-        fragmentTitleList.add("Scan");
-        fragmentTitleList.add("Invite Friends");
-        fragmentTitleList.add("Edit");
-
-        fragmentTitleIconList.add(R.drawable.ic_home_black_24dp);
-        fragmentTitleIconList.add(R.drawable.ic_perm_contact_calendar_black_24dp);
-        fragmentTitleIconList.add(R.drawable.ic_edit_black_24dp);
-
-        fragmentStateAdapter = new MyFragmentStateAdapter(getSupportFragmentManager(), getLifecycle(), fragmentList);
-
-        myViewPager.setAdapter(fragmentStateAdapter);
-
-        new TabLayoutMediator(tabLayout, myViewPager, new TabLayoutMediator.OnConfigureTabCallback() {
-
-            @Override
-            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-
-                tab.setText(fragmentTitleList.get(position));
-                tab.setIcon(fragmentTitleIconList.get(position));
-
-            }
-        }).attach();*/
 
     val navView = findViewById<BottomNavigationView>(R.id.nav_view)
     deleteBuilder = AlertDialog.Builder(context, R.style.MyDialogTheme)
@@ -358,7 +244,6 @@ class MainActivity : AppCompatActivity() {
 
   }
 
-  // https://stackoverflow.com/questions/38114689/how-to-delete-a-firebase-user-from-android-app
   private fun deleteAccount() {
 
     firebaseUser!!.delete().addOnCompleteListener { task ->
@@ -417,18 +302,13 @@ class MainActivity : AppCompatActivity() {
 
   override fun onCreateOptionsMenu(menu: Menu): Boolean {
 
-    /*getMenuInflater().inflate(R.menu.main_menu, menu);
-        return super.onCreateOptionsMenu(menu);*/
-
     menu.add(
       R.id.main_menu,
       R.id.delete_account,
       1,
       menuIconWithText(
         resources.getDrawable(R.drawable.ic_delete_forever_black_24dp),
-        resources.getString(R.string.delete_account)
-      )
-    )
+        resources.getString(R.string.delete_account)))
 
     menu.add(
       R.id.main_menu,
@@ -436,9 +316,7 @@ class MainActivity : AppCompatActivity() {
       2,
       menuIconWithText(
         resources.getDrawable(R.drawable.ic_sign_out_24dp),
-        resources.getString(R.string.sign_out)
-      )
-    )
+        resources.getString(R.string.sign_out)))
 
     return true
 
@@ -449,10 +327,8 @@ class MainActivity : AppCompatActivity() {
     when (item.itemId) {
 
       R.id.sign_out -> {
-
         Toasty.info(this, "Signing out.", Toasty.LENGTH_SHORT).show()
         signOut()
-
       }
       R.id.delete_account -> {
         runDelete()
@@ -480,7 +356,6 @@ class MainActivity : AppCompatActivity() {
 
   fun returnToRegister(context: Context) {
 
-//        Intent intent = new Intent(context, RegisterDetailsActivity.class);
     val intent = Intent(context, RegisterActivity::class.java)
     context.startActivity(intent)
     finish()
@@ -501,16 +376,6 @@ class MainActivity : AppCompatActivity() {
     returnToLoginCountDown(600)
 
   }
-
-
-
-
-
-
-
-
-
-
 
 
 }

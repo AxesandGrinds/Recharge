@@ -15,10 +15,6 @@ import com.app.ej.cs.presenter.UserMenuItemClickListener
 import com.app.ej.cs.repository.entity.User
 import com.app.ej.cs.utils.Util
 
-/**
- * The ViewHolder for the NewsList RecyclerView Adapter
- */
-
 class ScanUserSecondItemViewHolder(
 
   private val view: View,
@@ -117,51 +113,35 @@ class ScanUserSecondItemViewHolder(
 
     popup = PopupMenu(context, view)
 
-    popup.menu.add(
-      R.id.user_menu, R.id.airtime_balance, 1, util.menuIconWithText(
+    popup.menu.add(R.id.user_menu, R.id.airtime_balance, 1, util.menuIconWithText(
         ResourcesCompat.getDrawable(view.resources, R.drawable.ic_account_balance_black_24dp, null)!!,
-        view.resources.getString(R.string.airtime_balance))
-    ).isEnabled = balanceBool
+        view.resources.getString(R.string.airtime_balance))).isEnabled = balanceBool
 
-    popup.menu.add(
-      R.id.user_menu, R.id.data_balance, 2, util.menuIconWithText(
+    popup.menu.add(R.id.user_menu, R.id.data_balance, 2, util.menuIconWithText(
         ResourcesCompat.getDrawable(view.resources, R.drawable.ic_internet_24dp, null)!!,
-        view.resources.getString(R.string.data_balance))
-    ).isEnabled = balanceBool
+        view.resources.getString(R.string.data_balance))).isEnabled = balanceBool
 
-    popup.menu.add(
-      R.id.user_menu, R.id.bank_recharge, 3, util.menuIconWithText(
+    popup.menu.add(R.id.user_menu, R.id.bank_recharge, 3, util.menuIconWithText(
         ResourcesCompat.getDrawable(view.resources, R.drawable.ic_battery_charger_icon_7, null)!!,
-        view.resources.getString(R.string.bank_recharge))
-    ).isEnabled = bankRechargeBool
+        view.resources.getString(R.string.bank_recharge))).isEnabled = bankRechargeBool
 
-    popup.menu.add(
-      R.id.user_menu, R.id.code_recharge, 4, util.menuIconWithText(
+    popup.menu.add(R.id.user_menu, R.id.code_recharge, 4, util.menuIconWithText(
         ResourcesCompat.getDrawable(view.resources, R.drawable.ic_baseline_battery_saver_24, null)!!,
-        view.resources.getString(R.string.code_recharge))
-    ).isEnabled = codeRechargeBool
+        view.resources.getString(R.string.code_recharge))).isEnabled = codeRechargeBool
 
-    popup.menu.add(
-      R.id.user_menu, R.id.buy_data, 5, util.menuIconWithText(
+    popup.menu.add(R.id.user_menu, R.id.buy_data, 5, util.menuIconWithText(
         ResourcesCompat.getDrawable(view.resources, R.drawable.ic_add_shopping_cart_black_24dp, null)!!,
-        view.resources.getString(R.string.buy_data))
-    ).isEnabled = buyDataBool
+        view.resources.getString(R.string.buy_data))).isEnabled = buyDataBool
 
-    popup.menu.add(
-      R.id.user_menu, R.id.dstv_bill, 6, util.menuIconWithText(
+    popup.menu.add(R.id.user_menu, R.id.dstv_bill, 6, util.menuIconWithText(
         ResourcesCompat.getDrawable(view.resources, R.drawable.ic_live_tv_black_24dp, null)!!,
-        view.resources.getString(R.string.dstv_gotv_bill))
-    ).isEnabled = payDSTvBillBool
+        view.resources.getString(R.string.dstv_gotv_bill))).isEnabled = payDSTvBillBool
 
-    popup.menu.add(
-      R.id.user_menu, R.id.electricity_bill, 7, util.menuIconWithText(
+    popup.menu.add(R.id.user_menu, R.id.electricity_bill, 7, util.menuIconWithText(
         ResourcesCompat.getDrawable(view.resources, R.drawable.ic_lightbulb_outline_black_24dp, null)!!,
-        view.resources.getString(R.string.electricity_bill))
-    ).isEnabled = payElectricityBillBool
+        view.resources.getString(R.string.electricity_bill))).isEnabled = payElectricityBillBool
 
-    popup.setOnMenuItemClickListener(UserMenuItemClickListener(context, fragment, activity, user, "2")
-
-    )
+    popup.setOnMenuItemClickListener(UserMenuItemClickListener(context, fragment, activity, user, "2"))
 
   }
 

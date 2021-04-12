@@ -8,9 +8,6 @@ import com.app.ej.cs.R
 import com.app.ej.cs.model.UserListModel
 import com.app.ej.cs.repository.entity.User
 
-/**
- * The Adapter for the RecyclerView of the user's secondary information
- */
 class EditUserSecondViewAdapter(
         private val model: UserListModel,
         private val listener: OnViewHolderItemSelected<User?>? = null
@@ -41,7 +38,7 @@ class EditUserSecondViewAdapter(
                 1
 
             }
-            else -> { // 0 case
+            else -> {
 
                 1
 

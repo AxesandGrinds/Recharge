@@ -12,12 +12,8 @@ import com.app.ej.cs.R
 import com.app.ej.cs.model.FriendListModel
 import com.app.ej.cs.repository.entity.Friend
 import com.app.ej.cs.repository.entity.User
-import com.app.ej.cs.repository.entity.UserAndFriendInfo
 import com.google.gson.Gson
 
-/**
- * The Adapter for the RecyclerView of the news
- */
 class ScanFriendViewAdapter(
   private val context: Context,
   private val fragment: Fragment,
@@ -46,14 +42,9 @@ class ScanFriendViewAdapter(
 
     var itemCount: Int = model.friendList?.size ?: 0
 
-//    if (model.friendList != null) {
-//      itemCount = model.friendList!!.size
-//    }
-
     Log.e("ATTENTION ATTENTION", "ScanFriendViewAdapter: getItemCount(): itemCount: ${itemCount.toString()}")
 
     Log.e("ATTENTION ATTENTION", "ScanFriendViewAdapter: model.friendList?.size: ${model.friendList?.size.toString()}")
-
 
     return itemCount
 

@@ -37,9 +37,6 @@ import io.michaelrocks.libphonenumber.android.NumberParseException
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
 import io.michaelrocks.libphonenumber.android.Phonenumber
 
-/**
- * The ViewHolder for the NewsList RecyclerView Adapter
- */
 
 class EditFriendItemViewHolder(
 
@@ -47,7 +44,6 @@ class EditFriendItemViewHolder(
   private val activity: Activity,
   listener: OnViewHolderItemSelected<Friend?>? = null,
   private val pickContactListener: PickContactListener,
-//        private val addFriendListener: AddFriendListener,
 ) : RecyclerView.ViewHolder(view), Binder<Friend> { // , AddFriendDoneListener {
 
   private val pickFriendIB: ImageButton = view.findViewById(R.id.addFriend)
@@ -113,7 +109,6 @@ class EditFriendItemViewHolder(
     val allInfoJsonSaved: String? = sharedPref.getString("allInfoSaved", "defaultAll")
     var allInfoJsonUnsaved = sharedPref.getString("allInfoUnsaved", "defaultAll")!!
 
-    // if (!(allInfoSavedJson == "defaultAll" && allInfoJsonUnsaved == "defaultAll"))
     if (allInfoJsonSaved != "defaultAll") {
 
       val allInfo = gson.fromJson(allInfoJsonSaved, UserAndFriendInfo::class.java)
@@ -243,7 +238,6 @@ class EditFriendItemViewHolder(
       override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
 
         mBankSpinner.setSelection(position)
-        //view?.context?.let { KToasty.info(it, position.toString(), Toast.LENGTH_SHORT).show() }
 
       }
 
@@ -268,7 +262,6 @@ class EditFriendItemViewHolder(
       override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
 
         mNetworkSpinner.setSelection(position)
-        //view?.context?.let { KToasty.info(it, position.toString(), Toast.LENGTH_SHORT).show() }
 
       }
 
@@ -276,25 +269,16 @@ class EditFriendItemViewHolder(
 
   }
 
-  // https://stackoverflow.com/questions/22066142/search-contacts-and-get-the-contact-number-from-phone-contacts-in-android
-  // https://stackoverflow.com/questions/54705225/retrieveing-saved-address-from-phonebook-by-using-a-pick-intent
-
   private fun pickContact() {
 
     currentFriend.let { pickContactListener.pickContact(it.index) }
 
   }
 
-
-
-
-  // https://webcache.googleusercontent.com/search?q=cache:Lh_O238CVYgJ:https://phpinterviewquestions.co.in/blog/ionic/googles-libphonenumber-library-supported-country-list+&cd=8&hl=en&ct=clnk&gl=ng
-  // https://github.com/MichaelRocks/libphonenumber-android
   private fun setContact(data: Intent?, index: Int) {
 
     Log.e("ATTENTION ATTENTION", "SET CONTACT WAS ATTEMPTED")
-    val phoneNumberUtil: PhoneNumberUtil =
-      PhoneNumberUtil.createInstance(view.context)
+    val phoneNumberUtil: PhoneNumberUtil = PhoneNumberUtil.createInstance(view.context)
 
     val name: String
     val number: String
@@ -307,10 +291,7 @@ class EditFriendItemViewHolder(
 
       val  phoneNumber: Phonenumber.PhoneNumber = phoneNumberUtil.parse(number, "NG")
       nationalNumber = phoneNumberUtil.format(
-        phoneNumber,
-        PhoneNumberUtil.PhoneNumberFormat.NATIONAL
-      )
-
+        phoneNumber, PhoneNumberUtil.PhoneNumberFormat.NATIONAL)
 
       Log.e("ATTENTION ATTENTION", "SET CONTACT INDEX: $index")
       Log.e("ATTENTION ATTENTION", "SET CONTACT CURRENT FRIEND INDEX: $index")
@@ -333,26 +314,17 @@ class EditFriendItemViewHolder(
 
     val uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI
 
-    // Get the URI that points to the selected contact
     val contactUri = data.data
-    // We only need the NUMBER column, because there will be only one row in the result
     val projection = arrayOf(
       ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
-      ContactsContract.CommonDataKinds.Phone.NUMBER
-    )
+      ContactsContract.CommonDataKinds.Phone.NUMBER)
 
-    // Perform the query on the contact to get the NUMBER column
-    // We don't need a selection or sort order (there's only one result for the given URI)
-    // CAUTION: The query() method should be called from a separate thread to avoid blocking
-    // your app's UI thread. (For simplicity of the sample, this code doesn't do that.)
-    // Consider using CursorLoader to perform the query.
     val people: Cursor? = contactUri?.let {
       view.context.contentResolver
         .query(it, projection, null, null, null)
     }
     people?.moveToFirst()
 
-    // Retrieve the name and number from the respective columns
     val indexName = people?.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
     val indexNumber = people?.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
     val name = indexName?.let { people.getString(it) }
@@ -460,7 +432,7 @@ class EditFriendItemViewHolder(
     val bankStringArray: Array<String>  = res.getStringArray(R.array.banks_arrays)
     val networkStringArray: Array<String>  = res.getStringArray(R.array.network_arrays)
 
-    readFromLocal() // userAndFriendInfo initialized
+    readFromLocal()
 
     setNetworkSpinner(friendNetworkSpinner1) // TODO Might need to convert to filterTo
     setNetworkSpinner(friendNetworkSpinner2)
@@ -471,7 +443,7 @@ class EditFriendItemViewHolder(
     setBankSpinner(friendBankSpinner3)
     setBankSpinner(friendBankSpinner4)
 
-    // TODO Done
+
     pickFriendIB.setOnClickListener{
 
 
@@ -503,35 +475,8 @@ class EditFriendItemViewHolder(
 
       }
 
-
-
-
-//      CoroutineScope(Dispatchers.Main).launch {
-//
-//        val result = (activity as FragmentActivity).permissionsBuilder(
-//          Manifest.permission.READ_CONTACTS
-//        ).build().sendSuspend()
-//
-//        if (result.allGranted()) { // All the permissions are granted.
-//
-//          pickContact()
-//
-//        }
-//        else {
-//
-//          val message: String = "Allow Recharge App to read contacts in order to select friend."
-//          util.onShowMessage(message, view.context, view)
-//
-//        }
-//
-//      }
-
-
-
-
     }
 
-    // TODO Done
     showMoreDetailsIv.setOnClickListener {
 
       val sharedPref = view.context.getSharedPreferences(PREFNAME, Context.MODE_PRIVATE)
@@ -660,14 +605,11 @@ class EditFriendItemViewHolder(
 
         }
 
-        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
 
         val editor = sharedPref!!.edit()
         editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
         editor.apply()
-
-//        allInfoJson = sharedPref.getString("allInfoSaved", "defaultAll").toString()
-//        val allInfoSaved = gson.fromJson(allInfoJson, UserAndFriendInfo::class.java)
 
       }
 
@@ -725,7 +667,7 @@ class EditFriendItemViewHolder(
         val phone2: String = friendPhoneEt2.text.toString()
         userAndFriendInfo.friendList?.get(model.index)?.phone2 = phone2
         allInfoUnsaved.friendList?.get(model.index)?.phone2 = phone2
-        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
 
         val editor = sharedPref!!.edit()
         editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
@@ -780,20 +722,6 @@ class EditFriendItemViewHolder(
         var allInfoJsonUnsaved = sharedPref.getString("allInfoUnsaved", "defaultAll")!!
         val allInfoUnsaved = gson.fromJson(allInfoJsonUnsaved, UserAndFriendInfo::class.java)
 
-//        if (!(allInfoUnsaved.friendList?.size ?: 0 >= model.index ||
-//          userAndFriendInfo.friendList?.size ?: 0 >= model.index)) {
-//
-//          if (selectedItem != "Choose Network") {
-//            userAndFriendInfo.friendList?.get(model.index)?.network1 = network1
-//            allInfoUnsaved.friendList?.get(model.index)?.network1 = network1
-//          }
-//          else {
-//            userAndFriendInfo.friendList?.get(model.index)?.network1 = null
-//            allInfoUnsaved.friendList?.get(model.index)?.network1 = null
-//          }
-//
-//        }
-
         if (selectedItem != "Choose Network") {
           userAndFriendInfo.friendList?.get(model.index)?.network1 = network1
           allInfoUnsaved.friendList?.get(model.index)?.network1 = network1
@@ -814,7 +742,7 @@ class EditFriendItemViewHolder(
 
         }
 
-        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
         val editor = sharedPref!!.edit()
         editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
         editor.apply()
@@ -837,20 +765,6 @@ class EditFriendItemViewHolder(
         var allInfoJsonUnsaved = sharedPref.getString("allInfoUnsaved", "defaultAll")!!
         val allInfoUnsaved = gson.fromJson(allInfoJsonUnsaved, UserAndFriendInfo::class.java)
 
-//        if (!(allInfoUnsaved.friendList?.size ?: 0 >= model.index ||
-//                  userAndFriendInfo.friendList?.size ?: 0 >= model.index)) {
-//
-//          if (selectedItem != "Choose Network") {
-//            userAndFriendInfo.friendList?.get(model.index)?.network2 = network2
-//            allInfoUnsaved.friendList?.get(model.index)?.network2 = network2
-//          }
-//          else {
-//            userAndFriendInfo.friendList?.get(model.index)?.network2 = null
-//            allInfoUnsaved.friendList?.get(model.index)?.network2 = null
-//          }
-//
-//        }
-
         if (selectedItem != "Choose Network") {
           userAndFriendInfo.friendList?.get(model.index)?.network2 = network2
           allInfoUnsaved.friendList?.get(model.index)?.network2 = network2
@@ -871,7 +785,7 @@ class EditFriendItemViewHolder(
 
         }
 
-        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
         val editor = sharedPref!!.edit()
         editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
         editor.apply()
@@ -894,20 +808,6 @@ class EditFriendItemViewHolder(
         var allInfoJsonUnsaved = sharedPref.getString("allInfoUnsaved", "defaultAll")!!
         val allInfoUnsaved = gson.fromJson(allInfoJsonUnsaved, UserAndFriendInfo::class.java)
 
-//        if (!(allInfoUnsaved.friendList?.size ?: 0 >= model.index ||
-//                  userAndFriendInfo.friendList?.size ?: 0 >= model.index)) {
-//
-//          if (selectedItem != "Choose Network") {
-//            userAndFriendInfo.friendList?.get(model.index)?.network3 = network3
-//            allInfoUnsaved.friendList?.get(model.index)?.network3 = network3
-//          }
-//          else {
-//            userAndFriendInfo.friendList?.get(model.index)?.network3 = null
-//            allInfoUnsaved.friendList?.get(model.index)?.network3 = null
-//          }
-//
-//        }
-
         if (selectedItem != "Choose Network") {
           userAndFriendInfo.friendList?.get(model.index)?.network3 = network3
           allInfoUnsaved.friendList?.get(model.index)?.network3 = network3
@@ -928,7 +828,7 @@ class EditFriendItemViewHolder(
 
         }
 
-        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
         val editor = sharedPref!!.edit()
         editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
         editor.apply()
@@ -951,21 +851,6 @@ class EditFriendItemViewHolder(
         var allInfoJsonUnsaved = sharedPref.getString("allInfoUnsaved", "defaultAll")!!
         val allInfoUnsaved = gson.fromJson(allInfoJsonUnsaved, UserAndFriendInfo::class.java)
 
-//        if (!(allInfoUnsaved.friendList?.size ?: 0 >= model.index ||
-//                  userAndFriendInfo.friendList?.size ?: 0 >= model.index)) {
-//
-//          if (selectedItem != "Choose Network") {
-//            userAndFriendInfo.friendList?.get(model.index)?.bank1 = bank1
-//            allInfoUnsaved.friendList?.get(model.index)?.bank1 = bank1
-//          }
-//          else {
-//            userAndFriendInfo.friendList?.get(model.index)?.bank1 = null
-//            allInfoUnsaved.friendList?.get(model.index)?.bank1 = null
-//          }
-//
-//
-//        }
-
         if (selectedItem != "Choose Bank") {
           userAndFriendInfo.friendList?.get(model.index)?.bank1 = bank1
           allInfoUnsaved.friendList?.get(model.index)?.bank1 = bank1
@@ -986,7 +871,7 @@ class EditFriendItemViewHolder(
 
         }
 
-        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
         val editor = sharedPref!!.edit()
         editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
         editor.apply()
@@ -1008,20 +893,6 @@ class EditFriendItemViewHolder(
         val sharedPref = view.context.getSharedPreferences(PREFNAME, Context.MODE_PRIVATE)
         var allInfoJsonUnsaved = sharedPref.getString("allInfoUnsaved", "defaultAll")!!
         val allInfoUnsaved = gson.fromJson(allInfoJsonUnsaved, UserAndFriendInfo::class.java)
-
-//        if (!(allInfoUnsaved.friendList?.size ?: 0 >= model.index ||
-//                  userAndFriendInfo.friendList?.size ?: 0 >= model.index)) {
-//
-//          if (selectedItem != "Choose Network") {
-//            userAndFriendInfo.friendList?.get(model.index)?.bank2 = bank2
-//            allInfoUnsaved.friendList?.get(model.index)?.bank2 = bank2
-//          }
-//          else {
-//            userAndFriendInfo.friendList?.get(model.index)?.bank2 = null
-//            allInfoUnsaved.friendList?.get(model.index)?.bank2 = null
-//          }
-//
-//        }
 
         if (selectedItem != "Choose Bank") {
           userAndFriendInfo.friendList?.get(model.index)?.bank2 = bank2
@@ -1066,20 +937,6 @@ class EditFriendItemViewHolder(
         var allInfoJsonUnsaved = sharedPref.getString("allInfoUnsaved", "defaultAll")!!
         val allInfoUnsaved = gson.fromJson(allInfoJsonUnsaved, UserAndFriendInfo::class.java)
 
-//        if (!(allInfoUnsaved.friendList?.size ?: 0 >= model.index ||
-//                  userAndFriendInfo.friendList?.size ?: 0 >= model.index)) {
-//
-//          if (selectedItem != "Choose Network") {
-//            userAndFriendInfo.friendList?.get(model.index)?.bank3 = bank3
-//            allInfoUnsaved.friendList?.get(model.index)?.bank3 = bank3
-//          }
-//          else {
-//            userAndFriendInfo.friendList?.get(model.index)?.bank3 = null
-//            allInfoUnsaved.friendList?.get(model.index)?.bank3 = null
-//          }
-//
-//        }
-
         if (selectedItem != "Choose Bank") {
           userAndFriendInfo.friendList?.get(model.index)?.bank3 = bank3
           allInfoUnsaved.friendList?.get(model.index)?.bank3 = bank3
@@ -1123,20 +980,6 @@ class EditFriendItemViewHolder(
         var allInfoJsonUnsaved = sharedPref.getString("allInfoUnsaved", "defaultAll")!!
         val allInfoUnsaved = gson.fromJson(allInfoJsonUnsaved, UserAndFriendInfo::class.java)
 
-//        if (!(allInfoUnsaved.friendList?.size ?: 0 >= model.index ||
-//                  userAndFriendInfo.friendList?.size ?: 0 >= model.index)) {
-//
-//          if (selectedItem != "Choose Network") {
-//            userAndFriendInfo.friendList?.get(model.index)?.bank4 = bank4
-//            allInfoUnsaved.friendList?.get(model.index)?.bank4 = bank4
-//          }
-//          else {
-//            userAndFriendInfo.friendList?.get(model.index)?.bank4 = null
-//            allInfoUnsaved.friendList?.get(model.index)?.bank4 = null
-//          }
-//
-//        }
-
         if (selectedItem != "Choose Bank") {
           userAndFriendInfo.friendList?.get(model.index)?.bank4 = bank4
           allInfoUnsaved.friendList?.get(model.index)?.bank4 = bank4
@@ -1157,7 +1000,7 @@ class EditFriendItemViewHolder(
 
         }
 
-        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
         val editor = sharedPref!!.edit()
         editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
         editor.apply()
@@ -1386,46 +1229,9 @@ class EditFriendItemViewHolder(
 
       transition(folded)
 
-
-//      friendNameEt.setText(name)
-//
-//      friendPhoneEt1.setText(phone1)
-//      friendPhoneEt2.setText(phone2)
-//      friendPhoneEt3.setText(phone3)
-//
-//      setNetworkSpinner(friendNetworkSpinner1)
-//      setNetworkSpinner(friendNetworkSpinner2)
-//      setNetworkSpinner(friendNetworkSpinner3)
-//
-//      friendBankAccountEt1.setText(accountNumber1)
-//      friendBankAccountEt2.setText(accountNumber2)
-//      friendBankAccountEt3.setText(accountNumber3)
-//      friendBankAccountEt4.setText(accountNumber4)
-//
-//      setBankSpinner(friendBankSpinner1)
-//      setBankSpinner(friendBankSpinner2)
-//      setBankSpinner(friendBankSpinner3)
-//      setBankSpinner(friendBankSpinner4)
-
     }
 
   }
-
-//  override fun contactPicked(data: Intent?, index: Int) {
-//
-////    val name: String
-////    val number: String
-////    var nationalNumber: String
-////    val details = getDetails(data!!)
-////    index = details[0]?.toInt()!!
-////    name = details[1]!!
-////    number = details[2]!!
-//
-//    Log.e("ATTENTION ATTENTION", "override fun contactPicked(...) RAN")
-//
-//    setContact(data, index)
-//
-//  }
 
 
 }

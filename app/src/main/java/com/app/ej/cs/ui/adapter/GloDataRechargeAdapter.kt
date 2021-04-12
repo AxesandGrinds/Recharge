@@ -1,6 +1,5 @@
 package com.app.ej.cs.ui.adapter
 
-
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.CountDownTimer
@@ -22,9 +21,6 @@ import com.google.firebase.ktx.Firebase
 import java.util.*
 
 
-/**
- * Created by amsavarthan on 22/2/18.
- */
 class GloDataRechargeAdapter(
   private val context: Context,
   private val onDataAmountClickListener: OnGloDataAmountClickListener
@@ -78,7 +74,7 @@ class GloDataRechargeAdapter(
     holder.amount.text = amount_values!![position]
     holder.data.text = data_values[position]
     holder.validity.text = valid_values!![position]
-    holder.mView.alpha = 1f // or 0.5f
+    holder.mView.alpha = 1f
 
     holder.mView.setOnTouchListener(OnTouchListener {
 
@@ -86,14 +82,11 @@ class GloDataRechargeAdapter(
 
       val action = event.actionMasked
 
-      // single tap
       if (gestureDetector!!.onTouchEvent(event)) {
 
-        //holder.mView.setAlpha(0f);
         holder.mView.setBackgroundResource(R.color.colorPrimary3)
         colorCountDown(position, 200)
 
-        //onDataAmountClickListener.onGloDataAmountClicked(code.get(position), data_values.get(position), amount_values.get(position));
         return@OnTouchListener true
 
       }
@@ -104,7 +97,6 @@ class GloDataRechargeAdapter(
 
           Log.d(DEBUG_TAG, "Action was DOWN")
           holder.mView.setBackgroundResource(R.color.colorPrimary3)
-          //holder.mView.setAlpha(0f);
           true
 
         }
@@ -112,7 +104,6 @@ class GloDataRechargeAdapter(
 
           Log.d(DEBUG_TAG, "Action was MOVE")
           holder.mView.alpha = 1f
-          //holder.mView.setBackgroundResource(R.color.colorPrimary3);
           true
 
         }
@@ -120,7 +111,6 @@ class GloDataRechargeAdapter(
 
           Log.d(DEBUG_TAG, "Action was UP")
           holder.mView.alpha = 1f
-          //holder.mView.setBackgroundResource(R.color.accent);
           true
 
         }
@@ -128,7 +118,6 @@ class GloDataRechargeAdapter(
 
           Log.d(DEBUG_TAG, "Action was CANCEL")
           holder.mView.alpha = 1f
-          //holder.mView.setBackgroundResource(R.color.accent);
           true
 
         }
@@ -145,14 +134,7 @@ class GloDataRechargeAdapter(
 
     })
 
-    /*holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                onDataAmountClickListener.onGloDataAmountClicked(code.get(position), data_values.get(position), amount_values.get(position));
-
-            }
-        });*/
   }
 
   override fun getItemCount(): Int {

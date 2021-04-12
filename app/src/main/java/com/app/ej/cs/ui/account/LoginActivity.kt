@@ -130,7 +130,6 @@ class LoginActivity : AppCompatActivity() {
   override fun onStart() {
     super.onStart()
 
-    //init();
     val currentUser = auth.currentUser
     updateUI(currentUser)
     if (mVerificationInProgress && validatePhoneNumber()) {
@@ -138,21 +137,13 @@ class LoginActivity : AppCompatActivity() {
     }
   }
 
-  /*
-     * Phone authentication starts here
-     * */
+
   private fun initPhone() {
 
     mCallbacks = object : OnVerificationStateChangedCallbacks() {
 
       override fun onVerificationCompleted(credential: PhoneAuthCredential) {
 
-        // This callback will be invoked in two situations:
-        // 1 - Instant verification. In some cases the phone number can be instantly
-        //     verified without needing to send or enter a verification code.
-        // 2 - Auto-retrieval. On some devices Google Play services can automatically
-        //     detect the incoming verification SMS and perform verification without
-        //     user action.
         Log.d(TAG, "onVerificationCompleted:$credential")
         mVerificationInProgress = false
         updateUI(STATE_VERIFY_SUCCESS, credential)
@@ -170,7 +161,6 @@ class LoginActivity : AppCompatActivity() {
           phone_numberEt.error = "Invalid phone number."
         }
         else if (e is FirebaseTooManyRequestsException) {
-          // The SMS quota for the project has been exceeded
           Snackbar.make(findViewById(android.R.id.content), "Quota exceeded.",
             Snackbar.LENGTH_SHORT).show()
 
@@ -200,11 +190,11 @@ class LoginActivity : AppCompatActivity() {
   private fun startPhoneNumberVerification(phoneNumber: String) {
     PhoneAuthProvider.getInstance().verifyPhoneNumber(
       phoneNumber,
-      60,  // Timeout duration
-      TimeUnit.SECONDS,  // Unit of timeout
-      this,  // Activity (for callback binding)
+      60,
+      TimeUnit.SECONDS,
+      this,
       mCallbacks
-    ) // OnVerificationStateChangedCallbacks
+    )
     mVerificationInProgress = true
   }
 
@@ -431,9 +421,6 @@ class LoginActivity : AppCompatActivity() {
       }
       STATE_SIGNIN_SUCCESS -> {
 
-//        mDetailText!!.setText(R.string.status_verification_succeeded)
-//        mDetailText?.setTextColor(ContextCompat.getColor(this,R.color.green))
-
 
       }
 
@@ -519,18 +506,13 @@ class LoginActivity : AppCompatActivity() {
 
           if (activeNetwork != null) {
 
-            // connected to the internet
             if (activeNetwork.type == ConnectivityManager.TYPE_WIFI) {
 
-              //result = true;
-              //result = canAccessInternet();
               result = isConnected(context)
 
             }
             else if (activeNetwork.type == ConnectivityManager.TYPE_MOBILE) {
 
-              //result = true;
-              //result = canAccessInternet();
               result = isConnected(context)
 
             }
@@ -563,7 +545,7 @@ class LoginActivity : AppCompatActivity() {
         val urlc = url.openConnection() as HttpURLConnection
         urlc.setRequestProperty("User-Agent", "test")
         urlc.setRequestProperty("Connection", "close")
-        urlc.connectTimeout = 1000 // mTimeout is in seconds
+        urlc.connectTimeout = 1000
         urlc.connect()
         return when (urlc.responseCode) {
           200 -> {
@@ -626,22 +608,10 @@ class LoginActivity : AppCompatActivity() {
 
     requestWindowFeature(Window.FEATURE_NO_TITLE)
 
-//    window.setFlags(
-//      WindowManager.LayoutParams.FLAG_FULLSCREEN,
-//      WindowManager.LayoutParams.FLAG_FULLSCREEN
-//    )
 
-    // clear FLAG_TRANSLUCENT_STATUS flag:
-    // clear FLAG_TRANSLUCENT_STATUS flag:
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
       window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
     }
-
-    // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
-    // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
-
-    // finally change the color
-    //
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
@@ -661,15 +631,11 @@ class LoginActivity : AppCompatActivity() {
     sendVerificationButton   = findViewById<View>(R.id.send_verify_button) as MaterialButton
     resendVerificationButton = findViewById<View>(R.id.resend_verify_button) as MaterialButton
     verifyLoginButton        = findViewById<View>(R.id.verify_button) as MaterialButton
-    //registerButton           = (MaterialButton) findViewById(R.id.register_button);
 
-    //registerButton.setVisibility(View.GONE);
     mDetailText = findViewById(R.id.detail)
     context = this@LoginActivity
     mFirestore = Firebase.firestore
     auth = Firebase.auth
-
-    //askPermission();
 
     mProgressBar.visibility = View.GONE
     mProgressBar.isIndeterminate = true
@@ -679,9 +645,11 @@ class LoginActivity : AppCompatActivity() {
       field.isAccessible = true
       field[phone_number_holder] = ContextCompat.getColor(context, R.color.colorAccent)
       field[verification_code_holder] = ContextCompat.getColor(context, R.color.colorAccent)
-    } catch (e: NoSuchFieldException) {
+    }
+    catch (e: NoSuchFieldException) {
       Log.w("TAG", "Failed to change box color, item might look wrong")
-    } catch (e: IllegalAccessException) {
+    }
+    catch (e: IllegalAccessException) {
       Log.w("TAG", "Failed to change box color, item might look wrong")
     }
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -711,13 +679,6 @@ class LoginActivity : AppCompatActivity() {
           Log.i("ATTENTION ATTENTION", "e164Number: $e164Number")
           Log.i("ATTENTION ATTENTION", "finalLoginNumber: $finalLoginNumber")
           startPhoneNumberVerification(finalLoginNumber)
-
-//          Log.i("ATTENTION ATTENTION", "phone_numberEt.getText().toString(): " + originalNumber);
-//          String previousInternationalNumberString = util.format(phoneNumber, PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL);
-//          Log.i("ATTENTION ATTENTION", "e164Number = util.format(phoneNumber, PhoneNumberUtil.PhoneNumberFormat.E164);");
-//          Log.i("ATTENTION ATTENTION", "e164Number: " + e164Number);
-//          Log.i("ATTENTION ATTENTION", "internationalNumber = util.format(phoneNumber, PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL);");
-//          Log.i("ATTENTION ATTENTION", "previousInternationalNumberString: " + previousInternationalNumberString);
 
         }
         catch (e: Exception) {
@@ -791,11 +752,11 @@ class LoginActivity : AppCompatActivity() {
   private fun resendVerificationCode(phoneNumber: String, token: ForceResendingToken) {
 
     val options = PhoneAuthOptions.newBuilder(auth)
-      .setPhoneNumber(phoneNumber)       // Phone number to verify
-      .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
-      .setActivity(this)                 // Activity (for callback binding)
-      .setCallbacks(mCallbacks)          // OnVerificationStateChangedCallbacks
-      .setForceResendingToken(token)     // ForceResendingToken from callbacks
+      .setPhoneNumber(phoneNumber)
+      .setTimeout(60L, TimeUnit.SECONDS)
+      .setActivity(this)
+      .setCallbacks(mCallbacks)
+      .setForceResendingToken(token)
       .build()
     PhoneAuthProvider.verifyPhoneNumber(options)
 
@@ -807,7 +768,6 @@ class LoginActivity : AppCompatActivity() {
 
     if (internationalNumber!![0] == '0') {
 
-      //finalNumber = "+234" + internationalNumber.substring(1);
       finalNumber = internationalNumber.replaceFirst("(?:0)+".toRegex(), "+234")
 
     }

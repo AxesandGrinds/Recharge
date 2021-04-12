@@ -41,22 +41,18 @@ class FriendMenuItemClickListener(
                 return when (item.itemId) {
 
                     R.id.check_account_number -> {
-                        // TODO Verified Logic
                         phoneUtil.showAccountNumber(context, friend)
                         true
                     }
                     R.id.airtime_phone_transfer -> {
-                        // TODO Verified Logic
                         phoneUtil.amountAirtimeTransfer(context, fragment, activity, modelList, friend)
                         true
                     }
                     R.id.airtime_bank_topup_transfer -> {
-                        // TODO Verified Logic
                         phoneUtil.amountBankTopupTransfer(context, fragment, activity, modelList, friend)
                         true
                     }
                     R.id.bank_transfer -> {
-                        // TODO Verified Logic
                         phoneUtil.amountChoiceBankTransfer(context, fragment, activity, modelList, friend)
                         true
                     }

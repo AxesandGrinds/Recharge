@@ -54,49 +54,9 @@ class DataRechargeDialog : DialogFragment() {
     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
     intent.putExtra("com.android.phone.force.slot", true)
     intent.putExtra("Cdma_Supp", true)
-    //Add all slots here, according to device.. (different device require different key so put all together)
-    for (s in simSlotName) intent.putExtra(s, simNumber) //0 or 1 according to sim.......
+    for (s in simSlotName) intent.putExtra(s, simNumber)
     
   }
-
-//  private fun sendToSim(intent: Intent, simNumber: Int) {
-//
-//    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-//    intent.putExtra("com.android.phone.force.slot", true)
-//    intent.putExtra("Cdma_Supp", true)
-//
-//    //Add all slots here, according to device.. (different device require different key so put all together)
-//    for (s in simSlotName) intent.putExtra(s, simNumber) //0 or 1 according to sim.......
-//
-////        //works only for API >= 21
-////        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-////            intent.putExtra("android.telecom.extra.PHONE_ACCOUNT_HANDLE", (Parcelable) " here You have to get phone account handle list by using telecom manger for both sims:- using this method getCallCapablePhoneAccounts()");
-//
-//    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//
-//      val telecomManager = requireContext().getSystemService(Context.TELECOM_SERVICE) as TelecomManager
-//      @SuppressLint("MissingPermission") val list = telecomManager.callCapablePhoneAccounts
-//      val localSubscriptionManager =
-//        requireContext().getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE) as SubscriptionManager
-//      @SuppressLint("MissingPermission") val activeSubscriptionInfoList =
-//        localSubscriptionManager.activeSubscriptionInfoList
-//
-//      for (phoneAccountHandle in list) {
-//
-//        if (phoneAccountHandle.id.contains(activeSubscriptionInfoList[simNumber].iccId)) {
-//
-//          intent.putExtra("android.telecom.extra.PHONE_ACCOUNT_HANDLE",
-//            phoneAccountHandle as Parcelable)
-//
-//          return
-//
-//        }
-//
-//      }
-//
-//    }
-//
-//  }
 
   override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
@@ -129,11 +89,7 @@ class DataRechargeDialog : DialogFragment() {
     val dialog = dialog
     if (dialog != null) {
 
-      // Too big
-      // dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-      //dialog.getWindow().setLayout((6 * width)/7, (4 * height)/5);
       dialog.window!!.setLayout(6 * width / 7, ViewGroup.LayoutParams.WRAP_CONTENT)
-      //dialog.getWindow().setBackgroundDrawable(new ColorDrawable(context.getResources().getColor(R.color.white)));
 
     }
 
@@ -223,7 +179,6 @@ class DataRechargeDialog : DialogFragment() {
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
-      ////SubscriptionManager localSubscriptionManager = SubscriptionManager.from(context);
       val localSubscriptionManager = requireContext().getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE) as SubscriptionManager
 
       if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.SEND_SMS) ==
@@ -235,8 +190,7 @@ class DataRechargeDialog : DialogFragment() {
 
           simCardsLength = localSubscriptionManager.activeSubscriptionInfoList.size
 
-          Log.e(
-            "ATTENTION ATTENTION",
+          Log.e("ATTENTION ATTENTION",
             "getActiveSubscriptionInfoList().size(): " + localSubscriptionManager.activeSubscriptionInfoList.size)
 
         }
@@ -330,7 +284,6 @@ class DataRechargeDialog : DialogFragment() {
 
   }
 
-  // TODO Updated with SMS Intent: Fixed temporally for SMS Policy
   private fun rechargeDataMTNSms(code: String, data: String, amount: String) {
 
     val number = "131"
@@ -343,12 +296,10 @@ class DataRechargeDialog : DialogFragment() {
     Log.i("ATTENTION ATTENTION", "chosenSimCard: $chosenSimCard")
 
     val sendSmsIntent = Intent(Intent.ACTION_SENDTO)
-    //sendSmsIntent.setPackage("com.google.android.apps.messaging");
     sendSmsIntent.data = Uri.parse("sms:$number")
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
-      //SubscriptionManager localSubscriptionManager = SubscriptionManager.from(context);
       val localSubscriptionManager = requireContext().getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE) as SubscriptionManager
 
       Log.i("ATTENTION ATTENTION", "Inside Lollipop")
@@ -393,7 +344,6 @@ class DataRechargeDialog : DialogFragment() {
           util.onShowMessageSuccess(msg, requireContext())
           sendSmsIntent.putExtra("sms_body", code)
 
-          //startActivity(sendSmsIntent);
           startActivityForResult(
             Intent.createChooser(sendSmsIntent, getString(R.string.choose_messenger_instructions)), 5
           )
@@ -415,7 +365,6 @@ class DataRechargeDialog : DialogFragment() {
             phoneUtil.sendToSim(requireContext(), sendSmsIntent, 0)
             sendSmsIntent.putExtra("sms_body", code)
 
-            //startActivity(sendSmsIntent);
             startActivityForResult(
               Intent.createChooser(
                 sendSmsIntent,
@@ -465,7 +414,6 @@ class DataRechargeDialog : DialogFragment() {
 
       sendSmsIntent.putExtra("sms_body", code)
 
-      //startActivity(sendSmsIntent);
       startActivityForResult(Intent.createChooser(sendSmsIntent, getString(R.string.choose_messenger_instructions)), 5)
 
       dismiss()
@@ -480,7 +428,6 @@ class DataRechargeDialog : DialogFragment() {
 
       RequestSMSPermissionCode -> if (PResult.isNotEmpty() && PResult[0] == PackageManager.PERMISSION_GRANTED) {
 
-        //Toasty.info(context,"Permission Granted, Now your application can access CONTACTS.", Toasty.LENGTH_LONG).show();
         val smsManager = SmsManager.getDefault()
 
         smsManager.sendTextMessage(tempNumber, null,
@@ -587,5 +534,7 @@ class DataRechargeDialog : DialogFragment() {
     }
 
     private const val REQUEST_CALL_PHONE_PERMISSION = 19
+
   }
+
 }

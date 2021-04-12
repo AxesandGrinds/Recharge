@@ -20,54 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <!--<androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme" />-->
-
     </com.google.android.material.appbar.AppBarLayout>
-
-    <!--<RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        &lt;!&ndash;app:layout_behavior="@string/appbar_scrolling_view_behavior"&ndash;&gt;
-        &lt;!&ndash;<androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/viewpager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/tabLayout"
-            app:layout_anchor="@id/tabLayout"
-            app:layout_anchorGravity="bottom"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" >
-
-        </androidx.viewpager2.widget.ViewPager2>&ndash;&gt;
-
-        &lt;!&ndash;https://medium.com/swlh/android-tablayout-and-tabitem-268ac06ba966&ndash;&gt;
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:background="@color/colorPrimary"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:tabMode="fixed"
-            app:tabGravity="fill"
-            app:tabIndicatorGravity="bottom"
-            app:tabIndicatorFullWidth="true"
-            app:tabIndicatorAnimationDuration="400"
-            app:tabBackground="@color/tab_background_selector"
-            app:tabIconTint="@android:color/holo_orange_light"
-            app:tabTextColor="@color/tab_text_color"
-            app:tabRippleColor="@android:color/holo_orange_light"
-            app:tabUnboundedRipple="true"
-            app:tabInlineLabel="false" />
-
-    </RelativeLayout>-->
 
     <FrameLayout
         android:id="@+id/frame_container"

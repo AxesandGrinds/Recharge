@@ -9,9 +9,6 @@ import com.app.ej.cs.model.UserListModel
 import com.app.ej.cs.repository.entity.User
 import com.google.firebase.auth.FirebaseUser
 
-/**
- * The Adapter for the RecyclerView of the news
- */
 class EditUserMainViewAdapter(
   private val model: UserListModel,
   private val firebaseUser: FirebaseUser,
@@ -43,7 +40,7 @@ class EditUserMainViewAdapter(
           1
 
         }
-        else -> { // 0 case
+        else -> {
 
           1
 

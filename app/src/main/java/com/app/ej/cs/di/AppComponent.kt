@@ -14,10 +14,10 @@ interface AppComponent {
 
   fun inject(frag: EditFragment)
 
-  // 1
+
   @Component.Factory
   interface Factory {
-    // 2
+
     fun repository(@BindsInstance userAndFriendsRepository: UsersAndFriendsRepository): AppComponent
 
   }

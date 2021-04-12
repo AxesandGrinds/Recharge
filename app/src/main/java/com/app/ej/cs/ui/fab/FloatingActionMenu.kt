@@ -41,7 +41,6 @@ class FloatingActionMenu @JvmOverloads constructor(
     private val mLabelsVerticalOffset = Util.dpToPx(getContext(), 0f)
     private var mButtonsCount = 0
 
-    /* ===== API methods ===== */
     var isOpened = false
         private set
     private var mIsMenuOpening = false
@@ -657,11 +656,7 @@ class FloatingActionMenu @JvmOverloads constructor(
         }
     }
 
-    /**
-     * Sets the [android.view.animation.Interpolator] for **FloatingActionButton's** icon animation.
-     *
-     * @param interpolator the Interpolator to be used in animation
-     */
+
     fun setIconAnimationInterpolator(interpolator: Interpolator?) {
         mOpenAnimatorSet.interpolator = interpolator
         mCloseAnimatorSet.interpolator = interpolator
@@ -675,11 +670,6 @@ class FloatingActionMenu @JvmOverloads constructor(
         mCloseAnimatorSet.interpolator = closeInterpolator
     }
 
-    /**
-     * Sets whether open and close actions should be animated
-     *
-     * @param animated if **false** - menu items will appear/disappear instantly without any animation
-     */
     var isAnimated: Boolean
         get() = mIsAnimated
         set(animated) {
@@ -707,11 +697,6 @@ class FloatingActionMenu @JvmOverloads constructor(
     private val isMenuButtonHidden: Boolean
         get() = mMenuButton!!.isHidden
 
-    /**
-     * Makes the whole [.FloatingActionMenu] to appear and sets its visibility to [.VISIBLE]
-     *
-     * @param animate if true - plays "show animation"
-     */
     private fun showMenu(animate: Boolean) {
         if (isMenuHidden) {
             if (animate) {
@@ -721,11 +706,6 @@ class FloatingActionMenu @JvmOverloads constructor(
         }
     }
 
-    /**
-     * Makes the [.FloatingActionMenu] to disappear and sets its visibility to [.INVISIBLE]
-     *
-     * @param animate if true - plays "hide animation"
-     */
     private fun hideMenu(animate: Boolean) {
         if (!isMenuHidden && !mIsMenuButtonAnimationRunning) {
             mIsMenuButtonAnimationRunning = true
@@ -756,24 +736,12 @@ class FloatingActionMenu @JvmOverloads constructor(
         }
     }
 
-    /**
-     * Makes the [FloatingActionButton] to appear inside the [.FloatingActionMenu] and
-     * sets its visibility to [.VISIBLE]
-     *
-     * @param animate if true - plays "show animation"
-     */
     fun showMenuButton(animate: Boolean) {
         if (isMenuButtonHidden) {
             showMenuButtonWithImage(animate)
         }
     }
 
-    /**
-     * Makes the [FloatingActionButton] to disappear inside the [.FloatingActionMenu] and
-     * sets its visibility to [.INVISIBLE]
-     *
-     * @param animate if true - plays "hide animation"
-     */
     fun hideMenuButton(animate: Boolean) {
         if (!isMenuButtonHidden && !mIsMenuButtonAnimationRunning) {
             mIsMenuButtonAnimationRunning = true
@@ -904,4 +872,5 @@ class FloatingActionMenu @JvmOverloads constructor(
     init {
         init(context, attrs)
     }
+    
 }

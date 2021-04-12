@@ -3,28 +3,4 @@
 
     <item name="fab_label" type="id"/>
 
-    <!--
-            Your Google App ID. See README.
-        -->
-    <!--Specifically for CreditScan-->
-   <!-- <string name="google_default_web_client_id" translatable="false">729275992496-6hsovbefac0febadtj3lhscinmrja98i.apps.googleusercontent.com</string>
--->
-    <!--
-        Your Facebook App ID. See README.
-    -->
-    <!--  TODO(developer): REPLACE -->
-    <!--<string name="facebook_app_id">2407236592688727</string>
-    <string name="fb_login_protocol_scheme">fb2407236592688727</string>-->
-
-    <!--
-      Your Twitter Key and Secret, see README.
-    -->
-    <!-- TODO(developer): REPLACE -->
-    <!--<string name="twitter_consumer_key">5l5J8TnKFk7ML7JVPbQPIipVr</string>
-    <string name="twitter_consumer_secret">ntUHJTXVueLfYvHcCqM9ValgBm8rV0hJq0S71hru4MxsFkzgUU</string>
-
-    <string name="twitter_auth_token">1159051633898266624-AHdwkbmpoGXOQ72YS5pWHUQ8PDLgwq</string>
-    <string name="twitter_auth_secret">pYQ4tpY8X4g8zCcPgsHf7fWsZbJz1PzkoabjI0r74XA6H</string>-->
-
-
 </resources>

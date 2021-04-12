@@ -12,9 +12,6 @@ import com.app.ej.cs.repository.UsersAndFriendsRepository
 import com.app.ej.cs.repository.impl.MemoryUserAndFriendsRepository
 import javax.inject.Inject
 
-/**
- * Presenter for the display of the list
- */
 class ScanFragmentPresenterImpl @Inject constructor(
 ) : BasePresenter<UserListModel, FriendListModel, ScanFragmentView>(),
 
@@ -24,11 +21,11 @@ class ScanFragmentPresenterImpl @Inject constructor(
 
     val memoryUserAndFriendsRepository: MemoryUserAndFriendsRepository = MemoryUserAndFriendsRepository(appContext)
 
-    val userMainMutableList = memoryUserAndFriendsRepository.userList() //.subscribe
+    val userMainMutableList = memoryUserAndFriendsRepository.userList()
 
-    val userSecondMutableList = memoryUserAndFriendsRepository.userList() //.subscribe
+    val userSecondMutableList = memoryUserAndFriendsRepository.userList()
 
-    val friendsMutableList = memoryUserAndFriendsRepository.friendList() //.subscribe
+    val friendsMutableList = memoryUserAndFriendsRepository.friendList()
 
     view?.displayUserMain(UserListModel(userMainMutableList))
 

@@ -45,7 +45,6 @@ class FloatingActionButton : ImageButton {
   private var mUsingElevation = false
   private var mUsingElevationCompat = false
 
-  // Progress
   private var mProgressBarEnabled = false
   private var mProgressWidth = Util.dpToPx(context, 6f)
   private var mProgressColor = 0
@@ -59,7 +58,7 @@ class FloatingActionButton : ImageButton {
   private val mProgressPaint = Paint(Paint.ANTI_ALIAS_FLAG)
   private var mProgressIndeterminate = false
   private var mLastTimeAnimated: Long = 0
-  private var mSpinSpeed = 195.0f //The amount of degrees per second
+  private var mSpinSpeed = 195.0f
   private var mPausedTimeWithoutGrowing: Long = 0
   private var mTimeStartGrowing = 0.0
   private var mBarGrowingFromFront = true
@@ -150,7 +149,6 @@ class FloatingActionButton : ImageButton {
       }
     }
 
-//        updateBackground();
     isClickable = true
   }
 
@@ -207,7 +205,6 @@ class FloatingActionButton : ImageButton {
   }
 
   override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-//        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     setMeasuredDimension(calculateMeasuredWidth(), calculateMeasuredHeight())
   }
 
@@ -337,13 +334,7 @@ class FloatingActionButton : ImageButton {
       circleInsetVertical += mProgressWidth
     }
 
-    /*layerDrawable.setLayerInset(
-                mShowShadow ? 1 : 0,
-                circleInsetHorizontal,
-                circleInsetVertical,
-                circleInsetHorizontal,
-                circleInsetVertical
-        );*/layerDrawable.setLayerInset(
+    layerDrawable.setLayerInset(
       if (hasShadow()) 2 else 1,
       circleInsetHorizontal + iconOffset,
       circleInsetVertical + iconOffset,
@@ -731,11 +722,7 @@ class FloatingActionButton : ImageButton {
     }
   }
 
-  /**
-   * Sets the size of the **FloatingActionButton** and invalidates its layout.
-   *
-   * @param size size of the **FloatingActionButton**. Accepted values: SIZE_NORMAL, SIZE_MINI.
-   */
+
   var buttonSize: Int
     get() = mFabSize
     set(size) {
@@ -809,26 +796,12 @@ class FloatingActionButton : ImageButton {
     return !mUsingElevation && mShowShadow
   }
 
-  /**
-   * Sets the shadow radius of the **FloatingActionButton** and invalidates its layout.
-   *
-   *
-   * Must be specified in density-independent (dp) pixels, which are then converted into actual
-   * pixels (px).
-   *
-   * @param shadowRadiusDp shadow radius specified in density-independent (dp) pixels
-   */
   fun setShadowRadius(shadowRadiusDp: Float) {
     mShadowRadius = Util.dpToPx(context, shadowRadiusDp)
     requestLayout()
     updateBackground()
   }
 
-  /**
-   * Sets the shadow radius of the **FloatingActionButton** and invalidates its layout.
-   *
-   * @param dimenResId the resource identifier of the dimension
-   */
   var shadowRadius: Int
     get() = mShadowRadius
     set(dimenResId) {
@@ -840,26 +813,13 @@ class FloatingActionButton : ImageButton {
       }
     }
 
-  /**
-   * Sets the shadow x offset of the **FloatingActionButton** and invalidates its layout.
-   *
-   *
-   * Must be specified in density-independent (dp) pixels, which are then converted into actual
-   * pixels (px).
-   *
-   * @param shadowXOffsetDp shadow radius specified in density-independent (dp) pixels
-   */
+
   fun setShadowXOffset(shadowXOffsetDp: Float) {
     mShadowXOffset = Util.dpToPx(context, shadowXOffsetDp)
     requestLayout()
     updateBackground()
   }
 
-  /**
-   * Sets the shadow x offset of the **FloatingActionButton** and invalidates its layout.
-   *
-   * @param dimenResId the resource identifier of the dimension
-   */
   var shadowXOffset: Int
     get() = mShadowXOffset
     set(dimenResId) {
@@ -871,26 +831,12 @@ class FloatingActionButton : ImageButton {
       }
     }
 
-  /**
-   * Sets the shadow y offset of the **FloatingActionButton** and invalidates its layout.
-   *
-   *
-   * Must be specified in density-independent (dp) pixels, which are then converted into actual
-   * pixels (px).
-   *
-   * @param shadowYOffsetDp shadow radius specified in density-independent (dp) pixels
-   */
   fun setShadowYOffset(shadowYOffsetDp: Float) {
     mShadowYOffset = Util.dpToPx(context, shadowYOffsetDp)
     requestLayout()
     updateBackground()
   }
 
-  /**
-   * Sets the shadow y offset of the **FloatingActionButton** and invalidates its layout.
-   *
-   * @param dimenResId the resource identifier of the dimension
-   */
   var shadowYOffset: Int
     get() = mShadowYOffset
     set(dimenResId) {
@@ -919,19 +865,11 @@ class FloatingActionButton : ImageButton {
       }
     }
 
-  /**
-   * Checks whether **FloatingActionButton** is hidden
-   *
-   * @return true if **FloatingActionButton** is hidden, false otherwise
-   */
+
   val isHidden: Boolean
     get() = visibility == INVISIBLE
 
-  /**
-   * Makes the **FloatingActionButton** to appear and sets its visibility to [.VISIBLE]
-   *
-   * @param animate if true - plays "show animation"
-   */
+
   fun show(animate: Boolean) {
     if (isHidden) {
       if (animate) {
@@ -941,11 +879,7 @@ class FloatingActionButton : ImageButton {
     }
   }
 
-  /**
-   * Makes the **FloatingActionButton** to disappear and sets its visibility to [.INVISIBLE]
-   *
-   * @param animate if true - plays "hide animation"
-   */
+
   fun hide(animate: Boolean) {
     if (!isHidden) {
       if (animate) {
@@ -996,13 +930,6 @@ class FloatingActionButton : ImageButton {
     }
   }
 
-  /**
-   * Sets the shadow color and radius to mimic the native elevation.
-   *
-   *
-   * **API 21+**: Sets the native elevation of this view, in pixels. Updates margins to
-   * make the view hold its position in layout across different platform versions.
-   */
   @TargetApi(Build.VERSION_CODES.LOLLIPOP)
   fun setElevationCompat(elevation: Float) {
     mShadowColor = 0x26000000
@@ -1022,14 +949,7 @@ class FloatingActionButton : ImageButton {
     }
   }
 
-  /**
-   *
-   * Change the indeterminate mode for the progress bar. In indeterminate
-   * mode, the progress is ignored and the progress bar shows an infinite
-   * animation instead.
-   *
-   * @param indeterminate true to enable the indeterminate mode
-   */
+
   @Synchronized
   fun setIndeterminate(indeterminate: Boolean) {
     if (!indeterminate) {
@@ -1040,7 +960,6 @@ class FloatingActionButton : ImageButton {
     mProgressIndeterminate = indeterminate
     mLastTimeAnimated = SystemClock.uptimeMillis()
     setupProgressBounds()
-    //        saveButtonOriginalPosition();
     updateBackground()
   }
 
@@ -1107,9 +1026,6 @@ class FloatingActionButton : ImageButton {
     }
   }
 
-  /**
-   * **This will clear all AnimationListeners.**
-   */
   fun hideButtonInMenu(animate: Boolean) {
     if (!isHidden && visibility != GONE) {
       hide(animate)
@@ -1139,9 +1055,7 @@ class FloatingActionButton : ImageButton {
     }
   }
 
-  /**
-   * Set the label's background colors
-   */
+
   fun setLabelColors(colorNormal: Int, colorPressed: Int, colorRipple: Int) {
     val label = labelView
     val left = label?.paddingLeft

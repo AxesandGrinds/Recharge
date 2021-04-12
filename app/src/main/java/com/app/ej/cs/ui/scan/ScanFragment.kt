@@ -1,7 +1,6 @@
 package com.app.ej.cs.ui.scan
 
 
-//import com.github.clans.fab.FloatingActionButton
 import android.Manifest
 import android.app.Activity
 import android.content.Context
@@ -49,9 +48,6 @@ import java.util.*
 import javax.inject.Inject
 
 
-/**
- * This is the Fragment for displaying the list of Info Material
- */
 class ScanFragment : Fragment(), ScanFragmentView {
 
   override fun displayUserMain(userList: UserListModel) {
@@ -61,20 +57,16 @@ class ScanFragment : Fragment(), ScanFragmentView {
       userMainListModel.userList = mutableListOf(userList.userList[0])
       this.userList.add(userList.userList[0])
       scanFragmentUserMainViewAdapter.notifyDataSetChanged()
-      Log.e(
-        "ATTENTION ATTENTION",
-        "In ScanFragment displayUserMain: ${userList.userList[0].toString()}"
-      )
+      Log.e("ATTENTION ATTENTION",
+        "In ScanFragment displayUserMain: ${userList.userList[0].toString()}")
 
       initScanMainUserDetails(requireView())
 
       if (userMainListModel.userList.isNotEmpty()) {
 
         Log.e("ATTENTION ATTENTION", "From ScanFragment userMainListModel.userList.isNotEmpty()")
-        Log.e(
-          "ATTENTION ATTENTION",
-          "From ScanFragment userMainListModel.userList: ${userMainListModel.userList.toString()}"
-        )
+        Log.e("ATTENTION ATTENTION",
+          "From ScanFragment userMainListModel.userList: ${userMainListModel.userList.toString()}")
 
         initFloatingActionMenu(mutableListOf(userMainListModel.userList[0]))
 
@@ -89,7 +81,6 @@ class ScanFragment : Fragment(), ScanFragmentView {
   override fun displayUserSecond(userList: UserListModel) {
 
     if (userList.userList.size > 1  &&
-//            userList.userList[0].phone != userList.userList[1].phone &&
             userList.userList[1].phone != null) {
 
       userSecondRecyclerView.visibility = View.VISIBLE
@@ -97,27 +88,21 @@ class ScanFragment : Fragment(), ScanFragmentView {
       this.userList.add(userList.userList[1])
       scanFragmentUserSecondViewAdapter.notifyDataSetChanged()
 
-      Log.e(
-        "ATTENTION ATTENTION",
-        "In ScanFragment displayUserSecond: ${userList.userList[1].toString()}"
-      )
+      Log.e("ATTENTION ATTENTION",
+        "In ScanFragment displayUserSecond: ${userList.userList[1].toString()}")
 
       initFloatingActionMenu(
         mutableListOf(
           userMainListModel.userList[0],
-          userSecondListModel.userList[0]
-        )
-      )
+          userSecondListModel.userList[0]))
 
     }
     else {
 
       userSecondRecyclerView.visibility = View.GONE
 
-      Log.e(
-        "ATTENTION ATTENTION",
-        "In ScanFragment displayUserSecond: userSecondRecyclerView.visibility = View.GONE"
-      )
+      Log.e("ATTENTION ATTENTION",
+        "In ScanFragment displayUserSecond: userSecondRecyclerView.visibility = View.GONE")
 
     }
 
@@ -151,20 +136,16 @@ class ScanFragment : Fragment(), ScanFragmentView {
         friendsListModel.friendList = finalFriendList
         scanFragmentFriendViewAdapter.notifyDataSetChanged()
 
-        Log.e(
-          "ATTENTION ATTENTION",
-          "In ScanFragment displayFriends: ${friendsListModel.friendList.toString()}"
-        )
+        Log.e("ATTENTION ATTENTION",
+          "In ScanFragment displayFriends: ${friendsListModel.friendList.toString()}")
 
       }
       else {
 
         friendRecyclerView.visibility = View.GONE
 
-        Log.e(
-          "ATTENTION ATTENTION",
-          "In ScanFragment displayUserSecond: friendRecyclerView.visibility = View.GONE"
-        )
+        Log.e("ATTENTION ATTENTION",
+          "In ScanFragment displayUserSecond: friendRecyclerView.visibility = View.GONE")
 
       }
 
@@ -174,11 +155,8 @@ class ScanFragment : Fragment(), ScanFragmentView {
     else {
 
       friendRecyclerView.visibility = View.GONE
-      Log.e(
-        "ATTENTION ATTENTION",
-        "In ScanFragment displayUserSecond: friendRecyclerView.visibility = View.GONE"
-      )
-
+      Log.e("ATTENTION ATTENTION",
+        "In ScanFragment displayUserSecond: friendRecyclerView.visibility = View.GONE")
 
     }
 
@@ -208,8 +186,6 @@ class ScanFragment : Fragment(), ScanFragmentView {
 
 private val TAG: String = "ATTENTION ATTENTION"
 
-
-
   private fun askPermissions() {
 
 
@@ -227,13 +203,13 @@ private val TAG: String = "ATTENTION ATTENTION"
           Manifest.permission.READ_EXTERNAL_STORAGE,
         ).build().sendSuspend()
 
-        if (result.allGranted()) { // All the permissions are granted.
+        if (result.allGranted()) {
 
         }
         else {
 
           withContext(Dispatchers.Main) {
-            //KToasty.info(app, "Using local data", Toast.LENGTH_LONG).show()
+
             val message: String = "You have denied some permissions permanently, " +
                     "if the app force close try granting permission from settings."
             KToasty.info(requireContext(), message, Toast.LENGTH_LONG, true).show()
@@ -258,38 +234,6 @@ private val TAG: String = "ATTENTION ATTENTION"
   ) {
 
     Log.e("ATTENTION ATTENTION", "askCameraAndPhonePermissionsBeforeCameraActivity() ran")
-
-//    if (
-//
-//      ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_PHONE_STATE)
-//      == PackageManager.PERMISSION_GRANTED &&
-//      ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CALL_PHONE)
-//      == PackageManager.PERMISSION_GRANTED &&
-//      ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA)
-//      == PackageManager.PERMISSION_GRANTED
-//
-//    ) {
-//
-//
-//      val intent: Intent = Intent(requireContext(), RecognitionActivityFinal::class.java)
-//      intent.putExtra("pAccount", pAccount)
-//      intent.putExtra("phone", user.phone)
-//      intent.putExtra("network", user.network)
-//      startActivity(intent)
-//
-//    }
-//    else {
-//
-//      ActivityCompat.requestPermissions(
-//        requireActivity(),
-//        arrayOf(Manifest.permission.READ_PHONE_STATE,
-//          Manifest.permission.CALL_PHONE,
-//          Manifest.permission.CAMERA),
-//        PERMISSION_READ_PHONE_STATE
-//      )
-//
-//    }
-
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
@@ -343,7 +287,7 @@ private val TAG: String = "ATTENTION ATTENTION"
 
   override fun onAttach(context: Context) {
 
-    (context.applicationContext as InitApp) // HERE
+    (context.applicationContext as InitApp)
       .appComp().inject(this)
 
     super.onAttach(context)
@@ -363,18 +307,6 @@ private val TAG: String = "ATTENTION ATTENTION"
     Log.e(TAG, "OnPause of ScanFragment")
     super.onPause()
   }
-
-  /*private var fam: FloatingActionMenu ? = null
-  private var fab1: FloatingActionButton ? = null
-  private var fab2: FloatingActionButton ? = null*/
-
-  /*var fab1_text: TextView? = null
-  var fab2_text: TextView? = null
-
-  private var fab_open: Animation? = null
-  private var fab_close: Animation? = null
-  private var fab_clock: Animation? = null
-  private var fab_anticlock: Animation? = null*/
 
   var isOpen: Boolean = false
   var isFab1Active: Boolean = false
@@ -437,10 +369,6 @@ private val TAG: String = "ATTENTION ATTENTION"
 
     fam!!.setOnMenuButtonClickListener {
 
-      /*if (fabMenu!!.isOpened) {
-        //Toasty.info(context, fabMenuYellow.getMenuButtonLabelText(), Toasty.LENGTH_LONG).show();
-      }*/
-
       fam!!.toggle(true)
 
     }
@@ -471,33 +399,9 @@ private val TAG: String = "ATTENTION ATTENTION"
     Log.e("ATTENTION ATTENTION", "fab1 Active: ${isFab1Active.toString()}")
     Log.e("ATTENTION ATTENTION", "fab1 Active: ${isFab2Active.toString()}")
 
-    /*fam!!.setOnClickListener {
-
-        view ->
-
-
-      Snackbar.make(view, "Here's a Snackbar", Snackbar.LENGTH_LONG)
-        .setAction("Action", null)
-        .show()
-
-      Log.e("ATTENTION ATTENTION", "fam!!.setOnClickListener ran")
-      Log.e("ATTENTION ATTENTION", "fam isOpen = ${isOpen.toString()}")
-      Log.e("ATTENTION ATTENTION", "fab1 Active: ${isFab1Active.toString()}")
-      Log.e("ATTENTION ATTENTION", "fab1 Active: ${isFab2Active.toString()}")
-
-
-    }*/
-
-    /*fab1?.showAnimation = AnimationUtils.loadAnimation(context, R.anim.scale_up)
-    fab1?.showAnimation = AnimationUtils.loadAnimation(context, R.anim.scale_down)
-    fab2?.showAnimation = AnimationUtils.loadAnimation(context, R.anim.scale_up)
-    fab2?.showAnimation = AnimationUtils.loadAnimation(context, R.anim.scale_down)*/
-
     fab1!!.setOnClickListener {
 
       fam!!.toggle(true)
-
-//      showInterstitialAd()
       askCameraAndPhonePermissionsBeforeCameraActivity(it, userList[0], "1")
 
     }
@@ -514,15 +418,7 @@ private val TAG: String = "ATTENTION ATTENTION"
 
   private fun initAds(view: View) {
 
-
-    // https://developers.google.com/ad-manager/mobile-ads-sdk/android/banner
     MobileAds.initialize(context)
-
-    /// TODO Remove For Release vvv
-//    val testDeviceIds: List<String> = listOf("E9DEDC61204CFB33008E54C7F35245C8") // listOf("78D47CB8E8C50C8391083ABA46D59A17")
-//    val configuration = RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build()
-//    MobileAds.setRequestConfiguration(configuration)
-    /// TODO Remove For Release ^^^
 
     val mAdView: AdView = view.findViewById(R.id.fs_adView)
 
@@ -531,35 +427,19 @@ private val TAG: String = "ATTENTION ATTENTION"
 
     mAdView.adListener = object : AdListener() {
 
-      override fun onAdLoaded() {
-        // Code to be executed when an ad finishes loading.
-      }
+      override fun onAdLoaded() {}
 
-      override fun onAdFailedToLoad(adError: LoadAdError) {
-        // Code to be executed when an ad request fails.
-      }
+      override fun onAdFailedToLoad(adError: LoadAdError) {}
 
-      override fun onAdOpened() {
-        // Code to be executed when an ad opens an overlay that
-        // covers the screen.
-      }
+      override fun onAdOpened() {}
 
-      override fun onAdClicked() {
-        // Code to be executed when the user clicks on an ad.
-      }
-
-//      override fun onAdLeftApplication() {
-//        // Code to be executed when the user has left the app.
-//      }
+      override fun onAdClicked() {}
 
       override fun onAdImpression() {
         super.onAdImpression()
       }
 
-      override fun onAdClosed() {
-        // Code to be executed when the user is about to return
-        // to the app after tapping on an ad.
-      }
+      override fun onAdClosed() {}
 
     }
 
@@ -574,18 +454,6 @@ private val TAG: String = "ATTENTION ATTENTION"
     val view = inflater.inflate(R.layout.scan_fragment_lists_layout, container, false)
     scanFragmentPresenter.bind(this)
 
-    /*fam = view.findViewById(R.id.fam)
-    fab1   = view.findViewById(R.id.fab1)
-    fab2   = view.findViewById(R.id.fab2)
-
-    fab1_text = view.findViewById(R.id.fab1_text)
-    fab2_text = view.findViewById(R.id.fab2_text)
-
-    fab_close = AnimationUtils.loadAnimation(context, R.anim.fab_close);
-    fab_open = AnimationUtils.loadAnimation(context, R.anim.fab_open);
-    fab_clock = AnimationUtils.loadAnimation(context, R.anim.fab_rotate_clock);
-    fab_anticlock = AnimationUtils.loadAnimation(context, R.anim.fab_rotate_anticlock);*/
-
     initAds(view)
 
     initScanMainRecyclerView(view)
@@ -593,8 +461,6 @@ private val TAG: String = "ATTENTION ATTENTION"
     initScanFriendRecyclerView(view)
 
     checkSignedUp()
-
-
 
     askPermissions()
 
@@ -689,23 +555,6 @@ private val TAG: String = "ATTENTION ATTENTION"
 
       val date1: Date = dateFormat.parse(lastWeekDateTime)!!
 
-//      val comparison: Int = date1.compareTo(thisDate)
-
-      /*val c = Calendar.getInstance()
-      c.time = date1
-      c.add(Calendar.DATE, 7)
-
-      if (c.time >= thisDate){
-
-        val editor = sharedPref!!.edit()
-        editor.putInt("weeklyInterstitialAd", weeklyInterstitialAd + 1)
-        editor.putString("lastWeekDateTime", thisDate.toString())
-        editor.apply()
-
-        showInterstitialAd()
-
-      }*/
-
       val second3 = 3L * 1000
 
       val day3 = 3L * 24 * 60 * 60 * 1000
@@ -729,8 +578,6 @@ private val TAG: String = "ATTENTION ATTENTION"
 
       }
 
-//        if (comparison == 0 || comparison > 0) { }
-
     }
     else {
 
@@ -738,8 +585,6 @@ private val TAG: String = "ATTENTION ATTENTION"
       editor.putInt("weeklyInterstitialAd", 1)
       editor.putString("lastWeekDateTime", thisDate.toString())
       editor.apply()
-
-//      showInterstitialAd()
 
     }
 
@@ -840,10 +685,8 @@ private val TAG: String = "ATTENTION ATTENTION"
     emailTv.text   = userMainListModel.userList[0].email
     createdTv.text = userMainListModel.userList[0].created?.let { TimeAgo.using(it.toLong()) }
 
-    Log.e(
-      "ATTENTION ATTENTION",
-      "createdTv.text = userMainListModel.userList[0].created: ${userMainListModel.userList[0].created}"
-    )
+    Log.e("ATTENTION ATTENTION",
+      "createdTv.text = userMainListModel.userList[0].created: ${userMainListModel.userList[0].created}")
 
   }
 
@@ -853,13 +696,11 @@ private val TAG: String = "ATTENTION ATTENTION"
     userMainRecyclerView.layoutManager = LinearLayoutManager(
       context,
       LinearLayoutManager.VERTICAL,
-      false
-    )
+      false)
 
     val dividerItemDecoration = DividerItemDecoration(
       context,
-      LinearLayoutManager.VERTICAL
-    )
+      LinearLayoutManager.VERTICAL)
 
     userMainRecyclerView.addItemDecoration(dividerItemDecoration)
 
@@ -870,9 +711,7 @@ private val TAG: String = "ATTENTION ATTENTION"
       requireContext(),
       this,
       requireActivity()
-    ) {
-//      KToasty.info(view.context, "${it?.name}@${it?.phone} Clicked", Toast.LENGTH_LONG).show()
-    }
+    ) {}
 
     userMainRecyclerView.adapter = scanFragmentUserMainViewAdapter
 
@@ -884,13 +723,11 @@ private val TAG: String = "ATTENTION ATTENTION"
     userSecondRecyclerView.layoutManager = LinearLayoutManager(
       context,
       LinearLayoutManager.VERTICAL,
-      false
-    )
+      false)
 
     val dividerItemDecoration = DividerItemDecoration(
       context,
-      LinearLayoutManager.VERTICAL
-    )
+      LinearLayoutManager.VERTICAL)
 
     userSecondRecyclerView.addItemDecoration(dividerItemDecoration)
 
@@ -901,9 +738,7 @@ private val TAG: String = "ATTENTION ATTENTION"
       requireContext(),
       this,
       requireActivity()
-    ) {
-//      KToasty.info(view.context, "${it?.name}@${it?.phone} Clicked", Toast.LENGTH_LONG).show()
-    }
+    ) {}
 
     userSecondRecyclerView.adapter = scanFragmentUserSecondViewAdapter
 
@@ -915,15 +750,11 @@ private val TAG: String = "ATTENTION ATTENTION"
     friendRecyclerView.layoutManager = LinearLayoutManager(
       context,
       LinearLayoutManager.VERTICAL,
-      false
-    )
+      false)
 
     val dividerItemDecoration = DividerItemDecoration(
       context,
-      LinearLayoutManager.VERTICAL
-    )
-
-//    friendRecyclerView.addItemDecoration(dividerItemDecoration)
+      LinearLayoutManager.VERTICAL)
 
     friendRecyclerView.isNestedScrollingEnabled = false
 
@@ -933,24 +764,15 @@ private val TAG: String = "ATTENTION ATTENTION"
       requireActivity(),
       userList,
       friendsListModel
-    ) {
-//      KToasty.info(view.context, "${it?.name} Clicked", Toast.LENGTH_LONG).show()
-    }
+    ) {}
 
     friendRecyclerView.adapter = scanFragmentFriendViewAdapter
 
   }
 
-  // https://stackoverflow.com/questions/51737667/since-the-android-getfragmentmanager-api-is-deprecated-is-there-any-alternati
   fun dataRechargeDialog(activity: Activity, network: String, whichSimCard: Int) {
 
     val fragment: DataRechargeDialog = DataRechargeDialog.newInstance(network, whichSimCard)
-
-    /*getFragmentManager()
-            .beginTransaction()
-            .replace(R.id.root_linear_layout_V, fragment)
-            .addToBackStack("DataRechargeDialog")
-            .commit();*/
 
     try {
       fragment.show(childFragmentManager, "DataRechargeDialog")

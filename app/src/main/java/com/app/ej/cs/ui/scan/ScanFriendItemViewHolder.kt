@@ -16,10 +16,6 @@ import com.app.ej.cs.repository.entity.Friend
 import com.app.ej.cs.repository.entity.User
 import com.app.ej.cs.utils.Util
 
-/**
- * The ViewHolder for the NewsList RecyclerView Adapter
- */
-
 class ScanFriendItemViewHolder(
 
   private val view: View,
@@ -102,7 +98,6 @@ class ScanFriendItemViewHolder(
     airtimeBankTopUpTransferBool = false
     bankTransferBool = false
 
-
     if (
       !(model.accountNumber1 == null || model.accountNumber1!!.trim() == "") ||
       !(model.accountNumber2 == null || model.accountNumber2!!.trim() == "") ||
@@ -148,8 +143,6 @@ class ScanFriendItemViewHolder(
 
       airtimeBankTopUpTransferBool = true
 
-
-
     }
 
     if (size > 1) {
@@ -165,7 +158,6 @@ class ScanFriendItemViewHolder(
         airtimeBankTopUpTransferBool = true
 
       }
-
 
     }
 
@@ -193,11 +185,8 @@ class ScanFriendItemViewHolder(
 
     }
 
-
     if (
-
       (
-
               !(
                       (model.accountNumber1 == null || model.accountNumber1!!.trim() == "") ||
                               (model.bank1 == null || model.bank1 == "Choose Bank")
@@ -235,29 +224,25 @@ class ScanFriendItemViewHolder(
       R.id.fmenu, R.id.check_account_number, 1, util.menuIconWithText(
         ResourcesCompat.getDrawable(view.resources,
           R.drawable.ic_account_balance_black_24dp, null)!!,
-        view.resources.getString(R.string.check_account_number)
-      )
+        view.resources.getString(R.string.check_account_number))
     ).isEnabled = accountNumberBool
 
     popup.menu.add(
       R.id.fmenu, R.id.airtime_phone_transfer, 2, util.menuIconWithText(
         ResourcesCompat.getDrawable(view.resources, R.drawable.ic_airplanemode_active_black_24dp, null)!!,
-        view.resources.getString(R.string.airtime_phone_transfer)
-      )
+        view.resources.getString(R.string.airtime_phone_transfer))
     ).isEnabled = airtimePhoneTransferBool
 
     popup.menu.add(
       R.id.fmenu, R.id.airtime_bank_topup_transfer, 3, util.menuIconWithText(
         ResourcesCompat.getDrawable(view.resources, R.drawable.ic_airplanemode_active_black_24dp, null)!!,
-        view.resources.getString(R.string.airtime_bank_topup_transfer)
-      )
+        view.resources.getString(R.string.airtime_bank_topup_transfer))
     ).isEnabled = airtimeBankTopUpTransferBool
 
     popup.menu.add(
       R.id.fmenu, R.id.bank_transfer, 4, util.menuIconWithText(
         ResourcesCompat.getDrawable(view.resources, R.drawable.ic_compare_black_24dp, null)!!,
-        view.resources.getString(R.string.bank_transfer)
-      )
+        view.resources.getString(R.string.bank_transfer))
     ).isEnabled = bankTransferBool
 
     popup.setOnMenuItemClickListener(
@@ -391,44 +376,12 @@ class ScanFriendItemViewHolder(
         friendDetailsBanksLayout2.visibility = View.VISIBLE
       }
 
-
-
       menu.setOnClickListener {
 
         init(model, it)
         showPopup()
 
       }
-
-//      checkIfNotNullSet(friendName, name)
-//
-//      checkIfNotNullSet(friendPhone1, phone1)
-//      checkIfNotNullSet(friendPhone2, phone2)
-//      checkIfNotNullSet(friendPhone3, phone3)
-//
-//      checkIfNotNullSet(friendNetwork1, network1)
-//      checkIfNotNullSet(friendNetwork2, network2)
-//      checkIfNotNullSet(friendNetwork3, network3)
-//
-//      checkIfNotNullSet(friendBank1, bank1)
-//      checkIfNotNullSet(friendBank2, bank2)
-//      checkIfNotNullSet(friendBank3, bank3)
-//      checkIfNotNullSet(friendBank4, bank4)
-
-//      friendName.text = name
-
-//      friendPhone1.text = phone1
-//      friendPhone2.text = phone2
-//      friendPhone3.text = phone3
-
-//      friendNetwork1.text = network1
-//      friendNetwork2.text = network2
-//      friendNetwork3.text = network3
-
-//      friendBank1.text = bank1
-//      friendBank2.text = bank2
-//      friendBank3.text = bank3
-//      friendBank4.text = bank4
 
     }
 

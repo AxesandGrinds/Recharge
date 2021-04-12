@@ -12,23 +12,6 @@ class SplashScreenActivity : AppCompatActivity() {
 
   fun init() {
 
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-//
-//            Window window = getWindow();
-//            window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-//                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//
-//                // clear FLAG_TRANSLUCENT_STATUS flag:
-//                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-//                // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
-//                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-//                window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimary3));
-//            }
-//
-//        }
-
     hideSystemUI()
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {

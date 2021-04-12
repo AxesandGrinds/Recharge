@@ -65,7 +65,6 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
@@ -119,7 +118,6 @@ class RegisterDetailsActivity() : AppCompatActivity(),
                 Uri.parse("content://contacts")
         )
 
-        // Show user only contacts w/ phone numbers
         pickContactIntent.setDataAndType(
                 ContactsContract.Contacts.CONTENT_URI,
                 ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE
@@ -133,25 +131,18 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
         val dialogBuilder = AlertDialog.Builder(this)
 
-        // set message of alert dialog
         dialogBuilder.setMessage("Do you want to delete friend ${index + 1}?")
-                // if the dialog is cancelable
                 .setCancelable(true)
-                // positive button text and action
                 .setPositiveButton("Proceed", DialogInterface.OnClickListener {
                     dialog, id -> dialog.cancel()
                     runDeleteContact(index)
                 })
-                // negative button text and action
                 .setNegativeButton("Cancel", DialogInterface.OnClickListener {
                     dialog, id -> dialog.cancel()
                 })
 
-        // create dialog box
         val alert = dialogBuilder.create()
-        // set title for alert dialog box
         alert.setTitle("Are You Sure?")
-        // show alert dialog
         alert.show()
 
     }
@@ -170,7 +161,6 @@ class RegisterDetailsActivity() : AppCompatActivity(),
         }
 
         runDeleteContactLocal(index)
-//        editFragmentFriendViewAdapter.notifyDataSetChanged()
 
     }
 
@@ -184,9 +174,6 @@ class RegisterDetailsActivity() : AppCompatActivity(),
         Log.e("ATTENTION ATTENTION", "Before Deletion Current Json")
         Log.e("ATTENTION ATTENTION", "allInfoJsonSaved: $allInfoJsonSaved")
         Log.e("ATTENTION ATTENTION", "allInfoJsonUnsaved: $allInfoJsonUnsaved")
-
-//        Log.e("ATTENTION ATTENTION", "sharedPreferences: ${sharedPref.all}")
-//        userAndFriendInfoSaved = gson.fromJson(allInfoJsonSaved, UserAndFriendInfo::class.java)
 
         if (allInfoJsonUnsaved != "defaultAll") {
 
@@ -214,7 +201,6 @@ class RegisterDetailsActivity() : AppCompatActivity(),
             val message: String = "You have successfully deleted an entry for a friend."
 
             util.onShowMessageSuccess(message, context)
-
 
             Log.e("ATTENTION ATTENTION", "After Deletion Current Json")
             Log.e("ATTENTION ATTENTION", "allInfoJsonSaved: $allInfoJsonSaved")
@@ -264,10 +250,9 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
                 context = this@RegisterDetailsActivity
 
-                if (!result.allGranted()) { // All the permissions are not granted.
+                if (!result.allGranted()) {
 
                     withContext(Dispatchers.Main) {
-                        //KToasty.info(app, "Using local data", Toast.LENGTH_LONG).show()
                         val message: String = "You have denied some permissions permanently, " +
                                 "if the app force close try granting permission from settings."
                         KToasty.info(context, message, Toast.LENGTH_LONG, true).show()
@@ -290,8 +275,7 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
     private fun generalUpdatePinInDatabase(pAccount: String){
 
-
-        val  userDocumentReference = //: DocumentReference =
+        val  userDocumentReference =
 
             db
                 .collection("users")
@@ -316,12 +300,10 @@ class RegisterDetailsActivity() : AppCompatActivity(),
                 })
                 .addOnFailureListener(OnFailureListener { e ->
                     Log.w("Update", "failed: " + e.message)
-                    KToasty.info(
-                            context,
+                    KToasty.info(context,
                             "Update failed: " + e.message, Toast.LENGTH_LONG, true
                     ).show()
                 })
-
 
         }
         else {
@@ -421,7 +403,7 @@ class RegisterDetailsActivity() : AppCompatActivity(),
                         Manifest.permission.SEND_SMS,
                     ).build().sendSuspend()
 
-                    if (result.allGranted()) { // All the permissions are granted.
+                    if (result.allGranted()) {
 
                         if (localSubscriptionManager.activeSubscriptionInfoCount > 1) {
                             val localList: List<SubscriptionInfo> = localSubscriptionManager.activeSubscriptionInfoList
@@ -452,7 +434,6 @@ class RegisterDetailsActivity() : AppCompatActivity(),
                             val sim1: Int = simInfo1.subscriptionId
 
                             if (pAccount == "1"){
-//                                smsManager = SmsManager.getSmsManagerForSubscriptionId(sim1)
                                 smsManager = SmsManager.getSmsManagerForSubscriptionId(sim1)
                                 smsManager.sendTextMessage(code, null, message, sentPI, deliveredPI)
                                 generalUpdatePinInDatabase("1")
@@ -469,7 +450,6 @@ class RegisterDetailsActivity() : AppCompatActivity(),
                     else {
 
                         withContext(Dispatchers.Main) {
-                            //KToasty.info(app, "Using local data", Toast.LENGTH_LONG).show()
                             val message2: String = "You have denied some permissions permanently, " +
                                     "if the app force close try granting permission from settings."
                             KToasty.info(context, message2, Toast.LENGTH_LONG, true).show()
@@ -512,7 +492,6 @@ class RegisterDetailsActivity() : AppCompatActivity(),
                         val sim1: Int = simInfo1.subscriptionId
 
                         if (pAccount == "1"){
-//                                smsManager = SmsManager.getSmsManagerForSubscriptionId(sim1)
                             smsManager = SmsManager.getSmsManagerForSubscriptionId(sim1)
                             smsManager.sendTextMessage(code, null, message, sentPI, deliveredPI)
                             generalUpdatePinInDatabase("1")
@@ -744,28 +723,6 @@ class RegisterDetailsActivity() : AppCompatActivity(),
     }*/
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     private fun callNewPin(pAccount: String, network: String, newPin: String) {
 
         val ussdCode: String
@@ -812,7 +769,7 @@ class RegisterDetailsActivity() : AppCompatActivity(),
                         Manifest.permission.CALL_PHONE,
                     ).build().sendSuspend()
 
-                    if (result.allGranted()) { // All the permissions are granted.
+                    if (result.allGranted()) {
 
                         startActivity(intent)
                         KToasty.success(context,
@@ -823,7 +780,7 @@ class RegisterDetailsActivity() : AppCompatActivity(),
                     else {
 
                         withContext(Dispatchers.Main) {
-                            //KToasty.info(app, "Using local data", Toast.LENGTH_LONG).show()
+
                             val message: String = "You have denied some permissions permanently, " +
                                     "if the app force close try granting permission from settings."
                             KToasty.info(context, message, Toast.LENGTH_LONG, true).show()
@@ -869,7 +826,7 @@ class RegisterDetailsActivity() : AppCompatActivity(),
                         Manifest.permission.CALL_PHONE,
                     ).build().sendSuspend()
 
-                    if (result.allGranted()) { // All the permissions are granted.
+                    if (result.allGranted()) {
 
                         startActivity(intent)
                         KToasty.success(
@@ -883,7 +840,7 @@ class RegisterDetailsActivity() : AppCompatActivity(),
                     else {
 
                         withContext(Dispatchers.Main) {
-                            //KToasty.info(app, "Using local data", Toast.LENGTH_LONG).show()
+
                             val message: String = "You have denied some permissions permanently, " +
                                     "if the app force close try granting permission from settings."
                             KToasty.info(context, message, Toast.LENGTH_LONG, true).show()
@@ -913,177 +870,20 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
     }
 
-    /*private fun createNewPin(pAccount: String, newPin: String, network: String){
-
-        when (network) {
-
-            "Airtel" -> {
-                smsNewPin(pAccount, network, newPin)
-            }
-            "Etisalat(9Mobile)" -> {
-                callNewPin(pAccount, network, newPin)
-            }
-            "Glo Mobile" -> {
-                callNewPin(pAccount, network, newPin)
-            }
-            "MTN Nigeria" -> {
-                smsNewPin(pAccount, network, newPin)
-            }
-            else -> {
-                KToasty.error(
-                        context,
-                        "Error making airtime transfer pin!",
-                        Toast.LENGTH_LONG,
-                        true
-                ).show()
-                println("$network: Error making airtime transfer pin!")
-            }
-
-        }
-
-    }*/
-
-    /*private fun setupNewPin(pAccount: String) {
-
-        pinBuilder = AlertDialog.Builder(context, R.style.MyDialogTheme)
-        pinBuilder.setTitle("Confirm")
-        pinBuilder.setMessage("Have you created a pin with this number before?")
-
-        pinBuilder.setPositiveButton("Yes", DialogInterface.OnClickListener { dialog, which ->
-            dialog.cancel()
-            val message =
-                    "Please enter current pin. You can use this app to change pin after sign up."
-            KToasty.info(context, message, Toast.LENGTH_LONG, true).show()
-        })
-
-        pinBuilder.setNegativeButton("No", DialogInterface.OnClickListener { dialog, which ->
-
-            dialog.dismiss()
-            rememberBuilder = androidx.appcompat.app.AlertDialog.Builder(context, R.style.MyDialogTheme)
-            rememberBuilder.setTitle("Remember!")
-            rememberBuilder.setMessage("Airtel, MTN and 9Mobile have 4 digit transfer pin. Glo has 5-digit transfer pin.")
-            rememberBuilder.setPositiveButton(
-                    "YES",
-                    DialogInterface.OnClickListener { rememberDialog, _ ->
-
-                        rememberDialog.dismiss()
-
-                        try {
-                            if (
-                                    phone1Et!!.text.toString() != "" &&
-                                    network1 != null &&
-                                    network1 != "Choose Network"
-                            ) {
-
-                                Log.i("ATTENTION ATTENTION", "not empty network1:  $network1")
-
-                                newPinYesBuilder = AlertDialog.Builder(context, R.style.MyDialogTheme)
-                                newPinYesBuilder.setTitle("Put in your desired pin")
-                                pinViewInflated = LayoutInflater.from(context).inflate(
-                                        R.layout.scan_dialog_input_newly_registered_pin,
-                                        null
-                                )
-                                newPinInput =
-                                        pinViewInflated.findViewById<View>(R.id.input_new_pin) as TextInputEditText
-                                newPinYesBuilder.setView(pinViewInflated)
-                                newPinYesBuilder.setPositiveButton(
-                                        android.R.string.ok,
-                                        DialogInterface.OnClickListener { dialog, _ ->
-
-                                            dialog.dismiss()
-                                            newPinStr = newPinInput.text.toString()
-                                            if ((pAccount == "1")) {
-                                                createNewPin("1", newPinStr, network1!!)
-                                            } else {
-                                                createNewPin("2", newPinStr, network1!!)
-                                            }
-
-                                        })
-                                newPinYesBuilder.setNegativeButton(
-                                        android.R.string.cancel,
-                                        DialogInterface.OnClickListener { newPinDialog, _ ->
-                                            newPinDialog.cancel()
-
-                                        })
-                                newPinYesBuilder.create().show()
-                            } else {
-
-                                Log.w("ATTENTION ATTENTION", "empty network1:  $network1")
-
-                                if ((phone1Et!!.text.toString() == "")) {
-                                    AnimationUtil.shakeView(
-                                            phone1Et!!,
-                                            this@RegisterDetailsActivity
-                                    )
-                                    phone1Layout!!.error = getString(R.string.error_enter_number)
-                                    KToasty.error(
-                                            context,
-                                            "Please enter number first.",
-                                            Toast.LENGTH_LONG,
-                                            true
-                                    ).show()
-                                }
-                                if (network1 == null) {
-                                    network1Spinner?.let {
-                                        AnimationUtil.shakeView(
-                                                it,
-                                                this@RegisterDetailsActivity
-                                        )
-                                    }
-                                    KToasty.info(
-                                            context,
-                                            "Please choose network first.",
-                                            Toast.LENGTH_LONG,
-                                            true
-                                    ).show()
-                                }
-                                if ((network1 == "Choose Network")) {
-                                    network1Spinner?.let {
-                                        AnimationUtil.shakeView(
-                                                it,
-                                                this@RegisterDetailsActivity
-                                        )
-                                    }
-                                    KToasty.info(
-                                            context,
-                                            "Please choose network first.",
-                                            Toast.LENGTH_LONG,
-                                            true
-                                    ).show()
-                                }
-                            }
-                        } catch (e: NullPointerException) {
-
-                        }
-
-                    })
-
-            val alert: AlertDialog = rememberBuilder.create()
-            alert.show()
-
-        })
-
-        pinBuilder.create().show()
-
-    }*/
-
     private fun returnToLogin(context: Context){
         val intent: Intent = Intent(context, LoginActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)
-//        context.startActivity(intent);
-//        ((CheckLoggedIn) getApplicationContext()).startLogin(intent);
-        finish();
+        finish()
     }
 
+
+
+
+
+
     private lateinit var rda_coordinatorLayout: CoordinatorLayout
-
-
-
-
-
-
 
     private lateinit var userMainRecyclerView: RecyclerView
     private lateinit var editFragmentUserMainViewAdapter: EditUserMainViewAdapter
@@ -1126,7 +926,6 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
             mProgressBar.visibility = View.VISIBLE
 
-//            registerUser()
             getLocation()
 
         }
@@ -1145,77 +944,6 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
             Log.e("ATTENTION ATTENTION", "One More Friend Button Clicked." +
                     " New Friend Not Added In Registration Details")
-
-            /*Log.e("ATTENTION ATTENTION", "One More Friend Button Clicked. New Friend Added")
-
-            val index: Int = friendsListModel.friendList?.size ?: 0
-
-            val newFriend: Friend =
-
-                Friend(
-                    index = index,
-                    description = "Friend ${index + 1}",
-
-                    folded = false,
-
-                    name = null,
-                    phone1 = null,
-                    phone2 = null,
-                    phone3 = null,
-
-                    network1 = null,
-                    network2 = null,
-                    network3 = null,
-
-                    bank1 = null,
-                    bank2 = null,
-                    bank3 = null,
-                    bank4 = null,
-
-                    accountNumber1 = null,
-                    accountNumber2 = null,
-                    accountNumber3 = null,
-                    accountNumber4 = null,
-                )
-
-            friendsListModel.friendList?.add(newFriend)
-
-            val sharedPref = getSharedPreferences(PREFNAME, Context.MODE_PRIVATE)
-
-            allInfoJsonUnsaved = sharedPref.getString("allInfoUnsaved", "defaultAll")!!
-            allInfoJsonSaved = sharedPref.getString("allInfoSaved", "defaultAll")!!
-
-            if (allInfoJsonUnsaved != "defaultAll") {
-
-                val allInfo = gson.fromJson(allInfoJsonUnsaved, UserAndFriendInfo::class.java)
-
-                allInfo.friendList?.add(newFriend)
-
-                val editor = sharedPref.edit()
-
-                allInfoJsonUnsaved = Gson().toJson(allInfo)
-
-//                editor.putString("allInfoSaved", allInfoJsonSaved)
-                editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
-
-                editor.apply()
-
-                val message: String = "You have successfully added an entry for one more friend."
-
-                util.onShowMessage(message, context)
-
-                Log.e("ATTENTION ATTENTION", "One More Friend Button Clicked. New Friend Added")
-
-                Log.e("ATTENTION ATTENTION", "sharedPreferences: ${sharedPref.all}")
-
-                Log.e("ATTENTION ATTENTION", "allInfoJsonSaved: $allInfoJsonSaved")
-
-                Log.e("ATTENTION ATTENTION", "allInfoJsonUnsaved: $allInfoJsonUnsaved")
-
-            }
-
-            editFragmentFriendViewAdapter.notifyDataSetChanged()*/
-
 
         }
 
@@ -1241,7 +969,6 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
         editFragmentUserMainViewAdapter = EditUserMainViewAdapter(userMainListModel, firebaseUser!!) {
             val message: String = "${it?.name}@${it?.phone} Clicked"
-//            KToasty.info(context, "${it?.name}@${it?.phone} Clicked", Toast.LENGTH_LONG).show()
         }
 
         userMainRecyclerView.adapter = editFragmentUserMainViewAdapter
@@ -1273,9 +1000,7 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
             userSecondRecyclerView.isNestedScrollingEnabled = false
 
-            editFragmentUserSecondViewAdapter = EditUserSecondViewAdapter(userSecondListModel) {
-//            KToasty.info(context, "${it?.name}@${it?.phone} Clicked", Toast.LENGTH_LONG).show()
-            }
+            editFragmentUserSecondViewAdapter = EditUserSecondViewAdapter(userSecondListModel) {}
 
             userSecondRecyclerView.adapter = editFragmentUserSecondViewAdapter
 
@@ -1310,96 +1035,11 @@ class RegisterDetailsActivity() : AppCompatActivity(),
         editFragmentFriendViewAdapter = EditFriendViewAdapter(friendsListModel, this, this)
         {
             val message: String = "${it?.name} Clicked"
-//            util.onShowMessage(message, context)
         }
 
         friendRecyclerView.adapter = editFragmentFriendViewAdapter
 
     }
-
-    /*private fun registerData() {
-
-        val sharedPref = context.getSharedPreferences(PREFNAME, Context.MODE_PRIVATE)
-
-        val editor = sharedPref.edit()
-
-        allInfoJsonUnsaved = sharedPref.getString("allInfoUnsaved", "allInfoJsonUnsaved").toString()
-        allInfoJsonSaved   = sharedPref.getString("allInfoSaved", allInfoJsonUnsaved).toString()
-
-        userAndFriendInfoUnsaved = gson.fromJson(allInfoJsonUnsaved, UserAndFriendInfo::class.java)
-        userAndFriendInfoSaved   = gson.fromJson(allInfoJsonSaved,   UserAndFriendInfo::class.java)
-
-        val user = auth.currentUser
-
-        if (user != null) userId = user.uid;
-
-        if (util.checkIfAllMandatoryExist(userAndFriendInfoUnsaved)) {
-
-            db
-                    .collection("users")
-                    .document(userId!!)
-                    .set(userAndFriendInfoUnsaved, SetOptions.merge())
-                    .addOnSuccessListener {
-
-                        editor.putString("allInfoSaved", allInfoJsonUnsaved)
-                        editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
-                        editor.apply()
-
-                        Log.d(TAG, "Save complete!")
-
-                        mProgressBar.visibility = View.GONE
-                        mProgressBarLocation.visibility = View.GONE
-
-                        util.onShowMessage("Email verified. Account created.", context)
-
-                        goToMain()
-
-                    }
-                    .addOnFailureListener { e -> Log.e(TAG, "Error saving", e)
-                    }
-
-        }
-        else {
-
-            if (userAndFriendInfoUnsaved.usersList[0].name == null  || userAndFriendInfoUnsaved.usersList[0].name  == "") {
-
-                util.onShowErrorMessage("you must set name", context)
-
-            }
-            else if (userAndFriendInfoUnsaved.usersList[0].phone == null || userAndFriendInfoUnsaved.usersList[0].phone == "") {
-
-                util.onShowErrorMessage("you must set phone1", context)
-
-            }
-            else if (userAndFriendInfoUnsaved.usersList[0].network != null && userAndFriendInfoUnsaved.usersList[0].network != "") {
-
-                util.onShowErrorMessage("you must set network1", context)
-
-            }
-            else if (userAndFriendInfoUnsaved.usersList[0].email == null || userAndFriendInfoUnsaved.usersList[0].email == "") {
-
-                util.onShowErrorMessage("you must set email", context)
-
-            }
-
-
-        }
-
-
-/// Practise from and to Json
-//    allInfoJsonSaved = gson.toJson(userAndFriendInfo)  // json string
-//    allInfoJsonSaved = sharedPref.getString("allInfoSaved", "defaultAll").toString()
-//    val allInfoSaved = gson.fromJson(allInfoJsonSaved, UserAndFriendInfo::class.java)
-//
-//
-//    allInfoJsonUnsaved = sharedPref.getString("allInfoUnsaved", "defaultAll").toString()
-//    val allInfoUnsaved = gson.fromJson(allInfoJsonUnsaved, UserAndFriendInfo::class.java)
-//    allInfoJsonSaved = gson.toJson(userAndFriendInfo)  // json string
-//    editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
-//    editor.apply()
-
-    }*/
-
 
     private fun initModels() {
 
@@ -1555,41 +1195,9 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
         }
 
-//        FirebaseAuth.getInstance().signInWithCustomToken(token).addOnSuccessListener {
-//
-//            try {
-//
-//                if (it.user != null) {
-//
-//                    firebaseUser = it.user
-//                    userId = it.user?.uid
-//
-//                }
-//                else {
-//
-//                    goToLogin()
-//
-//                }
-//
-//            }
-//            catch (e: Exception) {
-//
-//                KToasty.info(context, "Sorry! You can't use this app because your API level is too low.", Toast.LENGTH_LONG).show()
-//
-//            }
-//
-//        }
-
-//        db    = Firebase.firestore
-//        auth = Firebase.auth
 
 
         rda_coordinatorLayout = findViewById<View>(R.id.rda_coordinatorLayout) as CoordinatorLayout
-
-//        mProgressBar = ProgressBar(context, null, android.R.attr.progressBarStyleLarge)
-//        val params = RelativeLayout.LayoutParams(100, 100)
-//        params.addRule(RelativeLayout.CENTER_IN_PARENT)
-//        rda_coordinatorLayout.addView(mProgressBar, params)
 
         mProgressBar         = findViewById<ProgressBar>(R.id.mProgressBar) as ProgressBar
         mProgressBarLocation = findViewById<ProgressBar>(R.id.mLocationProgressBar) as ProgressBar
@@ -1644,8 +1252,6 @@ class RegisterDetailsActivity() : AppCompatActivity(),
                 }).toString()
                 else -> null.toString()
             }
-//            tvAddress.text = locationAddress
-
 
         }
     }
@@ -1693,7 +1299,6 @@ class RegisterDetailsActivity() : AppCompatActivity(),
                     Toast.LENGTH_LONG).show()
 
             }
-
 
         }
 
@@ -1757,10 +1362,8 @@ class RegisterDetailsActivity() : AppCompatActivity(),
         thread.start()
     }
 
-    // https://stackoverflow.com/questions/32491960/android-check-permission-for-locationmanager
     private fun getAddress(lons: Double, lats: Double): String?{
 
-        //getAddressFromLocation(lons, lats, context, GeoCodeHandler())
 
         val geocoder: Geocoder
 
@@ -1801,10 +1404,6 @@ class RegisterDetailsActivity() : AppCompatActivity(),
     }
 
 
-
-    /**
-     * This method is call when authentication is successful.
-     */
     fun updateUI(currentUser: FirebaseUser?){
         if (currentUser != null){
             val i: Intent = Intent(context, MainActivity::class.java)
@@ -1815,7 +1414,6 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
     private lateinit var  mSettingsClient: SettingsClient
     private lateinit var  mLocationSettingsRequest: LocationSettingsRequest
-    // https://stackoverflow.com/questions/33251373/turn-on-location-services-without-navigating-to-settings-page
     private fun displayLocationSettingsRequest(){
         val locationRequest: LocationRequest = LocationRequest.create()
         locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
@@ -1828,11 +1426,8 @@ class RegisterDetailsActivity() : AppCompatActivity(),
         mLocationSettingsRequest = builder.build()
         mSettingsClient = LocationServices.getSettingsClient(context)
 
-        //PendingResult<LocationSettingsResult> result = LocationServices.SettingsApi.checkLocationSettings(googleApiClient, builder.build());
-        mSettingsClient.checkLocationSettings(mLocationSettingsRequest)
-            .addOnSuccessListener {
-                //Success Perform Task Here
-            }
+         mSettingsClient.checkLocationSettings(mLocationSettingsRequest)
+            .addOnSuccessListener {}
             .addOnFailureListener { e ->
 
                 when ((e as ApiException).statusCode) {
@@ -1872,7 +1467,7 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
         if (requestCode == REQUEST_CHECK_SETTINGS){
             when(resultCode){
-                Activity.RESULT_OK ->                     //Success Perform Task Here
+                Activity.RESULT_OK ->
                     getLocationPoints()
                 Activity.RESULT_CANCELED -> {
                     Log.e("GPS", "User denied to access location")
@@ -1886,10 +1481,7 @@ class RegisterDetailsActivity() : AppCompatActivity(),
             if (!isGpsEnabled){
                 openGpsEnableSetting()
             }
-            else {
-
-                //navigateToUser();
-            }
+            else { }
         }
         else if (requestCode >= PICK_CONTACT_REQUEST) {
 
@@ -1899,12 +1491,8 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
             }
 
-//            addFriendDoneListener.contactPicked(data, requestCode - PICK_CONTACT_REQUEST)
-
         }
-        if (resultCode == Activity.RESULT_OK) { // before after picking contact returns here
-
-        }
+        if (resultCode == Activity.RESULT_OK) { }
 
     }
 
@@ -1954,7 +1542,6 @@ class RegisterDetailsActivity() : AppCompatActivity(),
             .setPositiveButton("Yes") { dialog, id ->
                 dialog.dismiss()
                 displayLocationSettingsRequest()
-                //startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
             }
             .setNegativeButton(
                     "No"
@@ -2011,7 +1598,6 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
                     fusedLocationClient.lastLocation
                         .addOnSuccessListener(this) { bestLocation1 ->
-                            //Location bestLocation = null; //locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                             var bestLocation = bestLocation1
                             val providers = locationManager.getProviders(true)
                             for (provider in providers) {
@@ -2031,7 +1617,6 @@ class RegisterDetailsActivity() : AppCompatActivity(),
                                 }
                             }
 
-                            // Got last known location. In some rare situations this can be null.
                             if (bestLocation != null) {
                                 // Logic to handle location object
                                 Log.e("ATTENTION ATTENTION", "Location Received")
@@ -2051,7 +1636,6 @@ class RegisterDetailsActivity() : AppCompatActivity(),
                                     "Inside getLocationPoints. Got Location."
                                 )
 
-                                //KToasty.success(RegisterDetailsActivity.this, "Got Location.", Toast.LENGTH_LONG,true).show()
                                 Log.e("ATTENTION ATTENTION", "longitude: $longitude")
                                 Log.e("ATTENTION ATTENTION", "latitude: $latitude")
                                 Log.e("ATTENTION ATTENTION", "Location: $finalAddress")
@@ -2066,8 +1650,6 @@ class RegisterDetailsActivity() : AppCompatActivity(),
                                 Log.e("ATTENTION ATTENTION", "Location Not Received.")
                                 Log.e("ATTENTION ATTENTION", "Will Try Again.")
                                 val errorMessage = "Please register after granting permissions in settings."
-
-                                //KToasty.error(RegisterDetailsActivity.this, errorMessage, Toast.LENGTH_LONG,true).show()
 
                             }
 
@@ -2105,7 +1687,6 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
                 fusedLocationClient.lastLocation
                     .addOnSuccessListener(this) { bestLocation1 ->
-                        //Location bestLocation = null; //locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                         var bestLocation = bestLocation1
                         val providers = locationManager.getProviders(true)
                         for (provider in providers) {
@@ -2125,9 +1706,7 @@ class RegisterDetailsActivity() : AppCompatActivity(),
                             }
                         }
 
-                        // Got last known location. In some rare situations this can be null.
                         if (bestLocation != null) {
-                            // Logic to handle location object
                             Log.e("ATTENTION ATTENTION", "Location Received")
                             longitude = bestLocation.longitude
                             latitude = bestLocation.latitude
@@ -2145,7 +1724,6 @@ class RegisterDetailsActivity() : AppCompatActivity(),
                                 "Inside getLocationPoints. Got Location."
                             )
 
-                            //KToasty.success(RegisterDetailsActivity.this, "Got Location.", Toast.LENGTH_LONG,true).show()
                             Log.e("ATTENTION ATTENTION", "longitude: $longitude")
                             Log.e("ATTENTION ATTENTION", "latitude: $latitude")
                             Log.e("ATTENTION ATTENTION", "Location: $finalAddress")
@@ -2159,8 +1737,6 @@ class RegisterDetailsActivity() : AppCompatActivity(),
                             Log.e("ATTENTION ATTENTION", "Location Not Received.")
                             Log.e("ATTENTION ATTENTION", "Will Try Again.")
                             val errorMessage = "Please register after granting permissions in settings."
-
-                            //KToasty.error(RegisterDetailsActivity.this, errorMessage, Toast.LENGTH_LONG,true).show()
                         }
                     }
 
@@ -2209,18 +1785,13 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
-//        criteria = Criteria()
-//        bestProvider = locationManager.getBestProvider(Criteria(), true).toString()
-
         try {
 
             mProgressBar.visibility = View.GONE
 
             if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-                Log.e(
-                        "ATTENTION ATTENTION",
-                        "!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)"
-                )
+                Log.e("ATTENTION ATTENTION",
+                    "!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)")
 
                 buildAlertMessageNoLocation()
 
@@ -2251,8 +1822,8 @@ class RegisterDetailsActivity() : AppCompatActivity(),
         }
         mProgressBarLocation.visibility = View.GONE
 
-        //KToasty.info(RegisterDetailsActivity.this, "latitude:" + latitude + " longitude:" + longitude, Toast.LENGTH_SHORT).show();
     }
+
     override fun onStatusChanged(provider: String, status: Int, extras: Bundle){}
     override fun onProviderEnabled(provider: String){}
     override fun onProviderDisabled(provider: String){}
@@ -2272,9 +1843,6 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
         if (allInfoJsonUnsaved == "allInfoJsonSaved") {
 
-//            userAndFriendInfoUnsaved =  UserAndFriendInfo()
-//            userAndFriendInfoUnsaved.usersList = arrayListOf()
-
             val message: String = "Error registering. Please try again later."
             util.onShowErrorMessage(message, context)
 
@@ -2292,7 +1860,6 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
                 userAndFriendInfoUnsaved.usersList[0].created = created
                 userAndFriendInfoUnsaved.usersList[0].uid = userId!!
-
 
             }
 
@@ -2321,8 +1888,6 @@ class RegisterDetailsActivity() : AppCompatActivity(),
             if (util.checkIfAllMandatoryExist(userAndFriendInfoUnsaved)) {
 
                 Log.w("ATTENTION ATTENTION", "registerUser() ran.")
-
-    //            val sharedPref = context.getSharedPreferences(PREFNAME, Context.MODE_PRIVATE)
 
                 val editor = sharedPref.edit()
 
@@ -2442,7 +2007,6 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
                                                     verifyEmailAlertDialogBuilder.setTitle("Email Verification")
                                                     verifyEmailAlertDialogBuilder.setMessage(message)
-//                                                    verifyEmailAlertDialogBuilder.setIcon(android.R.drawable.ic_dialog_alert)
 
                                                     verifyEmailAlertDialogBuilder.setPositiveButton("Ok") {
 
@@ -2455,9 +2019,6 @@ class RegisterDetailsActivity() : AppCompatActivity(),
                                                     val verifyEmailAlertDialog: AlertDialog = verifyEmailAlertDialogBuilder.create()
                                                     verifyEmailAlertDialog.setCancelable(false)
                                                     verifyEmailAlertDialog.show()
-
-//                                                    val message: String = "Please go to email: $email and verify your address to continue. Thank you."
-//                                                    util.onShowMessageLong(message, context)
 
                                                     registerCount++
 
@@ -2482,7 +2043,6 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
                                                     tookTooLongAlertDialogBuilder.setTitle("Registration Timeout")
                                                     tookTooLongAlertDialogBuilder.setMessage(message)
-//                                                    verifyEmailAlertDialogBuilder.setIcon(android.R.drawable.ic_dialog_alert)
 
                                                     tookTooLongAlertDialogBuilder.setPositiveButton("Ok") {
 
@@ -2499,9 +2059,6 @@ class RegisterDetailsActivity() : AppCompatActivity(),
                                                 }
 
                                             }
-
-//                                            val message: String = "Error updating email: " + e.message
-//                                            util.onShowErrorMessage(message, context)
 
                                         })
 
@@ -2617,14 +2174,7 @@ class RegisterDetailsActivity() : AppCompatActivity(),
                     Log.e("ATTENTION ATTENTION",
                         "mCurrentUser.isEmailVerified(): " + firebaseUser!!.isEmailVerified)
 
-                    if (!firebaseUser!!.isEmailVerified) {
-
-                        //emailVerificationCountDown(5000);
-//                        val message: String = "Please go to email: $email and verify your address to continue. Thank you."
-//                        util.onShowMessage(message, context)
-
-
-                    }
+                    if (!firebaseUser!!.isEmailVerified) { }
                     else {
 
                         allInfoJsonSaved = Gson().toJson(userAndFriendInfoUnsaved)
@@ -2661,121 +2211,7 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
     }
 
-    /*private fun runEmailCheckIfEmailChanged(editor: SharedPreferences.Editor) {
 
-        mProgressBar.visibility = View.GONE
-        mProgressBarLocation.visibility = View.GONE
-
-        myFixedRateTimer = fixedRateTimer("timer",false,3000,2000) {
-
-            this@RegisterDetailsActivity.runOnUiThread {
-
-                val userTask: Task<Void> = Objects.requireNonNull(auth.currentUser)!!.reload()
-
-                userTask.addOnSuccessListener {
-
-                    firebaseUser = auth.currentUser!!
-
-                    Log.e(
-                        "ATTENTION ATTENTION",
-                        "mCurrentUser.isEmailVerified(): " + firebaseUser!!.isEmailVerified
-                    )
-
-                    if (firebaseUser!!.isEmailVerified) {
-
-                        myFixedRateTimer?.cancel()
-                        actualRegistration(editor)
-
-                        //emailVerificationCountDown(5000);
-//                        val message: String = "Please go to email: $email and verify your address to continue. Thank you."
-//                        util.onShowMessage(message, context)
-
-
-                    }
-
-                }
-
-            }
-
-        }
-
-    }*/
-
-    /*private fun actualRegistration(editor: SharedPreferences.Editor) {
-
-        var phone2: String?
-        var network2: String?
-
-        if (userAndFriendInfoUnsaved.usersList.size > 1 && userAndFriendInfoUnsaved.usersList[1].phone != null) {
-            phone2   = userAndFriendInfoUnsaved.usersList[1].phone!!
-            network2 = userAndFriendInfoUnsaved.usersList[1].network!!
-        }
-        else {
-            phone2   = null
-            network2 = null
-        }
-
-        val locationUser: LocationUser =
-
-            LocationUser(
-                uid = userId!!,
-                created = created,
-                name = userAndFriendInfoUnsaved.usersList[0].name!!,
-                email = userAndFriendInfoUnsaved.usersList[0].email!!,
-                phone = userAndFriendInfoUnsaved.usersList[0].phone!!,
-                network = userAndFriendInfoUnsaved.usersList[0].network!!,
-                phone2 = phone2,
-                network2 = network2,
-                longitude = longitude,
-                latitude = latitude,
-                address = address!!,
-                city = city!!,
-                state = statee!!,
-                country = country!!,
-                postalCode = postalCode!!,
-                knownName = knownName!!,
-            )
-
-        db
-            .collection("locations")
-            .document(userId!!)
-            .set(locationUser)
-            .addOnSuccessListener {
-
-                db
-                    .collection("users")
-                    .document(userId!!)
-                    .set(userAndFriendInfoUnsaved)
-                    .addOnSuccessListener {
-
-
-
-                    }
-                    .addOnFailureListener { e ->
-
-                        mProgressBar.visibility = View.GONE
-                        mProgressBarLocation.visibility = View.GONE
-
-                        val message: String = "Error saving details: " + e.message
-                        util.onShowErrorMessage(message, context)
-                        Log.e(TAG, "Error saving", e)
-
-                    }
-
-
-            }
-            .addOnFailureListener { e ->
-
-                mProgressBar.visibility = View.GONE
-                mProgressBarLocation.visibility = View.GONE
-
-                val message: String = "Error saving details: " + e.message
-                util.onShowErrorMessage(message, context)
-                Log.e(TAG, "Error saving", e)
-
-            }
-
-    }*/
 
     private   fun emailVerificationCountDown(duration: Long){
         Handler().postDelayed({
@@ -2817,8 +2253,6 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
     }
 
-
-
     public  override  fun onDestroy(){
         super.onDestroy()
 
@@ -2850,7 +2284,6 @@ class RegisterDetailsActivity() : AppCompatActivity(),
     }
 
     override  fun onBackPressed(){
-        //super.onBackPressed();
     }
 
     private fun goToMain() {
@@ -2881,15 +2314,6 @@ class RegisterDetailsActivity() : AppCompatActivity(),
         startActivity(i)
     }
 
-//    fun openTerms(view: View?) {
-//
-//        val url: String = "https://rechargeprivacypolicy.herokuapp.com"
-//        val i: Intent = Intent(Intent.ACTION_VIEW)
-//        i.data = android.net.Uri.parse(url)
-//        startActivity(i)
-//
-//    }
-
     companion object  {
 
         private val PERMISSION_READ_PHONE_STATE: Int = 18
@@ -2906,11 +2330,6 @@ class RegisterDetailsActivity() : AppCompatActivity(),
         }
 
     }
-
-//    override fun contactPicked(data: Intent?, index: Int) {
-//
-//
-//    }
 
 
 }

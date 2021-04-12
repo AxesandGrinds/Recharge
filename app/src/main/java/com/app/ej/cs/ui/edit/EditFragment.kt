@@ -49,9 +49,6 @@ import com.google.gson.Gson
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
 import io.michaelrocks.libphonenumber.android.Phonenumber
 
-/**
- * This is the Fragment for displaying the list of Editable Material
- */
 class EditFragment : Fragment(), EditFragmentView, PickContactListener {
 
 
@@ -64,7 +61,6 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
   override fun displayUserSecond(userList: UserListModel) {
 
     if (userList.userList.size > 1  &&
-//            userList.userList[0].phone != userList.userList[1].phone &&
       userList.userList[1].phone != null) {
 
       userSecondListModel.userList = mutableListOf(userList.userList[1])
@@ -80,27 +76,6 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
   }
 
   private val PICK_CONTACT_REQUEST: Int = 500
-
-/*  val userMainView = object : UserMainView {
-    override fun displayUserMain(userList: UserListModel) {
-      userMainListModel.userList = userList.userList
-      editFragmentUserMainViewAdapter.notifyDataSetChanged()
-    }
-  }
-
-  val userSecondView = object : UserSecondView {
-    override fun displayUserSecond(userList: UserListModel) {
-      userSecondListModel.userList = userList.userList
-      editFragmentUserSecondViewAdapter.notifyDataSetChanged()
-    }
-  }
-
-  val friendView = object : FriendView {
-    override fun displayFriends(friendList: FriendListModel) {
-      friendsListModel.friendList = friendList.friendList
-      editFragmentFriendViewAdapter.notifyDataSetChanged()
-    }
-  }*/
 
   @Inject
   lateinit var editFragmentPresenter: EditFragmentPresenter
@@ -121,7 +96,7 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
 
   override fun onAttach(context: Context) {
 
-    (context.applicationContext as InitApp) // HERE
+    (context.applicationContext as InitApp)
       .appComp().inject(this)
 
     super.onAttach(context)
@@ -130,15 +105,6 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
 
   override fun onStart() {
     super.onStart()
-
-//    addFriendDoneListener = object : AddFriendDoneListener{
-//
-//      override fun contactPicked(data: Intent?, index: Int) {
-//
-//
-//      }
-//
-//    }
 
     editFragmentPresenter.displayEditDetails()
 
@@ -153,15 +119,7 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
 
   private fun initAds(view: View) {
 
-
-    // https://developers.google.com/ad-manager/mobile-ads-sdk/android/banner
     MobileAds.initialize(context)
-
-    /*/// TODO Remove For Release vvv
-    val testDeviceIds: List<String> = listOf("B3EEABB8EE11C2BE770B684D95219ECB")
-    val configuration = RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build()
-    MobileAds.setRequestConfiguration(configuration)
-    /// TODO Remove For Release ^^^*/
 
     val mAdView: AdView = view.findViewById(R.id.fe_adView)
 
@@ -170,34 +128,19 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
 
     mAdView.adListener = object : AdListener() {
       override fun onAdLoaded() {
-        // Code to be executed when an ad finishes loading.
       }
 
-      override fun onAdFailedToLoad(adError: LoadAdError) {
-        // Code to be executed when an ad request fails.
-      }
+      override fun onAdFailedToLoad(adError: LoadAdError) {}
 
-      override fun onAdOpened() {
-        // Code to be executed when an ad opens an overlay that
-        // covers the screen.
-      }
+      override fun onAdOpened() {}
 
-      override fun onAdClicked() {
-        // Code to be executed when the user clicks on an ad.
-      }
-
-//      override fun onAdLeftApplication() {
-//        // Code to be executed when the user has left the app.
-//      }
+      override fun onAdClicked() {}
 
       override fun onAdImpression() {
         super.onAdImpression()
       }
 
-      override fun onAdClosed() {
-        // Code to be executed when the user is about to return
-        // to the app after tapping on an ad.
-      }
+      override fun onAdClosed() {}
 
     }
 
@@ -251,7 +194,7 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
 
     if (networkUtil.isOnline(requireContext())) {
 
-      updateData() // snackbar and toast inside
+      updateData()
 
     }
     else {
@@ -304,11 +247,6 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
 
   private fun updateData() {
 
-//    userAndFriendInfo.usersList = ArrayList(userMainListModel.userList)
-//    if (friendsListModel.friendList != null)
-//    userAndFriendInfo.friendsList = ArrayList(friendsListModel.friendList)
-//    allInfoJsonSaved = gson.toJson(userAndFriendInfo)  // json string
-
     val sharedPref = activity?.getSharedPreferences(PREFNAME, Context.MODE_PRIVATE)
 
     val editor = sharedPref!!.edit()
@@ -323,9 +261,8 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
 
     if (user != null) userId = user.uid;
     else {
-//      returnToLogin()
       return
-    };
+    }
 
     val savedEmail:   String?   = userAndFriendInfoSaved.usersList[0].email
     val unSavedEmail: String? = userAndFriendInfoUnsaved.usersList[0].email
@@ -392,19 +329,6 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
 
     }
 
-
-/// Practise from and to Json
-//    allInfoJsonSaved = gson.toJson(userAndFriendInfo)  // json string
-//    allInfoJsonSaved = sharedPref.getString("allInfoSaved", "defaultAll").toString()
-//    val allInfoSaved = gson.fromJson(allInfoJsonSaved, UserAndFriendInfo::class.java)
-//
-//
-//    allInfoJsonUnsaved = sharedPref.getString("allInfoUnsaved", "defaultAll").toString()
-//    val allInfoUnsaved = gson.fromJson(allInfoJsonUnsaved, UserAndFriendInfo::class.java)
-//    allInfoJsonSaved = gson.toJson(userAndFriendInfo)  // json string
-//    editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
-//    editor.apply()
-
   }
 
   private fun initAddOneMoreFriendButton(view: View) {
@@ -461,9 +385,7 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
 
         allInfoJsonUnsaved = Gson().toJson(allInfo)
 
-//        editor.putString("allInfoSaved", allInfoJsonSaved)
         editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
-//        editor.putString("allInfoSaved", allInfoJsonSaved)
 
         editor.apply()
 
@@ -524,9 +446,7 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
 
     userMainRecyclerView.isNestedScrollingEnabled = false
 
-    editFragmentUserMainViewAdapter = EditUserMainViewAdapter(userMainListModel, firebaseUser) {
-//      KToasty.info(view.context, "${it?.name}@${it?.phone} Clicked", Toast.LENGTH_LONG).show()
-    }
+    editFragmentUserMainViewAdapter = EditUserMainViewAdapter(userMainListModel, firebaseUser) {}
 
     userMainRecyclerView.adapter = editFragmentUserMainViewAdapter
 
@@ -583,9 +503,7 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
 
       userSecondRecyclerView.isNestedScrollingEnabled = false
 
-      editFragmentUserSecondViewAdapter = EditUserSecondViewAdapter(userSecondListModel) {
-//      KToasty.info(view.context, "${it?.name}@${it?.phone} Clicked", Toast.LENGTH_LONG).show()
-      }
+      editFragmentUserSecondViewAdapter = EditUserSecondViewAdapter(userSecondListModel) {}
 
       userSecondRecyclerView.adapter = editFragmentUserSecondViewAdapter
 
@@ -691,18 +609,12 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
     friendRecyclerView = view.findViewById(R.id.edit_user_friends_recycler_view)
     friendRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-    /*val dividerItemDecoration = DividerItemDecoration(
-            context,
-            LinearLayoutManager.VERTICAL
-    )
-
-    friendRecyclerView.addItemDecoration(dividerItemDecoration)*/
-
     friendRecyclerView.isNestedScrollingEnabled = false
 
-    editFragmentFriendViewAdapter = EditFriendViewAdapter(friendsListModel, requireActivity(), this, editFragment = this) {
-//      KToasty.info(view.context, "${it?.name} Clicked", Toast.LENGTH_LONG).show()
-    }
+    editFragmentFriendViewAdapter = EditFriendViewAdapter(
+      friendsListModel, requireActivity(),
+      this, editFragment = this) {}
+
     itemTouchHelper.attachToRecyclerView(friendRecyclerView)
     friendRecyclerView.adapter = editFragmentFriendViewAdapter
 
@@ -712,14 +624,11 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
 
     val pickContactIntent: Intent = Intent(
       Intent.ACTION_PICK,
-      Uri.parse("content://contacts")
-    )
+      Uri.parse("content://contacts"))
 
-    // Show user only contacts w/ phone numbers
     pickContactIntent.setDataAndType(
       ContactsContract.Contacts.CONTENT_URI,
-      ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE
-    )
+      ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE)
 
     startActivityForResult(pickContactIntent, PICK_CONTACT_REQUEST + index)
 
@@ -729,25 +638,18 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
 
     val dialogBuilder = AlertDialog.Builder(requireContext())
 
-    // set message of alert dialog
     dialogBuilder.setMessage("Do you want to delete friend ${index + 1}?")
-            // if the dialog is cancelable
             .setCancelable(true)
-            // positive button text and action
             .setPositiveButton("Proceed", DialogInterface.OnClickListener {
               dialog, id -> dialog.cancel()
               runDeleteContact(index)
             })
-            // negative button text and action
             .setNegativeButton("Cancel", DialogInterface.OnClickListener {
               dialog, id -> dialog.cancel()
             })
 
-    // create dialog box
     val alert = dialogBuilder.create()
-    // set title for alert dialog box
     alert.setTitle("Are You Sure?")
-    // show alert dialog
     alert.show()
 
   }
@@ -768,7 +670,6 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
     }
 
     runDeleteContactLocal(index)
-//        editFragmentFriendViewAdapter.notifyDataSetChanged()
 
   }
 
@@ -776,13 +677,10 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
 
     val sharedPref = activity?.getSharedPreferences(PREFNAME, Context.MODE_PRIVATE)
 
-//    allInfoJsonSaved   = sharedPref?.getString("allInfoSaved", "defaultAll")!!
     allInfoJsonUnsaved = sharedPref!!.getString("allInfoUnsaved", allInfoJsonSaved)!!
 
     Log.e("ATTENTION ATTENTION", "allInfoJsonSaved: $allInfoJsonSaved")
     Log.e("ATTENTION ATTENTION", "allInfoJsonUnsaved: $allInfoJsonUnsaved")
-
-//    userAndFriendInfoSaved = gson.fromJson(allInfoJsonSaved, UserAndFriendInfo::class.java)
 
     if (allInfoJsonUnsaved != "defaultAll") {
 
@@ -829,8 +727,6 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
 
       }
 
-//      addFriendDoneListener.contactPicked(data, requestCode - PICK_CONTACT_REQUEST)
-
     }
 
   }
@@ -849,8 +745,7 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
 
     Log.e("ATTENTION ATTENTION", "addFriendDoneListener.contactPicked from RegisterDetailsActivity")
 
-    Log.e(
-      "ATTENTION ATTENTION",
+    Log.e("ATTENTION ATTENTION",
       "friendsListModel.friendList?.size: ${friendsListModel.friendList?.size ?: 0}")
 
     Log.e("ATTENTION ATTENTION", "index: $index")
@@ -871,7 +766,7 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
       allInfoUnsaved.friendList!![index].name = name
       allInfoUnsaved.friendList!![index].phone1 = nationalNumber
 
-      allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+      allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
 
       val editor = sharedPref!!.edit()
       editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
@@ -920,7 +815,7 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
       allInfoUnsaved.friendList!![index].name = name
       allInfoUnsaved.friendList!![index].phone1 = nationalNumber
 
-      allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+      allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
 
       val editor = sharedPref!!.edit()
       editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
@@ -931,139 +826,11 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
 
     Log.e("ATTENTION ATTENTION", "name: $name number: $nationalNumber")
 
-    Log.e(
-      "ATTENTION ATTENTION",
+    Log.e("ATTENTION ATTENTION",
       "friendsListModel.friendList!![index]: index = ${index.toString()}")
 
-    Log.e(
-      "ATTENTION ATTENTION",
+    Log.e("ATTENTION ATTENTION",
       "friendsListModel.friendList: ${friendsListModel.friendList.toString()}")
-
-
-//    if (friendsListModel.friendList?.size ?: 0 > index) {
-//
-//      friendsListModel.friendList!![index].name = name
-//      friendsListModel.friendList!![index].phone1 = nationalNumber
-//
-//      if (allInfoUnsaved.friendList?.size ?: 0 > 0) {
-//
-//        allInfoUnsaved.friendList!![index].name = name
-//        allInfoUnsaved.friendList!![index].phone1 = nationalNumber
-//
-//        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
-//
-//        val editor = sharedPref!!.edit()
-//        editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
-//        editor.putString("allInfoSaved", allInfoJsonUnsaved)
-//        editor.apply()
-//
-//      }
-//      else {
-//
-//        val size: Int = allInfoUnsaved.friendList?.size ?: 0
-//
-//        for (i in index until size) {
-//
-//          val newFriend: Friend = Friend(
-//
-//            index = i,
-//            description = "Friend ${i + 1}",
-//
-//            name = null,
-//            phone1 = null,
-//            phone2 = null,
-//            phone3 = null,
-//
-//            network1 = null,
-//            network2 = null,
-//            network3 = null,
-//
-//            bank1 = null,
-//            bank2 = null,
-//            bank3 = null,
-//            bank4 = null,
-//
-//            accountNumber1 = null,
-//            accountNumber2 = null,
-//            accountNumber3 = null,
-//            accountNumber4 = null,
-//
-//            )
-//
-//          friendsListModel.friendList?.add(newFriend)
-//
-//        }
-//
-//        allInfoUnsaved.friendList!![index].name = name
-//        allInfoUnsaved.friendList!![index].phone1 = nationalNumber
-//
-//        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
-//
-//        val editor = sharedPref!!.edit()
-//        editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
-//        editor.putString("allInfoSaved", allInfoJsonUnsaved)
-//        editor.apply()
-//
-//      }
-//
-//      Log.e("ATTENTION ATTENTION", "name: $name number: $nationalNumber")
-//
-//      Log.e(
-//        "ATTENTION ATTENTION",
-//        "friendsListModel.friendList!![index]: index = ${index.toString()}")
-//
-//      Log.e(
-//        "ATTENTION ATTENTION",
-//        "friendsListModel.friendList: ${friendsListModel.friendList.toString()}")
-//
-//    }
-//    else  {
-//
-//      val size: Int = allInfoUnsaved.friendList?.size ?: 0
-//
-//      for (i in index until size) {
-//
-//        val newFriend: Friend = Friend(
-//
-//          index = i,
-//          description = "Friend ${i + 1}",
-//
-//          name = null,
-//          phone1 = null,
-//          phone2 = null,
-//          phone3 = null,
-//
-//          network1 = null,
-//          network2 = null,
-//          network3 = null,
-//
-//          bank1 = null,
-//          bank2 = null,
-//          bank3 = null,
-//          bank4 = null,
-//
-//          accountNumber1 = null,
-//          accountNumber2 = null,
-//          accountNumber3 = null,
-//          accountNumber4 = null,
-//
-//          )
-//
-//        friendsListModel.friendList?.add(newFriend)
-//
-//      }
-//
-//      allInfoUnsaved.friendList!![index].name = name
-//      allInfoUnsaved.friendList!![index].phone1 = nationalNumber
-//
-//      allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
-//
-//      val editor = sharedPref!!.edit()
-//      editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
-//      editor.putString("allInfoSaved", allInfoJsonUnsaved)
-//      editor.apply()
-//
-//    }
 
     editFragmentFriendViewAdapter.notifyDataSetChanged()
 

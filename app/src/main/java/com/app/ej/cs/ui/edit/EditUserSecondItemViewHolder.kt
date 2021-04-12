@@ -22,10 +22,6 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.Gson
 
-/**
- * The ViewHolder for the NewsList RecyclerView Adapter
- */
-
 class EditUserSecondItemViewHolder(
 
   private val view: View,
@@ -34,9 +30,6 @@ class EditUserSecondItemViewHolder(
 ) : RecyclerView.ViewHolder(view), Binder<User> {
 
   private val showMoreDetailsIv: ImageView = view.findViewById(R.id.showMoreHandleView)
-
-//  private val nameEt: TextInputEditText = view.findViewById(R.id.nameEt)
-//  private val emailEt: TextInputEditText = view.findViewById(R.id.emailEt)
 
   private val phone2Et: TextInputEditText = view.findViewById(R.id.phone2Et)
   private val network2Spinner: Spinner = view.findViewById(R.id.network2Spinner)
@@ -78,13 +71,6 @@ class EditUserSecondItemViewHolder(
       view.setOnClickListener { l(currentUser) }
     }
   }
-
-
-
-
-
-
-
 
   private fun readFromLocal() {
 
@@ -220,7 +206,6 @@ class EditUserSecondItemViewHolder(
       override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
 
         mBankSpinner.setSelection(position)
-        //view?.context?.let { KToasty.info(it, position.toString(), Toast.LENGTH_SHORT).show() }
 
       }
 
@@ -244,7 +229,6 @@ class EditUserSecondItemViewHolder(
       override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
 
         mNetworkSpinner.setSelection(position)
-        //view?.context?.let { KToasty.info(it, position.toString(), Toast.LENGTH_SHORT).show() }
 
       }
 
@@ -357,7 +341,7 @@ class EditUserSecondItemViewHolder(
         val phone: String = phone2Et.text.toString()
         userAndFriendInfo.usersList[model.index].phone = phone
         allInfoUnsaved.usersList[model.index].phone = phone
-        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
 
         val editor = sharedPref!!.edit()
         editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
@@ -387,7 +371,7 @@ class EditUserSecondItemViewHolder(
         val pin: String = pin2Et.text.toString()
         userAndFriendInfo.usersList[model.index].pin = pin
         allInfoUnsaved.usersList[model.index].pin = pin
-        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
 
         val editor = sharedPref!!.edit()
         editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
@@ -417,7 +401,7 @@ class EditUserSecondItemViewHolder(
         val smartCardNumber: String = smartCardNumber1Et.text.toString()
         userAndFriendInfo.usersList[model.index].smartCardNumber1 = smartCardNumber
         allInfoUnsaved.usersList[model.index].smartCardNumber1 = smartCardNumber
-        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
 
         val editor = sharedPref!!.edit()
         editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
@@ -447,7 +431,7 @@ class EditUserSecondItemViewHolder(
         val smartCardNumber: String = smartCardNumber2Et.text.toString()
         userAndFriendInfo.usersList[model.index].smartCardNumber2 = smartCardNumber
         allInfoUnsaved.usersList[model.index].smartCardNumber2 = smartCardNumber
-        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
 
         val editor = sharedPref!!.edit()
         editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
@@ -477,7 +461,7 @@ class EditUserSecondItemViewHolder(
         val smartCardNumber: String = smartCardNumber3Et.text.toString()
         userAndFriendInfo.usersList[model.index].smartCardNumber3 = smartCardNumber
         allInfoUnsaved.usersList[model.index].smartCardNumber3 = smartCardNumber
-        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
 
         val editor = sharedPref!!.edit()
         editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
@@ -507,7 +491,7 @@ class EditUserSecondItemViewHolder(
         val smartCardNumber: String = smartCardNumber4Et.text.toString()
         userAndFriendInfo.usersList[model.index].smartCardNumber4 = smartCardNumber
         allInfoUnsaved.usersList[model.index].smartCardNumber4 = smartCardNumber
-        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
 
         val editor = sharedPref!!.edit()
         editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
@@ -537,7 +521,7 @@ class EditUserSecondItemViewHolder(
         val meterNumber: String = meterNumber1Et.text.toString()
         userAndFriendInfo.usersList[model.index].meterNumber1 = meterNumber
         allInfoUnsaved.usersList[model.index].meterNumber1 = meterNumber
-        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
 
         val editor = sharedPref!!.edit()
         editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
@@ -567,7 +551,7 @@ class EditUserSecondItemViewHolder(
         val meterNumber: String = meterNumber2Et.text.toString()
         userAndFriendInfo.usersList[model.index].meterNumber2 = meterNumber
         allInfoUnsaved.usersList[model.index].meterNumber2 = meterNumber
-        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
 
         val editor = sharedPref!!.edit()
         editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
@@ -597,7 +581,7 @@ class EditUserSecondItemViewHolder(
         val meterNumber: String = meterNumber3Et.text.toString()
         userAndFriendInfo.usersList[model.index].meterNumber3 = meterNumber
         allInfoUnsaved.usersList[model.index].meterNumber3 = meterNumber
-        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
 
         val editor = sharedPref!!.edit()
         editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
@@ -635,7 +619,7 @@ class EditUserSecondItemViewHolder(
           allInfoUnsaved.usersList[model.index].network = null
         }
 
-        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
         val editor = sharedPref!!.edit()
         editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
         editor.apply()
@@ -671,7 +655,7 @@ class EditUserSecondItemViewHolder(
           allInfoUnsaved.usersList[model.index].bank1 = null
         }
 
-        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
         val editor = sharedPref!!.edit()
         editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
         editor.apply()
@@ -703,7 +687,7 @@ class EditUserSecondItemViewHolder(
           allInfoUnsaved.usersList[model.index].bank2 = null
         }
 
-        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
         val editor = sharedPref!!.edit()
         editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
         editor.apply()
@@ -735,7 +719,7 @@ class EditUserSecondItemViewHolder(
           allInfoUnsaved.usersList[model.index].bank3 = null
         }
 
-        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
         val editor = sharedPref!!.edit()
         editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
         editor.apply()
@@ -767,7 +751,7 @@ class EditUserSecondItemViewHolder(
           allInfoUnsaved.usersList[model.index].bank4 = null
         }
 
-        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
         val editor = sharedPref!!.edit()
         editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
         editor.apply()
@@ -782,8 +766,6 @@ class EditUserSecondItemViewHolder(
       if (phone != null) {
         phone2Et.setText(phone)
       }
-
-      //-----------------------------------------------------
 
       if (pin != null) {
         pin2Et.setText(pin)
@@ -817,8 +799,6 @@ class EditUserSecondItemViewHolder(
         meterNumber3Et.setText(meterNumber3)
       }
 
-      //-----------------------------------------------------
-
       if (network != null) {
         val networkItemPosition: Int = networkStringArray.indexOf(network)
         network2Spinner.setSelection(networkItemPosition)
@@ -845,8 +825,6 @@ class EditUserSecondItemViewHolder(
       }
 
       transition(folded)
-
-      //-----------------------------------------------------
 
     }
 
