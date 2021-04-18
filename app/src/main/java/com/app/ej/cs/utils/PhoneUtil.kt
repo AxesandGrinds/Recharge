@@ -4,12 +4,12 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.PendingIntent
-import android.content.Context
-import android.content.DialogInterface
-import android.content.Intent
+import android.content.*
+import android.content.Context.CLIPBOARD_SERVICE
 import android.database.Cursor
 import android.net.Uri
 import android.os.Build
+import android.os.IBinder
 import android.os.Parcelable
 import android.provider.ContactsContract
 import android.telecom.TelecomManager
@@ -28,8 +28,11 @@ import androidx.fragment.app.FragmentActivity
 import com.app.ej.cs.R
 import com.app.ej.cs.repository.entity.Friend
 import com.app.ej.cs.repository.entity.User
+import com.app.ej.cs.service.USSDService
 import com.app.ej.cs.ui.CodeInputActivity
+import com.app.ej.cs.ui.DataBuyForFriendDialog
 import com.app.ej.cs.ui.DataRechargeDialog
+import com.app.ej.cs.ui.DataTransferDialog
 import com.droidman.ktoasty.KToasty
 import com.fondesa.kpermissions.allGranted
 import com.fondesa.kpermissions.coroutines.sendSuspend
@@ -1425,26 +1428,6 @@ class PhoneUtil {
         friend: Friend,
     ) {
 
-        /*val accountChoiceBuilder: AlertDialog.Builder = AlertDialog.Builder(context, R.style.MyDialogTheme)
-
-        accountChoiceBuilder.setTitle("Choose your Associated Banks' Phone Number")
-
-        val pAccountType = mutableListOf<String>()
-        val pAccountList = mutableListOf<String>()
-
-        if (modelList[0].phone != null && modelList[0].phone!!.trim() != "") {
-
-            pAccountType.add(modelList[0].phone!!)
-            pAccountList.add("1")
-
-        }
-        if (modelList.size > 1 && modelList[1].phone != null && modelList[1].phone != "") {
-
-            pAccountType.add(modelList[1].phone!!)
-            pAccountList.add("2")
-
-        }*/
-
         val accountChoiceBuilder: AlertDialog.Builder = AlertDialog.Builder(
             context,
             R.style.MyDialogTheme
@@ -1551,16 +1534,29 @@ class PhoneUtil {
             banksAndAccountsList.add(banksAndAccounts2)
         }
 
-        accountChoiceBuilder.setSingleChoiceItems(banksAndAccountsList.toTypedArray(), -1) {
+        val friendBankChoiceBuilder: AlertDialog.Builder = AlertDialog.Builder(
+            context,
+            R.style.MyDialogTheme)
 
-                dialogInterface, i ->
+        friendBankChoiceBuilder.setTitle("Choose your friend's account")
 
-            dialogInterface.dismiss()
+        val amountBuilder: AlertDialog.Builder = AlertDialog.Builder(context, R.style.MyDialogTheme)
 
-            val user: User = modelList[i]
-            val pAccount: String = pAccountList[i]
+        amountBuilder.setTitle("Amount")
 
-            val name: String = if (friend.name == null || friend.name == "") {
+        val amountViewInflated: View = LayoutInflater.from(context).inflate(
+            R.layout.input_amount,
+            null)
+
+        val amountInput = amountViewInflated.findViewById<View>(R.id.input_amount) as TextInputEditText
+        amountBuilder.setView(amountViewInflated)
+
+        if (banksAndAccountsList.size == 1) {
+
+            val user: User = modelList[0]
+            val pAccount: String = pAccountList[0]
+
+            val name: String = if (friend.name == null || friend.name!!.trim() == "") {
                 "Unknown Name"
             }
             else {
@@ -1599,43 +1595,15 @@ class PhoneUtil {
                 banksAndAccountNumbers.add("${friend.accountNumber1}: ${friend.bank1}")
             }
 
-            val friendBankChoiceBuilder: AlertDialog.Builder = AlertDialog.Builder(
-                context,
-                R.style.MyDialogTheme
-            )
-
-            friendBankChoiceBuilder.setTitle("Choose your friend's account")
-            //Choose your Friend's Phone Number
             Log.e("ATTENTION ATTENTION", "Choose your friend's account")
-            Log.e(
-                "ATTENTION ATTENTION",
-                "\n\n\nFriend's account numbers: ${banksAndAccountNumbers.toString()}"
-            )
+            Log.e("ATTENTION ATTENTION", "\n\n\nFriend's account numbers: ${banksAndAccountNumbers.toString()}")
 
 
-            friendBankChoiceBuilder.setSingleChoiceItems(banksAndAccountNumbers.toTypedArray(), -1) {
+            if (banksAndAccountNumbers.size == 1) {
 
-                    dialogInterface, i ->
+                val bank: String = banks[0]
+                val accountNumber: String = accountNumbers[0]
 
-                dialogInterface.dismiss()
-
-                val bank: String = banks[i]
-                val accountNumber: String = accountNumbers[i]
-
-
-                val amountBuilder: AlertDialog.Builder = AlertDialog.Builder(
-                    context,
-                    R.style.MyDialogTheme
-                )
-                amountBuilder.setTitle("Amount")
-
-                val amountViewInflated: View = LayoutInflater.from(context).inflate(
-                    R.layout.input_amount,
-                    null
-                )
-
-                val amountInput = amountViewInflated.findViewById<View>(R.id.input_amount) as TextInputEditText
-                amountBuilder.setView(amountViewInflated)
                 amountBuilder.setPositiveButton(android.R.string.ok) { dialog, which ->
 
                     dialog.dismiss()
@@ -1653,14 +1621,156 @@ class PhoneUtil {
                 amountBuilder.show()
 
             }
+            else {
 
-            friendBankChoiceBuilder.setNegativeButton(android.R.string.cancel) { dialog, which -> dialog.cancel() }
-            friendBankChoiceBuilder.show()
+                friendBankChoiceBuilder.setSingleChoiceItems(banksAndAccountNumbers.toTypedArray(), -1) {
+
+                        dialogInterface, i ->
+
+                    dialogInterface.dismiss()
+
+                    val bank: String = banks[i]
+                    val accountNumber: String = accountNumbers[i]
+
+                    amountBuilder.setPositiveButton(android.R.string.ok) { dialog, which ->
+
+                        dialog.dismiss()
+
+                        val amountInputStr: String = amountInput.text.toString()
+
+                        bankChoiceTransfer(
+                            context, fragment, activity, user, pAccount,
+                            name, accountNumber, amountInputStr, bank
+                        )
+
+                    }
+
+                    amountBuilder.setNegativeButton(android.R.string.cancel) { dialog, which -> dialog.cancel() }
+                    amountBuilder.show()
+
+                }
+
+                friendBankChoiceBuilder.setNegativeButton(android.R.string.cancel) { dialog, which -> dialog.cancel() }
+                friendBankChoiceBuilder.show()
+
+            }
 
         }
+        else {
 
-        accountChoiceBuilder.setNegativeButton(android.R.string.cancel) { dialog, which -> dialog.cancel() }
-        accountChoiceBuilder.show()
+            accountChoiceBuilder.setSingleChoiceItems(banksAndAccountsList.toTypedArray(), -1) {
+
+                    dialogInterface, i ->
+
+                dialogInterface.dismiss()
+
+                val user: User = modelList[i]
+                val pAccount: String = pAccountList[i]
+
+                val name: String = if (friend.name == null || friend.name!!.trim() == "") {
+                    "Unknown Name"
+                }
+                else {
+                    friend.name!!
+                }
+
+                val banks: MutableList<String> = mutableListOf<String>()
+                val accountNumbers: MutableList<String> = mutableListOf<String>()
+                val banksAndAccountNumbers: MutableList<String> = mutableListOf<String>()
+
+                if ((friend.bank1 != null && friend.bank1 != "Choose Bank") &&
+                    (friend.accountNumber1 != null && friend.accountNumber1 != "")) {
+                    banks.add(friend.bank1!!)
+                    accountNumbers.add(friend.accountNumber1!!)
+                    banksAndAccountNumbers.add("${friend.accountNumber1}: ${friend.bank1}")
+                }
+
+                if ((friend.bank2 != null && friend.bank2 != "Choose Bank") &&
+                    (friend.accountNumber2 != null && friend.accountNumber2 != "")) {
+                    banks.add(friend.bank2!!)
+                    accountNumbers.add(friend.accountNumber2!!)
+                    banksAndAccountNumbers.add("${friend.accountNumber2}: ${friend.bank2}")
+                }
+
+                if ((friend.bank3 != null && friend.bank3 != "Choose Bank") &&
+                    (friend.accountNumber3 != null && friend.accountNumber3 != "")) {
+                    banks.add(friend.bank3!!)
+                    accountNumbers.add(friend.accountNumber3!!)
+                    banksAndAccountNumbers.add("${friend.accountNumber1}: ${friend.bank1}")
+                }
+
+                if ((friend.bank4 != null && friend.bank4 != "Choose Bank") &&
+                    (friend.accountNumber4 != null && friend.accountNumber4 != "")) {
+                    banks.add(friend.bank4!!)
+                    accountNumbers.add(friend.accountNumber4!!)
+                    banksAndAccountNumbers.add("${friend.accountNumber1}: ${friend.bank1}")
+                }
+
+                Log.e("ATTENTION ATTENTION", "Choose your friend's account")
+                Log.e("ATTENTION ATTENTION", "\n\n\nFriend's account numbers: ${banksAndAccountNumbers.toString()}")
+
+                if (banksAndAccountNumbers.size == 1) {
+
+                    val bank: String = banks[0]
+                    val accountNumber: String = accountNumbers[0]
+
+                    amountBuilder.setPositiveButton(android.R.string.ok) { dialog, which ->
+
+                        dialog.dismiss()
+
+                        val amountInputStr: String = amountInput.text.toString()
+
+                        bankChoiceTransfer(
+                            context, fragment, activity, user, pAccount,
+                            name, accountNumber, amountInputStr, bank
+                        )
+
+                    }
+
+                    amountBuilder.setNegativeButton(android.R.string.cancel) { dialog, which -> dialog.cancel() }
+                    amountBuilder.show()
+
+                }
+                else {
+
+                    friendBankChoiceBuilder.setSingleChoiceItems(banksAndAccountNumbers.toTypedArray(), -1) {
+
+                            dialogInterface, i ->
+
+                        dialogInterface.dismiss()
+
+                        val bank: String = banks[i]
+                        val accountNumber: String = accountNumbers[i]
+
+                        amountBuilder.setPositiveButton(android.R.string.ok) { dialog, which ->
+
+                            dialog.dismiss()
+
+                            val amountInputStr: String = amountInput.text.toString()
+
+                            bankChoiceTransfer(
+                                context, fragment, activity, user, pAccount,
+                                name, accountNumber, amountInputStr, bank
+                            )
+
+                        }
+
+                        amountBuilder.setNegativeButton(android.R.string.cancel) { dialog, which -> dialog.cancel() }
+                        amountBuilder.show()
+
+                    }
+
+                    friendBankChoiceBuilder.setNegativeButton(android.R.string.cancel) { dialog, which -> dialog.cancel() }
+                    friendBankChoiceBuilder.show()
+
+                }
+
+            }
+
+            accountChoiceBuilder.setNegativeButton(android.R.string.cancel) { dialog, which -> dialog.cancel() }
+            accountChoiceBuilder.show()
+
+        }
 
     }
 
@@ -2815,65 +2925,89 @@ class PhoneUtil {
         friend: Friend,
     ) {
 
-        var accountNumber: String = ""
+        var accountNumberAndBank: String = ""
 
         var accountNumbers: MutableList<String> = mutableListOf<String>()
+        var accountNumberAndBanks: MutableList<String> = mutableListOf<String>()
 
-        if (friend.accountNumber1 != null && friend.accountNumber1 != "") {
+        if (friend.accountNumber1 != null &&
+            friend.accountNumber1 != "" &&
+            friend.bank1 != null &&
+            friend.bank1 != "Choose Bank")
+            {
 
-//            accountNumber += ", "
             accountNumbers.add(friend.accountNumber1!!)
+            accountNumberAndBanks.add("${friend.accountNumber1}: ${friend.bank1}")
 
         }
-        if (friend.accountNumber2 != null && friend.accountNumber2 != "") {
+        if (friend.accountNumber2 != null &&
+            friend.accountNumber2 != "" &&
+            friend.bank2 != null &&
+            friend.bank2 != "Choose Bank")
+            {
 
-//            accountNumber += ", "
             accountNumbers.add(friend.accountNumber2!!)
+            accountNumberAndBanks.add("${friend.accountNumber2}: ${friend.bank2}")
 
         }
-        if (friend.accountNumber3 != null && friend.accountNumber3 != "") {
+        if (friend.accountNumber3 != null &&
+            friend.accountNumber3 != "" &&
+            friend.bank3 != null &&
+            friend.bank3 != "Choose Bank") {
 
-//            accountNumber += ", "
             accountNumbers.add(friend.accountNumber3!!)
+            accountNumberAndBanks.add("${friend.accountNumber3}: ${friend.bank3}")
 
         }
-        if (friend.accountNumber4 != null && friend.accountNumber4 != "") {
+        if (friend.accountNumber4 != null &&
+            friend.accountNumber4 != "" &&
+            friend.bank4 != null &&
+            friend.bank4 != "Choose Bank") {
 
 //            accountNumber += ""
             accountNumbers.add(friend.accountNumber4!!)
+            accountNumberAndBanks.add("${friend.accountNumber4}: ${friend.bank4}")
 
         }
 
-        for (i in 0 until accountNumbers.size) {
+        for (i in 0 until accountNumberAndBanks.size) {
 
-            accountNumber = when (i) {
+            accountNumberAndBank = when (i) {
                 0 -> {
 
-                    accountNumbers[i]
+                    accountNumberAndBanks[i]
 
                 }
-                accountNumbers.size - 1 -> {
+                accountNumberAndBanks.size - 1 -> {
 
-                    "$accountNumber, ${accountNumbers[i]}."
+                    "$accountNumberAndBank, ${accountNumberAndBanks[i]}."
 
                 }
                 else -> {
 
-                    "$accountNumber, ${accountNumbers[i]}, "
+                    "$accountNumberAndBank, ${accountNumberAndBanks[i]}, "
 
                 }
             }
 
         }
 
-        if (accountNumber == "") {
-            accountNumber = "You have not set an account number for this friend."
+        if (accountNumberAndBank == "") {
+            accountNumberAndBank = "You have not set an account number for this friend."
         }
 
         val dialog = AlertDialog.Builder(context, R.style.MyDialogTheme)
 
-        dialog.setTitle("Account number is")
-        dialog.setMessage(accountNumber)
+        var name: String = ""
+        var title: String = "Account number(s):"
+
+        if (friend.name != null || friend.name!!.trim() != "") {
+            name = friend.name!! + " "
+        }
+
+        title = name + title
+        dialog.setTitle(title)
+        dialog.setMessage(accountNumberAndBank)
 
         dialog.setPositiveButton(android.R.string.ok) { dialog, which: Int -> dialog.cancel() }
 
@@ -2882,7 +3016,7 @@ class PhoneUtil {
 
     }
 
-    fun amountAirtimeTransfer(
+    fun dataBuyForFriend(
         context: Context,
         fragment: Fragment,
         activity: Activity,
@@ -2890,7 +3024,7 @@ class PhoneUtil {
         friend: Friend,
     ) {
 
-        val name: String = if (friend.name == null || friend.name == "") {
+        val name: String = if (friend.name == null || friend.name!!.trim() == "") {
             "Unknown Name"
         }
         else {
@@ -2902,24 +3036,450 @@ class PhoneUtil {
         val phonesAndNetworks: MutableList<String> = mutableListOf<String>()
 
         if ((friend.network1 != null && friend.network1 != "Choose Network") &&
-            (friend.phone1 != null && friend.phone1 != "")) {
+            (friend.phone1 != null && friend.phone1!!.trim() != "")) {
             networks.add(friend.network1!!)
             phones.add(friend.phone1!!)
             phonesAndNetworks.add("${friend.phone1}: ${friend.network1}")
         }
 
         if ((friend.network2 != null && friend.network2 != "Choose Network") &&
-            (friend.phone2 != null && friend.phone2 != "")) {
+            (friend.phone2 != null && friend.phone2!!.trim() != "")) {
             networks.add(friend.network2!!)
             phones.add(friend.phone2!!)
             phonesAndNetworks.add("${friend.phone2}: ${friend.network2}")
         }
 
         if ((friend.network3 != null && friend.network3 != "Choose Network") &&
-            (friend.phone3 != null && friend.phone3 != "")) {
+            (friend.phone3 != null && friend.phone3!!.trim() != "")) {
             networks.add(friend.network3!!)
             phones.add(friend.phone3!!)
+            phonesAndNetworks.add("${friend.phone3}: ${friend.network3}")
+        }
+
+        val friendPhoneChoiceBuilder: AlertDialog.Builder = AlertDialog.Builder(context, R.style.MyDialogTheme)
+
+        friendPhoneChoiceBuilder.setTitle("Choose your friend's phone number")
+
+        val accountChoiceBuilder: AlertDialog.Builder = AlertDialog.Builder(context, R.style.MyDialogTheme)
+
+        accountChoiceBuilder.setTitle("Choose phone number to transfer data from.")
+
+        if (phonesAndNetworks.size == 1) {
+
+            val network: String = networks[0]
+            val phone: String = phones[0]
+
+            val pAccountType = mutableListOf<String>()
+            val pAccountList = mutableListOf<String>()
+
+            if (modelList[0].phone != null && modelList[0].phone!!.trim() != "") {
+
+                val pAccount1 =
+                    if (modelList[0].network != null && modelList[0].network != "Choose Network") {
+                        "${modelList[0].phone!!}: ${modelList[0].network}"
+                    }
+                    else {
+                        modelList[0].phone!!
+                    }
+
+                pAccountType.add(pAccount1)
+                pAccountList.add("1")
+
+            }
+            if (modelList.size > 1 && modelList[1].phone != null && modelList[1].phone != "") {
+
+                val pAccount2 =
+                    if (modelList[1].network != null && modelList[1].network != "Choose Network") {
+                        "${modelList[1].phone!!}: ${modelList[1].network}"
+                    }
+                    else {
+                        modelList[1].phone!!
+                    }
+
+                pAccountType.add(pAccount2)
+                pAccountList.add("2")
+
+            }
+
+            if (pAccountType.size == 1) {
+
+                var user: User = modelList[0]
+                val pAccount: String = pAccountList[0]
+
+                if (network != user.network) {
+
+                    val util: Util = Util()
+                    val message: String = "You can only transfer airtime within the same network."
+                    util.onShowErrorMessage(message, context)
+                }
+                else {
+
+                    when (network) {
+
+                        "Airtel" -> {
+
+                            // TODO Done
+                            runAirtelDataBuyForFriend(
+                                activity,
+                                user, pAccount,
+                                name, phone)
+
+                        }
+                        "Etisalat(9Mobile)" -> {
+
+                            // TODO Done
+                            run9MobileDataBuyForFriend(
+                                activity,
+                                user, pAccount,
+                                name, phone)
+
+                        }
+                        "Glo Mobile" -> {
+
+                            // TODO Done
+                            runGloDataBuyForFriend(
+                                activity,
+                                user, pAccount,
+                                name, phone)
+
+                        }
+                        "MTN Nigeria" -> {
+
+                            // TODO Done
+                            runMTNDataBuyForFriend(
+                                activity,
+                                user, pAccount,
+                                name, phone)
+
+                        }
+                        "Visafone" -> {
+
+
+
+                        }
+                        else -> {
+
+                        }
+
+                    }
+
+                }
+
+            }
+            else {
+
+                accountChoiceBuilder.setSingleChoiceItems(pAccountType.toTypedArray(), -1) {
+
+                        dialogInterface, i ->
+
+                    dialogInterface.dismiss()
+
+                    var user: User = modelList[i]
+                    val pAccount: String = pAccountList[i]
+
+                    if (network != user.network) {
+
+                        val util: Util = Util()
+                        val message: String = "You can only transfer airtime within the same network."
+                        util.onShowErrorMessage(message, context)
+                    }
+                    else {
+
+                        when (network) {
+
+                            "Airtel" -> {
+
+                                // TODO Done
+                                runAirtelDataBuyForFriend(
+                                    activity,
+                                    user, pAccount,
+                                    name, phone)
+
+                            }
+                            "Etisalat(9Mobile)" -> {
+
+                                // TODO Done
+                                run9MobileDataBuyForFriend(
+                                    activity,
+                                    user, pAccount,
+                                    name, phone)
+
+                            }
+                            "Glo Mobile" -> {
+
+                                // TODO Done
+                                runGloDataBuyForFriend(
+                                    activity,
+                                    user, pAccount,
+                                    name, phone)
+
+                            }
+                            "MTN Nigeria" -> {
+
+                                // TODO Done
+                                runMTNDataBuyForFriend(
+                                    activity,
+                                    user, pAccount,
+                                    name, phone)
+
+                            }
+                            "Visafone" -> {
+
+
+
+                            }
+                            else -> {
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+                accountChoiceBuilder.setNegativeButton(android.R.string.cancel) { dialog, which -> dialog.cancel() }
+                accountChoiceBuilder.show()
+
+            }
+
+        }
+        else {
+
+            Log.e("ATTENTION ATTENTION", "Choose your friend's phone number")
+            Log.e("ATTENTION ATTENTION", "\n\n\nFriend's Phone Numbers: ${phonesAndNetworks.toString()}")
+
+            friendPhoneChoiceBuilder.setSingleChoiceItems(phonesAndNetworks.toTypedArray(), -1) {
+
+                    dialogInterface, i ->
+
+                dialogInterface.dismiss()
+
+                val network: String = networks[i]
+                val phone: String = phones[i]
+
+                val pAccountType = mutableListOf<String>()
+                val pAccountList = mutableListOf<String>()
+
+                if (modelList[0].phone != null && modelList[0].phone!!.trim() != "") {
+
+                    val pAccount1 =
+                        if (modelList[0].network != null && modelList[0].network != "Choose Network") {
+                            "${modelList[0].phone!!}: ${modelList[0].network}"
+                        }
+                        else {
+                            modelList[0].phone!!
+                        }
+
+                    pAccountType.add(pAccount1)
+                    pAccountList.add("1")
+
+                }
+                if (modelList.size > 1 && modelList[1].phone != null && modelList[1].phone != "") {
+
+                    val pAccount2 =
+                        if (modelList[1].network != null && modelList[1].network != "Choose Network") {
+                            "${modelList[1].phone!!}: ${modelList[1].network}"
+                        }
+                        else {
+                            modelList[1].phone!!
+                        }
+
+                    pAccountType.add(pAccount2)
+                    pAccountList.add("2")
+
+                }
+
+                if (pAccountType.size == 1) {
+
+                    var user: User = modelList[0]
+                    val pAccount: String = pAccountList[0]
+
+                    if (network != user.network) {
+
+                        val util: Util = Util()
+                        val message: String = "You can only transfer airtime within the same network."
+                        util.onShowErrorMessage(message, context)
+                    }
+                    else {
+
+                        when (network) {
+
+                            "Airtel" -> {
+
+                                // TODO Done
+                                runAirtelDataBuyForFriend(
+                                    activity,
+                                    user, pAccount,
+                                    name, phone)
+
+                            }
+                            "Etisalat(9Mobile)" -> {
+
+                                // TODO Done
+                                run9MobileDataBuyForFriend(
+                                    activity,
+                                    user, pAccount,
+                                    name, phone)
+
+                            }
+                            "Glo Mobile" -> {
+
+                                // TODO Done
+                                runGloDataBuyForFriend(
+                                    activity,
+                                    user, pAccount,
+                                    name, phone)
+
+                            }
+                            "MTN Nigeria" -> {
+
+                                // TODO Done
+                                runMTNDataBuyForFriend(
+                                    activity,
+                                    user, pAccount,
+                                    name, phone)
+
+                            }
+                            "Visafone" -> {
+
+
+
+                            }
+                            else -> {
+
+                            }
+
+                        }
+
+                    }
+
+                }
+                else {
+
+                    accountChoiceBuilder.setSingleChoiceItems(pAccountType.toTypedArray(), -1) {
+
+                            dialogInterface, i ->
+
+                        dialogInterface.dismiss()
+
+                        var user: User = modelList[i]
+                        val pAccount: String = pAccountList[i]
+
+                        if (network != user.network) {
+
+                            val util: Util = Util()
+                            val message: String = "You can only transfer airtime within the same network."
+                            util.onShowErrorMessage(message, context)
+                        }
+                        else {
+
+                            when (network) {
+
+                                "Airtel" -> {
+
+                                    // TODO Done
+                                    runAirtelDataBuyForFriend(
+                                        activity,
+                                        user, pAccount,
+                                        name, phone)
+
+                                }
+                                "Etisalat(9Mobile)" -> {
+
+                                    // TODO Done
+                                    run9MobileDataBuyForFriend(
+                                        activity,
+                                        user, pAccount,
+                                        name, phone)
+
+                                }
+                                "Glo Mobile" -> {
+
+                                    // TODO Done
+                                    runGloDataBuyForFriend(
+                                        activity,
+                                        user, pAccount,
+                                        name, phone)
+
+                                }
+                                "MTN Nigeria" -> {
+
+                                    // TODO Done
+                                    runMTNDataBuyForFriend(
+                                        activity,
+                                        user, pAccount,
+                                        name, phone)
+
+                                }
+                                "Visafone" -> {
+
+
+
+                                }
+                                else -> {
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                    accountChoiceBuilder.setNegativeButton(android.R.string.cancel) { dialog, which -> dialog.cancel() }
+                    accountChoiceBuilder.show()
+
+                }
+
+
+            }
+
+            friendPhoneChoiceBuilder.setNegativeButton(android.R.string.cancel) { dialog, which -> dialog.cancel() }
+            friendPhoneChoiceBuilder.show()
+
+        }
+
+    }
+
+    fun dataTransfer(
+        context: Context,
+        fragment: Fragment,
+        activity: Activity,
+        modelList: MutableList<User>,
+        friend: Friend,
+    ) {
+
+        val name: String = if (friend.name == null || friend.name!!.trim() == "") {
+            "Unknown Name"
+        }
+        else {
+            friend.name!!
+        }
+
+        val networks: MutableList<String> = mutableListOf<String>()
+        val phones: MutableList<String> = mutableListOf<String>()
+        val phonesAndNetworks: MutableList<String> = mutableListOf<String>()
+
+        if ((friend.network1 != null && friend.network1 != "Choose Network") &&
+            (friend.phone1 != null && friend.phone1!!.trim() != "")) {
+            networks.add(friend.network1!!)
+            phones.add(friend.phone1!!)
             phonesAndNetworks.add("${friend.phone1}: ${friend.network1}")
+        }
+
+        if ((friend.network2 != null && friend.network2 != "Choose Network") &&
+            (friend.phone2 != null && friend.phone2!!.trim() != "")) {
+            networks.add(friend.network2!!)
+            phones.add(friend.phone2!!)
+            phonesAndNetworks.add("${friend.phone2}: ${friend.network2}")
+        }
+
+        if ((friend.network3 != null && friend.network3 != "Choose Network") &&
+            (friend.phone3 != null && friend.phone3!!.trim() != "")) {
+            networks.add(friend.network3!!)
+            phones.add(friend.phone3!!)
+            phonesAndNetworks.add("${friend.phone3}: ${friend.network3}")
         }
 
         val friendPhoneChoiceBuilder: AlertDialog.Builder = AlertDialog.Builder(
@@ -2927,70 +3487,1746 @@ class PhoneUtil {
             R.style.MyDialogTheme
         )
 
-        friendPhoneChoiceBuilder.setTitle("Choose your Friend's Phone Number")
+        friendPhoneChoiceBuilder.setTitle("Choose your friend's phone number")
 
-        Log.e("ATTENTION ATTENTION", "Choose your Friend's Phone Number")
-        Log.e(
-            "ATTENTION ATTENTION",
-            "\n\n\nFriend's Phone Numbers: ${phonesAndNetworks.toString()}"
-        )
+        Log.e("ATTENTION ATTENTION", "Choose your friend's phone number")
+        Log.e("ATTENTION ATTENTION", "\n\n\nFriend's Phone Numbers: ${phonesAndNetworks.toString()}")
 
-        friendPhoneChoiceBuilder.setSingleChoiceItems(phonesAndNetworks.toTypedArray(), -1) {
+        val accountChoiceBuilder: AlertDialog.Builder = AlertDialog.Builder(
+            context,
+            R.style.MyDialogTheme)
 
-                dialogInterface, i ->
+        accountChoiceBuilder.setTitle("Choose phone number to transfer data from.")
 
-            dialogInterface.dismiss()
+        if (phonesAndNetworks.size == 1) {
 
-            val network: String = networks[i]
-            val phone: String = phones[i]
-
-            val accountChoiceBuilder: AlertDialog.Builder = AlertDialog.Builder(
-                context,
-                R.style.MyDialogTheme
-            )
-
-            accountChoiceBuilder.setTitle("Choose the Phone Number from which you want to make the airtime transfer.")
+            val network: String = networks[0]
+            val phone: String = phones[0]
 
             val pAccountType = mutableListOf<String>()
             val pAccountList = mutableListOf<String>()
 
             if (modelList[0].phone != null && modelList[0].phone!!.trim() != "") {
 
-                pAccountType.add(modelList[0].phone!!)
+                val pAccount1 =
+                    if (modelList[0].network != null && modelList[0].network != "Choose Network") {
+                        "${modelList[0].phone!!}: ${modelList[0].network}"
+                    }
+                    else {
+                        modelList[0].phone!!
+                    }
+
+                pAccountType.add(pAccount1)
                 pAccountList.add("1")
 
             }
             if (modelList.size > 1 && modelList[1].phone != null && modelList[1].phone != "") {
 
-                pAccountType.add(modelList[1].phone!!)
+                val pAccount2 =
+                    if (modelList[1].network != null && modelList[1].network != "Choose Network") {
+                        "${modelList[1].phone!!}: ${modelList[1].network}"
+                    }
+                    else {
+                        modelList[1].phone!!
+                    }
+
+                pAccountType.add(pAccount2)
                 pAccountList.add("2")
 
             }
 
-            accountChoiceBuilder.setSingleChoiceItems(pAccountType.toTypedArray(), -1) {
+            if (pAccountType.size == 1) {
+
+                val user: User = modelList[0]
+                val pAccount: String = pAccountList[0]
+
+                if (network != user.network) {
+
+                    val util: Util = Util()
+                    val message: String = "You can only transfer airtime within the same network."
+                    util.onShowErrorMessage(message, context)
+
+                }
+                else {
+
+                    when (network) {
+
+                        "Airtel" -> {
+
+                            // TODO Done
+                            runAirtelDataTransfer(
+                                activity,
+                                user, pAccount,
+                                name, phone)
+
+                        }
+                        "Etisalat(9Mobile)" -> {
+
+                            // TODO Done
+                            runEtisalatDataTransfer(
+                                activity,
+                                user, pAccount,
+                                name, phone)
+
+                        }
+                        "Glo Mobile" -> {
+
+                            // TODO Not Supported
+                            runGloDataTransfer(
+                                context,
+                                activity,
+                                user, pAccount,
+                                name, phone)
+
+                        }
+                        "MTN Nigeria" -> {
+
+                            // TODO Done
+                            runMTNDataTransfer(
+                                activity,
+                                user, pAccount,
+                                name, phone)
+
+                        }
+                        "Visafone" -> {
+
+                        }
+                        else -> {
+
+                        }
+
+                    }
+
+                }
+
+            }
+            else {
+
+                accountChoiceBuilder.setSingleChoiceItems(pAccountType.toTypedArray(), -1) {
+
+                        dialogInterface, i ->
+
+                    dialogInterface.dismiss()
+
+                    val user: User = modelList[i]
+                    val pAccount: String = pAccountList[i]
+
+                    if (network != user.network) {
+
+                        val util: Util = Util()
+                        val message: String = "You can only transfer airtime within the same network."
+                        util.onShowErrorMessage(message, context)
+                    }
+                    else {
+
+                        when (network) {
+
+                            "Airtel" -> {
+
+                                // TODO Done
+                                runAirtelDataTransfer(
+                                    activity,
+                                    user, pAccount,
+                                    name, phone)
+
+                            }
+                            "Etisalat(9Mobile)" -> {
+
+                                // TODO Done
+                                runEtisalatDataTransfer(
+                                    activity,
+                                    user, pAccount,
+                                    name, phone)
+
+                            }
+                            "Glo Mobile" -> {
+
+                                // TODO Not Supported
+                                runGloDataTransfer(
+                                    context,
+                                    activity,
+                                    user, pAccount,
+                                    name, phone)
+
+                            }
+                            "MTN Nigeria" -> {
+
+                                // TODO Done
+                                runMTNDataTransfer(
+                                    activity,
+                                    user, pAccount,
+                                    name, phone)
+
+                            }
+                            "Visafone" -> {
+
+                            }
+                            else -> {
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+                accountChoiceBuilder.setNegativeButton(android.R.string.cancel) { dialog, which -> dialog.cancel() }
+                accountChoiceBuilder.show()
+
+            }
+
+        }
+        else {
+
+            friendPhoneChoiceBuilder.setSingleChoiceItems(phonesAndNetworks.toTypedArray(), -1) {
 
                     dialogInterface, i ->
 
                 dialogInterface.dismiss()
 
-                var user: User = modelList[i]
-                val pAccount: String = pAccountList[i]
+                val network: String = networks[i]
+                val phone: String = phones[i]
 
-                val amountBuilder: AlertDialog.Builder = AlertDialog.Builder(
-                    context,
-                    R.style.MyDialogTheme
-                )
+                val pAccountType = mutableListOf<String>()
+                val pAccountList = mutableListOf<String>()
 
-                amountBuilder.setTitle("Amount")
+                if (modelList[0].phone != null && modelList[0].phone!!.trim() != "") {
 
-                val amountViewInflated: View = LayoutInflater.from(context).inflate(
-                    R.layout.input_amount,
-                    null
-                )
+                    val pAccount1 =
+                        if (modelList[0].network != null && modelList[0].network != "Choose Network") {
+                            "${modelList[0].phone!!}: ${modelList[0].network}"
+                        }
+                        else {
+                            modelList[0].phone!!
+                        }
 
-                val amountInput = amountViewInflated.findViewById<View>(R.id.input_amount) as TextInputEditText
+                    pAccountType.add(pAccount1)
+                    pAccountList.add("1")
 
-                amountBuilder.setView(amountViewInflated)
+                }
+                if (modelList.size > 1 && modelList[1].phone != null && modelList[1].phone != "") {
+
+                    val pAccount2 =
+                        if (modelList[1].network != null && modelList[1].network != "Choose Network") {
+                            "${modelList[1].phone!!}: ${modelList[1].network}"
+                        }
+                        else {
+                            modelList[1].phone!!
+                        }
+
+                    pAccountType.add(pAccount2)
+                    pAccountList.add("2")
+
+                }
+
+                if (pAccountType.size == 1) {
+
+                    var user: User = modelList[0]
+                    val pAccount: String = pAccountList[0]
+
+                    if (network != user.network) {
+
+                        val util: Util = Util()
+                        val message: String = "You can only transfer airtime within the same network."
+                        util.onShowErrorMessage(message, context)
+
+                    }
+                    else {
+
+                        when (network) {
+
+                            "Airtel" -> {
+
+                                // TODO Done
+                                runAirtelDataTransfer(
+                                    activity,
+                                    user, pAccount,
+                                    name, phone)
+
+                            }
+                            "Etisalat(9Mobile)" -> {
+
+                                // TODO Done
+                                runEtisalatDataTransfer(
+                                    activity,
+                                    user, pAccount,
+                                    name, phone)
+
+                            }
+                            "Glo Mobile" -> {
+
+                                // TODO Not Supported
+                                runGloDataTransfer(
+                                    context,
+                                    activity,
+                                    user, pAccount,
+                                    name, phone)
+
+                            }
+                            "MTN Nigeria" -> {
+
+                                // TODO Done
+                                runMTNDataTransfer(
+                                    activity,
+                                    user, pAccount,
+                                    name, phone)
+
+                            }
+                            "Visafone" -> {
+
+                            }
+                            else -> {
+
+                            }
+
+                        }
+
+                    }
+
+                }
+                else {
+
+                    accountChoiceBuilder.setSingleChoiceItems(pAccountType.toTypedArray(), -1) {
+
+                            dialogInterface, i ->
+
+                        dialogInterface.dismiss()
+
+                        var user: User = modelList[i]
+                        val pAccount: String = pAccountList[i]
+
+                        if (network != user.network) {
+
+                            val util: Util = Util()
+                            val message: String = "You can only transfer airtime within the same network."
+                            util.onShowErrorMessage(message, context)
+                        }
+                        else {
+
+                            when (network) {
+
+                                "Airtel" -> {
+
+                                    // TODO Done
+                                    runAirtelDataTransfer(
+                                        activity,
+                                        user, pAccount,
+                                        name, phone)
+
+                                }
+                                "Etisalat(9Mobile)" -> {
+
+                                    // TODO Done
+                                    runEtisalatDataTransfer(
+                                        activity,
+                                        user, pAccount,
+                                        name, phone)
+
+                                }
+                                "Glo Mobile" -> {
+
+                                    // TODO Not Supported
+                                    runGloDataTransfer(
+                                        context,
+                                        activity,
+                                        user, pAccount,
+                                        name, phone)
+
+                                }
+                                "MTN Nigeria" -> {
+
+                                    // TODO Done
+                                    runMTNDataTransfer(
+                                        activity,
+                                        user, pAccount,
+                                        name, phone)
+
+                                }
+                                "Visafone" -> {
+
+                                }
+                                else -> {
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                    accountChoiceBuilder.setNegativeButton(android.R.string.cancel) { dialog, which -> dialog.cancel() }
+                    accountChoiceBuilder.show()
+
+                }
+
+            }
+
+            friendPhoneChoiceBuilder.setNegativeButton(android.R.string.cancel) { dialog, which -> dialog.cancel() }
+            friendPhoneChoiceBuilder.show()
+
+        }
+
+    }
+
+    private fun runAirtelDataTransfer(
+        activity: Activity,
+        user: User,
+        pAccount: String,
+        name: String,
+        phoneNumber: String)
+    {
+
+        val whichSimCard: Int = pAccount.toInt()
+        val network: String? = user.network
+        val pin: String? = user.pin
+
+        val fragment: DataTransferDialog = DataTransferDialog.newInstance(network, whichSimCard, name, phoneNumber, pin)
+
+        try {
+
+            fragment.show(
+                (activity as AppCompatActivity).supportFragmentManager,
+                "DataTransferDialog")
+
+        }
+        catch (e: NullPointerException) {
+
+            e.printStackTrace()
+
+        }
+
+
+    }
+
+    private fun runEtisalatDataTransfer(
+        activity: Activity,
+        user: User,
+        pAccount: String,
+        name: String,
+        phoneNumber: String
+    ) {
+
+        val whichSimCard: Int = pAccount.toInt()
+        val network: String? = user.network
+        val pin: String? = user.pin
+
+        val fragment: DataTransferDialog = DataTransferDialog.newInstance(network, whichSimCard, name, phoneNumber, pin)
+
+        try {
+
+            fragment.show(
+                (activity as AppCompatActivity).supportFragmentManager,
+                "DataTransferDialog")
+
+        }
+        catch (e: NullPointerException) {
+
+            e.printStackTrace()
+
+        }
+
+    }
+
+    private fun runGloDataTransfer(
+        context: Context,
+        activity: Activity,
+        user: User,
+        pAccount: String,
+        name: String,
+        phoneNumber: String
+    ) {
+
+
+//        val util: Util = Util()
+//        val message: String = "You can only transfer airtime within the same network."
+//        util.onShowErrorMessage(message, context)
+
+        val  builder: AlertDialog.Builder = AlertDialog.Builder(context)
+
+        builder
+            .setTitle("Glo does not offer direct data transfer.")
+            .setMessage("You are still able to share data on Glo via USSD codes but that is not available on Recharge App.")
+            .setCancelable(false)
+            .setPositiveButton("Ok") { dialog, id ->
+
+                dialog.dismiss()
+
+            }
+
+        val  alert: AlertDialog = builder.create()
+
+        alert.show()
+
+//        val whichSimCard: Int = pAccount.toInt()
+//        val network: String? = user.network
+//        val pin: String? = user.pin
+//
+//        val fragment: DataTransferDialog = DataTransferDialog.newInstance(network, whichSimCard, name, phoneNumber, pin)
+//
+//        try {
+//
+//            fragment.show(
+//                (activity as AppCompatActivity).supportFragmentManager,
+//                "DataTransferDialog")
+//
+//        }
+//        catch (e: NullPointerException) {
+//
+//            e.printStackTrace()
+//
+//        }
+
+    }
+
+    private fun runMTNDataTransfer(
+        activity: Activity,
+        user: User,
+        pAccount: String,
+        name: String,
+        phoneNumber: String
+    ) {
+
+        val whichSimCard: Int = pAccount.toInt()
+        val network: String? = user.network
+        val pin: String? = user.pin
+
+        val fragment: DataTransferDialog = DataTransferDialog.newInstance(network, whichSimCard, name, phoneNumber, pin)
+
+        try {
+
+            fragment.show(
+                (activity as AppCompatActivity).supportFragmentManager,
+                "DataTransferDialog")
+
+        }
+        catch (e: NullPointerException) {
+
+            e.printStackTrace()
+
+        }
+
+    }
+
+    private fun runMTNDataBuyForFriend(
+        activity: Activity,
+        user: User,
+        pAccount: String,
+        name: String,
+        phoneNumber: String
+    ) {
+
+        val whichSimCard: Int = pAccount.toInt()
+        val network: String? = user.network
+
+        val fragment: DataBuyForFriendDialog = DataBuyForFriendDialog.newInstance(network, whichSimCard, name, phoneNumber)
+
+        try {
+
+            fragment.show(
+                (activity as AppCompatActivity).supportFragmentManager,
+                "DataRechargeDialog")
+
+        }
+        catch (e: NullPointerException) {
+
+            e.printStackTrace()
+
+        }
+
+    }
+
+    private fun run9MobileDataBuyForFriend(
+        activity: Activity,
+        user: User,
+        pAccount: String,
+        name: String,
+        phoneNumber: String
+    ) {
+
+        val whichSimCard: Int = pAccount.toInt()
+        val network: String? = user.network
+
+        val fragment: DataBuyForFriendDialog = DataBuyForFriendDialog.newInstance(network, whichSimCard, name, phoneNumber)
+
+        try {
+
+            fragment.show(
+                (activity as AppCompatActivity).supportFragmentManager,
+                "DataRechargeDialog")
+
+        }
+        catch (e: NullPointerException) {
+
+            e.printStackTrace()
+
+        }
+
+    }
+
+    private fun runAirtelDataBuyForFriend(
+        activity: Activity,
+        user: User,
+        pAccount: String,
+        name: String,
+        phoneNumber: String
+    ) {
+
+        val whichSimCard: Int = pAccount.toInt()
+        val network: String? = user.network
+
+        val fragment: DataBuyForFriendDialog = DataBuyForFriendDialog.newInstance(network, whichSimCard, name, phoneNumber)
+
+        try {
+
+            fragment.show(
+                (activity as AppCompatActivity).supportFragmentManager,
+                "DataRechargeDialog")
+
+        }
+        catch (e: NullPointerException) {
+
+            e.printStackTrace()
+
+        }
+
+    }
+
+    private fun runGloDataBuyForFriend(
+        activity: Activity,
+        user: User,
+        pAccount: String,
+        name: String,
+        phoneNumber: String
+    ) {
+
+        val whichSimCard: Int = pAccount.toInt()
+        val network: String? = user.network
+
+        val fragment: DataBuyForFriendDialog = DataBuyForFriendDialog.newInstance(network, whichSimCard, name, phoneNumber)
+
+        try {
+
+            fragment.show(
+                (activity as AppCompatActivity).supportFragmentManager,
+                "DataRechargeDialog")
+
+        }
+        catch (e: NullPointerException) {
+
+            e.printStackTrace()
+
+        }
+
+    }
+
+    fun buyFriendDataMTNUSSD(
+
+        context: Context,
+        fragment: Fragment,
+        activity: Activity,
+        pAccount: String,
+        code: String,
+        dataFull: String,
+        contactNumber: String,
+
+        ) {
+
+        var bundleCode: String =
+
+            when (dataFull.toInt()) {
+                30 -> {
+                    "131*7*2*1*1"
+                }
+                100 -> {
+                    "131*7*2*1*2"
+                }
+                750 -> {
+                    "131*7*2*2*2"
+                }
+                1500 -> {
+                    "131*7*2*3*1"
+                }
+                4500 -> {
+                    "131*7*2*3*3"
+                }
+                12000 -> {
+                    "131*7*2*3*5"
+                }
+                20000 -> {
+                    "131*7*2*3*6"
+                }
+                100000 -> {
+                    "131*7*2*4*1"
+                }
+                400000 -> {
+                    "131*7*2*5*1"
+                }
+                else -> {
+                    ""
+                }
+            }
+
+//        bundleCode += "*1"
+
+        Log.e("ATTENTION ATTENTION", "MTN Data Code bundleCode: $bundleCode, dataFull: $dataFull")
+
+//        val ussdCode = "*" + bundleCode + "*" + contactNumber + Uri.encode("#")
+        val ussdCode = "*" + bundleCode + Uri.encode("#")
+
+        val intent: Intent = Intent("android.intent.action.CALL", Uri.parse("tel:$ussdCode"))
+
+        if (pAccount == "1") {
+            sendToSim(context, intent, 0)
+        }
+        else {
+            sendToSim(context, intent, 1)
+        }
+
+//        var ussdService: USSDService
+//
+//        val connection = object: ServiceConnection {
+//
+//            override fun onServiceDisconnected(name: ComponentName?) {}
+//
+//            override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+//
+//                Log.e("ATTENTION ATTENTION", "Connecting service")
+//
+//                val binder = service as USSDService.USSDServiceBinder
+//
+//                ussdService = binder.getService()
+//
+//            }
+//
+//        }
+//
+//        val ussdServiceIntent: Intent = Intent(context, USSDService::class.java)
+//            .also {
+//
+//                it.putExtra("phoneNumber", contactNumber)
+////                context.bindService(it, connection, Context.BIND_AUTO_CREATE)
+//                context.startService(it)
+//            }
+
+
+        val myClipboard: ClipboardManager? = context.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager?
+        val myClip: ClipData? = ClipData.newPlainText("text", contactNumber)
+        if (myClip != null) {
+            myClipboard?.setPrimaryClip(myClip)
+        }
+
+        intent.setPackage("com.android.server.telecom")
+
+        val util: Util = Util()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            CoroutineScope(Dispatchers.IO).launch {
+
+                val result = fragment.permissionsBuilder(
+                    Manifest.permission.CALL_PHONE,
+                ).build().sendSuspend()
+
+                if (result.allGranted()) { // All the permissions are granted.
+
+                    withContext(Dispatchers.Main) {
+
+                        val dialogBuilder = AlertDialog.Builder(context)
+
+                        dialogBuilder.setMessage("Paste number at the end after you proceed.")
+                            .setCancelable(true)
+                            .setPositiveButton("Proceed", DialogInterface.OnClickListener {
+
+                                    dialog, id ->
+
+                                dialog.cancel()
+
+                                val msg: String = "Data transfer requested."
+                                util.onShowMessageSuccess(msg, context)
+                                Log.e(TAG, msg)
+
+                                context.startActivity(intent)
+
+                            })
+                            .setNegativeButton("Cancel", DialogInterface.OnClickListener {
+                                    dialog, id -> dialog.cancel() })
+
+                        val alert = dialogBuilder.create()
+                        alert.setTitle("Phone number copied to clipboard.")
+                        alert.show()
+
+                    }
+
+                }
+                else {
+
+                    withContext(Dispatchers.Main) {
+
+                        val msg = "You have denied some " +
+                                "permissions permanently. Functions will not work without these permission. " +
+                                "Please grant the permissions for this app in your phone's settings."
+                        util.onShowMessage(msg, context)
+                        Log.e(TAG, msg)
+
+                    }
+
+                }
+
+            }
+
+        }
+        else {
+
+            val dialogBuilder = AlertDialog.Builder(context)
+
+            dialogBuilder.setMessage("Paste number at the end after you proceed.")
+                .setCancelable(true)
+                .setPositiveButton("Proceed", DialogInterface.OnClickListener {
+
+                        dialog, id ->
+
+                    dialog.cancel()
+
+                    val msg: String = "Data transfer requested."
+                    util.onShowMessageSuccess(msg, context)
+                    Log.e(TAG, msg)
+
+                    context.startActivity(intent)
+
+                })
+                .setNegativeButton("Cancel", DialogInterface.OnClickListener {
+                        dialog, id -> dialog.cancel() })
+
+            val alert = dialogBuilder.create()
+            alert.setTitle("Phone number copied to clipboard.")
+            alert.show()
+
+        }
+
+    }
+
+    fun transferDataMTNUSSD(
+
+        context: Context,
+        fragment: Fragment,
+        activity: Activity,
+        pAccount: String,
+        dataFull: String,
+        contactNumber: String,
+
+        ) {
+
+        val requestCode  = 131
+
+        val code: String =
+
+            when (dataFull) {
+                "50" -> {
+                    "50"
+                }
+                "100" -> {
+                    "100"
+                }
+                "200" -> {
+                    "200"
+                }
+                "500" -> {
+                    "500"
+                }
+                else -> {
+                    ""
+                }
+            }
+
+        Log.e("ATTENTION ATTENTION", "DataFull: $dataFull")
+
+        val ussdCode = "*" + requestCode + "*" + contactNumber + "*" + code + Uri.encode("#")
+
+        val intent: Intent = Intent("android.intent.action.CALL", Uri.parse("tel:$ussdCode"))
+
+        if (pAccount == "1") {
+            sendToSim(context, intent, 0)
+        }
+        else {
+            sendToSim(context, intent, 1)
+        }
+
+        intent.setPackage("com.android.server.telecom")
+
+        val util: Util = Util()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            CoroutineScope(Dispatchers.IO).launch {
+
+                val result = fragment.permissionsBuilder(
+                    Manifest.permission.CALL_PHONE,
+                ).build().sendSuspend()
+
+                if (result.allGranted()) {
+
+                    withContext(Dispatchers.Main) {
+
+                        val msg: String = "Data transfer requested."
+                        util.onShowMessageSuccess(msg, context)
+                        Log.e(TAG, msg)
+
+                        context.startActivity(intent)
+
+                    }
+
+                }
+                else {
+
+                    withContext(Dispatchers.Main) {
+
+                        val msg = "You have denied some " +
+                                "permissions permanently. Functions will not work without these permission. " +
+                                "Please grant the permissions for this app in your phone's settings."
+                        util.onShowMessage(msg, context)
+                        Log.e(TAG, msg)
+
+                    }
+
+                }
+
+            }
+
+        }
+        else {
+
+            val msg: String = "Data transfer requested."
+            util.onShowMessageSuccess(msg, context)
+            Log.e(TAG, msg)
+
+            context.startActivity(intent)
+
+        }
+
+    }
+
+    fun buyFriendData9MobileUSSD(
+
+        context: Context,
+        fragment: Fragment,
+        activity: Activity,
+        pAccount: String,
+        code: String,
+        dataFull: String,
+        contactNumber: String,
+
+        ) {
+
+        var bundleCode: String = "229" +
+
+            when (dataFull.toInt()) {
+
+                500 -> {
+                    "*2*11"
+                }
+                1000 -> {
+                    "*2*22"
+                }
+                2500 -> {
+                    "*2*44"
+                }
+                5000 -> {
+                    "*2*33"
+                }
+                11500 -> {
+                    "*2*55"
+                }
+                10 -> {
+                    "*3*8"
+                }
+                40000 -> {
+                    "*3*1"
+                }
+                150000 -> {
+                    "*2*10"
+                }
+                500000 -> {
+                    "*2*12"
+                }
+                30000 -> {
+                    "*5*1"
+                }
+                60000 -> {
+                    "*5*2"
+                }
+                100000 -> {
+                    "*4*5"
+                }
+                120000 -> {
+                    "*5*3"
+                }
+                else -> {
+                    ""
+                }
+
+            }
+
+//        bundleCode += "*1"
+
+        Log.e("ATTENTION ATTENTION", "MTN Data Code bundleCode: $bundleCode, dataFull: $dataFull")
+
+        val ussdCode = "*" + bundleCode + "*" + contactNumber + Uri.encode("#")
+//        val ussdCode = "*" + bundleCode + Uri.encode("#")
+
+        val intent: Intent = Intent("android.intent.action.CALL", Uri.parse("tel:$ussdCode"))
+
+        if (pAccount == "1") {
+            sendToSim(context, intent, 0)
+        }
+        else {
+            sendToSim(context, intent, 1)
+        }
+
+        intent.setPackage("com.android.server.telecom")
+
+        val util: Util = Util()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            CoroutineScope(Dispatchers.IO).launch {
+
+                val result = fragment.permissionsBuilder(
+                    Manifest.permission.CALL_PHONE,
+                ).build().sendSuspend()
+
+                if (result.allGranted()) { // All the permissions are granted.
+
+                    withContext(Dispatchers.Main) {
+
+                        val msg: String = "Data transfer requested."
+                        util.onShowMessageSuccess(msg, context)
+                        Log.e(TAG, msg)
+
+                        context.startActivity(intent)
+
+                    }
+
+                }
+                else {
+
+                    withContext(Dispatchers.Main) {
+
+                        val msg = "You have denied some " +
+                                "permissions permanently. Functions will not work without these permission. " +
+                                "Please grant the permissions for this app in your phone's settings."
+                        util.onShowMessage(msg, context)
+                        Log.e(TAG, msg)
+
+                    }
+
+                }
+
+            }
+
+        }
+        else {
+
+            val msg: String = "Data transfer requested."
+            util.onShowMessageSuccess(msg, context)
+            Log.e(TAG, msg)
+
+            context.startActivity(intent)
+
+        }
+
+    }
+
+    fun transferData9MobileUSSD(
+
+        context: Context,
+        fragment: Fragment,
+        activity: Activity,
+        pAccount: String,
+        dataFull: String,
+        pin: String?,
+        contactNumber: String,
+
+        ) {
+
+        val requestCode  = 229
+
+        val code: String =
+
+            when (dataFull) {
+                "50" -> {
+                    "50"
+                }
+                "100" -> {
+                    "100"
+                }
+                "200" -> {
+                    "200"
+                }
+                "500" -> {
+                    "500"
+                }
+                "1000" -> {
+                    "1000"
+                }
+                else -> {
+                    ""
+                }
+            }
+
+        if (pin == null) {
+
+            val dialogBuilder = AlertDialog.Builder(context)
+
+            dialogBuilder.setMessage("You need to set your pin in Edit Tab in order to transfer data on 9Mobile.")
+                .setCancelable(true)
+                .setPositiveButton("Ok", DialogInterface.OnClickListener {
+
+                        dialog, id ->
+
+                    dialog.cancel()
+
+                })
+
+            val alert = dialogBuilder.create()
+            alert.setTitle("Pin required.")
+            alert.show()
+
+
+        }
+        else {
+
+            Log.e("ATTENTION ATTENTION", "DataFull: $dataFull")
+
+            val ussdCode = "*" + requestCode + "*" + pin + "*" + code+ "*"+ contactNumber + Uri.encode("#")
+
+            val intent: Intent = Intent("android.intent.action.CALL", Uri.parse("tel:$ussdCode"))
+
+            if (pAccount == "1") {
+                sendToSim(context, intent, 0)
+            }
+            else {
+                sendToSim(context, intent, 1)
+            }
+
+            intent.setPackage("com.android.server.telecom")
+
+            val util: Util = Util()
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+                CoroutineScope(Dispatchers.IO).launch {
+
+                    val result = fragment.permissionsBuilder(
+                        Manifest.permission.CALL_PHONE,
+                    ).build().sendSuspend()
+
+                    if (result.allGranted()) {
+
+                        withContext(Dispatchers.Main) {
+
+                            val msg: String = "Data transfer requested."
+                            util.onShowMessageSuccess(msg, context)
+                            Log.e(TAG, msg)
+
+                            context.startActivity(intent)
+
+                        }
+
+                    }
+                    else {
+
+                        withContext(Dispatchers.Main) {
+
+                            val msg = "You have denied some " +
+                                    "permissions permanently. Functions will not work without these permission. " +
+                                    "Please grant the permissions for this app in your phone's settings."
+                            util.onShowMessage(msg, context)
+                            Log.e(TAG, msg)
+
+                        }
+
+                    }
+
+                }
+
+            }
+            else {
+
+                val msg: String = "Data transfer requested."
+                util.onShowMessageSuccess(msg, context)
+                Log.e(TAG, msg)
+
+                context.startActivity(intent)
+
+            }
+
+        }
+
+    }
+
+
+
+    fun transferDataAirtelUSSD(
+
+        context: Context,
+        fragment: Fragment,
+        activity: Activity,
+        pAccount: String,
+        dataFull: String,
+        contactNumber: String,
+
+        ) {
+
+        val requestCode  = "141*"
+
+        val code: String = requestCode +
+
+            when (dataFull) {
+                "10" -> {
+                    "712*11"
+                }
+                "25" -> {
+                    "712*9"
+                }
+                "60" -> {
+                    "712*4"
+                }
+                else -> {
+                    ""
+                }
+            }
+
+        Log.e("ATTENTION ATTENTION", "DataFull: $dataFull")
+
+        val ussdCode = "*" + code + "*" + contactNumber + Uri.encode("#")
+
+        val intent: Intent = Intent("android.intent.action.CALL", Uri.parse("tel:$ussdCode"))
+
+        if (pAccount == "1") {
+            sendToSim(context, intent, 0)
+        }
+        else {
+            sendToSim(context, intent, 1)
+        }
+
+        intent.setPackage("com.android.server.telecom")
+
+        val util: Util = Util()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            CoroutineScope(Dispatchers.IO).launch {
+
+                val result = fragment.permissionsBuilder(
+                    Manifest.permission.CALL_PHONE,
+                ).build().sendSuspend()
+
+                if (result.allGranted()) {
+
+                    withContext(Dispatchers.Main) {
+
+                        val msg: String = "Data transfer requested."
+                        util.onShowMessageSuccess(msg, context)
+                        Log.e(TAG, msg)
+
+                        context.startActivity(intent)
+
+                    }
+
+                }
+                else {
+
+                    withContext(Dispatchers.Main) {
+
+                        val msg = "You have denied some " +
+                                "permissions permanently. Functions will not work without these permission. " +
+                                "Please grant the permissions for this app in your phone's settings."
+                        util.onShowMessage(msg, context)
+                        Log.e(TAG, msg)
+
+                    }
+
+                }
+
+            }
+
+        }
+        else {
+
+            val msg: String = "Data transfer requested."
+            util.onShowMessageSuccess(msg, context)
+            Log.e(TAG, msg)
+
+            context.startActivity(intent)
+
+        }
+
+    }
+
+
+
+    fun buyFriendDataGloUSSD(
+
+        context: Context,
+        fragment: Fragment,
+        activity: Activity,
+        pAccount: String,
+        code: String,
+        fullData: String,
+        contactNumber: String,
+
+        ) {
+
+        var bundleCode: String = "127*127" +
+
+                when (fullData.toInt()) {
+
+                    30 -> {
+                        "14"
+                    }
+                    70 -> {
+                        "51"
+                    }
+                    200 -> {
+                        "56"
+                    }
+                    1600 -> {
+                        "57"
+                    }
+                    3200 -> {
+                        "53"
+                    }
+                    7500 -> {
+                        "55"
+                    }
+                    10000 -> {
+                        "58"
+                    }
+                    12000 -> {
+                        "54"
+                    }
+                    16000 -> {
+                        "59"
+                    }
+                    24000 -> {
+                        "2"
+                    }
+                    32000 -> {
+                        "1"
+                    }
+                    46000 -> {
+                        "11"
+                    }
+                    60000 -> {
+                        "12"
+                    }
+                    90000 -> {
+                        "13"
+                    }
+                    else -> {
+                        ""
+                    }
+
+                }
+
+
+        Log.e("ATTENTION ATTENTION", "Glo Data Code bundleCode: $bundleCode, dataFull: $fullData")
+
+        val ussdCode = "*" + bundleCode + "*" + contactNumber + Uri.encode("#")
+
+        val intent: Intent = Intent("android.intent.action.CALL", Uri.parse("tel:$ussdCode"))
+
+        if (pAccount == "1") {
+            sendToSim(context, intent, 0)
+        }
+        else {
+            sendToSim(context, intent, 1)
+        }
+
+        intent.setPackage("com.android.server.telecom")
+
+        val util: Util = Util()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            CoroutineScope(Dispatchers.IO).launch {
+
+                val result = fragment.permissionsBuilder(
+                    Manifest.permission.CALL_PHONE,
+                ).build().sendSuspend()
+
+                if (result.allGranted()) {
+
+                    withContext(Dispatchers.Main) {
+
+                        val msg: String = "Data transfer requested."
+                        util.onShowMessageSuccess(msg, context)
+                        Log.e(TAG, msg)
+
+                        context.startActivity(intent)
+
+                    }
+
+                }
+                else {
+
+                    withContext(Dispatchers.Main) {
+
+                        val msg = "You have denied some " +
+                                "permissions permanently. Functions will not work without these permission. " +
+                                "Please grant the permissions for this app in your phone's settings."
+                        util.onShowMessage(msg, context)
+                        Log.e(TAG, msg)
+
+                    }
+
+                }
+
+            }
+
+        }
+        else {
+
+            val msg: String = "Data transfer requested."
+            util.onShowMessageSuccess(msg, context)
+            Log.e(TAG, msg)
+
+            context.startActivity(intent)
+
+        }
+
+    }
+
+    fun buyFriendDataAirtelUSSD(
+
+        context: Context,
+        fragment: Fragment,
+        activity: Activity,
+        pAccount: String,
+        validityOption: String,
+        value: String,
+        contactNumber: String,
+
+        ) {
+
+        var bundleCode: String = "141*6*2*" +
+
+                when (value.toInt()) {
+
+                    1 -> {
+                        "1"
+                    }
+                    2 -> {
+                        "2"
+                    }
+                    3 -> {
+                        "3"
+                    }
+                    4 -> {
+                        "4"
+                    }
+                    else -> {
+                        ""
+                    }
+
+                }
+
+        Log.e("ATTENTION ATTENTION", "Airtel Data Valid BundleCode: $validityOption, value: $value")
+
+        val ussdCode = "*" + bundleCode + Uri.encode("#")
+
+        val intent: Intent = Intent("android.intent.action.CALL", Uri.parse("tel:$ussdCode"))
+
+        if (pAccount == "1") {
+            sendToSim(context, intent, 0)
+        }
+        else {
+            sendToSim(context, intent, 1)
+        }
+
+        val myClipboard: ClipboardManager? = context.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager?
+        val myClip: ClipData? = ClipData.newPlainText("text", contactNumber)
+        if (myClip != null) {
+            myClipboard?.setPrimaryClip(myClip)
+        }
+
+        intent.setPackage("com.android.server.telecom")
+
+        val util: Util = Util()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            CoroutineScope(Dispatchers.IO).launch {
+
+                val result = fragment.permissionsBuilder(
+                    Manifest.permission.CALL_PHONE,
+                ).build().sendSuspend()
+
+                if (result.allGranted()) { // All the permissions are granted.
+
+                    withContext(Dispatchers.Main) {
+
+                        val dialogBuilder = AlertDialog.Builder(context)
+
+                        dialogBuilder.setMessage("Paste number at the end after you proceed.")
+                            .setCancelable(true)
+                            .setPositiveButton("Proceed", DialogInterface.OnClickListener {
+
+                                    dialog, id ->
+
+                                dialog.cancel()
+
+                                val msg: String = "Data transfer requested."
+                                util.onShowMessageSuccess(msg, context)
+                                Log.e(TAG, msg)
+
+                                context.startActivity(intent)
+
+                            })
+                            .setNegativeButton("Cancel", DialogInterface.OnClickListener {
+                                    dialog, id -> dialog.cancel() })
+
+                        val alert = dialogBuilder.create()
+                        alert.setTitle("Phone number copied to clipboard.")
+                        alert.show()
+
+                    }
+
+                }
+                else {
+
+                    withContext(Dispatchers.Main) {
+
+                        val msg = "You have denied some " +
+                                "permissions permanently. Functions will not work without these permission. " +
+                                "Please grant the permissions for this app in your phone's settings."
+                        util.onShowMessage(msg, context)
+                        Log.e(TAG, msg)
+
+                    }
+
+                }
+
+            }
+
+        }
+        else {
+
+            val dialogBuilder = AlertDialog.Builder(context)
+
+            dialogBuilder.setMessage("Paste number at the end after you proceed.")
+                .setCancelable(true)
+                .setPositiveButton("Proceed", DialogInterface.OnClickListener {
+
+                        dialog, id ->
+
+                    dialog.cancel()
+
+                    val msg: String = "Data transfer requested."
+                    util.onShowMessageSuccess(msg, context)
+                    Log.e(TAG, msg)
+
+                    context.startActivity(intent)
+
+                })
+                .setNegativeButton("Cancel", DialogInterface.OnClickListener {
+                        dialog, id -> dialog.cancel() })
+
+            val alert = dialogBuilder.create()
+            alert.setTitle("Phone number copied to clipboard.")
+            alert.show()
+
+        }
+
+    }
+
+    fun giftDataGloUSSD(
+
+        context: Context,
+        fragment: Fragment,
+        activity: Activity,
+        pAccount: String,
+        code: String,
+        contactNumber: String,
+
+        ) {
+
+        val requestCode  = 131
+
+        val ussdCode = "*" + requestCode + "*" + code + "*" + contactNumber + Uri.encode("#")
+
+        val intent: Intent = Intent("android.intent.action.CALL", Uri.parse("tel:$ussdCode"))
+
+        if (pAccount == "1") {
+            sendToSim(context, intent, 0)
+        }
+        else {
+            sendToSim(context, intent, 1)
+        }
+
+        intent.setPackage("com.android.server.telecom")
+
+        val util: Util = Util()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            CoroutineScope(Dispatchers.IO).launch {
+
+                val result = fragment.permissionsBuilder(
+                    Manifest.permission.CALL_PHONE,
+                ).build().sendSuspend()
+
+                if (result.allGranted()) {
+
+                    withContext(Dispatchers.Main) {
+
+                        val msg: String = "Data transfer requested."
+                        util.onShowMessageSuccess(msg, context)
+                        Log.e(TAG, msg)
+
+                        context.startActivity(intent)
+
+                    }
+
+                }
+                else {
+
+                    withContext(Dispatchers.Main) {
+
+                        val msg = "You have denied some " +
+                                "permissions permanently. Functions will not work without these permission. " +
+                                "Please grant the permissions for this app in your phone's settings."
+                        util.onShowMessage(msg, context)
+                        Log.e(TAG, msg)
+
+                    }
+
+                }
+
+            }
+
+        }
+        else {
+
+            val msg: String = "Data transfer requested."
+            util.onShowMessageSuccess(msg, context)
+            Log.e(TAG, msg)
+
+            context.startActivity(intent)
+
+        }
+
+    }
+
+    fun amountAirtimeTransfer(
+        context: Context,
+        fragment: Fragment,
+        activity: Activity,
+        modelList: MutableList<User>,
+        friend: Friend,
+    ) {
+
+        val name: String = if (friend.name == null || friend.name!!.trim() == "") {
+            "Unknown Name"
+        }
+        else {
+            friend.name!!
+        }
+
+        val networks: MutableList<String> = mutableListOf<String>()
+        val phones: MutableList<String> = mutableListOf<String>()
+        val phonesAndNetworks: MutableList<String> = mutableListOf<String>()
+
+        if ((friend.network1 != null && friend.network1 != "Choose Network") &&
+            (friend.phone1 != null && friend.phone1!!.trim() != "")) {
+            networks.add(friend.network1!!)
+            phones.add(friend.phone1!!)
+            phonesAndNetworks.add("${friend.phone1}: ${friend.network1}")
+        }
+
+        if ((friend.network2 != null && friend.network2 != "Choose Network") &&
+            (friend.phone2 != null && friend.phone2!!.trim() != "")) {
+            networks.add(friend.network2!!)
+            phones.add(friend.phone2!!)
+            phonesAndNetworks.add("${friend.phone2}: ${friend.network2}")
+        }
+
+        if ((friend.network3 != null && friend.network3 != "Choose Network") &&
+            (friend.phone3 != null && friend.phone3!!.trim() != "")) {
+            networks.add(friend.network3!!)
+            phones.add(friend.phone3!!)
+            phonesAndNetworks.add("${friend.phone3}: ${friend.network3}")
+        }
+
+
+        val pAccountType = mutableListOf<String>()
+        val pAccountList = mutableListOf<String>()
+
+        if (modelList[0].phone != null && modelList[0].phone!!.trim() != "") {
+
+            val pAccount1 =
+                if (modelList[0].network != null && modelList[0].network != "Choose Network") {
+                    "${modelList[0].phone!!}: ${modelList[0].network}"
+                }
+                else {
+                    modelList[0].phone!!
+                }
+
+            pAccountType.add(pAccount1)
+            pAccountList.add("1")
+
+        }
+        if (modelList.size > 1 && modelList[1].phone != null && modelList[1].phone != "") {
+
+            val pAccount2 =
+                if (modelList[1].network != null && modelList[1].network != "Choose Network") {
+                    "${modelList[1].phone!!}: ${modelList[1].network}"
+                }
+                else {
+                    modelList[1].phone!!
+                }
+
+            pAccountType.add(pAccount2)
+            pAccountList.add("2")
+
+        }
+
+        val accountChoiceBuilder: AlertDialog.Builder = AlertDialog.Builder(
+            context,
+            R.style.MyDialogTheme
+        )
+
+        accountChoiceBuilder.setTitle("Choose phone number to transfer data from.")
+
+        val friendPhoneChoiceBuilder: AlertDialog.Builder =
+            AlertDialog.Builder(context, R.style.MyDialogTheme)
+
+        friendPhoneChoiceBuilder.setTitle("Choose your friend's phone number")
+
+        val amountBuilder: AlertDialog.Builder = AlertDialog.Builder(
+            context,
+            R.style.MyDialogTheme
+        )
+
+        amountBuilder.setTitle("Amount")
+
+        val amountViewInflated: View = LayoutInflater.from(context).inflate(R.layout.input_amount, null)
+
+        val amountInput = amountViewInflated.findViewById<View>(R.id.input_amount) as TextInputEditText
+
+        amountBuilder.setView(amountViewInflated)
+
+        if (phonesAndNetworks.size == 1) {
+
+            val network: String = networks[0]
+            val phone: String = phones[0]
+
+            if (pAccountType.size == 1) {
+
+                var user: User = modelList[0]
+                val pAccount: String = pAccountList[0]
 
                 amountBuilder.setPositiveButton(android.R.string.ok) {
 
@@ -3000,11 +5236,9 @@ class PhoneUtil {
 
                     val amountInputStr: String = amountInput.text.toString()
 
-
                     airtimeTransfer(
                         context, fragment, activity, modelList, pAccount,
-                        name, network, phone, amountInputStr
-                    )
+                        name, network, phone, amountInputStr)
 
                 }
 
@@ -3012,14 +5246,125 @@ class PhoneUtil {
                 amountBuilder.show()
 
             }
+            else {
 
-            accountChoiceBuilder.setNegativeButton(android.R.string.cancel) { dialog, which -> dialog.cancel() }
-            accountChoiceBuilder.show()
+                accountChoiceBuilder.setSingleChoiceItems(pAccountType.toTypedArray(), -1) {
+
+                        dialogInterface, i ->
+
+                    dialogInterface.dismiss()
+
+                    var user: User = modelList[i]
+                    val pAccount: String = pAccountList[i]
+
+                    amountBuilder.setPositiveButton(android.R.string.ok) {
+
+                            dialog, which ->
+
+                        dialog.dismiss()
+
+                        val amountInputStr: String = amountInput.text.toString()
+
+                        airtimeTransfer(
+                            context, fragment, activity, modelList, pAccount,
+                            name, network, phone, amountInputStr
+                        )
+
+                    }
+
+                    amountBuilder.setNegativeButton(android.R.string.cancel) { dialog, which -> dialog.cancel() }
+                    amountBuilder.show()
+
+                }
+
+                accountChoiceBuilder.setNegativeButton(android.R.string.cancel) { dialog, which -> dialog.cancel() }
+                accountChoiceBuilder.show()
+
+            }
+
+        }
+        else {
+
+            Log.e("ATTENTION ATTENTION", "Choose your friend's phone number")
+            Log.e("ATTENTION ATTENTION", "\n\n\nFriend's Phone Numbers: ${phonesAndNetworks.toString()}")
+
+            friendPhoneChoiceBuilder.setSingleChoiceItems(phonesAndNetworks.toTypedArray(), -1) {
+
+                    dialogInterface, i ->
+
+                dialogInterface.dismiss()
+
+                val network: String = networks[i]
+                val phone: String = phones[i]
+
+                if (pAccountType.size == 1) {
+
+                    var user: User = modelList[0]
+                    val pAccount: String = pAccountList[0]
+
+                    amountBuilder.setPositiveButton(android.R.string.ok) {
+
+                            dialog, which ->
+
+                        dialog.dismiss()
+
+                        val amountInputStr: String = amountInput.text.toString()
+
+                        airtimeTransfer(
+                            context, fragment, activity, modelList, pAccount,
+                            name, network, phone, amountInputStr
+                        )
+
+                    }
+
+                    amountBuilder.setNegativeButton(android.R.string.cancel) { dialog, which -> dialog.cancel() }
+                    amountBuilder.show()
+
+                }
+                else {
+
+                    accountChoiceBuilder.setSingleChoiceItems(pAccountType.toTypedArray(), -1) {
+
+                            dialogInterface, i ->
+
+                        dialogInterface.dismiss()
+
+                        var user: User = modelList[i]
+                        val pAccount: String = pAccountList[i]
+
+                        amountBuilder.setPositiveButton(android.R.string.ok) {
+
+                                dialog, which ->
+
+                            dialog.dismiss()
+
+                            val amountInputStr: String = amountInput.text.toString()
+
+                            airtimeTransfer(
+                                context, fragment, activity, modelList, pAccount,
+                                name, network, phone, amountInputStr
+                            )
+
+                        }
+
+                        amountBuilder.setNegativeButton(android.R.string.cancel) { dialog, which -> dialog.cancel() }
+                        amountBuilder.show()
+
+                    }
+
+                    accountChoiceBuilder.setNegativeButton(android.R.string.cancel) { dialog, which -> dialog.cancel() }
+                    accountChoiceBuilder.show()
+
+                }
+
+            }
+
+            friendPhoneChoiceBuilder.setNegativeButton(android.R.string.cancel) { dialog, which -> dialog.cancel() }
+            friendPhoneChoiceBuilder.show()
 
         }
 
-        friendPhoneChoiceBuilder.setNegativeButton(android.R.string.cancel) { dialog, which -> dialog.cancel() }
-        friendPhoneChoiceBuilder.show()
+
 
     }
 
@@ -3153,7 +5498,7 @@ class PhoneUtil {
                 else {
 
                     withContext(Dispatchers.Main) {
-                        
+
                         val msg = "You have denied some " +
                                 "permissions permanently. Functions will not work without these permission. " +
                                 "Please grant the permissions for this app in your phone's settings."
@@ -3183,7 +5528,7 @@ class PhoneUtil {
         }
 
     }
-    
+
     // TODO Updated with SMS Intent: Fixed temporally for SMS Policy
     //2u 08012345678 500 2314 to 432
     fun smsAirtimeTransfer(
@@ -3198,17 +5543,17 @@ class PhoneUtil {
     ) {
 
         val util: Util = Util()
-        
+
         val message = "2U $phone $amount $pin"
-        
+
         val sendSmsIntent = Intent(Intent.ACTION_VIEW)
-        
+
         sendSmsIntent.data = Uri.parse("sms:$code")
-        
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
             //SubscriptionManager localSubscriptionManager = SubscriptionManager.from(context);
-                
+
             val localSubscriptionManager =
                 context.getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE) as SubscriptionManager
 
@@ -3307,7 +5652,7 @@ class PhoneUtil {
                 else {
 
                     withContext(Dispatchers.Main) {
-                        
+
                         val msg = "You have denied some " +
                                 "permissions permanently. Functions will not work without these permission. " +
                                 "Please grant the permissions for this app in your phone's settings."
@@ -3468,7 +5813,8 @@ class PhoneUtil {
 
         if (pAccount == "1") {
             sendToSim(context, intent, 0)
-        } else {
+        }
+        else {
             sendToSim(context, intent, 1)
         }
 
@@ -3565,7 +5911,7 @@ class PhoneUtil {
         phoneNumber: String,
         amount: String,
     ) {
-        
+
         var pin: String = ""
 
         if (modelList[0].network == network && modelList.size == 1) {
@@ -3580,10 +5926,60 @@ class PhoneUtil {
         }
 
         if (pAccount == "1") {
-            pin = modelList[0].pin!!
+
+            if (modelList[0].pin == null || modelList[0].pin!!.trim() == "") {
+
+                val dialogBuilder = AlertDialog.Builder(context)
+
+                dialogBuilder.setMessage("You need to set pin in Edit Tab in order to transfer airtime.")
+                    .setCancelable(true)
+                    .setPositiveButton("Ok", DialogInterface.OnClickListener {
+
+                            dialog, id -> dialog.cancel()
+
+                    })
+
+                val alert = dialogBuilder.create()
+                alert.setTitle("Pin required.")
+                alert.show()
+
+                return
+
+            }
+            else {
+
+                pin = modelList[0].pin!!
+
+            }
+
         }
         else if (pAccount == "2") {
-            pin = modelList[1].pin!!
+
+            if (modelList[1].pin == null || modelList[1].pin!!.trim() == "") {
+
+                val dialogBuilder = AlertDialog.Builder(context)
+
+                dialogBuilder.setMessage("You need to set pin in Edit Tab in order to transfer airtime.")
+                    .setCancelable(true)
+                    .setPositiveButton("Ok", DialogInterface.OnClickListener {
+
+                            dialog, id -> dialog.cancel()
+
+                    })
+
+                val alert = dialogBuilder.create()
+                alert.setTitle("Pin required.")
+                alert.show()
+
+                return
+
+            }
+            else {
+
+                pin = modelList[1].pin!!
+
+            }
+
         }
 
         val pNetworks = mutableListOf<String>()
@@ -3600,7 +5996,7 @@ class PhoneUtil {
         }
 
         if (pNetworks.contains(network)) {
-            
+
             when (network) {
 
                 "Airtel" -> {
@@ -3714,39 +6110,26 @@ class PhoneUtil {
 
                 }
                 else -> {
-                    
-                    Toasty.error(
-                        context,
-                        "Error making airtime transfer! Please check account settings in Edit Tab.",
-                        Toasty.LENGTH_LONG,
-                        true
-                    ).show()
 
-                    Log.e(
-                        TAG,
-                        "$network: Error making airtime transfer! Please check account settings in Edit Tab."
-                    )
-                    
+                    Toasty.error(context, "Error making airtime transfer! Please check account settings in Edit Tab.",
+                        Toasty.LENGTH_LONG, true).show()
+
+                    Log.e(TAG, "$network: Error making airtime transfer! Please check account settings in Edit Tab.")
+
                 }
             }
-            
+
         }
         else {
-            
-            KToasty.error(
-                context,
-                "Error making airtime transfer! Your primary account networks are not your friend's network: "
-                        + network + ".",
-                Toast.LENGTH_LONG, true
-            ).show()
-            
-            Log.e(
-                TAG, "Error making airtime transfer!" +
-                        " Your primary account networks are not your friend's network: " + network + "."
-            )
-            
+
+            KToasty.error(context, "Error making airtime transfer! Your primary account networks are not your friend's network: "
+                        + network + ".", Toast.LENGTH_LONG, true).show()
+
+            Log.e(TAG, "Error making airtime transfer!" +
+                        " Your primary account networks are not your friend's network: " + network + ".")
+
         }
-        
+
     }
 
     fun amountBankTopupTransfer(
@@ -3813,6 +6196,7 @@ class PhoneUtil {
             phonesAndBanks.add(message)
 
         }
+
         if (modelList.size > 1 && modelList[1].phone != null && modelList[1].phone != "") {
 
             pAccountType.add(modelList[1].phone!!)
@@ -3864,22 +6248,40 @@ class PhoneUtil {
 
         }
 
-        accountChoiceBuilder.setSingleChoiceItems(phonesAndBanks.toTypedArray(), -1) {
+        val bankChoiceBuilder: AlertDialog.Builder = AlertDialog.Builder(
+            context,
+            R.style.MyDialogTheme)
 
-                dialogInterface, i ->
+        bankChoiceBuilder.setTitle("Choose your Bank")
 
-            dialogInterface.dismiss()
+        val pBanks = mutableListOf<String>()
 
-            val user: User = modelList[i]
-            val pAccount: String = pAccountList[i]
+        val amountBuilder: AlertDialog.Builder = AlertDialog.Builder(
+            context,
+            R.style.MyDialogTheme
+        )
 
-            val bankChoiceBuilder: AlertDialog.Builder = AlertDialog.Builder(
-                context,
-                R.style.MyDialogTheme
-            )
-            bankChoiceBuilder.setTitle("Choose your Bank")
+        amountBuilder.setTitle("Amount")
 
-            val pBanks = mutableListOf<String>()
+        val amountViewInflated: View = LayoutInflater.from(context).inflate(
+            R.layout.input_amount,
+            null
+        )
+
+        val amountInput = amountViewInflated.findViewById<View>(R.id.input_amount) as TextInputEditText
+
+        amountBuilder.setView(amountViewInflated)
+
+        val friendPhoneChoiceBuilder: AlertDialog.Builder = AlertDialog.Builder(
+            context,
+            R.style.MyDialogTheme)
+
+        friendPhoneChoiceBuilder.setTitle("Choose your friend's phone number")
+
+        if (phonesAndBanks.size == 1) {
+
+            val user: User = modelList[0]
+            val pAccount: String = pAccountList[0]
 
             if (user.bank1 != null && user.bank1 != "Choose Bank") {
 
@@ -3902,27 +6304,7 @@ class PhoneUtil {
 
             }
 
-            bankChoiceBuilder.setSingleChoiceItems(pBanks.toTypedArray(), -1) {
-
-                    dialogInterface, i ->
-
-                dialogInterface.dismiss()
-
-                val amountBuilder: AlertDialog.Builder = AlertDialog.Builder(
-                    context,
-                    R.style.MyDialogTheme
-                )
-
-                amountBuilder.setTitle("Amount")
-
-                val amountViewInflated: View = LayoutInflater.from(context).inflate(
-                    R.layout.input_amount,
-                    null
-                )
-
-                val amountInput = amountViewInflated.findViewById<View>(R.id.input_amount) as TextInputEditText
-
-                amountBuilder.setView(amountViewInflated)
+            if (pBanks.size == 1) {
 
                 amountBuilder.setPositiveButton(android.R.string.ok) {
 
@@ -3932,7 +6314,7 @@ class PhoneUtil {
 
                     val amountInputStr = amountInput.text.toString()
 
-                    val name: String = if (friend.name == null || friend.name == "") {
+                    val name: String = if (friend.name == null || friend.name!!.trim() == "") {
                         "Unknown Name"
                     }
                     else {
@@ -3944,43 +6326,33 @@ class PhoneUtil {
                     val phonesAndNetworks: MutableList<String> = mutableListOf<String>()
 
                     if ((friend.network1 != null && friend.network1 != "Choose Network") &&
-                        (friend.phone1 != null && friend.phone1 != "")) {
+                        (friend.phone1 != null && friend.phone1!!.trim() != "")) {
                         networks.add(friend.network1!!)
                         phones.add(friend.phone1!!)
                         phonesAndNetworks.add("${friend.phone1}: ${friend.network1}")
                     }
 
                     if ((friend.network2 != null && friend.network2 != "Choose Network") &&
-                        (friend.phone2 != null && friend.phone2 != "")) {
+                        (friend.phone2 != null && friend.phone2!!.trim() != "")) {
                         networks.add(friend.network2!!)
                         phones.add(friend.phone2!!)
                         phonesAndNetworks.add("${friend.phone2}: ${friend.network2}")
                     }
 
                     if ((friend.network3 != null && friend.network3 != "Choose Network") &&
-                        (friend.phone3 != null && friend.phone3 != "")) {
+                        (friend.phone3 != null && friend.phone3!!.trim() != "")) {
                         networks.add(friend.network3!!)
                         phones.add(friend.phone3!!)
-                        phonesAndNetworks.add("${friend.phone1}: ${friend.network1}")
+                        phonesAndNetworks.add("${friend.phone3}: ${friend.network3}")
                     }
 
-                    val friendPhoneChoiceBuilder: AlertDialog.Builder = AlertDialog.Builder(
-                        context,
-                        R.style.MyDialogTheme
-                    )
-
-                    friendPhoneChoiceBuilder.setTitle("Choose your friend's phone number")
-
                     Log.e("ATTENTION ATTENTION", "Choose your friend's phone number")
-                    Log.e(
-                        "ATTENTION ATTENTION",
-                        "\n\n\nFriend's Phone Numbers: ${phonesAndNetworks.toString()}"
-                    )
+                    Log.e("ATTENTION ATTENTION", "\n\n\nFriend's Phone Numbers: ${phonesAndNetworks.toString()}")
 
                     friendPhoneChoiceBuilder.setSingleChoiceItems(
                         phonesAndNetworks.toTypedArray(),
-                        -1
-                    ) {
+                        -1)
+                    {
 
                             dialogInterface, i ->
 
@@ -3991,7 +6363,7 @@ class PhoneUtil {
 
                         bankTopupTransfer(
                             context, fragment, activity, pAccount, name, amountInputStr,
-                            phone, pBanks[i], network
+                            phone, pBanks[0], network
                         )
 
                     }
@@ -4004,15 +6376,291 @@ class PhoneUtil {
                 amountBuilder.setNegativeButton(android.R.string.cancel) { dialog, which -> dialog.cancel() }
                 amountBuilder.show()
 
+            }
+            else {
+
+                bankChoiceBuilder.setSingleChoiceItems(pBanks.toTypedArray(), -1) {
+
+                        dialogInterface, i ->
+
+                    dialogInterface.dismiss()
+
+                    amountBuilder.setPositiveButton(android.R.string.ok) {
+
+                            dialog, which ->
+
+                        dialog.dismiss()
+
+                        val amountInputStr = amountInput.text.toString()
+
+                        val name: String = if (friend.name == null || friend.name!!.trim() == "") {
+                            "Unknown Name"
+                        }
+                        else {
+                            friend.name!!
+                        }
+
+                        val networks: MutableList<String> = mutableListOf<String>()
+                        val phones: MutableList<String> = mutableListOf<String>()
+                        val phonesAndNetworks: MutableList<String> = mutableListOf<String>()
+
+                        if ((friend.network1 != null && friend.network1 != "Choose Network") &&
+                            (friend.phone1 != null && friend.phone1!!.trim() != "")) {
+                            networks.add(friend.network1!!)
+                            phones.add(friend.phone1!!)
+                            phonesAndNetworks.add("${friend.phone1}: ${friend.network1}")
+                        }
+
+                        if ((friend.network2 != null && friend.network2 != "Choose Network") &&
+                            (friend.phone2 != null && friend.phone2!!.trim() != "")) {
+                            networks.add(friend.network2!!)
+                            phones.add(friend.phone2!!)
+                            phonesAndNetworks.add("${friend.phone2}: ${friend.network2}")
+                        }
+
+                        if ((friend.network3 != null && friend.network3 != "Choose Network") &&
+                            (friend.phone3 != null && friend.phone3!!.trim() != "")) {
+                            networks.add(friend.network3!!)
+                            phones.add(friend.phone3!!)
+                            phonesAndNetworks.add("${friend.phone3}: ${friend.network3}")
+                        }
+
+                        friendPhoneChoiceBuilder.setTitle("Choose your friend's phone number")
+
+                        Log.e("ATTENTION ATTENTION", "Choose your friend's phone number")
+                        Log.e("ATTENTION ATTENTION", "\n\n\nFriend's Phone Numbers: ${phonesAndNetworks.toString()}")
+
+                        friendPhoneChoiceBuilder.setSingleChoiceItems(
+                            phonesAndNetworks.toTypedArray(),
+                            -1)
+                        {
+
+                                dialogInterface, i ->
+
+                            dialogInterface.dismiss()
+
+                            val network: String = networks[i]
+                            val phone: String = phones[i]
+
+                            bankTopupTransfer(
+                                context, fragment, activity, pAccount, name, amountInputStr,
+                                phone, pBanks[i], network
+                            )
+
+                        }
+
+                        friendPhoneChoiceBuilder.setNegativeButton(android.R.string.cancel) { dialog, which -> dialog.cancel() }
+                        friendPhoneChoiceBuilder.show()
+
                     }
 
-            bankChoiceBuilder.setNegativeButton(android.R.string.cancel) { dialog, which -> dialog.cancel() }
-            bankChoiceBuilder.show()
+                    amountBuilder.setNegativeButton(android.R.string.cancel) { dialog, which -> dialog.cancel() }
+                    amountBuilder.show()
+
+                }
+
+                bankChoiceBuilder.setNegativeButton(android.R.string.cancel) { dialog, which -> dialog.cancel() }
+                bankChoiceBuilder.show()
 
             }
 
-        accountChoiceBuilder.setNegativeButton(android.R.string.cancel) { dialog, which -> dialog.cancel() }
-        accountChoiceBuilder.show()
+        }
+        else {
+
+            accountChoiceBuilder.setSingleChoiceItems(phonesAndBanks.toTypedArray(), -1) {
+
+                    dialogInterface, i ->
+
+                dialogInterface.dismiss()
+
+                val user: User = modelList[i]
+                val pAccount: String = pAccountList[i]
+
+                if (user.bank1 != null && user.bank1 != "Choose Bank") {
+
+                    pBanks.add(user.bank1!!)
+
+                }
+                if (user.bank2 != null && user.bank2 != "Choose Bank") {
+
+                    pBanks.add(user.bank2!!)
+
+                }
+                if (user.bank3 != null && user.bank3 != "Choose Bank") {
+
+                    pBanks.add(user.bank3!!)
+
+                }
+                if (user.bank4 != null && user.bank4 != "Choose Bank") {
+
+                    pBanks.add(user.bank4!!)
+
+                }
+
+                if (pBanks.size == 1) {
+
+                    amountBuilder.setPositiveButton(android.R.string.ok) {
+
+                            dialog, which ->
+
+                        dialog.dismiss()
+
+                        val amountInputStr = amountInput.text.toString()
+
+                        val name: String = if (friend.name == null || friend.name!!.trim() == "") {
+                            "Unknown Name"
+                        }
+                        else {
+                            friend.name!!
+                        }
+
+                        val networks: MutableList<String> = mutableListOf<String>()
+                        val phones: MutableList<String> = mutableListOf<String>()
+                        val phonesAndNetworks: MutableList<String> = mutableListOf<String>()
+
+                        if ((friend.network1 != null && friend.network1 != "Choose Network") &&
+                            (friend.phone1 != null && friend.phone1!!.trim() != "")) {
+                            networks.add(friend.network1!!)
+                            phones.add(friend.phone1!!)
+                            phonesAndNetworks.add("${friend.phone1}: ${friend.network1}")
+                        }
+
+                        if ((friend.network2 != null && friend.network2 != "Choose Network") &&
+                            (friend.phone2 != null && friend.phone2!!.trim() != "")) {
+                            networks.add(friend.network2!!)
+                            phones.add(friend.phone2!!)
+                            phonesAndNetworks.add("${friend.phone2}: ${friend.network2}")
+                        }
+
+                        if ((friend.network3 != null && friend.network3 != "Choose Network") &&
+                            (friend.phone3 != null && friend.phone3!!.trim() != "")) {
+                            networks.add(friend.network3!!)
+                            phones.add(friend.phone3!!)
+                            phonesAndNetworks.add("${friend.phone3}: ${friend.network3}")
+                        }
+
+                        Log.e("ATTENTION ATTENTION", "Choose your friend's phone number")
+                        Log.e("ATTENTION ATTENTION", "\n\n\nFriend's Phone Numbers: ${phonesAndNetworks.toString()}")
+
+                        friendPhoneChoiceBuilder.setSingleChoiceItems(
+                            phonesAndNetworks.toTypedArray(),
+                            -1)
+                        {
+
+                                dialogInterface, i ->
+
+                            dialogInterface.dismiss()
+
+                            val network: String = networks[i]
+                            val phone: String = phones[i]
+
+                            bankTopupTransfer(context, fragment,
+                                activity, pAccount, name, amountInputStr,
+                                phone, pBanks[0], network)
+
+                        }
+
+                        friendPhoneChoiceBuilder.setNegativeButton(android.R.string.cancel) { dialog, which -> dialog.cancel() }
+                        friendPhoneChoiceBuilder.show()
+
+                    }
+
+                    amountBuilder.setNegativeButton(android.R.string.cancel) { dialog, which -> dialog.cancel() }
+                    amountBuilder.show()
+
+                }
+                else {
+
+                    bankChoiceBuilder.setSingleChoiceItems(pBanks.toTypedArray(), -1) {
+
+                            dialogInterface, i ->
+
+                        dialogInterface.dismiss()
+
+                        amountBuilder.setPositiveButton(android.R.string.ok) {
+
+                                dialog, which ->
+
+                            dialog.dismiss()
+
+                            val amountInputStr = amountInput.text.toString()
+
+                            val name: String = if (friend.name == null || friend.name!!.trim() == "") {
+                                "Unknown Name"
+                            }
+                            else {
+                                friend.name!!
+                            }
+
+                            val networks: MutableList<String> = mutableListOf<String>()
+                            val phones: MutableList<String> = mutableListOf<String>()
+                            val phonesAndNetworks: MutableList<String> = mutableListOf<String>()
+
+                            if ((friend.network1 != null && friend.network1 != "Choose Network") &&
+                                (friend.phone1 != null && friend.phone1!!.trim() != "")) {
+                                networks.add(friend.network1!!)
+                                phones.add(friend.phone1!!)
+                                phonesAndNetworks.add("${friend.phone1}: ${friend.network1}")
+                            }
+
+                            if ((friend.network2 != null && friend.network2 != "Choose Network") &&
+                                (friend.phone2 != null && friend.phone2!!.trim() != "")) {
+                                networks.add(friend.network2!!)
+                                phones.add(friend.phone2!!)
+                                phonesAndNetworks.add("${friend.phone2}: ${friend.network2}")
+                            }
+
+                            if ((friend.network3 != null && friend.network3 != "Choose Network") &&
+                                (friend.phone3 != null && friend.phone3!!.trim() != "")) {
+                                networks.add(friend.network3!!)
+                                phones.add(friend.phone3!!)
+                                phonesAndNetworks.add("${friend.phone3}: ${friend.network3}")
+                            }
+
+                            friendPhoneChoiceBuilder.setTitle("Choose your friend's phone number")
+
+                            Log.e("ATTENTION ATTENTION", "Choose your friend's phone number")
+                            Log.e("ATTENTION ATTENTION", "\n\n\nFriend's Phone Numbers: ${phonesAndNetworks.toString()}")
+
+                            friendPhoneChoiceBuilder.setSingleChoiceItems(
+                                phonesAndNetworks.toTypedArray(),
+                                -1)
+                            {
+
+                                    dialogInterface, i ->
+
+                                dialogInterface.dismiss()
+
+                                val network: String = networks[i]
+                                val phone: String = phones[i]
+
+                                bankTopupTransfer(context, fragment,
+                                    activity, pAccount, name, amountInputStr,
+                                    phone, pBanks[i], network)
+
+                            }
+
+                            friendPhoneChoiceBuilder.setNegativeButton(android.R.string.cancel) { dialog, which -> dialog.cancel() }
+                            friendPhoneChoiceBuilder.show()
+
+                        }
+
+                        amountBuilder.setNegativeButton(android.R.string.cancel) { dialog, which -> dialog.cancel() }
+                        amountBuilder.show()
+
+                    }
+
+                    bankChoiceBuilder.setNegativeButton(android.R.string.cancel) { dialog, which -> dialog.cancel() }
+                    bankChoiceBuilder.show()
+
+                }
+
+            }
+
+            accountChoiceBuilder.setNegativeButton(android.R.string.cancel) { dialog, which -> dialog.cancel() }
+            accountChoiceBuilder.show()
+
+        }
 
     }
 
@@ -4136,13 +6784,13 @@ class PhoneUtil {
     ) {
 
         val util: Util = Util()
-        
+
         if (network == "Glo Mobile") {
-            
+
             val ussdCode = "*" + code + "*" + phoneNumber + "*" + amount + Uri.encode("#")
 
             val intent: Intent = Intent("android.intent.action.CALL", Uri.parse("tel:$ussdCode"))
-            
+
             if (pAccount == "1") {
                 sendToSim(context, intent, 0)
             } else {
@@ -4175,7 +6823,7 @@ class PhoneUtil {
                     }
                 }
             }*/
-            
+
             intent.setPackage("com.android.server.telecom")
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -4234,7 +6882,7 @@ class PhoneUtil {
             val msg: String = "Jaiz Bank only allows Airtime TopUp of friends who are GLO subscribers."
             util.onShowMessage(msg, context)
             Log.e(TAG, msg)
-            
+
         }
 
     }
@@ -4252,7 +6900,7 @@ class PhoneUtil {
         bank: String,
         network: String
     ) {
-        
+
         when (bank) {
 
             "Access Bank" -> {
@@ -4710,6 +7358,152 @@ class PhoneUtil {
 
     }
 
+    private fun checkBalanceGloAirtime(
+        context: Context,
+        fragment: Fragment,
+        activity: Activity,
+        pAccount: String,
+        checkBalanceCode: String,
+    ) {
+
+        val ussdCode = Uri.encode("#") + checkBalanceCode + Uri.encode("#")
+
+        val intent: Intent = Intent("android.intent.action.CALL", Uri.parse("tel:$ussdCode"))
+
+        if (pAccount == "1") {
+            sendToSim(context, intent, 0)
+        }
+        else {
+
+            val simNumber: Int = if (pAccount == "1") {
+                0
+            } else {
+                1
+            }
+
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            intent.putExtra("com.android.phone.force.slot", true)
+            intent.putExtra("Cdma_Supp", true)
+            //Add all slots here, according to device.. (different device require different key so put all together)
+
+            for (s in simSlotName) intent.putExtra(s, simNumber) //0 or 1 according to sim.......
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+                val telecomManager = context.getSystemService(Context.TELECOM_SERVICE) as TelecomManager
+
+                @SuppressLint("MissingPermission")
+                val list = telecomManager.callCapablePhoneAccounts
+
+                val localSubscriptionManager =
+                    context.getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE) as SubscriptionManager
+
+                @SuppressLint("MissingPermission")
+                val activeSubscriptionInfoList = localSubscriptionManager.activeSubscriptionInfoList
+
+                for (phoneAccountHandle in list) {
+
+                    if (phoneAccountHandle.id.contains(activeSubscriptionInfoList[simNumber].iccId)) {
+
+                        Log.e("ATTENTION ATTENTION", "Does This Ever Run?")
+
+                        intent.putExtra(
+                            "android.telecom.extra.PHONE_ACCOUNT_HANDLE",
+                            phoneAccountHandle as Parcelable
+                        )
+
+//                    return
+
+                    }
+
+                }
+
+            }
+
+        }
+
+
+        /*if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ) {
+
+            TelecomManager telecomManager = (TelecomManager) context.getSystemService(TelecomManager.class);
+
+            //intent.setPackage(telecomManager.getDefaultDialerPackage());
+            intent.setPackage("com.android.server.tel+ecom");
+        }
+        else {
+
+            PackageManager packageManager = context.getPackageManager();
+            List activities = packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+
+            for(int j = 0 ; j < activities.size() ; j++)
+            {
+                if(activities.get(j).toString().toLowerCase().contains("com.android.phone"))
+                {
+                    intent.setPackage("com.android.phone");
+                }
+                else if(activities.get(j).toString().toLowerCase().contains("call"))
+                {
+                    String pack = (activities.get(j).toString().split("[ ]")[1].split("[/]")[0]);
+
+                    intent.setPackage(pack);
+                }
+            }
+        }*/
+
+        intent.setPackage("com.android.server.telecom")
+
+        val util: Util = Util()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            CoroutineScope(Dispatchers.IO).launch {
+
+                val result = fragment.permissionsBuilder(
+                    Manifest.permission.CALL_PHONE,
+                ).build().sendSuspend()
+
+                if (result.allGranted()) { // All the permissions are granted.
+
+                    withContext(Dispatchers.Main) {
+
+                        val msg: String = "Balance requested."
+                        util.onShowMessageSuccess(msg, context)
+                        Log.e(TAG, msg)
+
+                        context.startActivity(intent)
+
+                    }
+
+                }
+                else {
+
+                    withContext(Dispatchers.Main) {
+
+                        val msg = "You have denied some " +
+                                "permissions permanently. Functions will not work without these permission. " +
+                                "Please grant the permissions for this app in your phone's settings."
+                        util.onShowMessage(msg, context)
+                        Log.e(TAG, msg)
+
+                    }
+
+                }
+
+            }
+
+        }
+        else {
+
+            val msg: String = "Balance requested."
+            util.onShowMessageSuccess(msg, context)
+            Log.e(TAG, msg)
+
+            context.startActivity(intent)
+
+        }
+
+    }
+
     // https://www.ngbuzz.com/index.php?topic=1542.0
     // https://www.intogeek.net/how-to-load-recharge-cards/
     fun checkAirtimeBalance(
@@ -4739,7 +7533,7 @@ class PhoneUtil {
             "Glo Mobile" -> {
 
                 val checkBalanceCode = "124"
-                checkBalance(context, fragment, activity, pAccount, checkBalanceCode)
+                checkBalanceGloAirtime(context, fragment, activity, pAccount, checkBalanceCode)
                 Log.e(TAG, "$network: from key to rechargeBool")
 
             }
@@ -4785,7 +7579,7 @@ class PhoneUtil {
 
             "Airtel" -> {
 
-                val checkBalanceCode = "123*10"
+                val checkBalanceCode = "140"
                 checkBalance(context, fragment, activity, pAccount, checkBalanceCode)
                 Log.e(TAG, "$network: from key to rechargeBool")
 
@@ -5139,11 +7933,11 @@ class PhoneUtil {
             amountBuilder.setPositiveButton(android.R.string.ok) {
 
                     dialog, which ->
-                
+
                 dialog.dismiss()
-                
+
                 val amount: String = amountInput.text.toString()
-                
+
                 when (pBanks[i]) {
 
                     "Access Bank" -> {
@@ -5336,9 +8130,9 @@ class PhoneUtil {
 
             amountBuilder.setNegativeButton(android.R.string.cancel) { dialog, which -> dialog.cancel() }
             amountBuilder.show()
-            
+
         }
-        
+
         bankChoiceBuilder.setNegativeButton(android.R.string.cancel) { dialog, which -> dialog.cancel() }
 
         bankChoiceBuilder.show()

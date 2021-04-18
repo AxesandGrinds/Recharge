@@ -28,26 +28,24 @@ class AirtelDataRechargeAdapter(
   private var mAuth: FirebaseAuth? = null
   private var mCurrentUser: FirebaseUser? = null
   private var mMyUserId: String? = null
-  private val DEBUG_TAG = "Motion Even Debug Debugs"
+  private val DEBUG_TAG = "Motion Event Debug"
   private var code: List<String>? = null
   private var amount_values: List<String>? = null
   private var data_values: List<String>
   private var valid_values: List<String>? = null
-  private var gestureDetector: GestureDetector? = null
 
   interface OnAirtelDataAmountClickListener {
     fun onAirtelDataAmountClicked(code: String, data: String, amount: String)
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-    val view: View =
-      LayoutInflater.from(parent.context).inflate(R.layout.item_data_recharge, parent, false)
+
+    val view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_data_recharge, parent, false)
 
     mFirestore = Firebase.firestore
     mAuth = FirebaseAuth.getInstance()
     mCurrentUser = mAuth!!.currentUser
     mMyUserId = mCurrentUser!!.uid
-    gestureDetector = GestureDetector(context, SingleTapConfirm())
 
     return ViewHolder(view)
 
@@ -73,7 +71,27 @@ class AirtelDataRechargeAdapter(
     holder.amount.text = amount_values!![position]
     holder.data.text = data_values[position]
     holder.validity.text = valid_values!![position]
-    holder.mView.alpha = 1f // or 0.5f
+    holder.mView.alpha = 1f
+
+    val gestureDetector = GestureDetector(context, object : SimpleOnGestureListener() {
+
+      override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
+
+        colorCountDown(position, 200)
+
+        return true
+
+      }
+
+      override fun onLongPress(e: MotionEvent) {
+        super.onLongPress(e)
+      }
+
+      override fun onDoubleTap(e: MotionEvent): Boolean {
+        return super.onDoubleTap(e)
+      }
+
+    })
 
     holder.mView.setOnTouchListener(OnTouchListener {
 
@@ -81,10 +99,7 @@ class AirtelDataRechargeAdapter(
 
       val action = event.actionMasked
 
-      if (gestureDetector!!.onTouchEvent(event)) {
-
-        holder.mView.setBackgroundResource(R.color.colorPrimary3)
-        colorCountDown(position, 200)
+      if (gestureDetector.onTouchEvent(event)) {
 
          return@OnTouchListener true
 
@@ -94,35 +109,36 @@ class AirtelDataRechargeAdapter(
 
         MotionEvent.ACTION_DOWN -> {
 
-          Log.d(DEBUG_TAG, "Action was DOWN")
+          Log.e(DEBUG_TAG, "Action was DOWN")
           holder.mView.setBackgroundResource(R.color.colorPrimary3)
           true
 
         }
         MotionEvent.ACTION_MOVE -> {
 
-          Log.d(DEBUG_TAG, "Action was MOVE")
+          Log.e(DEBUG_TAG, "Action was MOVE")
           holder.mView.setBackgroundResource(R.color.colorPrimary3)
           true
 
         }
         MotionEvent.ACTION_UP -> {
 
-          Log.d(DEBUG_TAG, "Action was UP")
-          holder.mView.setBackgroundResource(R.color.accent)
+          Log.e(DEBUG_TAG, "Action was UP")
+          holder.mView.setBackgroundResource(R.color.white)
           true
 
         }
         MotionEvent.ACTION_CANCEL -> {
 
-          Log.d(DEBUG_TAG, "Action was CANCEL")
-          holder.mView.setBackgroundResource(R.color.accent)
+          Log.e(DEBUG_TAG, "Action was CANCEL")
+          holder.mView.setBackgroundResource(R.color.white)
           true
 
         }
         MotionEvent.ACTION_OUTSIDE -> {
 
-          Log.d(DEBUG_TAG, "Movement occurred outside bounds " +
+          holder.mView.setBackgroundResource(R.color.white)
+          Log.e(DEBUG_TAG, "Movement occurred outside bounds " +
                     "of current screen element")
           true
 
@@ -138,12 +154,6 @@ class AirtelDataRechargeAdapter(
 
   override fun getItemCount(): Int {
     return data_values.size
-  }
-
-  private inner class SingleTapConfirm : SimpleOnGestureListener() {
-    override fun onSingleTapUp(event: MotionEvent): Boolean {
-      return true
-    }
   }
 
   private fun colorCountDown(position: Int, duration: Long) {
@@ -181,7 +191,7 @@ class AirtelDataRechargeAdapter(
       naira = mView.findViewById(R.id.naira)
       amount = mView.findViewById(R.id.name)
       data = mView.findViewById(R.id.phone)
-      validity = mView.findViewById(R.id.network)
+      validity = mView.findViewById(R.id.validity)
     }
 
   }

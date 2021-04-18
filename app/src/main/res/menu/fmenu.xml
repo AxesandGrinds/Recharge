@@ -15,21 +15,35 @@
         <item
             android:id="@+id/airtime_phone_transfer"
             android:icon="@drawable/ic_airplanemode_active_black_24dp"
-            android:orderInCategory="100"
+            android:orderInCategory="101"
             android:title="@string/airtime_phone_transfer"
             app:showAsAction="never" />
 
         <item
             android:id="@+id/airtime_bank_topup_transfer"
             android:icon="@drawable/ic_airplanemode_active_black_24dp"
-            android:orderInCategory="100"
+            android:orderInCategory="102"
             android:title="@string/airtime_bank_topup_transfer"
+            app:showAsAction="never" />
+
+        <item
+            android:id="@+id/data_phone_buy_for_friend"
+            android:icon="@drawable/ic_baseline_align_vertical_bottom_24"
+            android:orderInCategory="103"
+            android:title="@string/data_phone_gift"
+            app:showAsAction="never" />
+
+        <item
+            android:id="@+id/data_phone_transfer"
+            android:icon="@drawable/ic_baseline_align_vertical_bottom_24"
+            android:orderInCategory="104"
+            android:title="@string/data_phone_transfer"
             app:showAsAction="never" />
 
         <item
             android:id="@+id/bank_transfer"
             android:icon="@drawable/ic_compare_black_24dp"
-            android:orderInCategory="100"
+            android:orderInCategory="105"
             android:title="@string/bank_transfer"
             app:showAsAction="never" />
 

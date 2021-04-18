@@ -9,7 +9,9 @@ import com.app.ej.cs.conf.TAG
 import com.app.ej.cs.init.InitApp
 import com.app.ej.cs.model.UserListModel
 import com.app.ej.cs.repository.UsersAndFriendsRepository
+import com.app.ej.cs.repository.entity.User
 import com.app.ej.cs.repository.impl.MemoryUserAndFriendsRepository
+import com.app.ej.cs.utils.PhoneUtil
 import javax.inject.Inject
 
 
@@ -22,25 +24,37 @@ class EditFragmentPresenterImpl @Inject constructor(
 
   EditFragmentPresenter {
 
+  val phoneUtil: PhoneUtil = PhoneUtil()
 
   override fun displayEditDetails() {
 
     val memoryUserAndFriendsRepository: MemoryUserAndFriendsRepository = MemoryUserAndFriendsRepository(InitApp.appContext)
 
-    val userMainMutableList = memoryUserAndFriendsRepository.userList()
+    val usersList: MutableList<User> = memoryUserAndFriendsRepository.userList()
 
-    val userSecondMutableList = memoryUserAndFriendsRepository.userList()
+    if (usersList.size == 1 || !phoneUtil.isDualSim(InitApp.appContext)) {
+
+      view?.displayUserMain(UserListModel(mutableListOf(usersList[0])))
+
+    }
+    else if (usersList.size == 2 && phoneUtil.isDualSim(InitApp.appContext)) {
+
+      view?.displayUserMain(UserListModel(mutableListOf(usersList[0])))
+      view?.displayUserSecond(UserListModel(mutableListOf(usersList[1])))
+
+    }
+    else if (usersList.size == 2 && !phoneUtil.isDualSim(InitApp.appContext)) {
+
+      view?.displayUserMain(UserListModel(mutableListOf(usersList[0])))
+
+    }
 
     val friendsMutableList = memoryUserAndFriendsRepository.friendList()
-
-    view?.displayUserMain(UserListModel(userMainMutableList))
-
-    view?.displayUserSecond(UserListModel(userSecondMutableList))
 
     view?.displayFriends(FriendListModel(friendsMutableList))
 
     Log.e(TAG, "In EditFragmentPresenterImpl using User Repository $memoryUserAndFriendsRepository")
-    Log.e("ATTENTION ATTENTION", "userMainMutableList: ${userMainMutableList.toString()}")
+    Log.e("ATTENTION ATTENTION", "userMutableList: ${usersList.toString()}")
     Log.e("ATTENTION ATTENTION", "friendsMutableList: ${friendsMutableList.toString()}")
 
   }

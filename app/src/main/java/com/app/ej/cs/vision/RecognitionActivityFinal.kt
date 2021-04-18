@@ -82,7 +82,6 @@ import kotlin.math.max
 class RecognitionActivityFinal : AppCompatActivity(),
   ActivityCompat.OnRequestPermissionsResultCallback,
   CompoundButton.OnCheckedChangeListener,
-// After snapCamera
   OptionView.Callback,
   GestureDetector.OnGestureListener,
   GestureDetector.OnDoubleTapListener
@@ -95,9 +94,7 @@ class RecognitionActivityFinal : AppCompatActivity(),
   private var selectedSize: String? = SIZE_SCREEN
   private var isLandScape = false
   private var imageUri: Uri? = null
-  // Max width (portrait mode)
   private var imageMaxWidth = 0
-  // Max height (portrait mode)
   private var imageMaxHeight = 0
   private var imageProcessor: VisionImageProcessor? = null
 

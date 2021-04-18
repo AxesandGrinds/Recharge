@@ -30,8 +30,8 @@ android {
         applicationId "com.app.ej.cs"
         minSdkVersion 16
         targetSdkVersion 30
-        versionCode 26
-        versionName "1.0.0"
+        versionCode 28
+        versionName "1.0.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
@@ -48,7 +48,6 @@ android {
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-
         /*debug {
             minifyEnabled false
             proguardFiles 'proguard-rules.pro'

@@ -20,13 +20,11 @@ import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.ej.cs.R
-import com.app.ej.cs.ui.adapter.AirtelDataRechargeAdapter
-import com.app.ej.cs.ui.adapter.EtisalatDataRechargeAdapter
-import com.app.ej.cs.ui.adapter.GloDataRechargeAdapter
-import com.app.ej.cs.ui.adapter.MTNDataRechargeAdapter
+import com.app.ej.cs.ui.adapter.*
 import com.app.ej.cs.utils.PhoneUtil
 import com.app.ej.cs.utils.SimUtil
 import com.app.ej.cs.utils.Util
@@ -34,20 +32,22 @@ import es.dmoral.toasty.Toasty
 import java.util.*
 
 
-class DataRechargeDialog : DialogFragment() {
+class DataTransferDialog : DialogFragment() {
   
   private var rootView: View? = null
   private var dialogRecyclerView: RecyclerView? = null
   private val amountsList: ArrayList<String>? = null
-  private var mtnDataRechargeAdapter: MTNDataRechargeAdapter? = null
-  private var gloDataRechargeAdapter: GloDataRechargeAdapter? = null
-  private var etisalatDataRechargeAdapter: EtisalatDataRechargeAdapter? = null
-  private var airtelDataRechargeAdapter: AirtelDataRechargeAdapter? = null
+  private var mtnDataTransferAdapter: MTNDataTransferAdapter? = null
+  private var gloDataTransferAdapter: GloDataTransferAdapter? = null
+  private var etisalatDataTransferAdapter: EtisalatDataTransferAdapter? = null
+  private var airtelDataTransferAdapter: AirtelDataTransferAdapter? = null
   private val util: Util = Util()
   private val phoneUtil: PhoneUtil = PhoneUtil()
 
   private var chosenSimCard = 0
   private var chosenNetwork: String? = null
+  private var chosenPhone: String? = null
+  private var userPin: String? = null
   
   private fun sendToSimOld(intent: Intent, simNumber: Int) {
     
@@ -76,6 +76,8 @@ class DataRechargeDialog : DialogFragment() {
     if (arguments != null) {
       chosenSimCard = requireArguments().getInt(Simcard)
       chosenNetwork = requireArguments().getString(Network)
+      chosenPhone = requireArguments().getString(FriendPhone)
+      userPin = requireArguments().getString(UserPin)
     }
 
   }
@@ -111,16 +113,16 @@ class DataRechargeDialog : DialogFragment() {
 
     when (network) {
       "Airtel" -> {
-        recyclerView.adapter = airtelDataRechargeAdapter
+        recyclerView.adapter = airtelDataTransferAdapter
       }
       "Etisalat(9Mobile)" -> {
-        recyclerView.adapter = etisalatDataRechargeAdapter
+        recyclerView.adapter = etisalatDataTransferAdapter
       }
       "Glo Mobile" -> {
-        recyclerView.adapter = gloDataRechargeAdapter
+        recyclerView.adapter = gloDataTransferAdapter
       }
       "MTN Nigeria" -> {
-        recyclerView.adapter = mtnDataRechargeAdapter
+        recyclerView.adapter = mtnDataTransferAdapter
       }
       else -> println("$network: error sharing credit!")
     }
@@ -157,6 +159,8 @@ class DataRechargeDialog : DialogFragment() {
   var tempMessage: String? = null
   var tempData: String? = null
   var tempAmount: String? = null
+
+  var fragment: Fragment? = null
 
   // TODO Use with future update
   private fun rechargeDataMTNSmsAuto(code: String, data: String, amount: String) {
@@ -284,144 +288,6 @@ class DataRechargeDialog : DialogFragment() {
 
   }
 
-  private fun rechargeDataMTNSms(code: String, data: String, amount: String) {
-
-    val number = "131"
-    tempNumber = number
-    tempMessage = code
-    tempData = data
-    tempAmount = amount
-
-    Log.i("ATTENTION ATTENTION", "rechargeDataMTNSms Function Started")
-    Log.i("ATTENTION ATTENTION", "chosenSimCard: $chosenSimCard")
-
-    val sendSmsIntent = Intent(Intent.ACTION_SENDTO)
-    sendSmsIntent.data = Uri.parse("sms:$number")
-
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-      val localSubscriptionManager = requireContext().getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE) as SubscriptionManager
-
-      Log.i("ATTENTION ATTENTION", "Inside Lollipop")
-
-      Log.i("ATTENTION ATTENTION", "checkSelfPermission: " +
-                ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CALL_PHONE))
-
-      if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CALL_PHONE) ==
-        PackageManager.PERMISSION_GRANTED) {
-
-        Log.e("ATTENTION ATTENTION", "Permission Granted: $chosenSimCard")
-
-        Log.e("ATTENTION ATTENTION", "getActiveSubscriptionInfoCount: " +
-                localSubscriptionManager.activeSubscriptionInfoCount)
-
-        var simCardsLength = localSubscriptionManager.activeSubscriptionInfoCount
-
-        if (simCardsLength == 0) {
-          simCardsLength = localSubscriptionManager.activeSubscriptionInfoList.size
-          Log.e("ATTENTION ATTENTION", "getActiveSubscriptionInfoList().size(): " +
-                  localSubscriptionManager.activeSubscriptionInfoList.size)
-        }
-
-        if (simCardsLength == 0) {
-          val manager = requireContext().getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-          simCardsLength = manager.phoneCount
-          Log.e("ATTENTION ATTENTION", "simCardsLength: $simCardsLength")
-        }
-
-        if (simCardsLength > 1) {
-
-          if (chosenSimCard == 1)
-            phoneUtil.sendToSim(requireContext(), sendSmsIntent, 0)
-          else if (chosenSimCard == 2)
-            phoneUtil.sendToSim(requireContext(), sendSmsIntent, 1)
-
-          Log.e("ATTENTION ATTENTION", "chosenSimCard: $chosenSimCard")
-          Log.e("ATTENTION ATTENTION", "rechargeDataMTNSms Function. More than one sim.")
-
-          val msg = "Amount $amount for $data request completed! Press \"send\" to complete."
-
-          util.onShowMessageSuccess(msg, requireContext())
-          sendSmsIntent.putExtra("sms_body", code)
-
-          startActivityForResult(
-            Intent.createChooser(sendSmsIntent, getString(R.string.choose_messenger_instructions)), 5
-          )
-
-          dismiss()
-
-        }
-         else if (simCardsLength == 1) {
-           
-          Log.e("ATTENTION ATTENTION", "rechargeDataMTNSms Function. Only one sim.")
-          Log.e("ATTENTION ATTENTION", "chosenSimCard: $chosenSimCard")
-          
-          if (chosenSimCard == 1) {
-            
-            val msg = "Amount $amount for $data request completed! Press \"send\" to complete."
-            util.onShowMessageSuccess(msg, requireContext())
-            
-            Log.e("ATTENTION ATTENTION", "One Sim Message Sent.")
-            phoneUtil.sendToSim(requireContext(), sendSmsIntent, 0)
-            sendSmsIntent.putExtra("sms_body", code)
-
-            startActivityForResult(
-              Intent.createChooser(
-                sendSmsIntent,
-                getString(R.string.choose_messenger_instructions)
-              ), 5
-            )
-
-            dismiss()
-
-          }
-          else if (chosenSimCard == 2) {
-
-            Log.e("ATTENTION ATTENTION", "Wrong sim card.")
-
-            dismiss()
-
-            val msg = "You only have one sim card. Please update " +
-                    "your settings with appropriate info and " +
-                    "set \"phone 1\" to the correct number."
-            util.onShowErrorMessage(msg, requireContext())
-
-          }
-
-        }
-
-      }
-      else {
-
-        ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.CALL_PHONE), REQUEST_CALL_PHONE_PERMISSION)
-
-      }
-
-    }
-    else {
-
-      if (chosenSimCard == 1)
-        phoneUtil.sendToSim(requireContext(), sendSmsIntent, 0)
-      else if (chosenSimCard == 2)
-        phoneUtil.sendToSim(requireContext(), sendSmsIntent, 1)
-
-      Log.e("ATTENTION ATTENTION", "chosenSimCard: $chosenSimCard")
-      Log.e("ATTENTION ATTENTION", "Before kitkat.")
-
-      val msg = "Amount $amount for $data request completed! Press \"send\" to complete."
-
-      util.onShowMessageSuccess(msg, requireContext())
-
-      sendSmsIntent.putExtra("sms_body", code)
-
-      startActivityForResult(Intent.createChooser(sendSmsIntent, getString(R.string.choose_messenger_instructions)), 5)
-
-      dismiss()
-
-    }
-
-  }
-
   override fun onRequestPermissionsResult(RC: Int, per: Array<String>, PResult: IntArray) {
 
     when (RC) {
@@ -459,41 +325,89 @@ class DataRechargeDialog : DialogFragment() {
 
     dialogRecyclerView = rootView!!.findViewById<View>(R.id.dialogRecyclerView) as RecyclerView
 
-    mtnDataRechargeAdapter = MTNDataRechargeAdapter(requireContext(), object : MTNDataRechargeAdapter.OnMTNDataAmountClickListener {
+    fragment = this
 
-        override fun onMTNDataAmountClicked(code: String, data: String, dataFull: String, amount: String) {
-          rechargeDataMTNSms(code, data, amount)
+    mtnDataTransferAdapter = MTNDataTransferAdapter(requireContext(), object : MTNDataTransferAdapter.OnMTNDataAmountClickListener {
+
+        override fun onMTNDataAmountClicked(code: String, data: String, fullData: String, amount: String) {
+
+          Log.e("ATTENTION ATTENTION", "MTN Data Code: $code, Data: $data, dataFull: $fullData, Amount: $amount")
+
+          // TODO Done
+          phoneUtil.transferDataMTNUSSD(
+            requireContext(),
+            fragment!!,
+            requireActivity(),
+            chosenSimCard.toString(),
+            fullData,
+            chosenPhone!!)
+
           dismiss()
+          
         }
 
       })
 
-    gloDataRechargeAdapter =
-      GloDataRechargeAdapter(requireContext(), object : GloDataRechargeAdapter.OnGloDataAmountClickListener {
+    gloDataTransferAdapter = GloDataTransferAdapter(requireContext(), object : GloDataTransferAdapter.OnGloDataAmountClickListener {
 
-        override fun onGloDataAmountClicked(code: String, data: String, amount: String) {
-          rechargeData(code, data, amount)
+        override fun onGloDataAmountClicked(code: String, data: String, fullData: String, amount: String) {
+
+          // TODO Glo Does Not Allow MB Direct Transfer but allows Sharing
+
+          phoneUtil.giftDataGloUSSD(
+            requireContext(),
+            fragment!!,
+            requireActivity(),
+            chosenSimCard.toString(),
+            code,
+            chosenPhone!!)
+
           dismiss()
+
+//          rechargeData(code, data, amount)
+
+
         }
 
       })
 
-    etisalatDataRechargeAdapter = EtisalatDataRechargeAdapter(
-      requireContext(), object : EtisalatDataRechargeAdapter.OnEtisalatDataAmountClickListener {
+    etisalatDataTransferAdapter = EtisalatDataTransferAdapter(
+      requireContext(), object : EtisalatDataTransferAdapter.OnEtisalatDataAmountClickListener {
 
-        override fun onEtisalatDataAmountClicked(code: String, data: String, amount: String) {
-          rechargeData(code, data, amount)
+        override fun onEtisalatDataAmountClicked(code: String, data: String, fullData: String, amount: String) {
+
+          // TODO Done
+          phoneUtil.transferData9MobileUSSD(
+            requireContext(),
+            fragment!!,
+            requireActivity(),
+            chosenSimCard.toString(),
+            fullData,
+            userPin,
+            chosenPhone!!)
+
           dismiss()
+
         }
 
       })
 
-    airtelDataRechargeAdapter =
-      AirtelDataRechargeAdapter(requireContext(), object : AirtelDataRechargeAdapter.OnAirtelDataAmountClickListener {
+    airtelDataTransferAdapter =
+      AirtelDataTransferAdapter(requireContext(), object : AirtelDataTransferAdapter.OnAirtelDataAmountClickListener {
 
-        override fun onAirtelDataAmountClicked(code: String, data: String, amount: String) {
-          rechargeData(code, data, amount)
+        override fun onAirtelDataAmountClicked(code: String, data: String, fullData: String, amount: String) {
+
+          // TODO Done
+          phoneUtil.transferDataAirtelUSSD(
+            requireContext(),
+            fragment!!,
+            requireActivity(),
+            chosenSimCard.toString(),
+            fullData,
+            chosenPhone!!)
+
           dismiss()
+
         }
 
       })
@@ -503,10 +417,17 @@ class DataRechargeDialog : DialogFragment() {
   }
 
   companion object {
+
     const val RequestSMSPermissionCode = 1
 
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private const val Network = "network"
     private const val Simcard = "whichSimCard"
+    private const val FriendPhone = "friendPhone"
+    private const val FriendName = "friendName"
+    private const val UserPin = "userPin"
+
     private val simSlotName = arrayOf(
       "extra_asus_dial_use_dualsim",
       "com.android.phone.extra.slot",
@@ -523,16 +444,25 @@ class DataRechargeDialog : DialogFragment() {
       "simnum",
       "phone_type",
       "slotId",
-      "slotIdx"
-    )
+      "slotIdx")
 
-    fun newInstance(network: String?, whichSimCard: Int): DataRechargeDialog {
-      val fragment = DataRechargeDialog()
+    fun newInstance(
+      network: String?,
+      whichSimCard: Int,
+      friendName: String?,
+      friendPhone: String?,
+    userPin: String?
+    ): DataTransferDialog {
+
+      val fragment = DataTransferDialog()
       val args = Bundle()
       args.putInt(Simcard, whichSimCard)
       args.putString(Network, network)
+      args.putString(FriendName, friendName)
+      args.putString(FriendPhone, friendPhone)
       fragment.arguments = args
       return fragment
+
     }
 
     private const val REQUEST_CALL_PHONE_PERMISSION = 19

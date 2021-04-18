@@ -30,12 +30,11 @@ class GloDataRechargeAdapter(
   private var mAuth: FirebaseAuth? = null
   private var mCurrentUser: FirebaseUser? = null
   private var mMyUserId: String? = null
-  private val DEBUG_TAG = "Motion Even Debug Debugs"
+  private val DEBUG_TAG = "Motion Event Debug"
   private var code: List<String>? = null
   private var amount_values: List<String>? = null
   private var data_values: List<String>
   private var valid_values: List<String>? = null
-  private var gestureDetector: GestureDetector? = null
 
   interface OnGloDataAmountClickListener {
     fun onGloDataAmountClicked(code: String, data: String, amount: String)
@@ -49,7 +48,6 @@ class GloDataRechargeAdapter(
     mAuth = Firebase.auth
     mCurrentUser = mAuth!!.currentUser
     mMyUserId = mCurrentUser!!.uid
-    gestureDetector = GestureDetector(context, SingleTapConfirm())
 
     return ViewHolder(view)
 
@@ -76,16 +74,33 @@ class GloDataRechargeAdapter(
     holder.validity.text = valid_values!![position]
     holder.mView.alpha = 1f
 
+    val gestureDetector = GestureDetector(context, object : SimpleOnGestureListener() {
+
+      override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
+
+        colorCountDown(position, 200)
+
+        return true
+
+      }
+
+      override fun onLongPress(e: MotionEvent) {
+        super.onLongPress(e)
+      }
+
+      override fun onDoubleTap(e: MotionEvent): Boolean {
+        return super.onDoubleTap(e)
+      }
+
+    })
+
     holder.mView.setOnTouchListener(OnTouchListener {
 
         view, event ->
 
       val action = event.actionMasked
 
-      if (gestureDetector!!.onTouchEvent(event)) {
-
-        holder.mView.setBackgroundResource(R.color.colorPrimary3)
-        colorCountDown(position, 200)
+      if (gestureDetector.onTouchEvent(event)) {
 
         return@OnTouchListener true
 
@@ -95,35 +110,40 @@ class GloDataRechargeAdapter(
 
         MotionEvent.ACTION_DOWN -> {
 
-          Log.d(DEBUG_TAG, "Action was DOWN")
+          Log.e(DEBUG_TAG, "Action was DOWN")
           holder.mView.setBackgroundResource(R.color.colorPrimary3)
           true
 
         }
         MotionEvent.ACTION_MOVE -> {
 
-          Log.d(DEBUG_TAG, "Action was MOVE")
-          holder.mView.alpha = 1f
+          Log.e(DEBUG_TAG, "Action was MOVE")
+          holder.mView.setBackgroundResource(R.color.colorPrimary3)
+//          holder.mView.alpha = 1f
           true
 
         }
         MotionEvent.ACTION_UP -> {
 
-          Log.d(DEBUG_TAG, "Action was UP")
-          holder.mView.alpha = 1f
+          Log.e(DEBUG_TAG, "Action was UP")
+          holder.mView.setBackgroundResource(R.color.white)
+//          holder.mView.alpha = 1f
           true
 
         }
         MotionEvent.ACTION_CANCEL -> {
 
-          Log.d(DEBUG_TAG, "Action was CANCEL")
-          holder.mView.alpha = 1f
+          Log.e(DEBUG_TAG, "Action was CANCEL")
+          holder.mView.setBackgroundResource(R.color.white)
+//          holder.mView.alpha = 1f
           true
 
         }
         MotionEvent.ACTION_OUTSIDE -> {
 
-          Log.d(DEBUG_TAG, "Movement occurred outside bounds " +
+          holder.mView.setBackgroundResource(R.color.white)
+
+          Log.e(DEBUG_TAG, "Movement occurred outside bounds " +
                     "of current screen element")
           true
 
@@ -139,12 +159,6 @@ class GloDataRechargeAdapter(
 
   override fun getItemCount(): Int {
     return data_values.size
-  }
-
-  private inner class SingleTapConfirm : SimpleOnGestureListener() {
-    override fun onSingleTapUp(event: MotionEvent): Boolean {
-      return true
-    }
   }
 
   private fun colorCountDown(position: Int, duration: Long) {
@@ -173,7 +187,7 @@ class GloDataRechargeAdapter(
       naira = mView.findViewById(R.id.naira)
       amount = mView.findViewById(R.id.name)
       data = mView.findViewById(R.id.phone)
-      validity = mView.findViewById(R.id.network)
+      validity = mView.findViewById(R.id.validity)
 
     }
 

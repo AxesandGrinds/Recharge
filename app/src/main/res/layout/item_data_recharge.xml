@@ -6,7 +6,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="50dp"
-    tools:context=".csUi.activities.MainActivity">
+    tools:context=".ui.MainActivity">
 
     <ImageView
         android:id="@+id/naira"
@@ -15,7 +15,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
-        android:background="@color/buy_data_dialog_color"
+        android:background="@color/white"
         app:srcCompat="@drawable/ic_naira"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -30,7 +30,7 @@
         android:layout_marginTop="16dp"
         android:text="@string/amountRv"
         android:textColor="@color/buy_data_text_color"
-        android:textSize="18sp"
+        android:textSize="14sp"
         app:layout_constraintStart_toEndOf="@+id/naira"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -42,14 +42,14 @@
         android:layout_marginTop="16dp"
         android:text="@string/data"
         android:textColor="@color/buy_data_text_color"
-        android:textSize="18sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 
     <TextView
-        android:id="@+id/network"
+        android:id="@+id/validity"
         style="@style/Base.TextAppearance.AppCompat.Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
         android:layout_marginRight="16dp"
         android:text="@string/valid"
         android:textColor="@color/buy_data_text_color"
-        android:textSize="18sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

@@ -6,7 +6,7 @@
     android:id="@+id/main_menu_id"
     android:title="@string/main_menu"
     app:showAsAction="always"
-    tools:context=".csUi.activities.MainActivity"
+    tools:context=".ui.MainActivity"
     tools:ignore="AlwaysShowAction">
 
     <group android:id="@+id/main_menu" >

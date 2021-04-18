@@ -18,8 +18,8 @@
             android:layout_margin="7dp"
             android:clickable="true"
             android:focusable="true"
+            android:scrollbars="vertical"
             android:background="@drawable/buy_data_background_white" />
-
 
     </LinearLayout>
 

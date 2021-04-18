@@ -27,6 +27,7 @@
     ignore this conflict and import the libraries while keeping the app's lower
     minSdkVersion value. In code, will check SDK version, before calling CameraX
     APIs. -->
+
     <uses-sdk
         tools:overrideLibrary="
           androidx.camera.camera2, androidx.camera.core,
@@ -47,11 +48,21 @@
         android:theme="@style/AppTheme"
         android:installLocation="preferExternal">
 
-        <!--https://www.geeksforgeeks.org/android-admob-banner-ads-android-studio/-->
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="@string/admob_app_id"/>
+
+        <!--<service android:name=".service.USSDService"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/accessibility_service_config" />
+        </service>-->
 
         <!--https://stackoverflow.com/questions/36127486/how-to-fix-unprotected-sms-broadcastreceiver-lint-warning-->
 
@@ -82,10 +93,6 @@
 
 
 
-
-
-
-
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version"/>
@@ -96,16 +103,6 @@
             android:name="com.google.mlkit.vision.DEPENDENCIES"
             android:value="barcode,face,ocr,ica"/>
 
-        <!--<activity
-            android:name=".vision.ChooserActivityFinal"
-            android:exported="true">
-
-            &lt;!&ndash;<intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>&ndash;&gt;
-
-        </activity>-->
 
         <activity
             android:name=".vision.cameraview.CameraActivity"
@@ -119,36 +116,12 @@
             android:theme="@style/AppBarTheme">
         </activity>
 
-        <!--<activity
-            android:name=".vision.RecognitionActivity"
-            android:exported="true"
-            android:theme="@style/AppBarTheme">
-        </activity>-->
-
         <activity
             android:name=".vision.RecognitionActivityFinal"
             android:screenOrientation="portrait"
             android:exported="false"
             android:theme="@style/AppBarTheme">
         </activity>
-
-        <!--<activity
-            android:name=".vision.StillImageActivity"
-            android:exported="true"
-            android:theme="@style/AppBarTheme">
-        </activity>-->
-
-        <!--<activity
-            android:name=".vision.LivePreviewActivity"
-            android:exported="true"
-            android:theme="@style/AppBarTheme">
-        </activity>-->
-
-        <!--<activity
-            android:name=".vision.CameraXLivePreviewActivity"
-            android:exported="true"
-            android:theme="@style/AppBarTheme">
-        </activity>-->
 
         <activity
             android:name=".vision.preference.SettingsActivity"
@@ -199,7 +172,6 @@
             android:theme="@style/AppBarTheme">
         </activity>
 
-        <!--android:launchMode="singleTop"-->
         <activity
             android:name=".ui.account.RegisterActivity"
             android:screenOrientation="portrait"

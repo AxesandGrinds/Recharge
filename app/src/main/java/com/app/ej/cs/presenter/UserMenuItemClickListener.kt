@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
+import android.os.Build
 
 import android.view.MenuItem
 import androidx.appcompat.widget.PopupMenu
@@ -28,11 +29,67 @@ class UserMenuItemClickListener(
 
     override fun onMenuItemClick(item: MenuItem): Boolean {
 
-        if (
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
-            ContextCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE)
-            == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE)
-            == PackageManager.PERMISSION_GRANTED) {
+            if (
+
+                ContextCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE)
+                == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE)
+                == PackageManager.PERMISSION_GRANTED) {
+
+                val phoneUtil: PhoneUtil = PhoneUtil()
+
+                if (item.groupId == R.id.user_menu) {
+
+                    return when (item.itemId) {
+
+                        R.id.airtime_balance -> {
+                            phoneUtil.checkAirtimeBalance(context, fragment, activity, user, pAccount)
+                            true
+                        }
+                        R.id.data_balance -> {
+                            phoneUtil.checkDataBalance(context, fragment, activity, user, pAccount)
+                            true
+                        }
+                        R.id.bank_recharge -> {
+                            phoneUtil.bankChoiceRecharge(context, fragment, activity, user, pAccount)
+                            true
+                        }
+                        R.id.code_recharge -> {
+                            phoneUtil.codeRecharge(context, activity, user, pAccount)
+                            true
+                        }
+                        R.id.buy_data -> {
+                            phoneUtil.dataRechargeDialog(activity, user, pAccount)
+                            true
+                        }
+                        R.id.dstv_bill -> {
+                            phoneUtil. payDSTVOrGoTVBill(context, fragment, activity, user, pAccount)
+                            true
+                        }
+                        R.id.electricity_bill -> {
+                            phoneUtil.payElectricityBill(context, fragment, activity, user, pAccount)
+                            true
+                        }
+
+                        else -> false
+
+                    }
+
+                }
+
+            }
+            else {
+
+                ActivityCompat.requestPermissions(
+                    activity, arrayOf(Manifest.permission.READ_PHONE_STATE, Manifest.permission.CALL_PHONE),
+                    PERMISSION_READ_PHONE_STATE
+                )
+
+            }
+
+        }
+        else {
 
             val phoneUtil: PhoneUtil = PhoneUtil()
 
@@ -76,14 +133,7 @@ class UserMenuItemClickListener(
             }
 
         }
-        else {
 
-            ActivityCompat.requestPermissions(
-                activity, arrayOf(Manifest.permission.READ_PHONE_STATE, Manifest.permission.CALL_PHONE),
-                PERMISSION_READ_PHONE_STATE
-            )
-
-        }
 
         return false
 

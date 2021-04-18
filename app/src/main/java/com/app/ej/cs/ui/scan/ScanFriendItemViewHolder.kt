@@ -94,7 +94,7 @@ class ScanFriendItemViewHolder(
     }
 
     accountNumberBool = false
-    airtimePhoneTransferBool = true
+    airtimePhoneTransferBool = false
     airtimeBankTopUpTransferBool = false
     bankTransferBool = false
 
@@ -108,26 +108,84 @@ class ScanFriendItemViewHolder(
     }
 
     if (
-      (model.network1 == null || model.network1 == "Choose Network") ||
-      (model.phone1 == null || model.phone1 == "")
+      !((model.network1 == null || model.network1 == "Choose Network") &&
+      (model.phone1 == null || model.phone1 == ""))
     ) {
-      airtimePhoneTransferBool = false
+
+      if (userList[0].network != null &&
+        userList[0].network != "Choose Network" &&
+        userList[0].network == model.network1) {
+
+          airtimePhoneTransferBool = true
+
+      }
+
+      if (userList.size > 1) {
+
+        if (userList[1].network != null &&
+          userList[1].network != "Choose Network" &&
+          userList[1].network == model.network1) {
+
+          airtimePhoneTransferBool = true
+
+        }
+
+      }
+
     }
 
     if (
-      !(model.network2 == null || model.network2 == "Choose Network") &&
-      !(model.phone2 == null || model.phone2 == "")
+      !((model.network2 == null || model.network2 == "Choose Network") &&
+      (model.phone2 == null || model.phone2 == ""))
     ) {
-      if (!airtimePhoneTransferBool)
+
+      if (userList[0].network != null &&
+        userList[0].network != "Choose Network" &&
+        userList[0].network == model.network2) {
+
         airtimePhoneTransferBool = true
+
+      }
+
+      if (userList.size > 1) {
+
+        if (userList[1].network != null &&
+          userList[1].network != "Choose Network" &&
+          userList[1].network == model.network2) {
+
+          airtimePhoneTransferBool = true
+
+        }
+
+      }
+
     }
 
     if (
-      !(model.network3 == null || model.network3 == "Choose Network") &&
-      !(model.phone3 == null || model.phone3 == "")
+      !((model.network3 == null || model.network3 == "Choose Network") &&
+      (model.phone3 == null || model.phone3 == ""))
     ) {
-      if (!airtimePhoneTransferBool)
+
+      if (userList[0].network != null &&
+        userList[0].network != "Choose Network" &&
+        userList[0].network == model.network3) {
+
         airtimePhoneTransferBool = true
+
+      }
+
+      if (userList.size > 1) {
+
+        if (userList[1].network != null &&
+          userList[1].network != "Choose Network" &&
+          userList[1].network == model.network3) {
+
+          airtimePhoneTransferBool = true
+
+        }
+
+      }
+
     }
 
     val size: Int = userList.size
@@ -240,14 +298,24 @@ class ScanFriendItemViewHolder(
     ).isEnabled = airtimeBankTopUpTransferBool
 
     popup.menu.add(
-      R.id.fmenu, R.id.bank_transfer, 4, util.menuIconWithText(
+      R.id.fmenu, R.id.data_phone_buy_for_friend, 4, util.menuIconWithText(
+        ResourcesCompat.getDrawable(view.resources, R.drawable.ic_baseline_align_vertical_bottom_24, null)!!,
+        view.resources.getString(R.string.data_phone_gift))
+    ).isEnabled = airtimePhoneTransferBool
+
+    popup.menu.add(
+      R.id.fmenu, R.id.data_phone_transfer, 5, util.menuIconWithText(
+        ResourcesCompat.getDrawable(view.resources, R.drawable.ic_baseline_align_vertical_bottom_24, null)!!,
+        view.resources.getString(R.string.data_phone_transfer))
+    ).isEnabled = airtimePhoneTransferBool
+
+    popup.menu.add(
+      R.id.fmenu, R.id.bank_transfer, 6, util.menuIconWithText(
         ResourcesCompat.getDrawable(view.resources, R.drawable.ic_compare_black_24dp, null)!!,
         view.resources.getString(R.string.bank_transfer))
     ).isEnabled = bankTransferBool
 
-    popup.setOnMenuItemClickListener(
-      FriendMenuItemClickListener(context, fragment, activity, userList, friend)
-    )
+    popup.setOnMenuItemClickListener(FriendMenuItemClickListener(context, fragment, activity, userList, friend))
 
   }
 

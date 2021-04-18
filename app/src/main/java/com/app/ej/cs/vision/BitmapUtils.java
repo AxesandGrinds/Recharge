@@ -74,6 +74,7 @@ public class BitmapUtils {
   @Nullable
   @ExperimentalGetImage
   public static Bitmap getBitmap(ImageProxy image) {
+
     FrameMetadata frameMetadata =
         new FrameMetadata.Builder()
             .setWidth(image.getWidth())
@@ -83,12 +84,14 @@ public class BitmapUtils {
 
     ByteBuffer nv21Buffer =
         yuv420ThreePlanesToNV21(image.getImage().getPlanes(), image.getWidth(), image.getHeight());
+
     return getBitmap(nv21Buffer, frameMetadata);
+
   }
 
   /** Rotates a bitmap if it is converted from a bytebuffer. */
-  private static Bitmap rotateBitmap(
-          Bitmap bitmap, int rotationDegrees, boolean flipX, boolean flipY) {
+  private static Bitmap rotateBitmap(Bitmap bitmap, int rotationDegrees, boolean flipX, boolean flipY) {
+
     Matrix matrix = new Matrix();
 
     // Rotate the image back to straight.
@@ -103,12 +106,15 @@ public class BitmapUtils {
     if (rotatedBitmap != bitmap) {
       bitmap.recycle();
     }
+
     return rotatedBitmap;
+
   }
 
   @Nullable
   public static Bitmap getBitmapFromContentUri(ContentResolver contentResolver, Uri imageUri)
       throws IOException {
+
     Bitmap decodedBitmap = MediaStore.Images.Media.getBitmap(contentResolver, imageUri);
     if (decodedBitmap == null) {
       return null;
@@ -118,8 +124,10 @@ public class BitmapUtils {
     int rotationDegrees = 0;
     boolean flipX = false;
     boolean flipY = false;
+
     // See e.g. https://magnushoff.com/articles/jpeg-orientation/ for a detailed explanation on each
     // orientation.
+
     switch (orientation) {
       case ExifInterface.ORIENTATION_FLIP_HORIZONTAL:
         flipX = true;
@@ -151,6 +159,7 @@ public class BitmapUtils {
     }
 
     return rotateBitmap(decodedBitmap, rotationDegrees, flipX, flipY);
+
   }
 
   private static int getExifOrientationTag(ContentResolver resolver, Uri imageUri) {

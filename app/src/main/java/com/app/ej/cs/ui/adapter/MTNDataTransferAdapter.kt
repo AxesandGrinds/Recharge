@@ -19,24 +19,24 @@ import com.google.firebase.firestore.FirebaseFirestore
 import java.util.*
 
 
-class MTNDataRechargeAdapter(
+class MTNDataTransferAdapter(
   private val context: Context,
   private val onDataAmountClickListener: OnMTNDataAmountClickListener
-) : RecyclerView.Adapter<MTNDataRechargeAdapter.ViewHolder?>() {
+) : RecyclerView.Adapter<MTNDataTransferAdapter.ViewHolder?>() {
 
   private var mFirestore: FirebaseFirestore? = null
   private var mAuth: FirebaseAuth? = null
   private var mCurrentUser: FirebaseUser? = null
   private var mMyUserId: String? = null
   private val DEBUG_TAG = "Motion Event Debug"
-  private var code: List<String>? = null
+//  private var code: List<String>? = null
   private var amount_values: List<String>? = null
-  private var data_values: List<String>
+  private lateinit var data_values: List<String>
   private lateinit var data_full_values: List<String>
   private var valid_values: List<String>? = null
 
   interface OnMTNDataAmountClickListener {
-    fun onMTNDataAmountClicked(code: String, data: String,fullData: String, amount: String)
+    fun onMTNDataAmountClicked(code: String, data: String, fullData: String, amount: String)
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -63,11 +63,11 @@ class MTNDataRechargeAdapter(
   @SuppressLint("ClickableViewAccessibility")
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-    code = listOf(*context.resources.getStringArray(R.array.mtn_sms_code_array))
-    amount_values = listOf(*context.resources.getStringArray(R.array.mtn_amount_array))
-    data_values = listOf(*context.resources.getStringArray(R.array.mtn_data_array))
-    data_full_values = listOf(*context.resources.getStringArray(R.array.mtn_full_data_array))
-    valid_values = listOf(*context.resources.getStringArray(R.array.mtn_valid_array))
+//    code = listOf(*context.resources.getStringArray(R.array.mtn_sms_code_array))
+    amount_values = listOf(*context.resources.getStringArray(R.array.mtn_amount_options_array))
+    data_values = listOf(*context.resources.getStringArray(R.array.mtn_data_options_array))
+    data_full_values = listOf(*context.resources.getStringArray(R.array.mtn_full_data_full_options_array))
+    valid_values = listOf(*context.resources.getStringArray(R.array.mtn_full_data_options_valid_array))
 
     holder.amount.text = amount_values!![position]
     holder.data.text = data_values[position]
@@ -162,14 +162,17 @@ class MTNDataRechargeAdapter(
     Handler().postDelayed({
 
       object : CountDownTimer(duration, 50) {
+
         override fun onTick(millisUntilFinished: Long) {}
+
         override fun onFinish() {
           
           onDataAmountClickListener.onMTNDataAmountClicked(
-            code!![position], data_values[position], data_full_values[position], amount_values!![position]
-          )
+            "", data_values[position],
+            data_full_values[position], amount_values!![position])
           
         }
+
       }.start()
 
     }, 0)
@@ -197,7 +200,8 @@ class MTNDataRechargeAdapter(
   }
 
   init {
-    data_values = Arrays.asList(*context.resources.getStringArray(R.array.mtn_data_array))
+    data_values = listOf(*context.resources.getStringArray(R.array.mtn_data_options_array))
+//    data_values = Arrays.asList(*context.resources.getStringArray(R.array.mtn_data_array))
   }
 
 }

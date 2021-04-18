@@ -236,7 +236,6 @@ class RegisterDetailsActivity() : AppCompatActivity(),
             CoroutineScope(Dispatchers.IO).launch {
 
                 val result = permissionsBuilder(
-//                    Manifest.permission.CAMERA,
                     Manifest.permission.CALL_PHONE,
                     Manifest.permission.ACCESS_WIFI_STATE,
                     Manifest.permission.ACCESS_NETWORK_STATE,

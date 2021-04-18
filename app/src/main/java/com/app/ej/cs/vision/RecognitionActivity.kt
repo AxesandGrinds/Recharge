@@ -259,8 +259,6 @@ class RecognitionActivity : AppCompatActivity() ,
 
     if (graphicOverlay == null) Log.d(TAG, "graphicOverlay is null")
 
-//    preview?.isDrawingCacheEnabled = true
-
     val spinner = findViewById<Spinner>(R.id.spinner)
     val options: MutableList<String> = ArrayList()
     options.add(TEXT_RECOGNITION)
@@ -282,12 +280,10 @@ class RecognitionActivity : AppCompatActivity() ,
 //  TODO--------------------------------------------------------------------------------------------
 //  TODO--------------------------------------------------------------------------------------------
 
-    // Creating adapter for spinner
     val dataAdapter = ArrayAdapter(this, R.layout.vision_spinner_style, options)
 
-    // Drop down layout style - list view with radio button
     dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-    // attaching data adapter to spinner
+
     spinner.adapter = dataAdapter
     spinner.onItemSelectedListener = this
 
@@ -302,7 +298,6 @@ class RecognitionActivity : AppCompatActivity() ,
     val facingSwitch = findViewById<ToggleButton>(R.id.facing_switch)
     facingSwitch.setOnCheckedChangeListener(this)
 
-//    val settingsButton = findViewById<ImageView>(R.id.live_settings_button)
     live_settings.setOnClickListener {
       val intent = Intent(applicationContext, SettingsActivity::class.java)
       intent.putExtra(SettingsActivity.EXTRA_LAUNCH_SOURCE, LaunchSource.LIVE_PREVIEW)
@@ -319,8 +314,6 @@ class RecognitionActivity : AppCompatActivity() ,
 
     snap_camera_btn.setOnClickListener {
       takePicture()
-      val message: String = "Camera Clicked"
-//      util.onShowMessage(message, this, it)
     }
 
 
@@ -376,7 +369,6 @@ class RecognitionActivity : AppCompatActivity() ,
 
       })
 
-//    val settingsButton = findViewById<ImageView>(R.id.live_settings_button)
     live_settings_button_include.setOnClickListener {
 
       val intent = Intent(applicationContext, SettingsActivity::class.java)

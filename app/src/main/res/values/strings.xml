@@ -60,6 +60,8 @@
 
     <string name="check_account_number">Account Number?</string>
     <string name="airtime_phone_transfer">Airtime Transfer (Phone2Phone)</string>
+    <string name="data_phone_gift">Buy Data Gift (Phone2Phone)</string>
+    <string name="data_phone_transfer">Transfer Data (Phone2Phone)</string>
     <string name="bank_transfer">Bank Transfer(Bank2Bank)</string>
     <string name="airtime_bank_topup_transfer">Airtime TopUp (Bank2Phone)</string>
 
@@ -240,6 +242,7 @@
 
 
     <string name="add_button_explanation">Add more friends</string>
+    <string name="accessibility_service_description">USSD Service</string>
 
     <string name="username">Username</string>
     <string name="email">Email</string>
@@ -464,6 +467,118 @@
 
     <!--MTN-->
 
+
+
+
+    <string-array name="mtn_full_data_full_options_array">
+        <item>50</item>
+        <item>100</item>
+        <item>200</item>
+        <item>500</item>
+    </string-array>
+
+    <string-array name="mtn_full_data_options_valid_array">
+        <item>24 Hrs</item>
+        <item>24 Hrs</item>
+        <item>48 Hrs</item>
+        <item>48 Hrs</item>
+    </string-array>
+
+    <string-array name="mtn_data_options_array">
+        <item>25 MB</item>
+        <item>75 MB</item>
+        <item>200 MB</item>
+        <item>500 MB</item>
+    </string-array>
+
+    <string-array name="mtn_amount_options_array">
+        <item>50</item>
+        <item>100</item>
+        <item>200</item>
+        <item>250</item>
+    </string-array>
+
+
+
+
+    <string-array name="etisalat_full_data_full_options_array">
+        <item>50</item>
+        <item>100</item>
+        <item>200</item>
+        <item>500</item>
+        <item>1000</item>
+    </string-array>
+
+    <string-array name="etisalat_full_data_valid_options_array">
+        <item>24 Hrs</item>
+        <item>24 Hrs</item>
+        <item>7 Days</item>
+        <item>30 Days</item>
+        <item>30 Days</item>
+    </string-array>
+
+    <string-array name="etisalat_data_options_array">
+        <item>10 MB</item>
+        <item>40 MB</item>
+        <item>150 MB</item>
+        <item>500 MB</item>
+        <item>1 GB</item>
+    </string-array>
+
+    <string-array name="etisalat_amount_options_array">
+        <item>50</item>
+        <item>100</item>
+        <item>200</item>
+        <item>500</item>
+        <item>1000</item>
+    </string-array>
+
+
+
+
+
+
+
+
+
+    <string-array name="airtel_full_data_full_options_array">
+        <item>10</item>
+        <item>25</item>
+        <item>60</item>
+    </string-array>
+
+    <string-array name="airtel_data_options_array">
+        <item>10 MB</item>
+        <item>25 MB</item>
+        <item>60 MB</item>
+    </string-array>
+
+    <string-array name="airtel_full_data_valid_options_array">
+        <item>~24 Hrs</item>
+        <item>~24 Hrs</item>
+        <item>~7 Days</item>
+    </string-array>
+
+    <string-array name="airtel_amount_options_array">
+        <item>~20</item>
+        <item>~50</item>
+        <item>~100</item>
+    </string-array>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <string-array name="mtn_sms_code_array">
         <item>104</item>
         <item>113</item>
@@ -493,11 +608,35 @@
         <item>100 MB</item>
         <item>750 MB</item>
         <item>1.5 GB</item>
-        <item>3.5 GB</item>
-        <item>10 GB</item>
-        <item>22 GB</item>
+        <item>4.5 GB</item>
+        <item>12 GB</item>
+        <item>20 GB</item>
         <item>50 GB</item>
         <item>85 GB</item>
+    </string-array>
+
+    <string-array name="mtn_data_transfer_array">
+        <item>30 MB</item>
+        <item>100 MB</item>
+        <item>750 MB</item>
+        <item>1.5 GB</item>
+        <item>4.5 GB</item>
+        <item>12 GB</item>
+        <item>20 GB</item>
+        <item>100 GB</item>
+        <item>400 GB</item>
+    </string-array>
+
+    <string-array name="mtn_full_data_array">
+        <item>30</item>
+        <item>100</item>
+        <item>750</item>
+        <item>1500</item>
+        <item>4500</item>
+        <item>12000</item>
+        <item>20000</item>
+        <item>100000</item>
+        <item>400000</item>
     </string-array>
 
     <string-array name="mtn_valid_array">
@@ -565,6 +704,23 @@
         <item>90 GB</item>
     </string-array>
 
+    <string-array name="glo_full_data_array">
+        <item>30</item>
+        <item>70</item>
+        <item>200</item>
+        <item>1600</item>
+        <item>3200</item>
+        <item>7500</item>
+        <item>10000</item>
+        <item>12000</item>
+        <item>16000</item>
+        <item>24000</item>
+        <item>32000</item>
+        <item>46000</item>
+        <item>60000</item>
+        <item>90000</item>
+    </string-array>
+
     <string-array name="glo_valid_array">
         <item>1 Day</item>
         <item>1 Day</item>
@@ -582,9 +738,14 @@
         <item>30 Days</item>
     </string-array>
 
+
+
+
+
+
     <!--AIRTEL-->
     <string-array name="airtel_code_array">
-        <item>*401</item>
+<!--        <item>*401</item>-->
         <item>*440*18</item>
         <item>*412</item>
         <item>*417</item>
@@ -613,7 +774,7 @@
 
 
     <string-array name="airtel_amount_array">
-        <item>100</item>
+<!--        <item>100</item>-->
         <item>100</item>
         <item>200</item>
         <item>300</item>
@@ -635,13 +796,13 @@
         <item>136,000</item>
 
         <!--Unlimited-->
-        <item>10,000 FUP@40GB</item>
-        <item>15,000 FUP@65GB</item>
-        <item>20,000 FUP@100GB</item>
+        <item>10,000</item>
+        <item>15,000</item>
+        <item>20,000</item>
     </string-array>
 
     <string-array name="airtel_data_array">
-        <item>40 MB</item>
+        <!--        <item>40 MB</item>-->
         <item>50 MB</item>
         <item>200 MB</item>
         <item>250 MB</item>
@@ -663,13 +824,43 @@
         <item>200 GB</item>
 
         <!--Unlimited-->
-        <item>Unlimited</item>
-        <item>Unlimited</item>
-        <item>Unlimited</item>
+        <item>FUP@40GB</item>
+        <item>FUP@65GB</item>
+        <item>FUP@100GB</item>
     </string-array>
 
+    <string-array name="airtel_full_data_array">
+        <!--        <item>40 MB</item>-->
+        <item>50</item>
+        <item>2001</item>
+        <item>250</item>
+        <item>350</item>
+        <item>2002</item>
+        <item>750</item>
+        <item>1500</item>
+        <item>3500</item>
+        <item>3000</item>
+        <item>5000</item>
+        <item>7000</item>
+        <item>9000</item>
+
+        <!--Mega Users-->
+        <item>10000</item>
+        <item>16000</item>
+        <item>50000</item>
+        <item>1000001</item>
+        <item>200000</item>
+
+        <!--Unlimited-->
+        <item>40000</item>
+        <item>65000</item>
+        <item>1000002</item>
+    </string-array>
+
+
+
     <string-array name="airtel_valid_array">
-        <item>1 Day</item>
+<!--        <item>1 Day</item>-->
         <item>1 Day</item>
         <item>3 Days</item>
         <item>25 Days</item>
@@ -696,6 +887,9 @@
         <item>30 Days</item>
     </string-array>
 
+
+
+
     <string-array name="etisalat_code_array">
         <item>*229*2*11</item>
         <item>*229*2*22</item>
@@ -712,7 +906,7 @@
         <item>*229*4*5</item>
         <item>*229*5*3</item>
         <!--<item>500</item>-->
-        <item>*229*3*8</item>
+<!--        <item>*229*3*8</item>-->
     </string-array>
 
     <string-array name="etisalat_amount_array">
@@ -731,7 +925,7 @@
         <item>84,992</item>
         <item>110,000</item>
         <!--<item>500</item>-->
-        <item>50</item>
+<!--        <item>50</item>-->
     </string-array>
 
     <string-array name="etisalat_data_array">
@@ -750,7 +944,26 @@
         <item>100 GB</item>
         <item>120 GB</item>
         <!--<item>1 GB</item>-->
-        <item>10 MB</item>
+<!--        <item>10 MB</item>-->
+    </string-array>
+
+    <string-array name="etisalat_full_data_array">
+        <item>500</item>
+        <item>1000</item>
+        <item>2500</item>
+        <item>5000</item>
+        <item>11500</item>
+
+        <item>10</item>
+        <item>40000</item>
+        <item>150000</item>
+        <item>500000</item>
+        <item>30000</item>
+        <item>60000</item>
+        <item>100000</item>
+        <item>120000</item>
+        <!--<item>1 GB</item>-->
+<!--        <item>10</item>-->
     </string-array>
 
     <string-array name="etisalat_valid_array">
@@ -769,7 +982,7 @@
         <item>30 Days</item>
         <item>365 Days</item>
         <!---->
-        <item>1 Day</item>
+<!--        <item>1 Day</item>-->
     </string-array>
 
 

@@ -60,10 +60,10 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
 
   override fun displayUserSecond(userList: UserListModel) {
 
-    if (userList.userList.size > 1  &&
-      userList.userList[1].phone != null) {
+    if (userList.userList.size > 0  &&
+      userList.userList[0].phone != null) {
 
-      userSecondListModel.userList = mutableListOf(userList.userList[1])
+      userSecondListModel.userList = mutableListOf(userList.userList[0])
       editFragmentUserSecondViewAdapter.notifyDataSetChanged()
 
     }

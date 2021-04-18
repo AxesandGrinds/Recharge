@@ -66,12 +66,12 @@
 
 
       <TableLayout
-          android:layout_width="fill_parent"
+          android:layout_width="match_parent"
           android:layout_height="wrap_content">
 
         <TableRow
             android:id="@+id/friendDetailsLayout1"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/card_color"
             android:paddingStart="10dp"
@@ -90,24 +90,37 @@
               app:drawableLeftCompat="@drawable/ic_baseline_call_24"
               app:drawableStartCompat="@drawable/ic_baseline_call_24" />
 
-          <TextView
-              android:id="@+id/friendNetwork1"
-              android:layout_width="wrap_content"
+          <androidx.constraintlayout.widget.ConstraintLayout
+              android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:layout_marginStart="@dimen/layout_marginLeftStart"
-              android:layout_marginLeft="@dimen/layout_marginLeftStart"
-              android:layout_marginBottom="10dp"
-              android:padding="@dimen/network_textview_padding"
-              android:background="@drawable/network_textview_box"
-              android:text="@string/network"
-              android:textColor="@color/text_color"
-              android:textSize="@dimen/network_text_size" />
+              tools:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/friendNetwork1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/layout_marginLeftStart"
+                android:layout_marginLeft="@dimen/layout_marginLeftStart"
+                android:layout_marginBottom="10dp"
+                android:padding="@dimen/network_textview_padding"
+                android:background="@drawable/network_textview_box"
+                android:text="@string/network"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/network_text_size"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+          </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         </TableRow>
 
         <TableRow
             android:id="@+id/friendDetailsLayout2"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/card_color_even"
             android:paddingStart="10dp"
@@ -126,25 +139,37 @@
               app:drawableLeftCompat="@drawable/ic_baseline_call_24"
               app:drawableStartCompat="@drawable/ic_baseline_call_24" />
 
-          <TextView
-              android:id="@+id/friendNetwork2"
-              android:layout_width="wrap_content"
+          <androidx.constraintlayout.widget.ConstraintLayout
+              android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:layout_marginStart="@dimen/layout_marginLeftStart"
-              android:layout_marginLeft="@dimen/layout_marginLeftStart"
-              android:layout_marginBottom="10dp"
-              android:padding="@dimen/network_textview_padding"
-              android:background="@drawable/network_textview_box"
-              android:text="@string/network"
-              android:textColor="@color/text_color"
-              android:textSize="@dimen/network_text_size" />
+              tools:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/friendNetwork2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/layout_marginLeftStart"
+                android:layout_marginLeft="@dimen/layout_marginLeftStart"
+                android:layout_marginBottom="10dp"
+                android:padding="@dimen/network_textview_padding"
+                android:background="@drawable/network_textview_box"
+                android:text="@string/network"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/network_text_size"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+          </androidx.constraintlayout.widget.ConstraintLayout>
 
         </TableRow>
 
 
         <TableRow
             android:id="@+id/friendDetailsLayout3"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/card_color"
             android:paddingStart="10dp"
@@ -163,18 +188,30 @@
               app:drawableLeftCompat="@drawable/ic_baseline_call_24"
               app:drawableStartCompat="@drawable/ic_baseline_call_24" />
 
-          <TextView
-              android:id="@+id/friendNetwork3"
-              android:layout_width="wrap_content"
+          <androidx.constraintlayout.widget.ConstraintLayout
+              android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:layout_marginStart="@dimen/layout_marginLeftStart"
-              android:layout_marginLeft="@dimen/layout_marginLeftStart"
-              android:layout_marginBottom="10dp"
-              android:padding="@dimen/network_textview_padding"
-              android:background="@drawable/network_textview_box"
-              android:text="@string/network"
-              android:textColor="@color/text_color"
-              android:textSize="@dimen/network_text_size" />
+              tools:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/friendNetwork3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/layout_marginLeftStart"
+                android:layout_marginLeft="@dimen/layout_marginLeftStart"
+                android:layout_marginBottom="10dp"
+                android:padding="@dimen/network_textview_padding"
+                android:background="@drawable/network_textview_box"
+                android:text="@string/network"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/network_text_size"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+          </androidx.constraintlayout.widget.ConstraintLayout>
 
         </TableRow>
 
@@ -189,44 +226,53 @@
 
         <TableRow
             android:id="@+id/friendDetailsBanksLayout1"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/card_color"
-            android:padding="10dp">
+            android:paddingStart="15dp"
+            android:paddingLeft="10dp"
+            android:paddingEnd="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
           <TextView
               android:id="@+id/friendBank1"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
+              app:layout_constrainedWidth="true"
               android:layout_marginTop="0dp"
               android:layout_weight="1"
               android:text="@string/bank"
               android:textColor="@color/text_color"
               android:drawablePadding="5dp"
-              app:drawableLeftCompat="@drawable/museum"
-              app:drawableStartCompat="@drawable/museum" />
+              app:drawableLeftCompat="@drawable/ic_bank"
+              app:drawableStartCompat="@drawable/ic_bank" />
 
           <TextView
               android:id="@+id/friendBank2"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
+              app:layout_constrainedWidth="true"
               android:layout_marginTop="0dp"
               android:layout_weight="1"
               android:text="@string/bank"
               android:textColor="@color/text_color"
               android:drawablePadding="5dp"
-              app:drawableLeftCompat="@drawable/museum"
-              app:drawableStartCompat="@drawable/museum" />
+              app:drawableLeftCompat="@drawable/ic_bank"
+              app:drawableStartCompat="@drawable/ic_bank" />
 
         </TableRow>
 
         <TableRow
             android:id="@+id/friendDetailsBanksLayout2"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/card_color_even"
-            android:paddingStart="10dp"
+            android:paddingStart="15dp"
             android:paddingLeft="10dp"
+            android:paddingEnd="10dp"
+            android:paddingRight="10dp"
             android:paddingTop="5dp"
             android:paddingBottom="10dp">
 
@@ -234,25 +280,27 @@
               android:id="@+id/friendBank3"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
+              app:layout_constrainedWidth="true"
               android:layout_marginTop="10dp"
               android:layout_weight="1"
               android:text="@string/bank"
               android:textColor="@color/text_color"
               android:drawablePadding="5dp"
-              app:drawableLeftCompat="@drawable/museum"
-              app:drawableStartCompat="@drawable/museum" />
+              app:drawableLeftCompat="@drawable/ic_bank"
+              app:drawableStartCompat="@drawable/ic_bank" />
 
           <TextView
               android:id="@+id/friendBank4"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
+              app:layout_constrainedWidth="true"
               android:layout_marginTop="10dp"
               android:layout_weight="1"
               android:text="@string/bank"
               android:textColor="@color/text_color"
               android:drawablePadding="5dp"
-              app:drawableLeftCompat="@drawable/museum"
-              app:drawableStartCompat="@drawable/museum" />
+              app:drawableLeftCompat="@drawable/ic_bank"
+              app:drawableStartCompat="@drawable/ic_bank" />
 
         </TableRow>
 

@@ -74,22 +74,20 @@ class ScanFragment : Fragment(), ScanFragmentView {
 
     }
 
-
-
   }
 
   override fun displayUserSecond(userList: UserListModel) {
 
-    if (userList.userList.size > 1  &&
-            userList.userList[1].phone != null) {
+    if (userList.userList.size > 0  &&
+            userList.userList[0].phone != null) {
 
       userSecondRecyclerView.visibility = View.VISIBLE
-      userSecondListModel.userList = mutableListOf(userList.userList[1])
-      this.userList.add(userList.userList[1])
+      userSecondListModel.userList = mutableListOf(userList.userList[0])
+      this.userList.add(userList.userList[0])
       scanFragmentUserSecondViewAdapter.notifyDataSetChanged()
 
       Log.e("ATTENTION ATTENTION",
-        "In ScanFragment displayUserSecond: ${userList.userList[1].toString()}")
+        "In ScanFragment displayUserSecond: ${userList.userList[0].toString()}")
 
       initFloatingActionMenu(
         mutableListOf(
@@ -123,7 +121,7 @@ class ScanFragment : Fragment(), ScanFragmentView {
 
       for (friend in friendList!!) {
 
-        if (!(friend.name == null || friend.name == "") && !(friend.phone1 == null || friend.phone1 == "")) {
+        if (!(friend.name == null || friend.name!!.trim() == "") && !(friend.phone1 == null || friend.phone1!!.trim() == "")) {
 
           finalFriendList.add(friend)
 
@@ -741,6 +739,8 @@ private val TAG: String = "ATTENTION ATTENTION"
     ) {}
 
     userSecondRecyclerView.adapter = scanFragmentUserSecondViewAdapter
+
+    userSecondRecyclerView.visibility = View.GONE
 
   }
 
