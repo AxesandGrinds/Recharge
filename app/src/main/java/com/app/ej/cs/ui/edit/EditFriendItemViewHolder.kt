@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.database.Cursor
+import android.graphics.Typeface
 import android.os.Build
 import android.provider.ContactsContract
 import android.text.Editable
@@ -16,6 +17,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.Fade
 import androidx.transition.Transition
@@ -49,6 +52,8 @@ class EditFriendItemViewHolder(
   private val pickFriendIB: ImageButton = view.findViewById(R.id.addFriend)
 
   private val showMoreDetailsIv: ImageView = view.findViewById(R.id.showMoreHandleView)
+
+  private val expandTv: TextView = view.findViewById(R.id.expand)
 
   private val friendNumberTv: TextView = view.findViewById(R.id.friendNumber)
 
@@ -391,6 +396,9 @@ class EditFriendItemViewHolder(
       friendDivider6.visibility = View.GONE
 
       showMoreDetailsIv.setImageResource(R.drawable.ic_baseline_unfold_less_48)
+      expandTv.text = "Expand"
+      expandTv.setTextColor(ContextCompat.getColor(activity, R.color.colorPrimary3))
+
 
     }
     else {
@@ -418,6 +426,8 @@ class EditFriendItemViewHolder(
       friendDivider6.visibility = View.VISIBLE
 
       showMoreDetailsIv.setImageResource(R.drawable.ic_baseline_unfold_more_48)
+      expandTv.text = "Collapse"
+      expandTv.setTextColor(ContextCompat.getColor(activity, R.color.black))
 
     }
 
@@ -442,6 +452,9 @@ class EditFriendItemViewHolder(
     setBankSpinner(friendBankSpinner2)
     setBankSpinner(friendBankSpinner3)
     setBankSpinner(friendBankSpinner4)
+
+//    val typeface: Typeface = ResourcesCompat.getFont(activity, R.font.dancingscriptvariablefontwght)!!
+//    friendNumberTv.setTypeface(typeface, Typeface.NORMAL)
 
 
     pickFriendIB.setOnClickListener{

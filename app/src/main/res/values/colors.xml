@@ -13,6 +13,8 @@
     <!--    Vision Colors End   -->
 
 
+    <color name="gold">#FFD700</color>
+
     <color name="scan_background">#545B5E</color>
     <color name="scan_background2">#D0D0D0</color>
     <color name="scan_background3">#D8E6ED</color>
@@ -183,10 +185,13 @@
 
     <color name="save_button_color">#e64a19</color>
 
-    <color name="add_one_more_friend_button_color">#000000</color>
+    <color name="add_one_more_friend_button_color">#545B5E</color>
 
     <color name="add_one_more_friend_button_color2">#e64a19</color>
     <color name="add_one_more_friend_button_color3">#BCB9B9</color>
+    <color name="add_one_more_friend_button_color4">#000000</color>
+    <color name="add_one_more_friend_button_color5">#ffffff</color>
+    <color name="add_one_more_friend_button_color6">#545B5E</color>
 
     <color name="buy_data_dialog_color">#F5F5F5</color>
 

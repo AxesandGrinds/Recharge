@@ -10,6 +10,7 @@
 
     <!-- Default, "just hangin' out" state. -->
     <item android:color="@color/optional_background_edit_even" />
+<!--    <item android:color="@color/colorPrimaryLight3" />-->
     <!--    <item android:color="@color/colorPrimary3" />-->
     <!--    <item android:color="@color/optional_background_edit_even" />-->
 

@@ -28,6 +28,8 @@ import com.app.ej.cs.repository.entity.UserAndFriendInfo
 import com.app.ej.cs.ui.DataRechargeDialog
 import com.app.ej.cs.ui.MainActivity
 import com.app.ej.cs.ui.account.LoginActivity
+import com.app.ej.cs.ui.fab.FloatingActionButton
+import com.app.ej.cs.ui.fab.FloatingActionMenu
 import com.app.ej.cs.vision.RecognitionActivityFinal
 import com.droidman.ktoasty.KToasty
 import com.fondesa.kpermissions.allGranted
@@ -60,7 +62,12 @@ class ScanFragment : Fragment(), ScanFragmentView {
       Log.e("ATTENTION ATTENTION",
         "In ScanFragment displayUserMain: ${userList.userList[0].toString()}")
 
-      initScanMainUserDetails(requireView())
+      nameTv.text    = userMainListModel.userList[0].name
+      emailTv.text   = userMainListModel.userList[0].email
+      createdTv.text = userMainListModel.userList[0].created?.let { TimeAgo.using(it.toLong()) }
+
+      Log.e("ATTENTION ATTENTION",
+        "createdTv.text = userMainListModel.userList[0].created: ${userMainListModel.userList[0].created}")
 
       if (userMainListModel.userList.isNotEmpty()) {
 
@@ -167,6 +174,11 @@ class ScanFragment : Fragment(), ScanFragmentView {
   private lateinit var nameTv:    TextView
   private lateinit var emailTv:   TextView
   private lateinit var createdTv: TextView
+
+  private lateinit var fam: FloatingActionMenu
+  private lateinit var fab1: FloatingActionButton
+  private lateinit var fab2: FloatingActionButton
+
 
   private var userList: MutableList<User> = mutableListOf<User>()
 
@@ -314,32 +326,32 @@ private val TAG: String = "ATTENTION ATTENTION"
 
 
     if (userList[0].network == null) {
-      fab1!!.visibility = View.GONE
+      fab1.visibility = View.GONE
       isFab1Active = false
     }
     else {
-      fab1!!.visibility = View.VISIBLE
+      fab1.visibility = View.VISIBLE
       isFab1Active = true
     }
 
     if (userList.size > 1) {
 
       if (userList[0].phone == null || userList[0].network == null) {
-        fab1!!.visibility = View.GONE
+        fab1.visibility = View.GONE
         isFab1Active = false
       }
       else {
-        fab1!!.labelText = userList[0].phone
-        fab1!!.visibility = View.VISIBLE
+        fab1.labelText = userList[0].phone
+        fab1.visibility = View.VISIBLE
         isFab1Active = true
       }
       if (userList[1].phone == null || userList[1].network == null) {
-        fab2!!.visibility = View.GONE
+        fab2.visibility = View.GONE
         isFab2Active = false
       }
       else {
-        fab2!!.labelText = userList[1].phone
-        fab2!!.visibility = View.VISIBLE
+        fab2.labelText = userList[1].phone
+        fab2.visibility = View.VISIBLE
         isFab2Active = true
       }
 
@@ -347,66 +359,66 @@ private val TAG: String = "ATTENTION ATTENTION"
     else if (userList.size == 1) {
 
       if (userList[0].phone == null || userList[0].network == null) {
-        fab1!!.visibility = View.GONE
+        fab1.visibility = View.GONE
         isFab1Active = false
       }
       else {
-        fab1!!.labelText = userList[0].phone
-        fab1!!.visibility = View.VISIBLE
+        fab1.labelText = userList[0].phone
+        fab1.visibility = View.VISIBLE
         isFab1Active = true
       }
 
     }
     else {
-      fam!!.visibility = View.GONE
-      fab1!!.visibility = View.GONE
-      fab2!!.visibility = View.GONE
+      fam.visibility = View.GONE
+      fab1.visibility = View.GONE
+      fab2.visibility = View.GONE
       isFab1Active = false
       isFab2Active = false
     }
 
-    fam!!.setOnMenuButtonClickListener {
+    fam.setOnMenuButtonClickListener {
 
-      fam!!.toggle(true)
+      fam.toggle(true)
 
     }
 
     if (userList[0].network == null) {
-      fab1?.visibility = View.GONE
+      fab1.visibility = View.GONE
     }
     else {
-      fab1?.visibility = View.VISIBLE
+      fab1.visibility = View.VISIBLE
     }
 
     if (userList.size > 1) {
 
       if (userList[1].network == null) {
-        fab2?.visibility = View.GONE
+        fab2.visibility = View.GONE
       }
       else {
-        fab2?.visibility = View.VISIBLE
+        fab2.visibility = View.VISIBLE
       }
 
     }
     else {
-      fab2?.visibility = View.GONE
+      fab2.visibility = View.GONE
     }
 
-    Log.e("ATTENTION ATTENTION", "fam!!.setOnClickListener ran")
+    Log.e("ATTENTION ATTENTION", "fam.setOnClickListener ran")
     Log.e("ATTENTION ATTENTION", "fam isOpen = ${isOpen.toString()}")
     Log.e("ATTENTION ATTENTION", "fab1 Active: ${isFab1Active.toString()}")
     Log.e("ATTENTION ATTENTION", "fab1 Active: ${isFab2Active.toString()}")
 
-    fab1!!.setOnClickListener {
+    fab1.setOnClickListener {
 
-      fam!!.toggle(true)
+      fam.toggle(true)
       askCameraAndPhonePermissionsBeforeCameraActivity(it, userList[0], "1")
 
     }
 
-    fab2!!.setOnClickListener {
+    fab2.setOnClickListener {
 
-      fam!!.toggle(true)
+      fam.toggle(true)
       askCameraAndPhonePermissionsBeforeCameraActivity(it, userList[1], "2")
 
     }
@@ -453,6 +465,8 @@ private val TAG: String = "ATTENTION ATTENTION"
     scanFragmentPresenter.bind(this)
 
     initAds(view)
+
+    initScanMainUserDetails(view)
 
     initScanMainRecyclerView(view)
     initScanSecondRecyclerView(view)
@@ -555,17 +569,21 @@ private val TAG: String = "ATTENTION ATTENTION"
 
       val second3 = 3L * 1000
 
+      val day2 = 2L * 24 * 60 * 60 * 1000
+
       val day3 = 3L * 24 * 60 * 60 * 1000
 
       val day7 = 7L * 24 * 60 * 60 * 1000
 
       val olderThan3Seconds: Boolean = thisDate.after(Date(date1.time + second3))
 
+      val olderThan2Days: Boolean = thisDate.after(Date(date1.time + day2))
+
       val olderThan3Days: Boolean = thisDate.after(Date(date1.time + day3))
 
       val olderThan7Days: Boolean = thisDate.after(Date(date1.time + day7))
 
-      if (olderThan3Days) {
+      if (olderThan2Days) {
 
         val editor = sharedPref!!.edit()
         editor.putInt("weeklyInterstitialAd", weeklyInterstitialAd + 1)
@@ -638,7 +656,8 @@ private val TAG: String = "ATTENTION ATTENTION"
       }
       else {
 
-        checkWeeklyInterstitialAd ()
+        scanFragmentPresenter.displayScanDetails()
+        checkWeeklyInterstitialAd()
 
       }
 
@@ -662,8 +681,6 @@ private val TAG: String = "ATTENTION ATTENTION"
   override fun onStart() {
     super.onStart()
 
-    scanFragmentPresenter.displayScanDetails()
-
   }
 
   override fun onDestroy() {
@@ -679,12 +696,9 @@ private val TAG: String = "ATTENTION ATTENTION"
     emailTv   = view.findViewById(R.id.emailTv)
     createdTv = view.findViewById(R.id.createdTv)
 
-    nameTv.text    = userMainListModel.userList[0].name
-    emailTv.text   = userMainListModel.userList[0].email
-    createdTv.text = userMainListModel.userList[0].created?.let { TimeAgo.using(it.toLong()) }
-
-    Log.e("ATTENTION ATTENTION",
-      "createdTv.text = userMainListModel.userList[0].created: ${userMainListModel.userList[0].created}")
+    fam = view.findViewById(R.id.fam)
+    fab1 = view.findViewById(R.id.fab1)
+    fab2 = view.findViewById(R.id.fab2)
 
   }
 

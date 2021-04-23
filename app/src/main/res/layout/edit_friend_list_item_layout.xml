@@ -11,7 +11,6 @@
     android:orientation="vertical"
     android:padding="@dimen/card_padding">
 
-
   <androidx.cardview.widget.CardView
       android:id="@+id/edit_card"
       android:layout_width="match_parent"
@@ -32,19 +31,6 @@
         android:layout_margin="10dp"
         android:background="@color/priority_card_color"
         android:orientation="vertical">
-
-      <TextView
-          android:id="@+id/optional1"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginBottom="6dp"
-          android:paddingRight="20dp"
-          android:paddingLeft="20dp"
-          android:paddingStart="20dp"
-          android:paddingEnd="20dp"
-          android:gravity="end"
-          android:text="@string/optional"
-          android:textSize="18sp" />
 
       <LinearLayout
           android:layout_width="match_parent"
@@ -71,7 +57,7 @@
 
             <ImageButton
                 android:id="@+id/addFriend"
-                app:srcCompat="@drawable/ic_add_black_24dp"
+                app:srcCompat="@drawable/ic_contact_book"
                 android:layout_width="40dp"
                 android:layout_height="35dp"
                 android:background="@color/black"
@@ -89,30 +75,60 @@
               android:text="@string/friend"
               android:textSize="23sp" />
 
-
         </LinearLayout>
 
 
-        <ImageView
-            android:id="@+id/showMoreHandleView"
-            app:srcCompat="@drawable/ic_baseline_unfold_more_48"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginHorizontal="@dimen/edit_text_input_layout_margin_horizontal"
-            android:layout_marginVertical="@dimen/edit_text_input_layout_margin_vertical"
-            android:contentDescription="@string/show_more_details_content_description" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/reorderHandleView"
-            app:srcCompat="@drawable/ic_reorder_black_64dp"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginHorizontal="@dimen/edit_text_input_layout_margin_horizontal"
-            android:layout_marginVertical="@dimen/edit_text_input_layout_margin_vertical"
-            android:contentDescription="@string/reorder_friend_content_description" />
+          <ImageView
+              android:id="@+id/showMoreHandleView"
+              app:srcCompat="@drawable/ic_baseline_unfold_more_48"
+              android:layout_width="40dp"
+              android:layout_height="40dp"
+              android:layout_marginHorizontal="@dimen/edit_text_input_layout_margin_horizontal"
+              android:layout_marginVertical="@dimen/edit_text_input_layout_margin_vertical"
+              android:contentDescription="@string/show_more_details_content_description" />
+
+          <TextView
+              android:id="@+id/expand"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="@string/expand"
+              android:textSize="12sp"
+              android:layout_gravity="center"
+              android:gravity="center"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+          <ImageView
+              android:id="@+id/reorderHandleView"
+              app:srcCompat="@drawable/ic_reorder_black_64dp"
+              android:layout_width="40dp"
+              android:layout_height="40dp"
+              android:layout_marginHorizontal="@dimen/edit_text_input_layout_margin_horizontal"
+              android:layout_marginVertical="@dimen/edit_text_input_layout_margin_vertical"
+              android:contentDescription="@string/reorder_friend_content_description" />
+
+          <TextView
+              android:id="@+id/rearrange"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="@string/rearrange"
+              android:textSize="12sp"
+              android:layout_gravity="center"
+              android:gravity="center"/>
+
+        </LinearLayout>
 
       </LinearLayout>
-
 
       <com.google.android.material.textfield.TextInputLayout
           android:id="@+id/h_friend1_name"
@@ -134,12 +150,6 @@
             android:inputType="textPersonName" />
 
       </com.google.android.material.textfield.TextInputLayout>
-
-
-
-
-
-
 
       <LinearLayout
           android:id="@+id/l_friend_phone1"
@@ -531,11 +541,8 @@
 
       </LinearLayout>
 
-
     </LinearLayout>
 
   </androidx.cardview.widget.CardView>
-
-
 
 </LinearLayout>

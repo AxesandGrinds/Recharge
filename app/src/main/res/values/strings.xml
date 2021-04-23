@@ -61,8 +61,8 @@
     <string name="check_account_number">Account Number?</string>
     <string name="airtime_phone_transfer">Airtime Transfer (Phone2Phone)</string>
     <string name="data_phone_gift">Buy Data Gift (Phone2Phone)</string>
-    <string name="data_phone_transfer">Transfer Data (Phone2Phone)</string>
-    <string name="bank_transfer">Bank Transfer(Bank2Bank)</string>
+    <string name="data_phone_transfer">Data Transfer (Phone2Phone)</string>
+    <string name="bank_transfer">Bank Transfer (Bank2Bank)</string>
     <string name="airtime_bank_topup_transfer">Airtime TopUp (Bank2Phone)</string>
 
     <string name="username_exists">This username already exists.</string>
@@ -96,6 +96,13 @@
     <string name="network01">Network 1</string>
     <string name="network2">Network 2</string>
     <string name="bank">Bank</string>
+
+
+
+    <string name="add_friend">Add Friend</string>
+
+    <string name="expand">Expand</string>
+    <string name="rearrange">Rearrange</string>
 
     <string name="friendPhone">Friend Phone</string>
     <string name="friend">Friend</string>

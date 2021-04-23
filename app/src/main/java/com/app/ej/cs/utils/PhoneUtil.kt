@@ -2775,8 +2775,8 @@ class PhoneUtil {
 
                     withContext(Dispatchers.Main) {
 
-                        val msg: String = "Airtime transfer requested."
-                        util.onShowMessageSuccess(msg, context)
+                        val msg: String = "Bank transfer requested."
+                        //util.onShowMessageSuccess(msg, context)
                         Log.e(TAG, msg)
 
                         context.startActivity(intent)
@@ -2803,8 +2803,8 @@ class PhoneUtil {
         }
         else {
 
-            val msg: String = "Airtime transfer requested."
-            util.onShowMessageSuccess(msg, context)
+            val msg: String = "Bank transfer requested."
+            //util.onShowMessageSuccess(msg, context)
             Log.e(TAG, msg)
 
             context.startActivity(intent)
@@ -2880,8 +2880,8 @@ class PhoneUtil {
 
                     withContext(Dispatchers.Main) {
 
-                        val msg: String = "Airtime transfer requested."
-                        util.onShowMessageSuccess(msg, context)
+                        val msg: String = "Bank transfer requested."
+//                        util.onShowMessageSuccess(msg, context)
                         Log.e(TAG, msg)
 
                         context.startActivity(intent)
@@ -2908,8 +2908,8 @@ class PhoneUtil {
         }
         else {
 
-            val msg: String = "Airtime transfer requested."
-            util.onShowMessageSuccess(msg, context)
+            val msg: String = "Bank transfer requested."
+//            util.onShowMessageSuccess(msg, context)
             Log.e(TAG, msg)
 
             context.startActivity(intent)

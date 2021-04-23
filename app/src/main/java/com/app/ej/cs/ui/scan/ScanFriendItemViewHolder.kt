@@ -287,7 +287,7 @@ class ScanFriendItemViewHolder(
 
     popup.menu.add(
       R.id.fmenu, R.id.airtime_phone_transfer, 2, util.menuIconWithText(
-        ResourcesCompat.getDrawable(view.resources, R.drawable.ic_airplanemode_active_black_24dp, null)!!,
+        ResourcesCompat.getDrawable(view.resources, R.drawable.ic_transfer, null)!!,
         view.resources.getString(R.string.airtime_phone_transfer))
     ).isEnabled = airtimePhoneTransferBool
 
@@ -305,13 +305,13 @@ class ScanFriendItemViewHolder(
 
     popup.menu.add(
       R.id.fmenu, R.id.data_phone_transfer, 5, util.menuIconWithText(
-        ResourcesCompat.getDrawable(view.resources, R.drawable.ic_baseline_align_vertical_bottom_24, null)!!,
+        ResourcesCompat.getDrawable(view.resources, R.drawable.ic_share, null)!!,
         view.resources.getString(R.string.data_phone_transfer))
     ).isEnabled = airtimePhoneTransferBool
 
     popup.menu.add(
       R.id.fmenu, R.id.bank_transfer, 6, util.menuIconWithText(
-        ResourcesCompat.getDrawable(view.resources, R.drawable.ic_compare_black_24dp, null)!!,
+        ResourcesCompat.getDrawable(view.resources, R.drawable.ic_bank_transfer, null)!!,
         view.resources.getString(R.string.bank_transfer))
     ).isEnabled = bankTransferBool
 

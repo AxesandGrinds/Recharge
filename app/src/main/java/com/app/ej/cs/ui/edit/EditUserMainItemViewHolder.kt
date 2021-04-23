@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.Fade
 import androidx.transition.Transition
@@ -33,6 +34,8 @@ class EditUserMainItemViewHolder(
 ) : RecyclerView.ViewHolder(view), Binder<User> {
 
   private val showMoreDetailsIv: ImageView = view.findViewById(R.id.showMoreHandleView)
+
+  private val expandTv: TextView = view.findViewById(R.id.expand)
 
   private val nameEt: TextInputEditText = view.findViewById(R.id.nameEt)
 
@@ -314,6 +317,8 @@ class EditUserMainItemViewHolder(
       meterNumberTil3.visibility = View.GONE
 
       showMoreDetailsIv.setImageResource(R.drawable.ic_baseline_unfold_less_48)
+      expandTv.text = "Expand"
+      expandTv.setTextColor(ContextCompat.getColor(view.context, R.color.colorPrimary3))
 
     }
     else {
@@ -326,6 +331,8 @@ class EditUserMainItemViewHolder(
       meterNumberTil3.visibility = View.VISIBLE
 
       showMoreDetailsIv.setImageResource(R.drawable.ic_baseline_unfold_more_48)
+      expandTv.text = "Collapse"
+      expandTv.setTextColor(ContextCompat.getColor(view.context, R.color.black))
 
     }
 

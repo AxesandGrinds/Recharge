@@ -8,7 +8,7 @@
 
     <dimen name="main_card_padding">12dp</dimen>
     <dimen name="main_card_top_padding">6dp</dimen>
-    <dimen name="main_card_bottom_padding">6dp</dimen>
+    <dimen name="main_card_bottom_padding">3dp</dimen>
 
     <dimen name="card_padding">0dp</dimen>
     <dimen name="card_layout_margin">2dp</dimen>
