@@ -136,9 +136,8 @@ class FloatingActionMenu @JvmOverloads constructor(
             R.styleable.FloatingActionMenu_menu_labels_paddingLeft,
             mLabelsPaddingLeft
         )
-        mLabelsTextColor =
-            attr.getColorStateList(R.styleable.FloatingActionMenu_menu_labels_textColor)
-        // set default value if null same as for textview
+        mLabelsTextColor = attr.getColorStateList(R.styleable.FloatingActionMenu_menu_labels_textColor)
+
         if (mLabelsTextColor == null) {
             mLabelsTextColor = ColorStateList.valueOf(Color.WHITE)
         }

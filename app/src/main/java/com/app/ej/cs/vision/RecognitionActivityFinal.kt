@@ -76,8 +76,6 @@ import java.util.*
 import kotlin.concurrent.schedule
 import kotlin.math.max
 
-
-/** Activity demonstrating different image detector features with a still image from camera.  */
 @KeepName
 class RecognitionActivityFinal : AppCompatActivity(),
   ActivityCompat.OnRequestPermissionsResultCallback,
@@ -124,7 +122,6 @@ class RecognitionActivityFinal : AppCompatActivity(),
       }
     }
     option.set(camera, value)
-//    BottomSheetBehavior.from(controlPanel).state = BottomSheetBehavior.STATE_HIDDEN
     message("Changed " + option.name + " to " + name, false)
     return true
   }
@@ -147,10 +144,6 @@ class RecognitionActivityFinal : AppCompatActivity(),
 
     Log.i(TAG, "Permission granted!")
     createCameraSource(selectedMode)
-
-//    if (allPermissionsGranted()) {
-//      createCameraSource(selectedMode)
-//    }
 
     super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
@@ -219,7 +212,6 @@ class RecognitionActivityFinal : AppCompatActivity(),
 
   private fun createCameraSource(model: String) {
 
-    // If there's no existing cameraSource, create one.
     if (cameraSource == null) {
       cameraSource = CameraSource(this, graphicOverlay)
     }
@@ -461,7 +453,7 @@ class RecognitionActivityFinal : AppCompatActivity(),
 
   private fun colorCountDown() {
 
-    Handler().postDelayed({ // count down timer start
+    Handler().postDelayed({
 
       object : CountDownTimer(3000, 25) {
 
@@ -500,7 +492,7 @@ class RecognitionActivityFinal : AppCompatActivity(),
     if (camera.isTakingPicture) return
     captureTime = System.currentTimeMillis()
 
-    Handler().postDelayed({ // count down timer start
+    Handler().postDelayed({
 
       object : CountDownTimer(500, 25) {
 
@@ -510,13 +502,13 @@ class RecognitionActivityFinal : AppCompatActivity(),
 
         override fun onFinish() {
           camera.takePicture()
-//          val message: String = "Picture Taken"
-//          util.onShowMessage(message, context)
+
         }
 
       }.start()
 
     }, 0)
+
 
 //    previewView?.drawingCache
 //    tryReloadAndDetectInImage()

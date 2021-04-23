@@ -333,7 +333,6 @@ class DataTransferDialog : DialogFragment() {
 
           Log.e("ATTENTION ATTENTION", "MTN Data Code: $code, Data: $data, dataFull: $fullData, Amount: $amount")
 
-          // TODO Done
           phoneUtil.transferDataMTNUSSD(
             requireContext(),
             fragment!!,
@@ -364,8 +363,6 @@ class DataTransferDialog : DialogFragment() {
 
           dismiss()
 
-//          rechargeData(code, data, amount)
-
 
         }
 
@@ -376,7 +373,6 @@ class DataTransferDialog : DialogFragment() {
 
         override fun onEtisalatDataAmountClicked(code: String, data: String, fullData: String, amount: String) {
 
-          // TODO Done
           phoneUtil.transferData9MobileUSSD(
             requireContext(),
             fragment!!,
@@ -397,7 +393,6 @@ class DataTransferDialog : DialogFragment() {
 
         override fun onAirtelDataAmountClicked(code: String, data: String, fullData: String, amount: String) {
 
-          // TODO Done
           phoneUtil.transferDataAirtelUSSD(
             requireContext(),
             fragment!!,

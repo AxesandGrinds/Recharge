@@ -234,7 +234,6 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
 
   }
 
-  // Access a Cloud Firestore instance from your Activity
   private val mFirestore: FirebaseFirestore = Firebase.firestore
   private lateinit var auth:         FirebaseAuth
   private lateinit var firebaseUser: FirebaseUser

@@ -38,9 +38,6 @@ class EditFriendViewAdapter(
         var allInfoJsonUnsaved = sharedPref.getString("allInfoUnsaved", "defaultAll")!!
         val allInfoUnsaved = gson.fromJson(allInfoJsonUnsaved, UserAndFriendInfo::class.java)
 
-        val tempFromName: String? = allInfoUnsaved.friendList?.get(from)?.name
-        val tempFromDescription: String? = allInfoUnsaved.friendList?.get(from)?.description
-
         val tempFromAccountNumber1: String? = allInfoUnsaved.friendList?.get(from)?.accountNumber1
         val tempFromAccountNumber2: String? = allInfoUnsaved.friendList?.get(from)?.accountNumber2
         val tempFromAccountNumber3: String? = allInfoUnsaved.friendList?.get(from)?.accountNumber3
@@ -59,30 +56,24 @@ class EditFriendViewAdapter(
         val tempFromPhone2: String? = allInfoUnsaved.friendList?.get(from)?.phone2
         val tempFromPhone3: String? = allInfoUnsaved.friendList?.get(from)?.phone3
 
-
-        allInfoUnsaved.friendList!![from].index = to
-        allInfoUnsaved.friendList!![from].name = allInfoUnsaved.friendList!![to].name
-        allInfoUnsaved.friendList!![from].description = allInfoUnsaved.friendList!![to].description
-
-        allInfoUnsaved.friendList!![to].index = from
-        allInfoUnsaved.friendList!![to].name = tempFromName
-        allInfoUnsaved.friendList!![to].description = tempFromDescription!!
-
         val fromFriend = allInfoUnsaved.friendList?.get(from)
 
+        val tempFromIndex: Int? = allInfoUnsaved.friendList?.get(from)?.index
+        val tempFromDescription: String? = allInfoUnsaved.friendList?.get(from)?.description
+
+        allInfoUnsaved.friendList!![from].index = allInfoUnsaved.friendList!![to].index
+        allInfoUnsaved.friendList!![from].description = allInfoUnsaved.friendList!![to].description
+
+        allInfoUnsaved.friendList!![to].index = tempFromIndex!!
+        allInfoUnsaved.friendList!![to].description = tempFromDescription!!
+
         allInfoUnsaved.friendList?.removeAt(from)
+        fromFriend?.let { allInfoUnsaved.friendList?.add(to, it) }
 
-        if (to < from) {
-            fromFriend?.let { allInfoUnsaved.friendList?.add(to, it) }
-        } else {
-            fromFriend?.let { allInfoUnsaved.friendList?.add(to - 1, it) }
-        }
-
-        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
 
         val editor = sharedPref!!.edit()
         editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
-        editor.putString("allInfoSaved", allInfoJsonUnsaved)
         editor.apply()
 
     }

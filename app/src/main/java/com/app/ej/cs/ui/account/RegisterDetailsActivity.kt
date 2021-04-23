@@ -1617,7 +1617,7 @@ class RegisterDetailsActivity() : AppCompatActivity(),
                             }
 
                             if (bestLocation != null) {
-                                // Logic to handle location object
+
                                 Log.e("ATTENTION ATTENTION", "Location Received")
                                 longitude = bestLocation.longitude
                                 latitude = bestLocation.latitude
@@ -2089,7 +2089,6 @@ class RegisterDetailsActivity() : AppCompatActivity(),
                 else {
 
                     email = userAndFriendInfoUnsaved.usersList[0].email
-    //                currentEmail = email!!
 
                     if (myFixedRateTimer != null) {
                         myFixedRateTimer!!.cancel()
@@ -2225,7 +2224,6 @@ class RegisterDetailsActivity() : AppCompatActivity(),
                 }
 
                 override fun onFinish() {
-                    //finish();
                 }
             }.start()
         }, 500)
