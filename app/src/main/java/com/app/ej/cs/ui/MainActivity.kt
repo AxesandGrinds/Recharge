@@ -4,6 +4,7 @@ package com.app.ej.cs.ui
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
@@ -27,7 +28,7 @@ import androidx.fragment.app.commit
 import com.app.ej.cs.R
 import com.app.ej.cs.presenter.CheckLoggedIn
 import com.app.ej.cs.repository.entity.UserAndFriendInfo
-import com.app.ej.cs.ui.account.LoginActivity
+import com.app.ej.cs.ui.account.LoginActivityMain
 import com.app.ej.cs.ui.account.RegisterActivity
 import com.app.ej.cs.ui.edit.EditFragment
 import com.app.ej.cs.ui.scan.ScanFragment
@@ -300,6 +301,8 @@ class MainActivity : AppCompatActivity() {
 
   }
 
+  private lateinit var sharedPref: SharedPreferences
+
   override fun onCreateOptionsMenu(menu: Menu): Boolean {
 
     menu.add(
@@ -310,10 +313,29 @@ class MainActivity : AppCompatActivity() {
         resources.getDrawable(R.drawable.ic_delete_forever_black_24dp),
         resources.getString(R.string.delete_account)))
 
+    sharedPref = context.getSharedPreferences(PREFNAME, Context.MODE_PRIVATE)
+    val isPasswordAccount = sharedPref.getBoolean("isPasswordAccount", false)
+
+    var signOutOrder: Int = 2
+
+    if (isPasswordAccount) {
+
+      menu.add(
+        R.id.main_menu,
+        R.id.change_password,
+        2,
+        menuIconWithText(
+          resources.getDrawable(R.drawable.ic_baseline_password_24),
+          resources.getString(R.string.change_password)))
+
+      signOutOrder = 3
+
+    }
+
     menu.add(
       R.id.main_menu,
       R.id.sign_out,
-      2,
+      signOutOrder,
       menuIconWithText(
         resources.getDrawable(R.drawable.ic_sign_out_24dp),
         resources.getString(R.string.sign_out)))
@@ -330,6 +352,13 @@ class MainActivity : AppCompatActivity() {
         Toasty.info(this, "Signing out.", Toasty.LENGTH_SHORT).show()
         signOut()
       }
+
+      R.id.change_password -> {
+
+        changePassword()
+
+      }
+
       R.id.delete_account -> {
         runDelete()
       }
@@ -337,6 +366,100 @@ class MainActivity : AppCompatActivity() {
 
     }
     return super.onOptionsItemSelected(item)
+  }
+
+  private fun changePassword() {
+
+    if (networkUtil.isOnline(context)) {
+
+      if (firebaseUser != null) {
+
+        val changePasswordBuilder = AlertDialog.Builder(context, R.style.MyDialogTheme)
+        changePasswordBuilder.setTitle("Are you sure?")
+        changePasswordBuilder.setMessage("Are you sure you want to change your password?")
+
+        changePasswordBuilder.setPositiveButton("Yes") {
+
+            dialog, which ->
+
+          dialog.dismiss()
+
+          if (networkUtil.isOnline(context)) {
+
+            auth.sendPasswordResetEmail(firebaseUser!!.email!!)
+              .addOnCompleteListener {
+
+                  task ->
+
+                if (task.isSuccessful) {
+
+                  val emailSentBuilder = AlertDialog.Builder(context, R.style.MyDialogTheme)
+                  emailSentBuilder.setTitle("Check your email for instructions")
+                  emailSentBuilder.setMessage("Instructions have been emailed to you. Check your email for instructions to change your password.")
+
+                  emailSentBuilder.setPositiveButton(android.R.string.ok) {
+
+                      dialog, which ->
+
+                    dialog.dismiss()
+
+                  }
+
+                  emailSentBuilder.show()
+
+                }
+                else {
+
+                  val emailNotSentBuilder = AlertDialog.Builder(context, R.style.MyDialogTheme)
+                  emailNotSentBuilder.setTitle("Email with instructions not sent")
+                  emailNotSentBuilder.setMessage("For some reason, instructions to update your password was not sent. Please try again later.")
+
+                  emailNotSentBuilder.setPositiveButton(android.R.string.ok) {
+
+                      dialog, which ->
+
+                    dialog.dismiss()
+
+                  }
+
+                  emailNotSentBuilder.show()
+
+                }
+
+              }
+
+          }
+          else {
+
+            val message: String = "You need internet access in order to delete account. Make sure internet is working."
+            util.onShowErrorMessageLong(message, context)
+
+          }
+
+        }
+
+        changePasswordBuilder.setNegativeButton(android.R.string.cancel) { dialog, which ->
+          dialog.cancel()
+        }
+
+        changePasswordBuilder.show()
+
+      }
+      else {
+
+        val message: String = "You haven't authenticated in some time. Sign out and sign back in to continue."
+        util.onShowErrorMessageLong(message, context)
+
+      }
+
+    }
+    else {
+
+      val message: String = "You need internet access in order to update password. Make sure internet is working."
+      util.onShowErrorMessageLong(message, context)
+
+    }
+
   }
 
   private fun runDelete() {
@@ -347,7 +470,7 @@ class MainActivity : AppCompatActivity() {
   }
 
   fun returnToLogin(context: Context) {
-    val intent = Intent(context, LoginActivity::class.java)
+    val intent = Intent(context, LoginActivityMain::class.java)
     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
     context.startActivity(intent)

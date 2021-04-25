@@ -8,7 +8,7 @@ import com.app.ej.cs.conf.TAG
 import com.app.ej.cs.init.InitApp.Companion.appContext
 import com.app.ej.cs.repository.UsersAndFriendsRepository
 import com.app.ej.cs.repository.entity.*
-import com.app.ej.cs.ui.account.LoginActivity
+import com.app.ej.cs.ui.account.LoginActivityMain
 import com.app.ej.cs.utils.NetworkUtil
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -177,7 +177,7 @@ class MemoryUserAndFriendsRepository(appContext: Context) : UsersAndFriendsRepos
 
 private fun returnToLogin() {
 
-    val intent: Intent = Intent(context, LoginActivity::class.java)
+    val intent: Intent = Intent(context, LoginActivityMain::class.java)
     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
     appContext.startActivity(intent)

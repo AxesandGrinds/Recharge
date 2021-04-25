@@ -1,8 +1,10 @@
 package com.app.ej.cs.ui.edit
 
+import android.app.Activity
 import android.content.Context
 import android.content.res.Resources
 import android.text.Editable
+import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
@@ -19,6 +21,8 @@ import com.app.ej.cs.common.events.OnViewHolderItemSelected
 import com.app.ej.cs.repository.entity.Friend
 import com.app.ej.cs.repository.entity.User
 import com.app.ej.cs.repository.entity.UserAndFriendInfo
+import com.app.ej.cs.ui.account.RegisterDetailsActivity
+import com.app.ej.cs.utils.AnimationUtil
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseUser
@@ -28,7 +32,8 @@ import java.lang.Exception
 class EditUserMainItemViewHolder(
 
   private val view: View,
-  private val firebaseUser: FirebaseUser,
+  private val activity: Activity,
+  private val firebaseUser: FirebaseUser?,
   listener: OnViewHolderItemSelected<User?>? = null
 
 ) : RecyclerView.ViewHolder(view), Binder<User> {
@@ -37,9 +42,19 @@ class EditUserMainItemViewHolder(
 
   private val expandTv: TextView = view.findViewById(R.id.expand)
 
+  private val optionalExplanationTv: TextView = view.findViewById(R.id.optional_explain_tv)
+
   private val nameEt: TextInputEditText = view.findViewById(R.id.nameEt)
 
   private val emailEt: TextInputEditText = view.findViewById(R.id.emailEt)
+
+  private val passwordEt: TextInputEditText = view.findViewById(R.id.password_et)
+
+  private val reenterPasswordEt: TextInputEditText = view.findViewById(R.id.reenter_password_et)
+
+  private val passwordTil: TextInputLayout = view.findViewById(R.id.h_password)
+
+  private val reenterPasswordTil: TextInputLayout = view.findViewById(R.id.h_reenter_password)
 
   private val phone1Et: TextInputEditText = view.findViewById(R.id.phone1Et)
 
@@ -258,7 +273,7 @@ class EditUserMainItemViewHolder(
 
     try {
 
-      var tempPhone1String: String? = firebaseUser.phoneNumber
+      var tempPhone1String: String? = firebaseUser?.phoneNumber
 
       if (tempPhone1String!!.contains("+234")) {
         tempPhone1String = tempPhone1String.replace("+234", "0")
@@ -452,6 +467,139 @@ class EditUserMainItemViewHolder(
       }
 
     })
+
+    passwordEt.addTextChangedListener(object : TextWatcher {
+
+      override fun afterTextChanged(s: Editable) {}
+      override fun beforeTextChanged(
+        s: CharSequence, start: Int,
+        count: Int, after: Int
+      ) {}
+
+      override fun onTextChanged(
+        s: CharSequence, start: Int,
+        before: Int, count: Int
+      ) {
+
+        val password: String = passwordEt.text.toString()
+        val reenterPassword: String = reenterPasswordEt.text.toString()
+
+        val sharedPref = view.context.getSharedPreferences(PREFNAME, Context.MODE_PRIVATE)
+        val editor = sharedPref!!.edit()
+        editor.putString("password", password)
+        editor.apply()
+
+        if (TextUtils.isEmpty(password) || password.length < 7) {
+
+          passwordEt.error = "Invalid password."
+
+        }
+        else {
+
+          passwordEt.error = null
+
+          passwordEt.setCompoundDrawables(null, null, null, null)
+          passwordEt.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_check_circle_16, 0)
+
+          if (reenterPassword != "") {
+
+            if (password == reenterPassword) {
+
+              reenterPasswordEt.error = null
+              reenterPasswordEt.setCompoundDrawables(null, null, null, null)
+              reenterPasswordEt.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_check_circle_16, 0)
+
+            }
+
+          }
+
+        }
+
+      }
+
+    })
+
+    reenterPasswordEt.addTextChangedListener(object : TextWatcher {
+
+      override fun afterTextChanged(s: Editable) {}
+      override fun beforeTextChanged(
+        s: CharSequence, start: Int,
+        count: Int, after: Int
+      ) {}
+
+      override fun onTextChanged(
+        s: CharSequence, start: Int,
+        before: Int, count: Int
+      ) {
+
+        val password: String = passwordEt.text.toString()
+        val reenterPassword: String = reenterPasswordEt.text.toString()
+
+        val sharedPref = view.context.getSharedPreferences(PREFNAME, Context.MODE_PRIVATE)
+        val editor = sharedPref!!.edit()
+        editor.putString("password2", reenterPassword)
+        editor.apply()
+
+        if (TextUtils.isEmpty(reenterPassword) || reenterPassword.length < 7) {
+
+          reenterPasswordEt.error = "Invalid password."
+
+        }
+        else {
+
+          if (password == reenterPassword) {
+
+            passwordEt.error = null
+            reenterPasswordEt.error = null
+
+            passwordEt.setCompoundDrawables(null, null, null, null)
+            reenterPasswordEt.setCompoundDrawables(null, null, null, null)
+
+            passwordEt.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_check_circle_16, 0)
+            reenterPasswordEt.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_check_circle_16, 0)
+
+          }
+          else {
+
+            reenterPasswordEt.error = "Password doesn't match"
+
+          }
+
+
+        }
+
+      }
+
+    })
+
+    if (activity is RegisterDetailsActivity) { // was
+
+      if (firebaseUser == null) {
+
+        passwordTil.visibility = View.VISIBLE
+        reenterPasswordTil.visibility = View.VISIBLE
+
+      }
+      else {
+
+        passwordTil.visibility = View.GONE
+        reenterPasswordTil.visibility = View.GONE
+
+      }
+
+      optionalExplanationTv.text = view.resources.getString(R.string.optional_explain)
+      optionalExplanationTv.textSize = 12F
+
+    }
+    else {
+
+      optionalExplanationTv.text = view.resources.getString(R.string.optional_explain_edit)
+
+      passwordTil.visibility = View.GONE
+      reenterPasswordTil.visibility = View.GONE
+
+    }
+
 
     phone1Et.addTextChangedListener(object : TextWatcher {
 

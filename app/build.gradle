@@ -23,8 +23,8 @@ android {
         applicationId "com.app.ej.cs"
         minSdkVersion 16
         targetSdkVersion 30
-        versionCode 29
-        versionName "1.0.3"
+        versionCode 30
+        versionName "1.0.4"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
@@ -163,7 +163,7 @@ dependencies {
 //    implementation "com.github.fondesa:kpermissions:$k_permissions_version"
     implementation "com.github.fondesa:kpermissions-coroutines:$k_permissions_version"
 
-    def coroutines_version = "1.4.1"
+    def coroutines_version = "1.4.3"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
 
@@ -279,6 +279,9 @@ dependencies {
 
     implementation 'com.squareup.moshi:moshi-kotlin:1.11.0'
     implementation 'com.karumi:dexter:6.2.2'
+
+    implementation 'com.firebaseui:firebase-ui-auth:7.1.1'
+
 }
 
 configurations {

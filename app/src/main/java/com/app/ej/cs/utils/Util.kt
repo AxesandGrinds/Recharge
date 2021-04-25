@@ -115,6 +115,14 @@ class Util {
 
     }
 
+    fun onShowErrorMessageLong(message: String, context: Context) {
+
+        val toast    = KToasty.error(context, message, Toast.LENGTH_LONG, true)
+
+        toast.show()
+
+    }
+
     fun onShowErrorMessage(message: String, context: Context, view: View) {
 
         val snackbar = Snackbar.make(view, "", Snackbar.LENGTH_SHORT)

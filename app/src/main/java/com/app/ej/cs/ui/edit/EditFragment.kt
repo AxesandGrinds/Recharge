@@ -445,7 +445,7 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
 
     userMainRecyclerView.isNestedScrollingEnabled = false
 
-    editFragmentUserMainViewAdapter = EditUserMainViewAdapter(userMainListModel, firebaseUser) {}
+    editFragmentUserMainViewAdapter = EditUserMainViewAdapter(userMainListModel, requireActivity(), firebaseUser) {}
 
     userMainRecyclerView.adapter = editFragmentUserMainViewAdapter
 

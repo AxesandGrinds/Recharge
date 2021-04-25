@@ -166,6 +166,42 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/h_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/edit_text_input_layout_margin_horizontal"
+            android:layout_marginVertical="@dimen/edit_text_input_layout_margin_vertical"
+            android:hint="@string/passwordAst"
+            style="@style/TextLabelMandatory" >
+
+          <com.google.android.material.textfield.TextInputEditText
+              android:id="@+id/password_et"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/optional_background_even"
+              android:inputType="textPassword" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/h_reenter_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/edit_text_input_layout_margin_horizontal"
+            android:layout_marginVertical="@dimen/edit_text_input_layout_margin_vertical"
+            android:hint="@string/reenterPasswordAst"
+            style="@style/TextLabelMandatory" >
+
+          <com.google.android.material.textfield.TextInputEditText
+              android:id="@+id/reenter_password_et"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/optional_background_even"
+              android:inputType="textPassword" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
         <LinearLayout
             android:id="@+id/l_user_phone1"
             android:layout_width="match_parent"

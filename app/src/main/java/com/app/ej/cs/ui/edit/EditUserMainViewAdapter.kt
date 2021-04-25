@@ -1,5 +1,6 @@
 package com.app.ej.cs.ui.edit
 
+import android.app.Activity
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -10,9 +11,10 @@ import com.app.ej.cs.repository.entity.User
 import com.google.firebase.auth.FirebaseUser
 
 class EditUserMainViewAdapter(
-  private val model: UserListModel,
-  private val firebaseUser: FirebaseUser,
-  private val listener: OnViewHolderItemSelected<User?>? = null
+    private val model: UserListModel,
+    private val activity: Activity,
+    private val firebaseUser: FirebaseUser?,
+    private val listener: OnViewHolderItemSelected<User?>? = null
 ) :
 
   RecyclerView.Adapter<EditUserMainItemViewHolder>() {
@@ -23,7 +25,7 @@ class EditUserMainViewAdapter(
       .from(parent.context)
       .inflate(R.layout.edit_user_main_item_layout, parent, false)
 
-    return EditUserMainItemViewHolder(itemView, firebaseUser, listener)
+    return EditUserMainItemViewHolder(itemView, activity, firebaseUser, listener)
 
   }
 

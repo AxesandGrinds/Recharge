@@ -1,5 +1,15 @@
 <resources>
 
+
+
+    <dimen name="wrapper_padding_horizontal">16dp</dimen>
+
+    <dimen name="body_padding_bottom">12dp</dimen>
+
+    <dimen name="field_padding_vert">16dp</dimen>
+
+
+
     <dimen name="permissions_text_size">16sp</dimen>
 
     <dimen name="box_collapsed_padding_top">0dp</dimen>

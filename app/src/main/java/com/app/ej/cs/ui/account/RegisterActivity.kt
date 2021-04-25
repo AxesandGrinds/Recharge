@@ -106,11 +106,12 @@ class RegisterActivity : BasePermissionActivity() {
 
         KToasty.info(this, "Intro Finished", Toast.LENGTH_SHORT).show()
 
-        Log.i("onIntroFinished", "Intro has finished")
+        Log.e("onIntroFinished", "Intro has finished")
 
         val intent = Intent(this, RegisterDetailsActivity::class.java)
         startActivity(intent)
         finish()
+
     }
 
     protected override fun pagerTransformer(): ViewPager.PageTransformer? {

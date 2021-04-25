@@ -43,7 +43,6 @@ import io.github.inflationx.calligraphy3.CalligraphyConfig
 import io.github.inflationx.calligraphy3.CalligraphyInterceptor
 import io.github.inflationx.viewpump.ViewPump
 import io.github.inflationx.viewpump.ViewPumpContextWrapper
-import io.michaelrocks.libphonenumber.android.NumberParseException
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
 import java.io.IOException
 import java.net.HttpURLConnection
@@ -52,12 +51,12 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.concurrent.timerTask
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivityPhone : AppCompatActivity() {
 
   var activity: Activity? = null
   private lateinit var context: Context
 
-  private val TAG = LoginActivity::class.java.simpleName
+  private val TAG = LoginActivityPhone::class.java.simpleName
 
   private var phone_number_holder: TextInputLayout? = null
   private  var verification_code_holder:TextInputLayout? = null
@@ -119,7 +118,7 @@ class LoginActivity : AppCompatActivity() {
   }
 
   fun startActivity(context: Context) {
-    val intent = Intent(context, LoginActivity::class.java)
+    val intent = Intent(context, LoginActivityPhone::class.java)
     context.startActivity(intent)
   }
 
@@ -190,7 +189,7 @@ class LoginActivity : AppCompatActivity() {
   private fun startPhoneNumberVerification(phoneNumber: String) {
     PhoneAuthProvider.getInstance().verifyPhoneNumber(
       phoneNumber,
-      60,
+      10,
       TimeUnit.SECONDS,
       this,
       mCallbacks
@@ -358,7 +357,7 @@ class LoginActivity : AppCompatActivity() {
 
   private fun requestRegistration() {
 
-    RegisterActivity.startActivity(this@LoginActivity)
+    RegisterActivity.startActivity(this@LoginActivityPhone)
     finish()
   }
 
@@ -459,7 +458,7 @@ class LoginActivity : AppCompatActivity() {
 
   private fun goToMain() {
 
-    val i = Intent(this@LoginActivity, MainActivity::class.java)
+    val i = Intent(this@LoginActivityPhone, MainActivity::class.java)
 
     startActivity(i)
 
@@ -621,9 +620,9 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
-    setContentView(R.layout.activity_login_final)
+    setContentView(R.layout.activity_login_phone)
 
-    mProgressBar             = findViewById<View>(R.id.mProgressBar) as ProgressBar
+    mProgressBar             = findViewById<View>(R.id.progress_bar) as ProgressBar
     phone_number_holder      = findViewById<View>(R.id.h_phone) as TextInputLayout
     verification_code_holder = findViewById<View>(R.id.h_verification_code) as TextInputLayout
     phone_numberEt           = findViewById<View>(R.id.phoneEt) as TextInputEditText
@@ -633,7 +632,7 @@ class LoginActivity : AppCompatActivity() {
     verifyLoginButton        = findViewById<View>(R.id.verify_button) as MaterialButton
 
     mDetailText = findViewById(R.id.detail)
-    context = this@LoginActivity
+    context = this@LoginActivityPhone
     mFirestore = Firebase.firestore
     auth = Firebase.auth
 

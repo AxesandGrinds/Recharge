@@ -1,9 +1,51 @@
 <resources>
 
+
+
+
+
+
+
+
+
+    <string name="phone_sign_in">Sign In With Phone</string>
+    <string name="email_sign_in">Sign In With Email</string>
+
+
+    <string name="enter_email">Enter Email</string>
+    <string name="enter_password">Enter Password</string>
+
+
+    <string name="forgot_password">Forgot Your Password?</string>
+
+    <string name="status_sign_in_success">Sign-in Successful</string>
+    <string name="status_sign_in_password_incorrect">Incorrect Password</string>
+
+    <string name="auth_failed">Authentication failed</string>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <string name="running_code">Running code</string>
 
     <string name="vision_review_instructions">If this is the accurate recharge code, you can press done. If this recharge code is not accurate, you may edit it here.</string>
     <string name="code_input_instructions">Enter the recharge code below.</string>
+
+
+
+
 
     <string name="admob_app_id">ca-app-pub-5127161627511605~6097746121</string>
     <string name="adunitid_sf">ca-app-pub-5127161627511605/4753886624</string>
@@ -13,6 +55,21 @@
     <string name="adunitid_rra">ca-app-pub-5127161627511605/1844846741</string>
     <!--    Code Input   -->
     <string name="adunitid_ciact">ca-app-pub-5127161627511605/5891849065</string>
+
+
+
+    <!--    Password Reset   -->
+    <string name="adunitid_pract">ca-app-pub-5127161627511605/5750786793</string>
+
+
+    <!--    activity_password_reset_interstitial-->
+    <string name="adunitid_pract_int">ca-app-pub-5127161627511605/8927614471</string>
+
+
+
+
+
+
 
     <string name="choose_messenger_instructions">Choose Any Default Phone Messenger (Except Facebook Messenger) To Complete</string>
     <string name="splash_screen_text">Recharge App</string>
@@ -30,7 +87,6 @@
     <string name="welcome_back">welcome back</string>
     <string name="to_recharge">to Recharge</string>
     <string name="header">Header</string>
-    <string name="forgot_password">Forgot your Password ?</string>
     <string name="sign_in">Sign In</string>
     <string name="verify">Verify Code</string>
     <string name="new_here">New here ? Sign Up instead</string>
@@ -192,9 +248,18 @@
 <!--    <string name="friend_account10">Friend 10 Account Number</string>-->
 
     <string name="details">Details</string>
-    <string name="change_password"> Change password </string>
+    <string name="change_password">Change Password</string>
     <string name="change_picture"> Change profile picture </string>
     <string name="save_details"> Save details </string>
+
+    <string name="title_confirm_recover_password" translation_description="Password recovery confirmation message">Check your email</string>
+    <string name="confirm_recovery_body" translation_description="Alert dialog displayed after password recovery email is sent">Follow the instructions sent to %1$s to recover your password.</string>
+
+    <string name="password_recovery_body" translation_description="Password recovery message body">Get instructions sent to this email that explain how to
+        reset your password.</string>
+
+    <string name="email_hint" translation_description="Hint in email input field">Email</string>
+
 
     <string name="done"> Done </string>
     <string name="cross_check">Cross Check Detected Recharge #</string>
@@ -233,7 +298,8 @@
     <string name="emailAst">Email<font fgcolor="red">*</font></string>
     <string name="mPhone1AstOrig">Number 1 (ex. 0803&#8230;)<font fgcolor="red">*</font></string>
     <string name="mPhone1Ast">Number 1 (ex. 08031234567)<font fgcolor="red">*</font></string>
-    <string name="passwordAst">Password<font fgcolor="red">*</font></string>
+    <string name="passwordAst">Password > 6 Characters<font fgcolor="red">*</font></string>
+    <string name="reenterPasswordAst">Re-enter Password<font fgcolor="red">*</font></string>
 
     <string name="smartCardNumber1">DSTV/GOTV SmartCard Number 1</string>
     <string name="smartCardNumber2">DSTV/GOTV SmartCard Number 2</string>

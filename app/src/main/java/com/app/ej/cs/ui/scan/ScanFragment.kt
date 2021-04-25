@@ -1,6 +1,5 @@
 package com.app.ej.cs.ui.scan
 
-
 import android.Manifest
 import android.app.Activity
 import android.content.Context
@@ -27,7 +26,7 @@ import com.app.ej.cs.repository.entity.User
 import com.app.ej.cs.repository.entity.UserAndFriendInfo
 import com.app.ej.cs.ui.DataRechargeDialog
 import com.app.ej.cs.ui.MainActivity
-import com.app.ej.cs.ui.account.LoginActivity
+import com.app.ej.cs.ui.account.LoginActivityMain
 import com.app.ej.cs.ui.fab.FloatingActionButton
 import com.app.ej.cs.ui.fab.FloatingActionMenu
 import com.app.ej.cs.vision.RecognitionActivityFinal
@@ -40,7 +39,6 @@ import com.google.android.gms.ads.*
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.scan_fragment_lists_layout.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -48,7 +46,6 @@ import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
-
 
 class ScanFragment : Fragment(), ScanFragmentView {
 
@@ -644,7 +641,7 @@ private val TAG: String = "ATTENTION ATTENTION"
 
         (activity as MainActivity).let{
 
-          val intent = Intent(it, LoginActivity::class.java)
+          val intent = Intent(it, LoginActivityMain::class.java)
           it.startActivity(intent)
           it.finish()
           Log.e("ATTENTION ATTENTION", "should end activity with it.finish()")
@@ -665,7 +662,7 @@ private val TAG: String = "ATTENTION ATTENTION"
     else {
 
       (activity as MainActivity).let{
-        val intent = Intent(it, LoginActivity::class.java)
+        val intent = Intent(it, LoginActivityMain::class.java)
         it.startActivity(intent)
         it.finish()
         Log.e("ATTENTION ATTENTION", "should end activity with it.finish()")

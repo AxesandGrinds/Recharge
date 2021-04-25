@@ -85,7 +85,6 @@ class RecognitionActivityFinal : AppCompatActivity(),
   GestureDetector.OnDoubleTapListener
 {
 
-
   private var preview: ImageView? = null
   private var graphicOverlay: GraphicOverlay? = null
   private var selectedMode = OBJECT_DETECTION
@@ -509,72 +508,6 @@ class RecognitionActivityFinal : AppCompatActivity(),
 
     }, 0)
 
-
-//    previewView?.drawingCache
-//    tryReloadAndDetectInImage()
-
-
-
-
-//    graphicOverlay!!.clear()
-//    graphicOverlay!!.visibility = View.INVISIBLE
-
-//    if (imageProcessor != null) {
-//
-//      (imageProcessor as TextRecognitionProcessor).stopRecognition()
-//      (imageProcessor as TextRecognitionProcessor).graphicOverlay?.clear()
-//      imageProcessor = null
-//      controlLayout?.visibility = View.INVISIBLE
-//
-////      graphicOverlay?.clear()
-////      cameraSource = null
-////      cameraSource = CameraSource(this, graphicOverlay)
-////      startCameraSource()
-//
-//    }
-
-//    cameraSource?.clearProcessor()
-//
-//    previewView?.cameraSource?.stop()
-
-    /*cameraSource?.camera?.takePicture(null, null,
-      { bytes, camera -> *//*this@Camera1Manager.onPictureTaken(bytes, camera, callback)
-
-          imageUri = bytes!!.data
-
-      tryReloadAndDetectInImage()
-
-          val orientation: Int = Exif.getOrientation(bytes)
-          val temp = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-          val picture = rotateImage(temp, orientation)
-          val overlay = Bitmap.createBitmap(
-            mGraphicOverlay.getWidth(),
-            mGraphicOverlay.getHeight(),
-            picture.config
-          )
-          val canvas = Canvas(overlay)*//*
-
-        //        graphicOverlay!!.visibility = View.VISIBLE
-
-//
-//        previewView?.start(cameraSource, graphicOverlay)
-//        (imageProcessor as TextRecognitionProcessor).startRecognition()
-
-        controlLayout?.visibility = View.VISIBLE
-//        (imageProcessor as TextRecognitionProcessor).reStartRecognition()
-        Log.i(TAG, "Using on-device Text recognition Processor")
-
-//        cameraSource!!.setMachineLearningFrameProcessor(TextRecognitionProcessor(this))
-//        startCameraSource()
-
-//        createCameraSource(selectedMode)
-//        startCameraSource()
-
-//        createImageProcessor()
-//        tryReloadAndDetectInImage()
-
-      })*/
-
   }
 
   val util: Util = Util()
@@ -737,30 +670,6 @@ class RecognitionActivityFinal : AppCompatActivity(),
               bestDistance = distance
             }
 
-            /*for (element in line.elements) {
-
-              if (element.boundingBox!!.contains(x.toInt(), y.toInt())) {
-
-                //Exact hit, no need to keep looking.
-                best = element
-                //bestCodeCaptured(best)
-                break
-
-              }
-
-              val dx: Float = x - element.boundingBox!!.centerX()
-              val dy: Float = y - element.boundingBox!!.centerY()
-
-              val distance = dx * dx + dy * dy // actually squared distance
-
-              if (distance < bestDistance) {
-                best = element
-                bestDistance = distance
-                //bestCodeCaptured(best)
-              }
-
-            }*/
-
           }
 
 
@@ -799,7 +708,7 @@ class RecognitionActivityFinal : AppCompatActivity(),
   }
 
   override fun onDown(event: MotionEvent): Boolean {
-    Log.e(TAG, "onDown: $event")
+    Log.e(TAG, "onDown: ${event.toString()}")
     return true
   }
 
@@ -809,12 +718,12 @@ class RecognitionActivityFinal : AppCompatActivity(),
     velocityX: Float,
     velocityY: Float
   ): Boolean {
-    Log.e(TAG, "onFling: $event1 $event2")
+    Log.e(TAG, "onFling: ${event1.toString()} ${event2.toString()}")
     return true
   }
 
   override fun onLongPress(event: MotionEvent) {
-    Log.e(TAG, "onLongPress: $event")
+    Log.e(TAG, "onLongPress: ${event.toString()}")
   }
 
   override fun onScroll(
@@ -823,22 +732,17 @@ class RecognitionActivityFinal : AppCompatActivity(),
     distanceX: Float,
     distanceY: Float
   ): Boolean {
-    Log.e(TAG, "onScroll: $event1 $event2")
+    Log.e(TAG, "onScroll: ${event1.toString()} ${event2.toString()}")
     return true
   }
 
   override fun onShowPress(event: MotionEvent) {
-    Log.e(TAG, "onShowPress: $event")
+    Log.e(TAG, "onShowPress: ${event.toString()}")
   }
 
   override fun onSingleTapUp(event: MotionEvent): Boolean {
 
-//    val message: String = "A Single Tap Up Occurred!: ${event.toString()}"
-//    util.onShowMessage(message, context)
-//    Log.e("ATTENTION ATTENTION", message)
-    Log.e(TAG, "onSingleTapUp: $event")
-
-//    return onTap(event.rawX, event.rawY)
+    Log.e(TAG, "onSingleTapUp: ${event.toString()}")
 
     return true
     
@@ -847,15 +751,14 @@ class RecognitionActivityFinal : AppCompatActivity(),
   override fun onDoubleTap(event: MotionEvent): Boolean {
 
     val message: String = "A Double Tap Occurred!: ${event.toString()}"
-    //util.onShowMessage(message, context)
+
     Log.e("ATTENTION ATTENTION", message)
-//    Log.e(TAG, "onDoubleTap: $event")
 
     return onTap(event.rawX, event.rawY)
   }
 
   override fun onDoubleTapEvent(event: MotionEvent): Boolean {
-    Log.e(TAG, "onDoubleTapEvent: $event")
+    Log.e(TAG, "onDoubleTapEvent: ${event.toString()}")
     return true
   }
 
@@ -864,7 +767,7 @@ class RecognitionActivityFinal : AppCompatActivity(),
     val message: String = "A Single Tap Confirmed Occurred!: ${event.toString()}"
     //util.onShowMessage(message, context)
     Log.e("ATTENTION ATTENTION", message)
-    Log.e(TAG, "onSingleTapConfirmed: $event")
+    Log.e(TAG, "onSingleTapConfirmed: ${event.toString()}")
 
     return onTap(event.rawX, event.rawY)
 
@@ -902,8 +805,6 @@ class RecognitionActivityFinal : AppCompatActivity(),
 
   override fun onBackPressed() {
 
-    // code here to show dialog
-
     camera.close()
     cameraSource?.clearProcessor()
 
@@ -917,7 +818,7 @@ class RecognitionActivityFinal : AppCompatActivity(),
     graphicOverlay = null
     previewView = null
 
-    super.onBackPressed() // optional depending on your needs
+    super.onBackPressed()
 
   }
 
@@ -940,7 +841,6 @@ class RecognitionActivityFinal : AppCompatActivity(),
 
           view: View ->
 
-        // Menu for selecting either: a) take new photo b) select from existing
         val popup = PopupMenu(this@RecognitionActivityFinal, view)
         popup.setOnMenuItemClickListener { menuItem: MenuItem ->
 
@@ -992,13 +892,6 @@ class RecognitionActivityFinal : AppCompatActivity(),
 
     createCameraSource(selectedMode)
 
-//    if (allPermissionsGranted()) {
-//      createCameraSource(selectedMode)
-//    }
-//    else {
-//      runtimePermissions
-//    }
-
     snapCamera.setOnClickListener {
 
       takePicture()
@@ -1008,39 +901,20 @@ class RecognitionActivityFinal : AppCompatActivity(),
       selectImageButton.visibility = View.GONE
       processButton.visibility = View.VISIBLE
 
-
-//      val message: String = "Camera Clicked"
-//      util.onShowMessage(message, this, it)
     }
 
     takeAnother.setOnClickListener {
 
       camera.close()
       cameraSource?.clearProcessor()
-//      cameraSource?.camera?.stopPreview()
-//      cameraSource?.camera?.setPreviewCallback(null)
-//      cameraSource?.camera?.release()
-//      cameraSource?.release()
+
       camera.visibility = View.GONE
-//      camera.removeAllViews()
-//      camera.removeCameraListener()
 
       snapCamera.visibility = View.VISIBLE
       takeAnother.visibility = View.GONE
       selectImageButton.visibility = View.VISIBLE
       processButton.visibility = View.GONE
 
-//      previewView?.visibility = View.GONE
-//      previewView?.clearAnimation()
-//      previewView?.clearFocus()
-//      previewView?.cameraSource?.release()
-//      previewView?.release()
-
-//      previewView?.cameraSource?.camera?.stopPreview()
-//      previewView?.cameraSource?.camera?.setPreviewCallback(null)
-//      previewView?.cameraSource?.camera?.release()
-//      previewView?.stop()
-//      previewView?.release()
       previewView?.visibility = View.GONE
 
       preview?.clearAnimation()
@@ -1054,22 +928,11 @@ class RecognitionActivityFinal : AppCompatActivity(),
       graphicOverlay = null
       previewView = null
 
-//      createCameraSource(selectedMode)
-//      startCameraSource()
-//      createImageProcessor()
-//      tryReloadAndDetectInImage()
-
-//        recreate()
       finish()
 
-//      requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
       Timer().schedule(1000){
         startActivity(intent)
-//        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
       }
-
-//      previewView?.release()
-//      startCameraSource()
 
     }
 
@@ -1080,13 +943,7 @@ class RecognitionActivityFinal : AppCompatActivity(),
     selectImageButton.visibility = View.VISIBLE
     processButton.visibility = View.GONE
 
-//    gestureDetector = GestureDetector(this, CaptureGestureListener())
-
-
-    // GestureDetector.OnGestureListener
     mDetector = GestureDetectorCompat(this, this)
-    // Set the gesture detector as the double tap
-    // listener.
     mDetector.setOnDoubleTapListener(this)
 
     CameraLogger.setLogLevel(CameraLogger.LEVEL_VERBOSE)
@@ -1206,62 +1063,6 @@ class RecognitionActivityFinal : AppCompatActivity(),
 
     }
 
-//    val group = controlPanel.getChildAt(0) as ViewGroup
-
-//    val options: List<Option<*>> = listOf(
-//      // Layout
-//      Option.Width(), Option.Height(),
-//      // Engine and preview
-//      Option.Mode(), Option.Engine(), Option.Preview(),
-//      // Some controls
-//      Option.Flash(), Option.WhiteBalance(), Option.Hdr(),
-//      Option.PictureMetering(), Option.PictureSnapshotMetering(),
-//      Option.PictureFormat(),
-//      // Video recording
-//      Option.PreviewFrameRate(), Option.VideoCodec(), Option.Audio(), Option.AudioCodec(),
-//      // Gestures
-//      Option.Pinch(), Option.HorizontalScroll(), Option.VerticalScroll(),
-//      Option.Tap(), Option.LongTap(),
-////      // Watermarks
-////      Option.OverlayInPreview(watermark),
-////      Option.OverlayInPictureSnapshot(watermark),
-////      Option.OverlayInVideoSnapshot(watermark),
-//      // Frame Processing
-//      Option.FrameProcessingFormat(),
-//      // Other
-//      Option.Grid(), Option.GridColor(), Option.UseDeviceOrientation()
-//    )
-
-//    val dividers = listOf(
-//      // Layout
-//      false, true,
-//      // Engine and preview
-//      false, false, true,
-//      // Some controls
-//      false, false, false, false, false, true,
-//      // Video recording
-//      false, false, false, true,
-//      // Gestures
-//      false, false, false, false, true,
-//      // Watermarks
-//      false, false, true,
-//      // Frame Processing
-//      true,
-//      // Other
-//      false, false, true
-//    )
-
-//    for (i in options.indices) {
-//      val view = OptionView<Any>(this)
-//      view.setOption(options[i] as Option<Any>, this)
-//      view.setHasDivider(dividers[i])
-//      group.addView(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-//    }
-
-//    controlPanel.viewTreeObserver.addOnGlobalLayoutListener {
-//      BottomSheetBehavior.from(controlPanel).state = BottomSheetBehavior.STATE_HIDDEN
-//    }
-
     processButton.setOnClickListener {
 
       process()
@@ -1273,7 +1074,6 @@ class RecognitionActivityFinal : AppCompatActivity(),
 //  TODO-------------------------------------After Lekweuwa-----------------------------------------
 //  TODO--------------------------------------------------------------------------------------------
 //  TODO--------------------------------------------------------------------------------------------
-
 
     populateFeatureSelector()
     populateSizeSelector()
@@ -1300,7 +1100,6 @@ class RecognitionActivityFinal : AppCompatActivity(),
         }
       })
 
-//    val settingsButton = findViewById<ImageView>(R.id.live_settings_button)
     live_settings_ll.setOnClickListener {
 
       val intent =
@@ -1320,8 +1119,6 @@ class RecognitionActivityFinal : AppCompatActivity(),
     Log.e(TAG, "onResume")
     createImageProcessor()
     tryReloadAndDetectInImage()
-//    createCameraSource(selectedMode)
-//    startCameraSource()
   }
 
   private fun populateFeatureSelector() {
@@ -1341,13 +1138,10 @@ class RecognitionActivityFinal : AppCompatActivity(),
 //    options.add(IMAGE_LABELING_CUSTOM)
 //    options.add(CUSTOM_AUTOML_LABELING)
 
-    // Creating adapter for featureSpinner
     val dataAdapter = ArrayAdapter(this, R.layout.vision_spinner_style, options)
 
-    // Drop down layout style - list view with radio button
     dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
-    // attaching data adapter to spinner
     featureSpinner.adapter = dataAdapter
 
     featureSpinner.onItemSelectedListener = object : OnItemSelectedListener {
@@ -1363,19 +1157,9 @@ class RecognitionActivityFinal : AppCompatActivity(),
 
           selectedMode = parentView.getItemAtPosition(pos).toString()
           Log.e(TAG, "Selected mode: $selectedMode")
-//          previewView?.stop()
-//          recreate()
 
           createCameraSource(selectedMode)
           startCameraSource()
-
-//          if (allPermissionsGranted()) {
-//            createCameraSource(selectedMode)
-//            startCameraSource()
-//          }
-//          else {
-//            runtimePermissions
-//          }
 
           createImageProcessor()
           tryReloadAndDetectInImage()
@@ -1397,12 +1181,12 @@ class RecognitionActivityFinal : AppCompatActivity(),
     options.add(SIZE_SCREEN)
     options.add(SIZE_1024_768)
     options.add(SIZE_640_480)
-    // Creating adapter for featureSpinner
+
     val dataAdapter =
       ArrayAdapter(this, R.layout.vision_spinner_style, options)
-    // Drop down layout style - list view with radio button
+
     dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-    // attaching data adapter to spinner
+
     sizeSpinner.adapter = dataAdapter
     sizeSpinner.onItemSelectedListener = object : OnItemSelectedListener {
       override fun onItemSelected(
@@ -1447,7 +1231,8 @@ class RecognitionActivityFinal : AppCompatActivity(),
 
   }
 
-  private fun startCameraIntentForResult() { // Clean up last time's image
+  private fun startCameraIntentForResult() {
+
     imageUri = null
     preview!!.setImageBitmap(null)
     val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
@@ -1457,11 +1242,13 @@ class RecognitionActivityFinal : AppCompatActivity(),
       values.put(MediaStore.Images.Media.DESCRIPTION, "From Camera")
       imageUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
       takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
+
       startActivityForResult(
         takePictureIntent,
-        REQUEST_IMAGE_CAPTURE
-      )
+        REQUEST_IMAGE_CAPTURE)
+
     }
+
   }
 
   private fun startChooseImageIntentForResult() {
@@ -1482,13 +1269,11 @@ class RecognitionActivityFinal : AppCompatActivity(),
 
     if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
 
-//      createImageProcessor()
       tryReloadAndDetectInImage()
 
-    } else if (requestCode == REQUEST_CHOOSE_IMAGE && resultCode == Activity.RESULT_OK) {
-      // In this case, imageUri is returned by the chooser, save it.
+    }
+    else if (requestCode == REQUEST_CHOOSE_IMAGE && resultCode == Activity.RESULT_OK) {
 
-//      createImageProcessor()
       imageUri = data!!.data
       tryReloadAndDetectInImage()
 
@@ -1526,14 +1311,12 @@ class RecognitionActivityFinal : AppCompatActivity(),
               callback(bitmap)
             }
 
-            // possible to handle other result codes ...
           }, Handler()
         )
 
       }
       catch (e: IllegalArgumentException) {
 
-        // PixelCopy may throw IllegalArgumentException, make sure to handle it
         e.printStackTrace()
 
       }
@@ -1546,14 +1329,11 @@ class RecognitionActivityFinal : AppCompatActivity(),
 
   private fun setBitmap(scale: Boolean) {
 
-//               Get the dimensions of the image view
     val targetedSize = targetedWidthHeight
 
-    // Determine how much to scale down the image
     val scaleFactor = max(
       imageBitmap.width.toFloat() / targetedSize.first.toFloat(),
-      imageBitmap.height.toFloat() / targetedSize.second.toFloat()
-    )
+      imageBitmap.height.toFloat() / targetedSize.second.toFloat())
 
     val resizedBitmap = Bitmap.createScaledBitmap(
       imageBitmap,
@@ -1561,7 +1341,6 @@ class RecognitionActivityFinal : AppCompatActivity(),
       (imageBitmap.height / scaleFactor).toInt(),
       true
     )
-
 
     val height = context.resources.displayMetrics.heightPixels
     val width = context.resources.displayMetrics.widthPixels + 80
@@ -1594,9 +1373,8 @@ class RecognitionActivityFinal : AppCompatActivity(),
         graphicOverlay!!
           .setImageSourceInfo(
             reSized.width,
-            reSized.height, /* isFlipped= */
-            false
-          )
+            reSized.height,
+            false)
 
         imageProcessor!!.processBitmap(reSized, graphicOverlay)
 
@@ -1605,9 +1383,8 @@ class RecognitionActivityFinal : AppCompatActivity(),
 
         graphicOverlay!!.setImageSourceInfo(
           resizedBitmap.width,
-          resizedBitmap.height, /* isFlipped= */
-          false
-        )
+          resizedBitmap.height,
+          false)
 
         imageProcessor!!.processBitmap(resizedBitmap, graphicOverlay)
 
@@ -1635,7 +1412,6 @@ class RecognitionActivityFinal : AppCompatActivity(),
         return
       }
 
-      // UI layout has not finished yet, will reload once it's ready.
       if (SIZE_SCREEN == selectedSize && imageMaxWidth == 0) {
 
         Log.e("ATTENTION ATTENTION", "Is this the source of all my problems 2?")
@@ -1650,14 +1426,10 @@ class RecognitionActivityFinal : AppCompatActivity(),
 //  TODO--------------------------------------------------------------------------------------------
 //  TODO--------------------------------------------------------------------------------------------
 
-      // Clear the overlay first
       graphicOverlay!!.clear()
 
 
       if (didTakePicture) {
-
-//        val message: String = "Picture Taken Camera Clicked"
-//        util.onShowMessage(message, this)
 
         preview?.visibility = View.VISIBLE
         previewView?.visibility = View.INVISIBLE
@@ -1672,39 +1444,16 @@ class RecognitionActivityFinal : AppCompatActivity(),
 
         setBitmap(false)
 
-        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-
-          getBitmapFromView(previewView!!, this) {
-
-            imageBitmap = it
-
-            Log.e(TAG, "Build.VERSION.SDK_INT >= Build.VERSION_CODES.O: getBitmapFromView ran")
-
-            setBitmap(false)
-
-          }
-
-        }
-        else {
-          previewView?.isDrawingCacheEnabled = true
-          imageBitmap = Bitmap.createBitmap(previewView?.drawingCache!!)
-          previewView?.isDrawingCacheEnabled = false
-          setBitmap(true)
-        }*/
-
-
-
-//          BitmapFactory.decodeByteArray(pictureByteArray, 0, pictureByteArray!!.size)
       }
       else {
-//        val message: String = "Picture Chosen"
-//        util.onShowMessage(message, this)
+
         previewView?.stop()
         previewView?.release()
         previewView?.visibility = View.GONE
         preview?.visibility = View.VISIBLE
         imageBitmap = BitmapUtils.getBitmapFromContentUri(contentResolver, imageUri) ?:return
         setBitmap(true)
+
       }
 
 
@@ -1889,41 +1638,26 @@ class RecognitionActivityFinal : AppCompatActivity(),
   }
 
   fun getResizedBitmap(bm: Bitmap, newHeight: Int, newWidth: Int): Bitmap? {
+
     val width = bm.width
     val height = bm.height
     val scaleWidth = newWidth.toFloat() / width
     val scaleHeight = newHeight.toFloat() / height
 
-    // CREATE A MATRIX FOR THE MANIPULATION
     val matrix = Matrix()
 
-    // RESIZE THE BIT MAP
     matrix.postScale(scaleWidth, scaleHeight)
 
-    // RECREATE THE NEW BITMAP
     return Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false)
 
   }
 
   private inner class Listener : CameraListener() {
 
-    override fun onCameraOpened(options: CameraOptions) {
-
-
-      // TODO Might want to turn this off
-//      val group = controlPanel.getChildAt(0) as ViewGroup
-//
-//      for (i in 0 until group.childCount) {
-//        val view = group.getChildAt(i) as OptionView<*>
-//        view.onCameraOpened(camera, options)
-//      }
-
-
-    }
+    override fun onCameraOpened(options: CameraOptions) {}
 
     override fun onCameraError(exception: CameraException) {
       super.onCameraError(exception)
-//      message("Got CameraException #" + exception.reason, true)
     }
 
     override fun onPictureTaken(result: PictureResult) {
@@ -1937,23 +1671,9 @@ class RecognitionActivityFinal : AppCompatActivity(),
       controlLayout?.visibility = View.VISIBLE
 
 
-      // This can happen if picture was taken with a gesture.
       val callbackTime = System.currentTimeMillis()
 
-//      if (captureTime == 0L) captureTime = callbackTime - 300
-//      LOG.w("onPictureTaken called! Launching activity. Delay:", callbackTime - captureTime)
-//      PicturePreviewActivity.pictureResult = result
-//      val intent = Intent(context, PicturePreviewActivity::class.java)
-//      intent.putExtra("delay", callbackTime - captureTime)
-//      startActivity(intent)
-
       Log.e("ATTENTION ATTENTION", "onPictureTaken called!")
-
-      /*BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inJustDecodeBounds = true;
-            BitmapFactory.decodeByteArray(result.getData(), 0, result.getData().length, options);*/
-
-      //result.toBitmap(1000, 1000, new BitmapCallback() {
 
       result.toBitmap {
 
@@ -1971,10 +1691,9 @@ class RecognitionActivityFinal : AppCompatActivity(),
 
         val myFile = "$currentTime.jpg"
 
-        val file = File(
-          context.getExternalFilesDir(null).toString() +
-                  File.separator + "Recharge Folder" + "/" + myFile
-        )
+        val file =
+          File(context.getExternalFilesDir(null).toString() +
+                  File.separator + "Recharge Folder" + "/" + myFile)
 
         try {
           save(result.data, file)
@@ -1987,7 +1706,6 @@ class RecognitionActivityFinal : AppCompatActivity(),
         val width = context.resources.displayMetrics.widthPixels
 
         imageBitmap = getResizedBitmap(bitmap!!, height, width)!!
-//        imageBitmap = bitmap!!
 
         createImageProcessor()
         tryReloadAndDetectInImage()
@@ -2012,7 +1730,6 @@ class RecognitionActivityFinal : AppCompatActivity(),
 
     override fun onVideoRecordingEnd() {
       super.onVideoRecordingEnd()
-//      message("Video taken. Processing...", false)
       LOG.w("onVideoRecordingEnd!")
     }
 
@@ -2022,12 +1739,10 @@ class RecognitionActivityFinal : AppCompatActivity(),
       fingers: Array<PointF>?
     ) {
       super.onExposureCorrectionChanged(newValue, bounds, fingers)
-//      message("Exposure correction:$newValue", false)
     }
 
     override fun onZoomChanged(newValue: Float, bounds: FloatArray, fingers: Array<PointF>?) {
       super.onZoomChanged(newValue, bounds, fingers)
-//      message("Zoom:$newValue", false)
     }
 
   }
@@ -2082,25 +1797,23 @@ class RecognitionActivityFinal : AppCompatActivity(),
   }
 
   private fun changeCurrentFilter() {
+
     if (camera.preview != Preview.GL_SURFACE) return run {
       message("Filters are supported only when preview is Preview.GL_SURFACE.", true)
     }
+
     if (currentFilter < allFilters.size - 1) {
       currentFilter++
-    } else {
+    }
+    else {
       currentFilter = 0
     }
+
     val filter = allFilters[currentFilter]
     message(filter.toString(), false)
 
-    // Normal behavior:
     camera.filter = filter.newInstance()
 
-    // To test MultiFilter:
-    // DuotoneFilter duotone = new DuotoneFilter();
-    // duotone.setFirstColor(Color.RED);
-    // duotone.setSecondColor(Color.GREEN);
-    // camera.setFilter(new MultiFilter(duotone, filter.newInstance()));
   }
 
 
@@ -2158,11 +1871,7 @@ class RecognitionActivityFinal : AppCompatActivity(),
     }
 
 
-
-
   }
-
-
 
 
 

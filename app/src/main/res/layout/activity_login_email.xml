@@ -3,37 +3,21 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.app.ej.cs.ui.account.LoginActivity"
+    tools:context="com.app.ej.cs.ui.account.LoginActivityEmail"
     android:id="@+id/layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/login_background_color"
     style="@style/LoginAppTheme" >
 
-    <!--<ImageView
-        android:id="@+id/header"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:contentDescription="@string/header"
-        android:scaleType="fitStart"
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/header"
-        android:background="@color/login_background_color" />-->
-
-    <ScrollView
-        android:id="@+id/main"
-        android:background="@color/login_background_color"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_marginTop="0dp"
-        android:overScrollMode="never"
-        android:scrollbars="none"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -63,65 +47,8 @@
             </FrameLayout>
 
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_marginTop="20dp">
-
-                <TextView
-                    android:id="@+id/hello_there"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:fontFamily="@font/login"
-                    android:text="@string/hello_there"
-                    android:textColor="@color/login_text_color"
-                    android:textSize="30sp"
-                    tools:ignore="MissingPrefix" />
-
-            </FrameLayout>
-
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/welcome_back"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:fontFamily="@font/login"
-                    android:text="@string/welcome_back"
-                    android:textColor="@color/login_text_color"
-                    android:textSize="30sp"
-                    tools:ignore="MissingPrefix" />
-
-            </FrameLayout>
-
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/to_recharge"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:fontFamily="@font/login"
-                    android:text="@string/to_recharge"
-                    android:textColor="@color/login_text_color"
-                    android:textSize="30sp"
-                    tools:ignore="MissingPrefix" />
-
-            </FrameLayout>
-
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/h_phone"
+                android:id="@+id/h_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -132,15 +59,14 @@
                 app:hintTextColor="@color/login_edit_text_color"
                 app:boxStrokeColor="@color/login_edit_text_color"
                 app:boxBackgroundColor="@color/login_background_color"
-                android:hint="@string/enter_number"
+                android:hint="@string/enter_email"
                 style="@style/TextLabelLogin">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/phoneEt"
+                    android:id="@+id/emailEt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/h_email"
-                    android:inputType="number"
+                    android:inputType="text"
                     android:shadowColor="@color/login_edit_text_color"
                     android:textColorHint="@color/login_edit_text_color"
                     android:textColor="@color/login_edit_text_color"
@@ -151,7 +77,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/h_verification_code"
+                android:id="@+id/h_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="0dp"
@@ -163,14 +89,14 @@
                 app:boxStrokeColor="@color/login_edit_text_color"
                 app:boxBackgroundColor="@color/login_background_color"
                 style="@style/TextLabelLogin"
-                android:hint="@string/verification_code">
+                android:hint="@string/enter_password">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/verification_codeEt"
+                    android:id="@+id/passwordEt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/h_email"
-                    android:inputType="number"
+                    android:inputType="textPassword"
                     android:shadowColor="@color/login_edit_text_color"
                     android:textColorHint="@color/login_edit_text_color"
                     android:textColor="@color/login_edit_text_color"
@@ -180,40 +106,10 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/send_verify_button"
-                android:layout_width="wrap_content"
-                android:layout_height="55dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
-                android:theme="@style/AppTheme"
-                android:padding="10dp"
-                android:text="@string/send_code"
-                android:textAllCaps="false"
-                android:textSize="16sp"
-                app:backgroundTint="@color/colorPrimary"
-                app:iconPadding="2dp"
-                app:cornerRadius="8dp" />
+
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/resend_verify_button"
-                android:layout_width="wrap_content"
-                android:layout_height="55dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
-                android:theme="@style/AppTheme"
-                android:padding="10dp"
-                android:text="@string/resend_code"
-                android:textAllCaps="false"
-                android:textSize="16sp"
-                app:backgroundTint="@color/colorPrimary"
-                app:iconPadding="2dp"
-                app:cornerRadius="8dp" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/verify_button"
+                android:id="@+id/sign_in_email_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="55dp"
                 android:layout_gravity="center"
@@ -228,8 +124,8 @@
                 app:iconPadding="2dp"
                 app:cornerRadius="8dp" />
 
-            <!--<com.google.android.material.button.MaterialButton
-                android:id="@+id/register_button"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/register_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="55dp"
                 android:layout_gravity="center"
@@ -237,10 +133,28 @@
                 style="@style/TextLabelRegister"
                 android:padding="10dp"
                 android:text="@string/new_here"
+                android:textColor="@color/white"
                 android:textAllCaps="false"
                 android:textSize="16sp"
                 app:iconPadding="2dp"
-                app:cornerRadius="8dp" />-->
+                app:cornerRadius="8dp" />
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/forgot_password_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="55dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                style="@style/TextLabelRegister"
+                android:padding="10dp"
+                app:backgroundTint="@color/colorPrimary"
+                android:text="@string/forgot_password"
+                android:textColor="@color/white"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                app:iconPadding="2dp"
+                app:cornerRadius="8dp" />
 
             <TextView
                 android:id="@+id/detail"
@@ -253,7 +167,7 @@
                 android:textColor="@color/green"/>
 
             <ProgressBar
-                android:id="@+id/mProgressBar"
+                android:id="@+id/progress_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
@@ -261,7 +175,8 @@
 
         </LinearLayout>
 
-    </ScrollView>
+
+    </FrameLayout>
 
 
 

@@ -12,7 +12,6 @@ import android.content.IntentSender.SendIntentException
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.PERMISSION_GRANTED
-import android.database.Cursor
 import android.location.*
 import android.location.LocationListener
 import android.net.Uri
@@ -23,7 +22,6 @@ import android.telephony.SubscriptionInfo
 import android.telephony.SubscriptionManager
 import android.transition.Fade
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
@@ -870,7 +868,7 @@ class RegisterDetailsActivity() : AppCompatActivity(),
     }
 
     private fun returnToLogin(context: Context){
-        val intent: Intent = Intent(context, LoginActivity::class.java)
+        val intent: Intent = Intent(context, LoginActivityMain::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)
@@ -966,9 +964,7 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
         userMainRecyclerView.isNestedScrollingEnabled = false
 
-        editFragmentUserMainViewAdapter = EditUserMainViewAdapter(userMainListModel, firebaseUser!!) {
-            val message: String = "${it?.name}@${it?.phone} Clicked"
-        }
+        editFragmentUserMainViewAdapter = EditUserMainViewAdapter(userMainListModel, this, firebaseUser) {}
 
         userMainRecyclerView.adapter = editFragmentUserMainViewAdapter
 
@@ -1043,6 +1039,10 @@ class RegisterDetailsActivity() : AppCompatActivity(),
     private fun initModels() {
 
         created = System.currentTimeMillis().toString()
+
+        if (userId == null) {
+            userId = ""
+        }
 
         val newUser1: User =
 
@@ -1174,7 +1174,7 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
         if (auth.currentUser == null) {
 
-            goToLogin()
+            //goToLogin()
 
         }
         else {
@@ -1185,7 +1185,7 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
         if (firebaseUser == null) {
 
-            goToLogin()
+            //goToLogin()
 
         }
         else {
@@ -1198,7 +1198,7 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
         rda_coordinatorLayout = findViewById<View>(R.id.rda_coordinatorLayout) as CoordinatorLayout
 
-        mProgressBar         = findViewById<ProgressBar>(R.id.mProgressBar) as ProgressBar
+        mProgressBar         = findViewById<ProgressBar>(R.id.progress_bar) as ProgressBar
         mProgressBarLocation = findViewById<ProgressBar>(R.id.mLocationProgressBar) as ProgressBar
 
         mProgressBar.visibility         = View.GONE
@@ -1413,41 +1413,53 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
     private lateinit var  mSettingsClient: SettingsClient
     private lateinit var  mLocationSettingsRequest: LocationSettingsRequest
-    private fun displayLocationSettingsRequest(){
+
+    private fun displayLocationSettingsRequest() {
+
         val locationRequest: LocationRequest = LocationRequest.create()
         locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         locationRequest.interval = 10000
         locationRequest.fastestInterval = (10000 / 2).toLong()
+
         val builder: LocationSettingsRequest.Builder = LocationSettingsRequest.Builder().addLocationRequest(
                 locationRequest
         )
+
         builder.setAlwaysShow(true)
         mLocationSettingsRequest = builder.build()
         mSettingsClient = LocationServices.getSettingsClient(context)
 
          mSettingsClient.checkLocationSettings(mLocationSettingsRequest)
-            .addOnSuccessListener {}
-            .addOnFailureListener { e ->
+            .addOnSuccessListener {
+
+            }
+            .addOnFailureListener {
+
+                    e ->
 
                 when ((e as ApiException).statusCode) {
 
-                    LocationSettingsStatusCodes.RESOLUTION_REQUIRED ->
+//                    LocationSettingsStatusCodes.RESOLUTION_REQUIRED ->
+                        LocationSettingsStatusCodes.RESOLUTION_REQUIRED ->
 
                         try {
+
                             val rae: ResolvableApiException = e as ResolvableApiException
+
                             rae.startResolutionForResult(
                                 this@RegisterDetailsActivity,
                                     REQUEST_CHECK_SETTINGS)
 
-                        } catch (sie: SendIntentException) {
+                        }
+                        catch (sie: SendIntentException) {
+
                             Log.e("GPS", "Unable to execute request.")
+
                         }
 
                     LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE ->
-                        Log.e(
-                                "GPS",
-                                "Location settings are inadequate, and cannot be fixed here. Fix in Settings."
-                        )
+
+                        Log.e("GPS", "Location settings are inadequate, and cannot be fixed here. Fix in Settings.")
 
                 }
             }
@@ -1456,7 +1468,7 @@ class RegisterDetailsActivity() : AppCompatActivity(),
             }
     }
 
-    private fun openGpsEnableSetting(){
+    private fun openGpsEnableSetting() {
         val intent: Intent = Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS)
         startActivityForResult(intent, REQUEST_ENABLE_GPS)
     }
@@ -1464,23 +1476,31 @@ class RegisterDetailsActivity() : AppCompatActivity(),
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?){
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == REQUEST_CHECK_SETTINGS){
+        if (requestCode == REQUEST_CHECK_SETTINGS) {
+
             when(resultCode){
                 Activity.RESULT_OK ->
+
                     getLocationPoints()
+
                 Activity.RESULT_CANCELED -> {
+
                     Log.e("GPS", "User denied to access location")
-                    openGpsEnableSetting()
+
+
                 }}
 
         }
         else if (requestCode == REQUEST_ENABLE_GPS) {
+
             locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
             val isGpsEnabled: Boolean = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-            if (!isGpsEnabled){
-                openGpsEnableSetting()
-            }
-            else { }
+
+//            if (!isGpsEnabled){
+//                openGpsEnableSetting()
+//            }
+
         }
         else if (requestCode >= PICK_CONTACT_REQUEST) {
 
@@ -1538,19 +1558,18 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
         builder.setMessage("Your Location seems to be disabled, you have to enable it (for a one time check) in order to register.")
             .setCancelable(false)
-            .setPositiveButton("Yes") { dialog, id ->
+            .setPositiveButton("Proceed") { dialog, id ->
                 dialog.dismiss()
-                displayLocationSettingsRequest()
+//                displayLocationSettingsRequest()
+                openGpsEnableSetting()
             }
             .setNegativeButton(
-                    "No"
+                    "Cancel"
             ) { dialog, id -> dialog.cancel() }
 
         val  alert: androidx.appcompat.app.AlertDialog = builder.create()
 
         alert.show()
-
-
 
     }
 
@@ -1833,9 +1852,11 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
     private lateinit var created: String
 
+    private lateinit var sharedPref: SharedPreferences
+
     private fun registerUser() {
 
-        val sharedPref = context.getSharedPreferences(PREFNAME, Context.MODE_PRIVATE)
+        sharedPref = context.getSharedPreferences(PREFNAME, Context.MODE_PRIVATE)
 
         allInfoJsonSaved   = sharedPref.getString("allInfoSaved", "allInfoJsonSaved").toString()
         allInfoJsonUnsaved = sharedPref.getString("allInfoUnsaved", allInfoJsonSaved).toString()
@@ -1853,265 +1874,66 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
             val user = auth.currentUser
 
-            if (user != null) userId = user.uid
+            if (user == null) {
 
-            if (userAndFriendInfoUnsaved.usersList.size > 0) {
+                var password = sharedPref.getString("password", "empty")!!
+                var reenterPassword = sharedPref.getString("password2", "empty")!!
 
-                userAndFriendInfoUnsaved.usersList[0].created = created
-                userAndFriendInfoUnsaved.usersList[0].uid = userId!!
+                if (password != "empty" && reenterPassword != "empty") {
 
-            }
+                    if (password.length > 5 && reenterPassword.length > 5) {
 
-            if (userAndFriendInfoSaved.usersList.size > 0) {
+                        if (password == reenterPassword) {
 
-                userAndFriendInfoSaved.usersList[0].created = created
-                userAndFriendInfoSaved.usersList[0].uid = userId!!
+                            if (util.checkIfAllMandatoryExist(userAndFriendInfoUnsaved)) {
 
-            }
+                                val email: String = userAndFriendInfoUnsaved.usersList[0].email!!
 
-            if (userAndFriendInfoUnsaved.usersList.size > 1) {
+                                auth.createUserWithEmailAndPassword(email, password)
+                                    .addOnCompleteListener(this) {
 
-                userAndFriendInfoUnsaved.usersList[1].created = created
-                userAndFriendInfoUnsaved.usersList[1].uid = userId!!
+                                            task ->
 
-            }
+                                        if (task.isSuccessful) {
 
-            if (userAndFriendInfoSaved.usersList.size > 1) {
+                                            Log.e(TAG, "Create user with email successful")
 
+                                            val user = auth.currentUser
+                                            firebaseUser = user
+                                            userId = user?.uid
+                                            actualSignUp()
 
-                userAndFriendInfoSaved.usersList[1].uid = userId!!
-                userAndFriendInfoSaved.usersList[1].created = created
+                                        }
+                                        else {
 
-            }
+                                            Log.e(TAG, "Create user with email failed", task.exception)
 
-            if (util.checkIfAllMandatoryExist(userAndFriendInfoUnsaved)) {
+                                            Toast.makeText(context, "Authentication failed.",
+                                                Toast.LENGTH_SHORT).show()
 
-                Log.w("ATTENTION ATTENTION", "registerUser() ran.")
 
-                val editor = sharedPref.edit()
+                                        }
 
-                if (registerCount == 0) {
+                                    }
 
-                    var phone2: String?
-                    var network2: String?
 
-                    if (userAndFriendInfoUnsaved.usersList.size > 1 &&
-                        userAndFriendInfoUnsaved.usersList[1].phone != null
-                        && userAndFriendInfoUnsaved.usersList[1].phone?.trim() != "") {
+                            }
+                            else {
 
-                        phone2   = userAndFriendInfoUnsaved.usersList[1].phone!!
-                        network2 = userAndFriendInfoUnsaved.usersList[1].network!!
+                                val message: String = "Fill out information in red to continue."
+                                util.onShowErrorMessageLong(message, this)
 
-                    }
-                    else {
-                        phone2   = null
-                        network2 = null
-                    }
+                            }
 
-                    if (
 
-                        longitude == null ||
-                        latitude == null ||
-                        address == null ||
-                        city == null ||
-                        statee == null ||
-                        country == null ||
-                        postalCode == null ||
-                        knownName == null
-
-                    ) {
-
-                        if (longitude == null) {
-                            longitude = 1.0
-                        }
-
-                        if (latitude == null) {
-                            latitude = 1.0
-                        }
-
-                        if (address == null) {
-                            address = "Unknown"
-                        }
-
-                        if (city == null) {
-                            city = "Unknown"
-                        }
-
-                        if (statee == null) {
-                            statee = "Unknown"
-                        }
-
-                        if (country == null) {
-                            country = "Unknown"
-                        }
-
-                        if (postalCode == null) {
-                            postalCode = "Unknown"
-                        }
-
-                        if (knownName == null) {
-                            knownName = "Unknown"
-                        }
-
-                    }
-
-                    val locationUser: LocationUser =
-
-                        LocationUser(
-                            uid = userId!!,
-                            created = created,
-                            name = userAndFriendInfoUnsaved.usersList[0].name!!,
-                            email = userAndFriendInfoUnsaved.usersList[0].email!!,
-                            phone = userAndFriendInfoUnsaved.usersList[0].phone!!,
-                            network = userAndFriendInfoUnsaved.usersList[0].network!!,
-                            phone2 = phone2,
-                            network2 = network2,
-                            longitude = longitude,
-                            latitude = latitude,
-                            address = address!!,
-                            city = city!!,
-                            state = statee!!,
-                            country = country!!,
-                            postalCode = postalCode!!,
-                            knownName = knownName!!,
-                        )
-
-                    allInfoJsonSaved = Gson().toJson(userAndFriendInfoUnsaved)
-                    allInfoJsonUnsaved = Gson().toJson(userAndFriendInfoUnsaved)
-
-                    db
-                        .collection("locations")
-                        .document(userId!!)
-                        .set(locationUser)
-                        .addOnSuccessListener {
-
-                            db
-                                .collection("users")
-                                .document(userId!!)
-                                .set(userAndFriendInfoUnsaved)
-                                .addOnSuccessListener {
-
-                                    email = userAndFriendInfoUnsaved.usersList[0].email
-                                    currentEmail = email!!
-
-                                    firebaseUser!!.updateEmail(email!!)
-                                        .addOnSuccessListener(OnSuccessListener<Void?> {
-
-                                            firebaseUser!!.sendEmailVerification()
-                                                .addOnSuccessListener(OnSuccessListener<Void?> {
-
-                                                    val message: String = "Please go to email: $email and verify your email address to continue."
-
-                                                    val verifyEmailAlertDialogBuilder = AlertDialog.Builder(context, R.style.MyDialogTheme)
-
-                                                    verifyEmailAlertDialogBuilder.setTitle("Email Verification")
-                                                    verifyEmailAlertDialogBuilder.setMessage(message)
-
-                                                    verifyEmailAlertDialogBuilder.setPositiveButton("Ok") {
-
-                                                            dialogInterface, which ->
-
-                                                        dialogInterface.dismiss()
-
-                                                    }
-
-                                                    val verifyEmailAlertDialog: AlertDialog = verifyEmailAlertDialogBuilder.create()
-                                                    verifyEmailAlertDialog.setCancelable(false)
-                                                    verifyEmailAlertDialog.show()
-
-                                                    registerCount++
-
-                                                    runEmailCheck(editor)
-
-                                                })
-                                                .addOnFailureListener(OnFailureListener { })
-                                        })
-                                        .addOnFailureListener(OnFailureListener { e ->
-
-                                            mProgressBar.visibility = View.GONE
-                                            mProgressBarLocation.visibility = View.GONE
-
-
-                                            if (e.message != null) {
-
-                                                if (e.message!!.contains("This operation is sensitive")) {
-
-                                                    val message: String = "You took too long to register. Optional information (in gray) can be added after registration. Please log in again to register."
-
-                                                    val tookTooLongAlertDialogBuilder = AlertDialog.Builder(context, R.style.MyDialogTheme)
-
-                                                    tookTooLongAlertDialogBuilder.setTitle("Registration Timeout")
-                                                    tookTooLongAlertDialogBuilder.setMessage(message)
-
-                                                    tookTooLongAlertDialogBuilder.setPositiveButton("Ok") {
-
-                                                            dialogInterface, which ->
-
-                                                        goToLogin()
-
-                                                    }
-
-                                                    val tookTooLongAlertDialog: AlertDialog = tookTooLongAlertDialogBuilder.create()
-                                                    tookTooLongAlertDialog.setCancelable(false)
-                                                    tookTooLongAlertDialog.show()
-
-                                                }
-
-                                            }
-
-                                        })
-
-                                }
-                                .addOnFailureListener { e ->
-
-                                    mProgressBar.visibility = View.GONE
-                                    mProgressBarLocation.visibility = View.GONE
-
-                                    val message: String = "Error saving details: " + e.message
-                                    util.onShowErrorMessage(message, context)
-                                    Log.e(TAG, "Error saving", e)
-
-                                }
 
                         }
-                        .addOnFailureListener { e ->
+                        else {
 
-                            mProgressBar.visibility = View.GONE
-                            mProgressBarLocation.visibility = View.GONE
-
-                            val message: String = "Error saving details: " + e.message
-                            util.onShowErrorMessage(message, context)
-                            Log.e(TAG, "Error saving", e)
+                            val message: String = "Passwords do not match."
+                            util.onShowErrorMessageLong(message, this)
 
                         }
-
-                }
-                else {
-
-                    email = userAndFriendInfoUnsaved.usersList[0].email
-
-                    if (myFixedRateTimer != null) {
-                        myFixedRateTimer!!.cancel()
-                    }
-
-                    var message: String
-
-                    if (email!! != currentEmail) {
-
-                        registerCount = 0
-
-                        registerUser()
-
-                    }
-                    else {
-
-                        registerCount++
-
-                        message = "Please go to email: $email and verify your address to continue. Thank you."
-
-                        util.onShowMessage(message, context)
-
-                        runEmailCheck(editor)
 
                     }
 
@@ -2122,26 +1944,306 @@ class RegisterDetailsActivity() : AppCompatActivity(),
             }
             else {
 
-                if (userAndFriendInfoUnsaved.usersList[0].name == null  || userAndFriendInfoUnsaved.usersList[0].name  == "") {
+                userId = user.uid
 
-                    util.onShowErrorMessage("You must set name", context)
+                actualSignUp()
+
+
+            }
+
+
+
+        }
+
+    }
+
+    private fun actualSignUp() {
+
+        if (userAndFriendInfoUnsaved.usersList.size > 0) {
+
+            userAndFriendInfoUnsaved.usersList[0].created = created
+            userAndFriendInfoUnsaved.usersList[0].uid = userId!!
+
+        }
+
+        if (userAndFriendInfoSaved.usersList.size > 0) {
+
+            userAndFriendInfoSaved.usersList[0].created = created
+            userAndFriendInfoSaved.usersList[0].uid = userId!!
+
+        }
+
+        if (userAndFriendInfoUnsaved.usersList.size > 1) {
+
+            userAndFriendInfoUnsaved.usersList[1].created = created
+            userAndFriendInfoUnsaved.usersList[1].uid = userId!!
+
+        }
+
+        if (userAndFriendInfoSaved.usersList.size > 1) {
+
+
+            userAndFriendInfoSaved.usersList[1].uid = userId!!
+            userAndFriendInfoSaved.usersList[1].created = created
+
+        }
+
+        if (util.checkIfAllMandatoryExist(userAndFriendInfoUnsaved)) {
+
+            Log.w("ATTENTION ATTENTION", "registerUser() ran.")
+
+            val editor = sharedPref.edit()
+
+            if (registerCount == 0) {
+
+                var phone2: String?
+                var network2: String?
+
+                if (userAndFriendInfoUnsaved.usersList.size > 1 &&
+                    userAndFriendInfoUnsaved.usersList[1].phone != null
+                    && userAndFriendInfoUnsaved.usersList[1].phone?.trim() != "") {
+
+                    phone2   = userAndFriendInfoUnsaved.usersList[1].phone!!
+                    network2 = userAndFriendInfoUnsaved.usersList[1].network!!
 
                 }
-                else if (userAndFriendInfoUnsaved.usersList[0].phone == null || userAndFriendInfoUnsaved.usersList[0].phone == "") {
+                else {
+                    phone2   = null
+                    network2 = null
+                }
 
-                    util.onShowErrorMessage("You must set phone 1", context)
+                if (
+
+                    longitude == null ||
+                    latitude == null ||
+                    address == null ||
+                    city == null ||
+                    statee == null ||
+                    country == null ||
+                    postalCode == null ||
+                    knownName == null
+
+                ) {
+
+                    if (longitude == null) {
+                        longitude = 1.0
+                    }
+
+                    if (latitude == null) {
+                        latitude = 1.0
+                    }
+
+                    if (address == null) {
+                        address = "Unknown"
+                    }
+
+                    if (city == null) {
+                        city = "Unknown"
+                    }
+
+                    if (statee == null) {
+                        statee = "Unknown"
+                    }
+
+                    if (country == null) {
+                        country = "Unknown"
+                    }
+
+                    if (postalCode == null) {
+                        postalCode = "Unknown"
+                    }
+
+                    if (knownName == null) {
+                        knownName = "Unknown"
+                    }
 
                 }
-                else if (userAndFriendInfoUnsaved.usersList[0].network != null && userAndFriendInfoUnsaved.usersList[0].network != "") {
 
-                    util.onShowErrorMessage("You must set network 1", context)
+                val locationUser: LocationUser =
+
+                    LocationUser(
+                        uid = userId!!,
+                        created = created,
+                        name = userAndFriendInfoUnsaved.usersList[0].name!!,
+                        email = userAndFriendInfoUnsaved.usersList[0].email!!,
+                        phone = userAndFriendInfoUnsaved.usersList[0].phone!!,
+                        network = userAndFriendInfoUnsaved.usersList[0].network!!,
+                        phone2 = phone2,
+                        network2 = network2,
+                        longitude = longitude,
+                        latitude = latitude,
+                        address = address!!,
+                        city = city!!,
+                        state = statee!!,
+                        country = country!!,
+                        postalCode = postalCode!!,
+                        knownName = knownName!!,
+                    )
+
+                allInfoJsonSaved = Gson().toJson(userAndFriendInfoUnsaved)
+                allInfoJsonUnsaved = Gson().toJson(userAndFriendInfoUnsaved)
+
+                db
+                    .collection("locations")
+                    .document(userId!!)
+                    .set(locationUser)
+                    .addOnSuccessListener {
+
+                        db
+                            .collection("users")
+                            .document(userId!!)
+                            .set(userAndFriendInfoUnsaved)
+                            .addOnSuccessListener {
+
+                                email = userAndFriendInfoUnsaved.usersList[0].email
+                                currentEmail = email!!
+
+                                firebaseUser!!.updateEmail(email!!)
+                                    .addOnSuccessListener(OnSuccessListener<Void?> {
+
+                                        firebaseUser!!.sendEmailVerification()
+                                            .addOnSuccessListener(OnSuccessListener<Void?> {
+
+                                                val message: String = "Please go to email: $email and verify your email address to continue."
+
+                                                val verifyEmailAlertDialogBuilder = AlertDialog.Builder(context, R.style.MyDialogTheme)
+
+                                                verifyEmailAlertDialogBuilder.setTitle("Email Verification")
+                                                verifyEmailAlertDialogBuilder.setMessage(message)
+
+                                                verifyEmailAlertDialogBuilder.setPositiveButton("Ok") {
+
+                                                        dialogInterface, which ->
+
+                                                    dialogInterface.dismiss()
+
+                                                }
+
+                                                val verifyEmailAlertDialog: AlertDialog = verifyEmailAlertDialogBuilder.create()
+                                                verifyEmailAlertDialog.setCancelable(false)
+                                                verifyEmailAlertDialog.show()
+
+                                                registerCount++
+
+                                                runEmailCheck(editor)
+
+                                            })
+                                            .addOnFailureListener(OnFailureListener { })
+                                    })
+                                    .addOnFailureListener(OnFailureListener { e ->
+
+                                        mProgressBar.visibility = View.GONE
+                                        mProgressBarLocation.visibility = View.GONE
+
+
+                                        if (e.message != null) {
+
+                                            if (e.message!!.contains("This operation is sensitive")) {
+
+                                                val message: String = "You took too long to register. Optional information (in gray) can be added after registration. Please log in again to register."
+
+                                                val tookTooLongAlertDialogBuilder = AlertDialog.Builder(context, R.style.MyDialogTheme)
+
+                                                tookTooLongAlertDialogBuilder.setTitle("Registration Timeout")
+                                                tookTooLongAlertDialogBuilder.setMessage(message)
+
+                                                tookTooLongAlertDialogBuilder.setPositiveButton("Ok") {
+
+                                                        dialogInterface, which ->
+
+                                                    goToLogin()
+
+                                                }
+
+                                                val tookTooLongAlertDialog: AlertDialog = tookTooLongAlertDialogBuilder.create()
+                                                tookTooLongAlertDialog.setCancelable(false)
+                                                tookTooLongAlertDialog.show()
+
+                                            }
+
+                                        }
+
+                                    })
+
+                            }
+                            .addOnFailureListener { e ->
+
+                                mProgressBar.visibility = View.GONE
+                                mProgressBarLocation.visibility = View.GONE
+
+                                val message: String = "Error saving details: " + e.message
+                                util.onShowErrorMessage(message, context)
+                                Log.e(TAG, "Error saving", e)
+
+                            }
+
+                    }
+                    .addOnFailureListener { e ->
+
+                        mProgressBar.visibility = View.GONE
+                        mProgressBarLocation.visibility = View.GONE
+
+                        val message: String = "Error saving details: " + e.message
+                        util.onShowErrorMessage(message, context)
+                        Log.e(TAG, "Error saving", e)
+
+                    }
+
+            }
+            else {
+
+                email = userAndFriendInfoUnsaved.usersList[0].email
+
+                if (myFixedRateTimer != null) {
+                    myFixedRateTimer!!.cancel()
+                }
+
+                var message: String
+
+                if (email!! != currentEmail) {
+
+                    registerCount = 0
+
+                    registerUser()
 
                 }
-                else if (userAndFriendInfoUnsaved.usersList[0].email == null || userAndFriendInfoUnsaved.usersList[0].email == "") {
+                else {
 
-                    util.onShowErrorMessage("You must set email", context)
+                    registerCount++
+
+                    message = "Please go to email: $email and verify your address to continue. Thank you."
+
+                    util.onShowMessage(message, context)
+
+                    runEmailCheck(editor)
 
                 }
+
+            }
+
+
+
+        }
+        else {
+
+            if (userAndFriendInfoUnsaved.usersList[0].name == null  || userAndFriendInfoUnsaved.usersList[0].name  == "") {
+
+                util.onShowErrorMessage("You must set name", context)
+
+            }
+            else if (userAndFriendInfoUnsaved.usersList[0].phone == null || userAndFriendInfoUnsaved.usersList[0].phone == "") {
+
+                util.onShowErrorMessage("You must set phone 1", context)
+
+            }
+            else if (userAndFriendInfoUnsaved.usersList[0].network != null && userAndFriendInfoUnsaved.usersList[0].network != "") {
+
+                util.onShowErrorMessage("You must set network 1", context)
+
+            }
+            else if (userAndFriendInfoUnsaved.usersList[0].email == null || userAndFriendInfoUnsaved.usersList[0].email == "") {
+
+                util.onShowErrorMessage("You must set email", context)
 
             }
 
@@ -2293,7 +2395,7 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
     private fun goToLogin() {
 
-        val intent: Intent = Intent(context, LoginActivity::class.java)
+        val intent: Intent = Intent(context, LoginActivityMain::class.java)
         startActivity(intent)
         finish()
 
