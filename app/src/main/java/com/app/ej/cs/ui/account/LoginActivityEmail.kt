@@ -1,5 +1,6 @@
 package com.app.ej.cs.ui.account
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -84,6 +85,20 @@ class LoginActivityEmail : AppCompatActivity() {
 
   private lateinit var e164Number: String
 
+  override fun onBackPressed() {
+
+//    super.onBackPressed()
+
+    Log.e("ATTENTION ATTENTION", "LoginActivityEmail onBackPressed()")
+
+    val intent = Intent(context, LoginActivityMain::class.java)
+
+    startActivity(intent)
+
+    finish()
+
+  }
+
   fun showLoading() {
     mProgressBar.visibility = View.VISIBLE
   }
@@ -162,7 +177,10 @@ class LoginActivityEmail : AppCompatActivity() {
 
   private fun requestRegistration() {
 
+    Log.e("ATTENTION ATTENTION", "LoginActivityEmail requestRegistration()")
+
     RegisterActivity.startActivity(this@LoginActivityEmail)
+
     finish()
 
   }
@@ -230,8 +248,6 @@ class LoginActivityEmail : AppCompatActivity() {
 
   }
 
-
-
   private fun validateEmail(): Boolean {
 
     val email: String = emailEt.text!!.trim().toString()
@@ -271,6 +287,8 @@ class LoginActivityEmail : AppCompatActivity() {
 
   private fun goToMain() {
 
+    Log.e("ATTENTION ATTENTION", "LoginActivityEmail goToMain()")
+
     val i = Intent(this@LoginActivityEmail, MainActivity::class.java)
 
     startActivity(i)
@@ -279,12 +297,12 @@ class LoginActivityEmail : AppCompatActivity() {
 
   }
 
+  @SuppressLint("MissingPermission")
   private fun isOnline(context: Context) : Boolean {
 
     var result: Boolean = false
 
-    val cm =
-      context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
@@ -339,10 +357,12 @@ class LoginActivityEmail : AppCompatActivity() {
 
 
     }
+
     return false
 
   }
 
+  @SuppressLint("MissingPermission")
   private fun isConnected(context: Context): Boolean {
 
     val cm = context

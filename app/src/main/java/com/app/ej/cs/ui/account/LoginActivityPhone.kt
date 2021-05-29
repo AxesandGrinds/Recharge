@@ -1,5 +1,6 @@
 package com.app.ej.cs.ui.account
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -108,6 +109,20 @@ class LoginActivityPhone : AppCompatActivity() {
   private val PREFNAME: String = "local_user"
 
   private lateinit var e164Number: String
+
+  override fun onBackPressed() {
+
+//    super.onBackPressed()
+
+    Log.e("ATTENTION ATTENTION", "LoginActivityPhone onBackPressed()")
+
+    val intent = Intent(context, LoginActivityMain::class.java)
+
+    startActivity(intent)
+
+    finish()
+
+  }
 
   fun showLoading() {
     mProgressBar.visibility = View.VISIBLE
@@ -357,8 +372,12 @@ class LoginActivityPhone : AppCompatActivity() {
 
   private fun requestRegistration() {
 
+    Log.e("ATTENTION ATTENTION", "LoginActivityPhone requestRegistration()")
+
     RegisterActivity.startActivity(this@LoginActivityPhone)
+
     finish()
+
   }
 
   private fun updateUI(uiState: Int) {
@@ -458,6 +477,8 @@ class LoginActivityPhone : AppCompatActivity() {
 
   private fun goToMain() {
 
+    Log.e("ATTENTION ATTENTION", "LoginActivityPhone goToMain()")
+
     val i = Intent(this@LoginActivityPhone, MainActivity::class.java)
 
     startActivity(i)
@@ -466,6 +487,7 @@ class LoginActivityPhone : AppCompatActivity() {
 
   }
 
+  @SuppressLint("MissingPermission")
   private fun isOnline(context: Context) : Boolean {
 
     var result: Boolean = false
@@ -530,6 +552,7 @@ class LoginActivityPhone : AppCompatActivity() {
 
   }
 
+  @SuppressLint("MissingPermission")
   private fun isConnected(context: Context): Boolean {
 
     val cm = context

@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -479,6 +480,20 @@ private val TAG: String = "ATTENTION ATTENTION"
 
   private var mInterstitialAd: InterstitialAd? = null
 
+  private fun runAdTimeUpdate() {
+
+    val sharedPref = requireContext().getSharedPreferences(PREFNAME, Context.MODE_PRIVATE)
+    val weeklyInterstitialAd = sharedPref.getInt("weeklyInterstitialAd", 0)
+
+    val thisDate: Date = Calendar.getInstance().time
+
+    val editor = sharedPref!!.edit()
+    editor.putInt("weeklyInterstitialAd", weeklyInterstitialAd + 1)
+    editor.putString("lastWeekDateTime", thisDate.toString())
+    editor.apply()
+
+  }
+
   private fun showFullScreen() {
 
     mInterstitialAd?.fullScreenContentCallback = object: FullScreenContentCallback() {
@@ -491,13 +506,18 @@ private val TAG: String = "ATTENTION ATTENTION"
 
       override fun onAdFailedToShowFullScreenContent(adError: AdError?) {
 
+        runAdTimeUpdate()
+
         Log.d(TAG, "Ad failed to show.")
 
       }
 
       override fun onAdShowedFullScreenContent() {
 
+        runAdTimeUpdate()
+
         Log.d(TAG, "Ad showed fullscreen content.")
+
         mInterstitialAd = null
 
       }
@@ -522,6 +542,7 @@ private val TAG: String = "ATTENTION ATTENTION"
 
         Log.d(TAG, adError.message)
         mInterstitialAd = null
+        runAdTimeUpdate()
 
       }
 
@@ -548,7 +569,7 @@ private val TAG: String = "ATTENTION ATTENTION"
 
   val PREFNAME: String = "local_user"
 
-  private fun checkWeeklyInterstitialAd() {
+  private fun checkBiDailyInterstitialAd() {
 
     val currentTimeMillis = System.currentTimeMillis()
 
@@ -582,12 +603,21 @@ private val TAG: String = "ATTENTION ATTENTION"
 
       if (olderThan2Days) {
 
-        val editor = sharedPref!!.edit()
-        editor.putInt("weeklyInterstitialAd", weeklyInterstitialAd + 1)
-        editor.putString("lastWeekDateTime", thisDate.toString())
-        editor.apply()
+        val biDailySentBuilder = AlertDialog.Builder(requireContext(), R.style.MyDialogTheme)
+        biDailySentBuilder.setTitle("Hello")
+        biDailySentBuilder.setMessage("Please view ad. This ad shows up once every 2 days. This will help to keep Recharge App free.")
 
-        showInterstitialAd()
+        biDailySentBuilder.setPositiveButton(android.R.string.ok) {
+
+            dialog, which ->
+
+          dialog.dismiss()
+
+          showInterstitialAd()
+
+        }
+
+        biDailySentBuilder.show()
 
       }
 
@@ -654,7 +684,8 @@ private val TAG: String = "ATTENTION ATTENTION"
       else {
 
         scanFragmentPresenter.displayScanDetails()
-        checkWeeklyInterstitialAd()
+
+        checkBiDailyInterstitialAd()
 
       }
 

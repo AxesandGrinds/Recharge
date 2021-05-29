@@ -17,6 +17,7 @@
 package com.app.ej.cs.vision
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -186,6 +187,7 @@ class RecognitionActivityReviewFinal :
 
 
 
+  @SuppressLint("MissingPermission")
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
@@ -223,13 +225,11 @@ class RecognitionActivityReviewFinal :
     // https://developers.google.com/ad-manager/mobile-ads-sdk/android/banner
     MobileAds.initialize(this)
 
-
     /// TODO Remove For Release vvv
 //    val testDeviceIds: List<String> = listOf("6638E8A228E3CC5D4711029B8808E246") // listOf("78D47CB8E8C50C8391083ABA46D59A17")
 //    val configuration = RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build()
 //    MobileAds.setRequestConfiguration(configuration)
     /// TODO Remove For Release ^^^
-
 
     val mAdView: AdView = findViewById(R.id.rra_adView)
 

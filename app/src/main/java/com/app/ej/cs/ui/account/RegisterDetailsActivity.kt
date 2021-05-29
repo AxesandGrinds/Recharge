@@ -1301,6 +1301,8 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
         }
 
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
     }
 
     fun getAddressFromLocation(
@@ -1898,9 +1900,8 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
                                             Log.e(TAG, "Create user with email successful")
 
-                                            val user = auth.currentUser
-                                            firebaseUser = user
-                                            userId = user?.uid
+                                            firebaseUser = auth.currentUser
+                                            userId = firebaseUser?.uid
                                             actualSignUp()
 
                                         }
@@ -2262,46 +2263,56 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
             this@RegisterDetailsActivity.runOnUiThread {
 
-                db    = Firebase.firestore
+                db   = Firebase.firestore
                 auth = Firebase.auth
 
-                val userTask: Task<Void> = Objects.requireNonNull(auth.currentUser)!!.reload()
+                try {
 
-                userTask.addOnSuccessListener {
+                    val userTask: Task<Void>? = Firebase.auth.currentUser?.reload()?.addOnSuccessListener {
 
-                    firebaseUser = auth.currentUser!!
+                        firebaseUser = Firebase.auth.currentUser
 
-                    Log.e("ATTENTION ATTENTION",
-                        "mCurrentUser.isEmailVerified(): " + firebaseUser!!.isEmailVerified)
+                        if (firebaseUser != null) {
 
-                    if (!firebaseUser!!.isEmailVerified) { }
-                    else {
+                            Log.e("ATTENTION ATTENTION",
+                                "mCurrentUser.isEmailVerified(): " + firebaseUser!!.isEmailVerified)
 
-                        allInfoJsonSaved = Gson().toJson(userAndFriendInfoUnsaved)
-                        allInfoJsonUnsaved = Gson().toJson(userAndFriendInfoUnsaved)
+                            if (firebaseUser!!.isEmailVerified) {
 
-                        val sharedPref = context.getSharedPreferences(PREFNAME, Context.MODE_PRIVATE)
+                                allInfoJsonSaved = Gson().toJson(userAndFriendInfoUnsaved)
+                                allInfoJsonUnsaved = Gson().toJson(userAndFriendInfoUnsaved)
 
-                        val editor = sharedPref!!.edit()
+                                val sharedPref = context.getSharedPreferences(PREFNAME, Context.MODE_PRIVATE)
 
-                        editor.putString("allInfoSaved", allInfoJsonUnsaved)
-                        editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
-                        editor.putBoolean("email_verified", true)
-                        editor.putBoolean("location_received", true)
+                                val editor = sharedPref!!.edit()
 
-                        editor.apply()
+                                editor.putString("allInfoSaved", allInfoJsonUnsaved)
+                                editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
+                                editor.putBoolean("email_verified", true)
+                                editor.putBoolean("location_received", true)
 
-                        myFixedRateTimer?.cancel()
+                                editor.apply()
 
-                        val message: String = "Email verified. Account created."
+                                myFixedRateTimer?.cancel()
 
-                        util.onShowMessageSuccessLong(message, context)
+                                val message: String = "Email verified. Account created."
 
-                        registrationComplete = true
+                                util.onShowMessageSuccessLong(message, context)
 
-                        goToMain()
+                                registrationComplete = true
+
+                                goToMain()
+
+                            }
+
+                        }
 
                     }
+
+                }
+                catch (e: Exception) {
+
+                    Log.e("ATTENTION ATTENTION", "RegisterDetailsActivity runEmailCheck error: ${e.toString()}")
 
                 }
 

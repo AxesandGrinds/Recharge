@@ -16,6 +16,10 @@
     <item name="android:fitsSystemWindows">true</item>
   </style>
 
+  <style name="AppTheme.AppBarOverlay2" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+    <item name="android:textColorPrimary">@color/colorPrimary3</item>
+  </style>
+
 
   <style name="RecognitionTheme" parent="Theme.MaterialComponents.Light">
     <item name="colorPrimary">@color/scan_background</item>
@@ -24,10 +28,6 @@
     <item name="actionBarTheme">@style/AppTheme.AppBarOverlay2</item>
     <item name="android:fitsSystemWindows">true</item>
     <item name="android:windowDisablePreview">true</item>
-  </style>
-
-  <style name="AppTheme.AppBarOverlay2" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
-    <item name="android:textColorPrimary">@color/colorPrimary3</item>
   </style>
 
   <style name="SplashTheme" parent ="Theme.MaterialComponents.Light.NoActionBar">

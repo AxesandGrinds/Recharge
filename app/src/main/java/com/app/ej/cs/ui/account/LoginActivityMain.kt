@@ -136,18 +136,21 @@ class LoginActivityMain : AppCompatActivity() {
     context = this
     activity = this
 
-
     phoneButton!!.setOnClickListener {
 
-      val intent = Intent(context, LoginActivityPhone::class.java)
-      context.startActivity(intent)
+      val intent = Intent(this@LoginActivityMain, LoginActivityPhone::class.java)
+      intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+      startActivity(intent)
+      finish()
 
     }
 
     emailButton!!.setOnClickListener {
 
-      val intent = Intent(context, LoginActivityEmail::class.java)
-      context.startActivity(intent)
+      val intent = Intent(this@LoginActivityMain, LoginActivityEmail::class.java)
+      intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+      startActivity(intent)
+      finish()
 
     }
 

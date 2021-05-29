@@ -433,6 +433,88 @@ class EditFriendItemViewHolder(
 
   }
 
+  private fun checkModelsIndex(model: Friend) {
+
+    val sharedPref = view.context.getSharedPreferences(PREFNAME, Context.MODE_PRIVATE)
+    var allInfoJsonUnsaved = sharedPref.getString("allInfoUnsaved", "defaultAll")!!
+    val allInfoUnsaved = gson.fromJson(allInfoJsonUnsaved, UserAndFriendInfo::class.java)
+
+    if (allInfoUnsaved.friendList?.size ?: 0 < model.index) {
+
+      val newFriend: Friend =
+
+        Friend(
+          index = model.index,
+          description = "Friend ${model.index + 1}",
+
+          folded = true,
+
+          name = null,
+          phone1 = null,
+          phone2 = null,
+          phone3 = null,
+
+          network1 = null,
+          network2 = null,
+          network3 = null,
+
+          bank1 = null,
+          bank2 = null,
+          bank3 = null,
+          bank4 = null,
+
+          accountNumber1 = null,
+          accountNumber2 = null,
+          accountNumber3 = null,
+          accountNumber4 = null,
+        )
+
+      allInfoUnsaved.friendList?.add(newFriend)
+
+    }
+
+    if (userAndFriendInfo.friendList?.size ?: 0 < model.index) {
+
+      val newFriend: Friend =
+
+        Friend(
+          index = model.index,
+          description = "Friend ${model.index + 1}",
+
+          folded = true,
+
+          name = null,
+          phone1 = null,
+          phone2 = null,
+          phone3 = null,
+
+          network1 = null,
+          network2 = null,
+          network3 = null,
+
+          bank1 = null,
+          bank2 = null,
+          bank3 = null,
+          bank4 = null,
+
+          accountNumber1 = null,
+          accountNumber2 = null,
+          accountNumber3 = null,
+          accountNumber4 = null,
+        )
+
+      userAndFriendInfo.friendList?.add(newFriend)
+
+    }
+
+    allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
+
+    val editor = sharedPref!!.edit()
+    editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
+    editor.apply()
+
+  }
+
   override fun bind(model: Friend) {
 
     currentFriend = model
@@ -443,6 +525,8 @@ class EditFriendItemViewHolder(
     val networkStringArray: Array<String>  = res.getStringArray(R.array.network_arrays)
 
     readFromLocal()
+
+    checkModelsIndex(model)
 
     setNetworkSpinner(friendNetworkSpinner1) // TODO Might need to convert to filterTo
     setNetworkSpinner(friendNetworkSpinner2)
@@ -508,7 +592,6 @@ class EditFriendItemViewHolder(
 
       if (allInfoUnsaved.friendList?.size ?: 0 > model.index) {
 
-        userAndFriendInfo.friendList?.get(model.index)?.folded = folded
         allInfoUnsaved.friendList?.get(model.index)?.folded = folded
 
       }
@@ -542,8 +625,46 @@ class EditFriendItemViewHolder(
             accountNumber4 = null,
           )
 
-        userAndFriendInfo.friendList?.add(newFriend)
         allInfoUnsaved.friendList?.add(newFriend)
+
+      }
+
+      if (userAndFriendInfo.friendList?.size ?: 0 > model.index) {
+
+        userAndFriendInfo.friendList?.get(model.index)?.folded = folded
+
+      }
+      else {
+
+        val newFriend: Friend =
+
+          Friend(
+            index = model.index,
+            description = "Friend ${model.index + 1}",
+
+            folded = folded,
+
+            name = null,
+            phone1 = null,
+            phone2 = null,
+            phone3 = null,
+
+            network1 = null,
+            network2 = null,
+            network3 = null,
+
+            bank1 = null,
+            bank2 = null,
+            bank3 = null,
+            bank4 = null,
+
+            accountNumber1 = null,
+            accountNumber2 = null,
+            accountNumber3 = null,
+            accountNumber4 = null,
+          )
+
+        userAndFriendInfo.friendList?.add(newFriend)
 
       }
 
@@ -578,9 +699,31 @@ class EditFriendItemViewHolder(
 
         if (allInfoUnsaved.friendList?.size ?: 0 > model.index) {
 
-          val name: String = friendNameEt.text.toString()
-          userAndFriendInfo.friendList?.get(model.index)?.name = name
-          allInfoUnsaved.friendList?.get(model.index)?.name = name
+          try {
+
+            val name: String = friendNameEt.text.toString()
+            userAndFriendInfo.friendList?.get(model.index)?.name = name
+            allInfoUnsaved.friendList?.get(model.index)?.name = name
+
+          }
+          catch (e: Exception) {
+
+            Log.e("ATTENTION ATTENTION", "EditFriendITemViewHolder friendNameEt.addTextChangedListener error: ${e.toString()}")
+
+            try {
+
+              val name: String = friendNameEt.text.toString()
+              allInfoUnsaved.friendList?.get(model.index)?.name = name
+
+            }
+            catch (e: Exception) {
+
+              Log.e("ATTENTION ATTENTION", "EditFriendITemViewHolder friendNameEt.addTextChangedListener error: ${e.toString()}")
+
+
+            }
+
+          }
 
         }
         else {
@@ -750,6 +893,17 @@ class EditFriendItemViewHolder(
           catch (e: Exception) {
 
             Log.e("ATTENTION ATTENTION", "Edit Friend ${model.index} error")
+
+            try {
+
+              allInfoUnsaved.friendList?.get(model.index)?.network1 = null
+
+            }
+            catch (e: Exception) {
+
+              Log.e("ATTENTION ATTENTION", "Edit Friend ${model.index} error")
+
+            }
 
           }
 

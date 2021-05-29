@@ -1,5 +1,6 @@
 package com.app.ej.cs.ui.account
 
+import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
@@ -54,6 +55,7 @@ class RecoverPasswordActivity:  AppCompatActivity(), View.OnClickListener,
 
     private val networkUtil: NetworkUtil = NetworkUtil()
 
+    @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -81,7 +83,11 @@ class RecoverPasswordActivity:  AppCompatActivity(), View.OnClickListener,
 
         MobileAds.initialize(this)
 
-        showInterstitialAd()
+        /// TODO Remove For Release vvv
+//    val testDeviceIds: List<String> = listOf("E9DEDC61204CFB33008E54C7F35245C8")
+//    val configuration = RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build()
+//    MobileAds.setRequestConfiguration(configuration)
+        /// TODO Remove For Release ^^^
 
         val mAdView: AdView = findViewById(R.id.pract_adView)
 
@@ -134,7 +140,6 @@ class RecoverPasswordActivity:  AppCompatActivity(), View.OnClickListener,
 
             })
 
-
     }
 
     private var mInterstitialAd: InterstitialAd? = null
@@ -182,6 +187,8 @@ class RecoverPasswordActivity:  AppCompatActivity(), View.OnClickListener,
     private fun resetPassword(email: String) {
 
         showProgress()
+
+        showInterstitialAd()
 
         if (networkUtil.isOnline(this)) {
 
