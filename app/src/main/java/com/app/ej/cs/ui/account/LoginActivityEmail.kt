@@ -26,6 +26,9 @@ import com.app.ej.cs.repository.entity.UserAndFriendInfo
 import com.app.ej.cs.ui.MainActivity
 import com.app.ej.cs.utils.AnimationUtil
 import com.app.ej.cs.utils.Util
+import com.google.android.gms.ads.*
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -453,6 +456,13 @@ class LoginActivityEmail : AppCompatActivity() {
 
     setContentView(R.layout.activity_login_email)
 
+    MobileAds.initialize(this)
+
+    /// TODO Remove For Release vvv
+//    val testDeviceIds: List<String> = listOf("E9DEDC61204CFB33008E54C7F35245C8")
+//    val configuration = RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build()
+//    MobileAds.setRequestConfiguration(configuration)
+    /// TODO Remove For Release ^^^
 
     mProgressBar   = findViewById<View>(R.id.progress_bar) as ProgressBar
     emailHolder    = findViewById<View>(R.id.h_email) as TextInputLayout
@@ -535,19 +545,94 @@ class LoginActivityEmail : AppCompatActivity() {
 
     forgotPasswordButton.setOnClickListener{
 
-      val intent = Intent(context, RecoverPasswordActivity::class.java)
-
-      if (emailEt.text?.trim().toString() != "") {
-
-        intent.putExtra(EMAIL, emailEt.text?.trim().toString())
-
-      }
-
-      context.startActivity(intent)
-
+      goToPleaseWaitBeforeRecoverPassword()
 
     }
 
+  }
+
+  private fun goToPleaseWaitBeforeRecoverPassword() {
+
+    val intent = Intent(context, PleaseWaitScreenRecoverActivity::class.java)
+
+    if (emailEt.text?.trim().toString() != "") {
+
+      intent.putExtra(EMAIL, emailEt.text?.trim().toString())
+
+    }
+
+    context.startActivity(intent)
+
+  }
+
+  private var mInterstitialAd: InterstitialAd? = null
+
+  private fun loadInterstitialAd() {
+
+    val adRequest = AdRequest.Builder().build()
+
+    InterstitialAd.load(
+      this,
+      "ca-app-pub-5127161627511605/8927614471",
+      adRequest,
+      object : InterstitialAdLoadCallback() {
+
+        override fun onAdFailedToLoad(adError: LoadAdError) {
+
+          Log.d(TAG, adError.message)
+          mInterstitialAd = null
+          goToPleaseWaitBeforeRecoverPassword()
+
+        }
+
+        override fun onAdLoaded(interstitialAd: InterstitialAd) {
+
+          mInterstitialAd = interstitialAd
+
+        }
+
+      })
+
+  }
+
+  private fun showFullScreen() {
+
+    if (mInterstitialAd != null) {
+
+      mInterstitialAd!!.fullScreenContentCallback = object: FullScreenContentCallback() {
+
+        override fun onAdDismissedFullScreenContent() {
+
+          Log.d(TAG, "Ad was dismissed.")
+          goToPleaseWaitBeforeRecoverPassword()
+
+        }
+
+        override fun onAdFailedToShowFullScreenContent(adError: AdError?) {
+
+          Log.d(TAG, "Ad failed to show.")
+          goToPleaseWaitBeforeRecoverPassword()
+
+        }
+
+        override fun onAdShowedFullScreenContent() {
+
+          Log.d(TAG, "Ad showed fullscreen content.")
+          mInterstitialAd = null
+          goToPleaseWaitBeforeRecoverPassword()
+
+        }
+
+      }
+
+      mInterstitialAd!!.show(this)
+
+    }
+    else {
+
+      goToPleaseWaitBeforeRecoverPassword()
+
+    }
 
   }
 

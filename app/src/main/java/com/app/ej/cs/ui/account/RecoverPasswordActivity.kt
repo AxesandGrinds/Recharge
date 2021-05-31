@@ -2,6 +2,7 @@ package com.app.ej.cs.ui.account
 
 import android.annotation.SuppressLint
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -81,14 +82,6 @@ class RecoverPasswordActivity:  AppCompatActivity(), View.OnClickListener,
 
         mSubmitButton!!.setOnClickListener(this)
 
-        MobileAds.initialize(this)
-
-        /// TODO Remove For Release vvv
-//    val testDeviceIds: List<String> = listOf("E9DEDC61204CFB33008E54C7F35245C8")
-//    val configuration = RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build()
-//    MobileAds.setRequestConfiguration(configuration)
-        /// TODO Remove For Release ^^^
-
         val mAdView: AdView = findViewById(R.id.pract_adView)
 
         val adRequest = AdRequest.Builder().build()
@@ -114,65 +107,7 @@ class RecoverPasswordActivity:  AppCompatActivity(), View.OnClickListener,
 
     }
 
-    private fun showInterstitialAd() {
-
-        val adRequest = AdRequest.Builder().build()
-
-        InterstitialAd.load(
-            this,
-            "ca-app-pub-5127161627511605/8927614471",
-            adRequest,
-            object : InterstitialAdLoadCallback() {
-
-                override fun onAdFailedToLoad(adError: LoadAdError) {
-
-                    Log.d(TAG, adError.message)
-                    mInterstitialAd = null
-
-                }
-
-                override fun onAdLoaded(interstitialAd: InterstitialAd) {
-
-                    mInterstitialAd = interstitialAd
-                    showFullScreen()
-
-                }
-
-            })
-
-    }
-
-    private var mInterstitialAd: InterstitialAd? = null
     private val TAG: String = "ATTENTION ATTENTION"
-
-    private fun showFullScreen() {
-
-        mInterstitialAd?.fullScreenContentCallback = object: FullScreenContentCallback() {
-
-            override fun onAdDismissedFullScreenContent() {
-
-                Log.d(TAG, "Ad was dismissed.")
-
-            }
-
-            override fun onAdFailedToShowFullScreenContent(adError: AdError?) {
-
-                Log.d(TAG, "Ad failed to show.")
-
-            }
-
-            override fun onAdShowedFullScreenContent() {
-
-                Log.d(TAG, "Ad showed fullscreen content.")
-                mInterstitialAd = null
-
-            }
-
-        }
-
-        mInterstitialAd!!.show(this)
-
-    }
 
     override fun onDonePressed() {
 
@@ -187,8 +122,6 @@ class RecoverPasswordActivity:  AppCompatActivity(), View.OnClickListener,
     private fun resetPassword(email: String) {
 
         showProgress()
-
-        showInterstitialAd()
 
         if (networkUtil.isOnline(this)) {
 
@@ -255,11 +188,29 @@ class RecoverPasswordActivity:  AppCompatActivity(), View.OnClickListener,
             .setMessage(getString(R.string.confirm_recovery_body, email))
             .setOnDismissListener(DialogInterface.OnDismissListener {
 
-                finish()
+                onFinish()
 
             })
             .setPositiveButton(android.R.string.ok, null)
             .show()
+
+    }
+
+    private fun onFinish() {
+
+        val email: String? = intent.getStringExtra(EMAIL)
+
+        val intent = Intent(this@RecoverPasswordActivity, LoginActivityEmail::class.java)
+
+        if (email != null) {
+
+            intent.putExtra(EMAIL, email)
+
+        }
+
+        startActivity(intent)
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+        finish()
 
     }
 

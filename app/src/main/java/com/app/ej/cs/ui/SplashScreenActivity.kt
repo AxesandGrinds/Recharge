@@ -33,7 +33,7 @@ class SplashScreenActivity : AppCompatActivity() {
       finish()
     }
 
-    handler.postDelayed(r, 500)
+    handler.postDelayed(r, 800)
 
   }
 
@@ -56,4 +56,5 @@ class SplashScreenActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     runSplash()
   }
+
 }

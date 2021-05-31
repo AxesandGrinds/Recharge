@@ -28,6 +28,7 @@ import com.app.ej.cs.repository.entity.UserAndFriendInfo
 import com.app.ej.cs.ui.DataRechargeDialog
 import com.app.ej.cs.ui.MainActivity
 import com.app.ej.cs.ui.account.LoginActivityMain
+import com.app.ej.cs.ui.account.PleaseWaitScreenRecoverActivity
 import com.app.ej.cs.ui.fab.FloatingActionButton
 import com.app.ej.cs.ui.fab.FloatingActionMenu
 import com.app.ej.cs.vision.RecognitionActivityFinal
@@ -37,8 +38,6 @@ import com.fondesa.kpermissions.coroutines.sendSuspend
 import com.fondesa.kpermissions.extension.permissionsBuilder
 import com.github.marlonlom.utilities.timeago.TimeAgo
 import com.google.android.gms.ads.*
-import com.google.android.gms.ads.interstitial.InterstitialAd
-import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -426,7 +425,7 @@ private val TAG: String = "ATTENTION ATTENTION"
 
   private fun initAds(view: View) {
 
-    MobileAds.initialize(context)
+    MobileAds.initialize(requireContext())
 
     val mAdView: AdView = view.findViewById(R.id.fs_adView)
 
@@ -475,86 +474,6 @@ private val TAG: String = "ATTENTION ATTENTION"
     askPermissions()
 
     return view
-
-  }
-
-  private var mInterstitialAd: InterstitialAd? = null
-
-  private fun runAdTimeUpdate() {
-
-    val sharedPref = requireContext().getSharedPreferences(PREFNAME, Context.MODE_PRIVATE)
-    val weeklyInterstitialAd = sharedPref.getInt("weeklyInterstitialAd", 0)
-
-    val thisDate: Date = Calendar.getInstance().time
-
-    val editor = sharedPref!!.edit()
-    editor.putInt("weeklyInterstitialAd", weeklyInterstitialAd + 1)
-    editor.putString("lastWeekDateTime", thisDate.toString())
-    editor.apply()
-
-  }
-
-  private fun showFullScreen() {
-
-    mInterstitialAd?.fullScreenContentCallback = object: FullScreenContentCallback() {
-
-      override fun onAdDismissedFullScreenContent() {
-
-        Log.d(TAG, "Ad was dismissed.")
-
-      }
-
-      override fun onAdFailedToShowFullScreenContent(adError: AdError?) {
-
-        runAdTimeUpdate()
-
-        Log.d(TAG, "Ad failed to show.")
-
-      }
-
-      override fun onAdShowedFullScreenContent() {
-
-        runAdTimeUpdate()
-
-        Log.d(TAG, "Ad showed fullscreen content.")
-
-        mInterstitialAd = null
-
-      }
-
-    }
-
-    mInterstitialAd!!.show(requireActivity())
-
-  }
-
-  private fun showInterstitialAd() {
-
-    val adRequest = AdRequest.Builder().build()
-
-    InterstitialAd.load(
-      requireContext(),
-      "ca-app-pub-5127161627511605/6554467118",
-      adRequest,
-      object : InterstitialAdLoadCallback() {
-
-      override fun onAdFailedToLoad(adError: LoadAdError) {
-
-        Log.d(TAG, adError.message)
-        mInterstitialAd = null
-        runAdTimeUpdate()
-
-      }
-
-      override fun onAdLoaded(interstitialAd: InterstitialAd) {
-
-        mInterstitialAd = interstitialAd
-        showFullScreen()
-
-      }
-
-    })
-
 
   }
 
@@ -613,7 +532,7 @@ private val TAG: String = "ATTENTION ATTENTION"
 
           dialog.dismiss()
 
-          showInterstitialAd()
+          goToPleaseWaitBeforeBiDailyInterstitialAd()
 
         }
 
@@ -633,6 +552,14 @@ private val TAG: String = "ATTENTION ATTENTION"
 
   }
 
+  private fun goToPleaseWaitBeforeBiDailyInterstitialAd() {
+
+    val intent = Intent(context, PleaseWaitScreenScanActivity::class.java)
+
+    startActivity(intent)
+    requireActivity().finish()
+
+  }
 
   private fun checkSignedUp() {
 
