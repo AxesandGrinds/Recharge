@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
@@ -32,7 +33,7 @@ class PleaseWaitScreenScanActivity : AppCompatActivity() {
 
   private fun startWaitBeforeAd() {
 
-    val handler = Handler()
+    val handler = Handler(Looper.getMainLooper())
 
     val r = Runnable {
 
@@ -40,7 +41,7 @@ class PleaseWaitScreenScanActivity : AppCompatActivity() {
 
     }
 
-    handler.postDelayed(r, 1000)
+    handler.postDelayed(r, 800)
 
   }
 
@@ -80,8 +81,6 @@ class PleaseWaitScreenScanActivity : AppCompatActivity() {
 
   }
 
-  private val EMAIL = "extra_email"
-
   private val TAG: String = "ATTENTION ATTENTION"
 
   val PREFNAME: String = "local_user"
@@ -104,15 +103,7 @@ class PleaseWaitScreenScanActivity : AppCompatActivity() {
 
     runAdTimeUpdate()
 
-    val email: String? = intent.getStringExtra(EMAIL)
-
     val intent = Intent(this@PleaseWaitScreenScanActivity, MainActivity::class.java)
-
-    if (email != null) {
-
-      intent.putExtra(EMAIL, email)
-
-    }
 
     startActivity(intent)
     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
@@ -136,7 +127,16 @@ class PleaseWaitScreenScanActivity : AppCompatActivity() {
 
           Log.d(TAG, adError.message)
           mInterstitialAd = null
-          goToMain()
+
+          val handler = Handler(Looper.getMainLooper())
+
+          val r = Runnable {
+
+            goToMain()
+
+          }
+
+          handler.postDelayed(r, 800)
 
         }
 

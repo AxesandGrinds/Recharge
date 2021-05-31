@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
@@ -12,6 +13,11 @@ import com.app.ej.cs.R
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import java.util.*
+import kotlin.concurrent.schedule
 
 class PleaseWaitScreenRecoverActivity : AppCompatActivity() {
 
@@ -28,7 +34,7 @@ class PleaseWaitScreenRecoverActivity : AppCompatActivity() {
 
   private fun startWaitBeforeAd() {
 
-    val handler = Handler()
+    val handler = Handler(Looper.getMainLooper())
 
     val r = Runnable {
 
@@ -36,7 +42,7 @@ class PleaseWaitScreenRecoverActivity : AppCompatActivity() {
 
     }
 
-    handler.postDelayed(r, 1000)
+    handler.postDelayed(r, 800)
 
   }
 
@@ -114,7 +120,16 @@ class PleaseWaitScreenRecoverActivity : AppCompatActivity() {
 
           Log.d(TAG, adError.message)
           mInterstitialAd = null
-          goToRecoverPassword()
+
+          val handler = Handler(Looper.getMainLooper())
+
+          val r = Runnable {
+
+            goToRecoverPassword()
+
+          }
+
+          handler.postDelayed(r, 800)
 
         }
 
@@ -168,5 +183,5 @@ class PleaseWaitScreenRecoverActivity : AppCompatActivity() {
     }
 
   }
-  
+
 }

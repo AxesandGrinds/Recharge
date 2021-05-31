@@ -127,6 +127,7 @@ dependencies {
 //    implementation 'com.google.firebase:firebase-core-ktx:18.0.2'
 //    implementation 'com.firebase:firebase-client-android-ktx:2.3.1'
     implementation 'com.google.firebase:firebase-analytics-ktx:19.0.0'
+    implementation 'com.google.firebase:firebase-crashlytics-ktx:18.0.0'
 
     // Firebase UI
     // Used in FirebaseUIActivity.
@@ -297,3 +298,5 @@ configurations {
 }
 
 apply plugin: 'com.google.gms.google-services'
+
+apply plugin: 'com.google.firebase.crashlytics'

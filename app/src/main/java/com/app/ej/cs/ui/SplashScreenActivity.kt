@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
@@ -23,17 +24,17 @@ class SplashScreenActivity : AppCompatActivity() {
 
   private fun runSplash() {
 
-    val handler = Handler()
+    val handler = Handler(Looper.getMainLooper())
 
     val r = Runnable {
 
       startActivity(Intent(this@SplashScreenActivity, MainActivity::class.java))
       overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-      // close splash activity
       finish()
+
     }
 
-    handler.postDelayed(r, 800)
+    handler.postDelayed(r, 700)
 
   }
 
