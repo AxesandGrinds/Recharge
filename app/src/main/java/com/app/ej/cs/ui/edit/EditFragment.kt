@@ -1,5 +1,6 @@
 package com.app.ej.cs.ui.edit
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -46,6 +47,8 @@ import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
+import com.mopub.mobileads.MoPubErrorCode
+import com.mopub.mobileads.MoPubView
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
 import io.michaelrocks.libphonenumber.android.Phonenumber
 
@@ -113,38 +116,78 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
   override fun onDestroy() {
     super.onDestroy()
 
+    moPubView.destroy()
     editFragmentPresenter.unbind()
 
   }
 
+  lateinit var moPubView: MoPubView
+
   private fun initAds(view: View) {
 
-    MobileAds.initialize(context)
+    moPubView = view.findViewById(R.id.fe_moPubView)
 
-    val mAdView: AdView = view.findViewById(R.id.fe_adView)
+    moPubView.setAdUnitId("b12a73e64c8a4167a69e47961866bda4"); // Enter your Ad Unit ID from www.mopub.com
+//        moPubView.adSize = MoPubAdSize // Call this if you are not setting the ad size in XML or wish to use an ad size other than what has been set in the XML. Note that multiple calls to `setAdSize()` will override one another, and the MoPub SDK only considers the most recent one.
+//        moPubView.loadAd(MoPubAdSize) // Call this if you are not calling setAdSize() or setting the size in XML, or if you are using the ad size that has not already been set through either setAdSize() or in the XML
 
-    val adRequest = AdRequest.Builder().build()
-    mAdView.loadAd(adRequest)
+    moPubView.bannerAdListener = object : MoPubView.BannerAdListener {
 
-    mAdView.adListener = object : AdListener() {
-      override fun onAdLoaded() {
+      override fun onBannerLoaded(banner: MoPubView) {
+        Log.e(TAG, "EditFragment onBannerLoaded")
       }
 
-      override fun onAdFailedToLoad(adError: LoadAdError) {}
-
-      override fun onAdOpened() {}
-
-      override fun onAdClicked() {}
-
-      override fun onAdImpression() {
-        super.onAdImpression()
+      override fun onBannerFailed(banner: MoPubView?, error: MoPubErrorCode?) {
+        Log.e(TAG, "EditFragment onBannerFailed: ${error.toString()}")
       }
 
-      override fun onAdClosed() {}
+      override fun onBannerClicked(banner: MoPubView?) {
+        Log.e(TAG, "EditFragment onBannerClicked")
+      }
+
+      override fun onBannerExpanded(banner: MoPubView?) {
+        Log.e(TAG, "EditFragment onBannerExpanded")
+      }
+
+      override fun onBannerCollapsed(banner: MoPubView?) {
+        Log.e(TAG, "EditFragment onBannerCollapsed")
+      }
 
     }
 
+    moPubView.loadAd()
+
   }
+
+//  @SuppressLint("MissingPermission")
+//  private fun initAds2(view: View) {
+//
+//    MobileAds.initialize(context)
+//
+//    val mAdView: AdView = view.findViewById(R.id.fe_adView)
+//
+//    val adRequest = AdRequest.Builder().build()
+//    mAdView.loadAd(adRequest)
+//
+//    mAdView.adListener = object : AdListener() {
+//      override fun onAdLoaded() {
+//      }
+//
+//      override fun onAdFailedToLoad(adError: LoadAdError) {}
+//
+//      override fun onAdOpened() {}
+//
+//      override fun onAdClicked() {}
+//
+//      override fun onAdImpression() {
+//        super.onAdImpression()
+//      }
+//
+//      override fun onAdClosed() {}
+//
+//    }
+//
+//  }
 
   override fun onCreateView(
     inflater: LayoutInflater,

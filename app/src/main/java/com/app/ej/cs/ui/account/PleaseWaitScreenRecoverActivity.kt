@@ -1,5 +1,6 @@
 package com.app.ej.cs.ui.account
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -13,13 +14,13 @@ import com.app.ej.cs.R
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import com.mopub.mobileads.MoPubErrorCode
+import com.mopub.mobileads.MoPubInterstitial
 import java.util.*
-import kotlin.concurrent.schedule
 
-class PleaseWaitScreenRecoverActivity : AppCompatActivity() {
+
+class PleaseWaitScreenRecoverActivity : AppCompatActivity(),
+  MoPubInterstitial.InterstitialAdListener {
 
   fun init() {
 
@@ -42,9 +43,28 @@ class PleaseWaitScreenRecoverActivity : AppCompatActivity() {
 
     }
 
-    handler.postDelayed(r, 800)
+    handler.postDelayed(r, 1000)
 
   }
+
+  private fun showFullScreenAd() {
+
+    if (mInterstitial.isReady) {
+
+      mInterstitial.show()
+
+    }
+    else {
+
+      // Caching is likely already in progress if `isReady()` is false.
+      // Avoid calling `load()` here and instead rely on the callbacks as suggested below.
+
+      goToRecoverPassword()
+
+    }
+
+  }
+
 
   private fun hideSystemUI() {
 
@@ -69,22 +89,69 @@ class PleaseWaitScreenRecoverActivity : AppCompatActivity() {
 
   }
 
+  private lateinit var mInterstitial: MoPubInterstitial
+
+  @SuppressLint("MissingPermission")
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
     setContentView(R.layout.activity_please_wait_recover)
 
-    MobileAds.initialize(this)
+    mInterstitial = MoPubInterstitial(this, "255d2dc0c68345fa87b1b50c07e059eb")
 
-    loadInterstitialAd()
+    mInterstitial.interstitialAdListener = this
+
+    mInterstitial.load()
 
     startWaitBeforeAd()
+
+//    MobileAds.initialize(this)
+//
+//    loadInterstitialAd()
+
+  }
+
+  override fun onInterstitialLoaded(interstitial: MoPubInterstitial?) {
+    Log.e(TAG, "onInterstitialLoaded")
+  }
+
+  override fun onInterstitialFailed(interstitial: MoPubInterstitial?, error: MoPubErrorCode?) {
+    Log.e(TAG, "onInterstitialFailed: ${error.toString()}")
+
+    val handler = Handler(Looper.getMainLooper())
+
+    val r = Runnable {
+
+      goToRecoverPassword()
+
+    }
+
+    handler.postDelayed(r, 1000)
+  }
+
+  override fun onInterstitialShown(interstitial: MoPubInterstitial?) {
+    Log.e(TAG, "onInterstitialShown")
+  }
+
+  override fun onInterstitialClicked(interstitial: MoPubInterstitial?) {
+    Log.e(TAG, "onInterstitialClicked")
+  }
+
+  override fun onInterstitialDismissed(interstitial: MoPubInterstitial?) {
+
+    Log.e(TAG, "onInterstitialDismissed")
+    goToRecoverPassword()
 
   }
 
   private val EMAIL = "extra_email"
 
   private val TAG: String = "ATTENTION ATTENTION"
+
+  override fun onDestroy() {
+    mInterstitial.destroy()
+    super.onDestroy()
+  }
 
   private fun goToRecoverPassword() {
 
@@ -104,84 +171,84 @@ class PleaseWaitScreenRecoverActivity : AppCompatActivity() {
 
   }
 
-  private var mInterstitialAd: InterstitialAd? = null
-
-  private fun loadInterstitialAd() {
-
-    val adRequest = AdRequest.Builder().build()
-
-    InterstitialAd.load(
-      this,
-      "ca-app-pub-5127161627511605/8927614471",
-      adRequest,
-      object : InterstitialAdLoadCallback() {
-
-        override fun onAdFailedToLoad(adError: LoadAdError) {
-
-          Log.d(TAG, adError.message)
-          mInterstitialAd = null
-
-          val handler = Handler(Looper.getMainLooper())
-
-          val r = Runnable {
-
-            goToRecoverPassword()
-
-          }
-
-          handler.postDelayed(r, 800)
-
-        }
-
-        override fun onAdLoaded(interstitialAd: InterstitialAd) {
-
-          mInterstitialAd = interstitialAd
-
-        }
-
-      })
-
-  }
-
-  private fun showFullScreenAd() {
-
-    if (mInterstitialAd != null) {
-
-      mInterstitialAd!!.fullScreenContentCallback = object: FullScreenContentCallback() {
-
-        override fun onAdDismissedFullScreenContent() {
-
-          Log.d(TAG, "Ad was dismissed.")
-          goToRecoverPassword()
-
-        }
-
-        override fun onAdFailedToShowFullScreenContent(adError: AdError?) {
-
-          Log.d(TAG, "Ad failed to show.")
-          goToRecoverPassword()
-
-        }
-
-        override fun onAdShowedFullScreenContent() {
-
-          Log.d(TAG, "Ad showed fullscreen content.")
-          mInterstitialAd = null
-          goToRecoverPassword()
-
-        }
-
-      }
-
-      mInterstitialAd!!.show(this)
-
-    }
-    else {
-
-      goToRecoverPassword()
-
-    }
-
-  }
+//  private var mInterstitialAd: InterstitialAd? = null
+//
+//  private fun loadInterstitialAd() {
+//
+//    val adRequest = AdRequest.Builder().build()
+//
+//    InterstitialAd.load(
+//      this,
+//      "ca-app-pub-5127161627511605/8927614471",
+//      adRequest,
+//      object : InterstitialAdLoadCallback() {
+//
+//        override fun onAdFailedToLoad(adError: LoadAdError) {
+//
+//          Log.d(TAG, adError.message)
+//          mInterstitialAd = null
+//
+//          val handler = Handler(Looper.getMainLooper())
+//
+//          val r = Runnable {
+//
+//            goToRecoverPassword()
+//
+//          }
+//
+//          handler.postDelayed(r, 800)
+//
+//        }
+//
+//        override fun onAdLoaded(interstitialAd: InterstitialAd) {
+//
+//          mInterstitialAd = interstitialAd
+//
+//        }
+//
+//      })
+//
+//  }
+//
+//  private fun showFullScreenAd2() {
+//
+//    if (mInterstitialAd != null) {
+//
+//      mInterstitialAd!!.fullScreenContentCallback = object: FullScreenContentCallback() {
+//
+//        override fun onAdDismissedFullScreenContent() {
+//
+//          Log.d(TAG, "Ad was dismissed.")
+//          goToRecoverPassword()
+//
+//        }
+//
+//        override fun onAdFailedToShowFullScreenContent(adError: AdError?) {
+//
+//          Log.d(TAG, "Ad failed to show.")
+//          goToRecoverPassword()
+//
+//        }
+//
+//        override fun onAdShowedFullScreenContent() {
+//
+//          Log.d(TAG, "Ad showed fullscreen content.")
+//          mInterstitialAd = null
+//          goToRecoverPassword()
+//
+//        }
+//
+//      }
+//
+//      mInterstitialAd!!.show(this)
+//
+//    }
+//    else {
+//
+//      goToRecoverPassword()
+//
+//    }
+//
+//  }
 
 }

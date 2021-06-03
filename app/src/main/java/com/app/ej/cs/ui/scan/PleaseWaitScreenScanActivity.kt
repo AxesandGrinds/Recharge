@@ -16,9 +16,12 @@ import com.app.ej.cs.ui.account.RecoverPasswordActivity
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
+import com.mopub.mobileads.MoPubErrorCode
+import com.mopub.mobileads.MoPubInterstitial
 import java.util.*
 
-class PleaseWaitScreenScanActivity : AppCompatActivity() {
+class PleaseWaitScreenScanActivity : AppCompatActivity(),
+  MoPubInterstitial.InterstitialAdListener {
 
   fun init() {
 
@@ -28,6 +31,40 @@ class PleaseWaitScreenScanActivity : AppCompatActivity() {
       window.attributes.layoutInDisplayCutoutMode =
         WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
     }
+
+  }
+
+  override fun onInterstitialLoaded(interstitial: MoPubInterstitial?) {
+    Log.e(TAG, "PleaseWaitScreenScanActivity onInterstitialLoaded")
+  }
+
+  override fun onInterstitialFailed(interstitial: MoPubInterstitial?, error: MoPubErrorCode?) {
+    Log.e(TAG, "PleaseWaitScreenScanActivity onInterstitialFailed: ${error.toString()}")
+
+    val handler = Handler(Looper.getMainLooper())
+
+    val r = Runnable {
+
+      goToMain()
+
+    }
+
+    handler.postDelayed(r, 1000)
+
+  }
+
+  override fun onInterstitialShown(interstitial: MoPubInterstitial?) {
+    Log.e(TAG, "PleaseWaitScreenScanActivity onInterstitialShown")
+  }
+
+  override fun onInterstitialClicked(interstitial: MoPubInterstitial?) {
+    Log.e(TAG, "PleaseWaitScreenScanActivity onInterstitialClicked")
+  }
+
+  override fun onInterstitialDismissed(interstitial: MoPubInterstitial?) {
+
+    Log.e(TAG, "PleaseWaitScreenScanActivity onInterstitialDismissed")
+    goToMain()
 
   }
 
@@ -41,7 +78,7 @@ class PleaseWaitScreenScanActivity : AppCompatActivity() {
 
     }
 
-    handler.postDelayed(r, 800)
+    handler.postDelayed(r, 1000)
 
   }
 
@@ -68,16 +105,24 @@ class PleaseWaitScreenScanActivity : AppCompatActivity() {
 
   }
 
+  private lateinit var mInterstitial: MoPubInterstitial
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
     setContentView(R.layout.activity_please_wait_scan)
 
-    MobileAds.initialize(this)
+    mInterstitial = MoPubInterstitial(this, "255d2dc0c68345fa87b1b50c07e059eb")
 
-    loadInterstitialAd()
+    mInterstitial.interstitialAdListener = this
+
+    mInterstitial.load()
 
     startWaitBeforeAd()
+
+//    MobileAds.initialize(this)
+//
+//    loadInterstitialAd()
 
   }
 
@@ -152,43 +197,61 @@ class PleaseWaitScreenScanActivity : AppCompatActivity() {
 
   private fun showFullScreenAd() {
 
-    if (mInterstitialAd != null) {
+    if (mInterstitial.isReady) {
 
-      mInterstitialAd!!.fullScreenContentCallback = object: FullScreenContentCallback() {
-
-        override fun onAdDismissedFullScreenContent() {
-
-          Log.d(TAG, "Ad was dismissed.")
-          goToMain()
-
-        }
-
-        override fun onAdFailedToShowFullScreenContent(adError: AdError?) {
-
-          Log.d(TAG, "Ad failed to show.")
-          goToMain()
-
-        }
-
-        override fun onAdShowedFullScreenContent() {
-
-          Log.d(TAG, "Ad showed fullscreen content.")
-          mInterstitialAd = null
-          goToMain()
-
-        }
-
-      }
-
-      mInterstitialAd!!.show(this)
+      mInterstitial.show()
 
     }
     else {
+
+      // Caching is likely already in progress if `isReady()` is false.
+      // Avoid calling `load()` here and instead rely on the callbacks as suggested below.
 
       goToMain()
 
     }
 
   }
+
+//  private fun showFullScreenAd2() {
+//
+//    if (mInterstitialAd != null) {
+//
+//      mInterstitialAd!!.fullScreenContentCallback = object: FullScreenContentCallback() {
+//
+//        override fun onAdDismissedFullScreenContent() {
+//
+//          Log.d(TAG, "Ad was dismissed.")
+//          goToMain()
+//
+//        }
+//
+//        override fun onAdFailedToShowFullScreenContent(adError: AdError?) {
+//
+//          Log.d(TAG, "Ad failed to show.")
+//          goToMain()
+//
+//        }
+//
+//        override fun onAdShowedFullScreenContent() {
+//
+//          Log.d(TAG, "Ad showed fullscreen content.")
+//          mInterstitialAd = null
+//          goToMain()
+//
+//        }
+//
+//      }
+//
+//      mInterstitialAd!!.show(this)
+//
+//    }
+//    else {
+//
+//      goToMain()
+//
+//    }
+//
+//  }
   
 }

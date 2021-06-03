@@ -21,10 +21,10 @@ android {
     defaultConfig {
 
         applicationId "com.app.ej.cs"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 30
-        versionCode 35
-        versionName "1.0.7"
+        versionCode 38
+        versionName "1.0.9"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
@@ -249,7 +249,7 @@ dependencies {
     implementation 'com.github.marlonlom:timeago:4.0.3'
     implementation 'com.github.clans:fab:1.6.4'
     implementation 'com.afollestad.material-dialogs:commons:0.8.6.1'
-    implementation 'io.michaelrocks:libphonenumber-android:8.10.16'
+    implementation 'io.michaelrocks:libphonenumber-android:8.12.24'
 
     implementation('com.vk:androidsdk:1.6.9') {
         transitive = false
@@ -285,7 +285,22 @@ dependencies {
 
 //     implementation 'com.firebaseui:firebase-ui-auth-ktx:4.3.2'
 
-//    implementation('com.mopub:mopub-sdk:5.17.0@aar') {
+    implementation('com.mopub:mopub-sdk:5.17.0@aar') {
+        transitive = true
+    }
+
+//    // For banners
+//    implementation('com.mopub:mopub-sdk-banner:5.17.0@aar') {
+//        transitive = true
+//    }
+//
+//    // For fullscreen ads
+//    implementation('com.mopub:mopub-sdk-fullscreen:5.17.0@aar') {
+//        transitive = true
+//    }
+//
+//    // For interstitials
+//    implementation('com.mopub:mopub-sdk-interstitial:5.12.0@aar') {
 //        transitive = true
 //    }
 

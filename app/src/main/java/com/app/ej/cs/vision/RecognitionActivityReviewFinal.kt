@@ -37,9 +37,12 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import com.app.ej.cs.R
+import com.app.ej.cs.ui.CodeInputActivity
 import com.app.ej.cs.utils.PhoneUtil
 import com.app.ej.cs.utils.Util
 import com.google.android.gms.ads.*
+import com.mopub.mobileads.MoPubErrorCode
+import com.mopub.mobileads.MoPubView
 import java.util.*
 
 /**
@@ -221,9 +224,10 @@ class RecognitionActivityReviewFinal :
 
     }
 
+    initAds()
 
     // https://developers.google.com/ad-manager/mobile-ads-sdk/android/banner
-    MobileAds.initialize(this)
+//    MobileAds.initialize(this)
 
     /// TODO Remove For Release vvv
 //    val testDeviceIds: List<String> = listOf("6638E8A228E3CC5D4711029B8808E246") // listOf("78D47CB8E8C50C8391083ABA46D59A17")
@@ -231,46 +235,91 @@ class RecognitionActivityReviewFinal :
 //    MobileAds.setRequestConfiguration(configuration)
     /// TODO Remove For Release ^^^
 
-    val mAdView: AdView = findViewById(R.id.rra_adView)
-
-    val adRequest = AdRequest.Builder().build()
-    mAdView.loadAd(adRequest)
-
-    mAdView.adListener = object : AdListener() {
-
-      override fun onAdLoaded() {
-        // Code to be executed when an ad finishes loading.
-      }
-
-      override fun onAdFailedToLoad(adError: LoadAdError) {
-        // Code to be executed when an ad request fails.
-      }
-
-      override fun onAdOpened() {
-        // Code to be executed when an ad opens an overlay that
-        // covers the screen.
-      }
-
-      override fun onAdClicked() {
-        // Code to be executed when the user clicks on an ad.
-      }
-
-//      override fun onAdLeftApplication() {
-//        // Code to be executed when the user has left the app.
+//    val mAdView: AdView = findViewById(R.id.rra_adView)
+//
+//    val adRequest = AdRequest.Builder().build()
+//    mAdView.loadAd(adRequest)
+//
+//    mAdView.adListener = object : AdListener() {
+//
+//      override fun onAdLoaded() {
+//        // Code to be executed when an ad finishes loading.
 //      }
+//
+//      override fun onAdFailedToLoad(adError: LoadAdError) {
+//        // Code to be executed when an ad request fails.
+//      }
+//
+//      override fun onAdOpened() {
+//        // Code to be executed when an ad opens an overlay that
+//        // covers the screen.
+//      }
+//
+//      override fun onAdClicked() {
+//        // Code to be executed when the user clicks on an ad.
+//      }
+//
+////      override fun onAdLeftApplication() {
+////        // Code to be executed when the user has left the app.
+////      }
+//
+//      override fun onAdImpression() {
+//        super.onAdImpression()
+//      }
+//
+//      override fun onAdClosed() {
+//        // Code to be executed when the user is about to return
+//        // to the app after tapping on an ad.
+//      }
+//
+//    }
 
-      override fun onAdImpression() {
-        super.onAdImpression()
+
+
+  }
+
+  lateinit var moPubView: MoPubView
+
+  private fun initAds() {
+
+    moPubView = findViewById(R.id.rra_moPubView)
+
+    moPubView.setAdUnitId("b1685e583a854f458cd3cf948b67c40a"); // Enter your Ad Unit ID from www.mopub.com
+//        moPubView.adSize = MoPubAdSize // Call this if you are not setting the ad size in XML or wish to use an ad size other than what has been set in the XML. Note that multiple calls to `setAdSize()` will override one another, and the MoPub SDK only considers the most recent one.
+//        moPubView.loadAd(MoPubAdSize) // Call this if you are not calling setAdSize() or setting the size in XML, or if you are using the ad size that has not already been set through either setAdSize() or in the XML
+
+    moPubView.bannerAdListener = object : MoPubView.BannerAdListener {
+
+      override fun onBannerLoaded(banner: MoPubView) {
+        Log.e(TAG, "RecognitionActivityReviewFinal onBannerLoaded")
       }
 
-      override fun onAdClosed() {
-        // Code to be executed when the user is about to return
-        // to the app after tapping on an ad.
+      override fun onBannerFailed(banner: MoPubView?, error: MoPubErrorCode?) {
+        Log.e(TAG, "RecognitionActivityReviewFinal onBannerFailed: ${error.toString()}")
+      }
+
+      override fun onBannerClicked(banner: MoPubView?) {
+        Log.e(TAG, "RecognitionActivityReviewFinal onBannerClicked")
+      }
+
+      override fun onBannerExpanded(banner: MoPubView?) {
+        Log.e(TAG, "RecognitionActivityReviewFinal onBannerExpanded")
+      }
+
+      override fun onBannerCollapsed(banner: MoPubView?) {
+        Log.e(TAG, "RecognitionActivityReviewFinal onBannerCollapsed")
       }
 
     }
 
+    moPubView.loadAd()
 
+  }
+
+  override fun onDestroy() {
+    super.onDestroy()
+
+    moPubView.destroy()
 
   }
 

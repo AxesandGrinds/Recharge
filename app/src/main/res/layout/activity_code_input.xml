@@ -63,7 +63,7 @@
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent">
 
-    <com.google.android.gms.ads.AdView
+    <!--<com.google.android.gms.ads.AdView
         xmlns:ads="http://schemas.android.com/apk/res-auto"
         android:id="@+id/ciact_adView"
         android:layout_width="match_parent"
@@ -71,7 +71,14 @@
         android:layout_gravity="center"
         ads:adSize="BANNER"
         ads:adUnitId="@string/adunitid_ciact">
-    </com.google.android.gms.ads.AdView>
+    </com.google.android.gms.ads.AdView>-->
+
+    <com.mopub.mobileads.MoPubView
+        android:id="@+id/ciact_moPubView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:moPubAdSize="height_50" >
+    </com.mopub.mobileads.MoPubView>
 
   </FrameLayout>
 

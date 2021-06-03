@@ -16,18 +16,17 @@ import com.app.ej.cs.utils.ImeHelper
 import com.app.ej.cs.utils.NetworkUtil
 import com.app.ej.cs.utils.Util
 import com.google.android.gms.ads.*
-import com.google.android.gms.ads.interstitial.InterstitialAd
-import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.mopub.mobileads.MoPubErrorCode
+import com.mopub.mobileads.MoPubView
 
 
 class RecoverPasswordActivity:  AppCompatActivity(), View.OnClickListener,
     ImeHelper.DonePressedListener {
-
 
     override fun onClick(view: View?) {
 
@@ -82,28 +81,68 @@ class RecoverPasswordActivity:  AppCompatActivity(), View.OnClickListener,
 
         mSubmitButton!!.setOnClickListener(this)
 
-        val mAdView: AdView = findViewById(R.id.pract_adView)
+        initAds()
 
-        val adRequest = AdRequest.Builder().build()
-        mAdView.loadAd(adRequest)
+//        val mAdView: AdView = findViewById(R.id.pract_adView)
+//
+//        val adRequest = AdRequest.Builder().build()
+//        mAdView.loadAd(adRequest)
+//
+//        mAdView.adListener = object : AdListener() {
+//
+//            override fun onAdLoaded() {}
+//
+//            override fun onAdFailedToLoad(adError: LoadAdError) {}
+//
+//            override fun onAdOpened() {}
+//
+//            override fun onAdClicked() {}
+//
+//            override fun onAdImpression() {
+//                super.onAdImpression()
+//            }
+//
+//            override fun onAdClosed() {}
+//
+//        }
 
-        mAdView.adListener = object : AdListener() {
+    }
 
-            override fun onAdLoaded() {}
+    lateinit var moPubView: MoPubView
 
-            override fun onAdFailedToLoad(adError: LoadAdError) {}
+    private fun initAds() {
 
-            override fun onAdOpened() {}
+        moPubView = findViewById(R.id.pract_moPubView)
 
-            override fun onAdClicked() {}
+        moPubView.setAdUnitId("ca8da1a9954d436f9b81f39bf980712a"); // Enter your Ad Unit ID from www.mopub.com
+//        moPubView.adSize = MoPubAdSize // Call this if you are not setting the ad size in XML or wish to use an ad size other than what has been set in the XML. Note that multiple calls to `setAdSize()` will override one another, and the MoPub SDK only considers the most recent one.
+//        moPubView.loadAd(MoPubAdSize) // Call this if you are not calling setAdSize() or setting the size in XML, or if you are using the ad size that has not already been set through either setAdSize() or in the XML
 
-            override fun onAdImpression() {
-                super.onAdImpression()
+        moPubView.bannerAdListener = object : MoPubView.BannerAdListener {
+
+            override fun onBannerLoaded(banner: MoPubView) {
+                Log.e(TAG, "RecoverPasswordActivity onBannerLoaded")
             }
 
-            override fun onAdClosed() {}
+            override fun onBannerFailed(banner: MoPubView?, error: MoPubErrorCode?) {
+                Log.e(TAG, "RecoverPasswordActivity onBannerFailed: ${error.toString()}")
+            }
+
+            override fun onBannerClicked(banner: MoPubView?) {
+                Log.e(TAG, "RecoverPasswordActivity onBannerClicked")
+            }
+
+            override fun onBannerExpanded(banner: MoPubView?) {
+                Log.e(TAG, "RecoverPasswordActivity onBannerExpanded")
+            }
+
+            override fun onBannerCollapsed(banner: MoPubView?) {
+                Log.e(TAG, "RecoverPasswordActivity onBannerCollapsed")
+            }
 
         }
+
+        moPubView.loadAd()
 
     }
 
@@ -193,6 +232,13 @@ class RecoverPasswordActivity:  AppCompatActivity(), View.OnClickListener,
             })
             .setPositiveButton(android.R.string.ok, null)
             .show()
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        moPubView.destroy()
 
     }
 

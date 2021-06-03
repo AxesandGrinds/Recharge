@@ -163,14 +163,21 @@
                   android:layout_marginBottom="@dimen/details_margin"
                   android:layout_below="@+id/detailsCv" >
 
-                  <com.google.android.gms.ads.AdView
+                  <!--<com.google.android.gms.ads.AdView
                       xmlns:ads="http://schemas.android.com/apk/res-auto"
                       android:id="@+id/fs_adView"
                       android:layout_width="match_parent"
                       android:layout_height="wrap_content"
                       ads:adSize="BANNER"
                       ads:adUnitId="@string/adunitid_sf">
-                  </com.google.android.gms.ads.AdView>
+                  </com.google.android.gms.ads.AdView>-->
+
+                  <com.mopub.mobileads.MoPubView
+                      android:id="@+id/fs_moPubView"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      app:moPubAdSize="height_50" >
+                  </com.mopub.mobileads.MoPubView>
 
               </FrameLayout>
 
