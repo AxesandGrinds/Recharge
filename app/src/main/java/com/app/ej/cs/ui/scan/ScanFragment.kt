@@ -3,6 +3,7 @@ package com.app.ej.cs.ui.scan
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -39,6 +40,13 @@ import com.fondesa.kpermissions.coroutines.sendSuspend
 import com.fondesa.kpermissions.extension.permissionsBuilder
 import com.github.marlonlom.utilities.timeago.TimeAgo
 import com.google.android.gms.ads.*
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.install.InstallStateUpdatedListener
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.InstallStatus
+import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.gson.Gson
 import com.mopub.mobileads.MoPubErrorCode
 import com.mopub.mobileads.MoPubView
@@ -306,11 +314,6 @@ private val TAG: String = "ATTENTION ATTENTION"
 
   override fun onDetach() {
     super.onDetach()
-  }
-
-  override fun onResume() {
-    Log.e(TAG, "onResume of ScanFragment")
-    super.onResume()
   }
 
   override fun onPause() {
@@ -581,9 +584,16 @@ private val TAG: String = "ATTENTION ATTENTION"
         biDailySentBuilder.show()
 
       }
+      else {
+
+        checkIfUpdateNecessary()
+
+      }
 
     }
     else {
+
+      checkIfUpdateNecessary()
 
       val editor = sharedPref!!.edit()
       editor.putInt("weeklyInterstitialAd", 1)
@@ -675,9 +685,175 @@ private val TAG: String = "ATTENTION ATTENTION"
 
   }
 
+  private val UPDATE_REQUEST_CODE: Int = 3030
+
+  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
+    if (requestCode == UPDATE_REQUEST_CODE) {
+
+      if (resultCode != RESULT_OK) {
+
+        Log.e("MY_APP", "Update flow failed! Result code: $resultCode")
+
+        checkIfUpdateNecessary()
+
+      }
+
+    }
+
+  }
+
+  private lateinit var appUpdateManager: AppUpdateManager
+
+  private lateinit var installStateUpdatedListener: InstallStateUpdatedListener
+
+  private var updateType: Int = AppUpdateType.FLEXIBLE
+
+  private fun checkIfUpdateNecessary() {
+
+    appUpdateManager = AppUpdateManagerFactory.create(requireContext())
+
+    val appUpdateInfoTask = appUpdateManager.appUpdateInfo
+
+    appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
+
+      if (
+
+        appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
+        appUpdateInfo.updatePriority() > 1 &&
+        (appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE) ||
+                appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE) )
+
+      ) {
+
+        if (appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)) {
+
+          updateType = AppUpdateType.FLEXIBLE
+
+          installStateUpdatedListener = InstallStateUpdatedListener {
+
+              state ->
+
+            if (state.installStatus() == InstallStatus.DOWNLOADING) {
+
+              val bytesDownloaded = state.bytesDownloaded()
+              val totalBytesToDownload = state.totalBytesToDownload()
+              // Show update progress bar.
+
+            }
+            else if (state.installStatus() == InstallStatus.DOWNLOADED) {
+
+              popupSnackbarForCompleteUpdate()
+
+            }
+
+          }
+
+          appUpdateManager.registerListener(installStateUpdatedListener)
+
+          appUpdateManager
+            .startUpdateFlowForResult(
+              appUpdateInfo,
+              AppUpdateType.FLEXIBLE,
+              requireActivity(),
+              UPDATE_REQUEST_CODE)
+
+        }
+        else if (appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
+
+          updateType = AppUpdateType.IMMEDIATE
+
+          appUpdateManager
+            .startUpdateFlowForResult(
+              appUpdateInfo,
+              AppUpdateType.IMMEDIATE,
+              requireActivity(),
+              UPDATE_REQUEST_CODE)
+
+        }
+
+      }
+
+    }
+
+
+  }
+
+  private fun popupSnackbarForCompleteUpdate() {
+
+    Snackbar.make(
+      requireView(),
+      "An update has just been downloaded.",
+      Snackbar.LENGTH_INDEFINITE
+    ).apply {
+
+      setAction("RESTART") {
+        appUpdateManager.unregisterListener(installStateUpdatedListener)
+        appUpdateManager.completeUpdate()
+      }
+      setActionTextColor(resources.getColor(R.color.light_grey))
+      show()
+
+    }
+
+  }
+
+  override fun onResume() {
+
+    Log.e(TAG, "onResume of ScanFragment")
+
+    if (appUpdateManager != null) {
+
+      if (updateType == AppUpdateType.FLEXIBLE) {
+
+        appUpdateManager
+          .appUpdateInfo
+          .addOnSuccessListener {
+
+              appUpdateInfo ->
+
+            // If the update is downloaded but not installed,
+            // notify the user to complete the update.
+            if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
+              popupSnackbarForCompleteUpdate()
+            }
+
+          }
+
+      }
+      else if (updateType == AppUpdateType.IMMEDIATE) {
+
+        appUpdateManager
+          .appUpdateInfo
+          .addOnSuccessListener {
+
+              appUpdateInfo ->
+
+            if (
+              appUpdateInfo.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS
+            ) {
+
+              appUpdateManager
+                .startUpdateFlowForResult(
+                  appUpdateInfo,
+                  AppUpdateType.IMMEDIATE,
+                  requireActivity(),
+                  UPDATE_REQUEST_CODE)
+
+            }
+
+          }
+
+      }
+
+    }
+
+    super.onResume()
+
+  }
+
   override fun onStart() {
     super.onStart()
-
   }
 
   override fun onDestroy() {

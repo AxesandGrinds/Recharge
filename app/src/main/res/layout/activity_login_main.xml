@@ -115,6 +115,7 @@
 
 
         <LinearLayout
+            android:id="@+id/login_ll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -124,7 +125,7 @@
             android:layout_marginBottom="50dp"
             android:background="@color/login_background_color">
 
-            <com.firebase.ui.auth.util.ui.SupportVectorDrawablesButton
+            <TextView
                 android:id="@+id/phone_button"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
@@ -132,7 +133,7 @@
                 android:text="@string/phone_sign_in"
                 tools:ignore="UnusedIds" />
 
-            <com.firebase.ui.auth.util.ui.SupportVectorDrawablesButton
+            <TextView
                 android:id="@+id/email_button"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"

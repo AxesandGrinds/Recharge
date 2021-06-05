@@ -112,7 +112,7 @@ class PleaseWaitScreenScanActivity : AppCompatActivity(),
 
     setContentView(R.layout.activity_please_wait_scan)
 
-    mInterstitial = MoPubInterstitial(this, "255d2dc0c68345fa87b1b50c07e059eb")
+    mInterstitial = MoPubInterstitial(this, "5ee244d94ff9448c8be9096bca4e0be4")
 
     mInterstitial.interstitialAdListener = this
 

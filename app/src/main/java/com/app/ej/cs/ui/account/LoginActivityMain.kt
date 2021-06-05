@@ -3,54 +3,25 @@ package com.app.ej.cs.ui.account
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Bundle
-import android.text.TextUtils
-import android.transition.Fade
-import android.util.Log
-import android.view.View
 import android.view.Window
 import android.view.WindowManager
-import android.widget.ProgressBar
+import android.view.animation.Animation
+import android.view.animation.Animation.AnimationListener
+import android.view.animation.AnimationUtils
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.app.ej.cs.R
-import com.app.ej.cs.repository.entity.Friend
-import com.app.ej.cs.repository.entity.User
-import com.app.ej.cs.repository.entity.UserAndFriendInfo
-import com.app.ej.cs.ui.MainActivity
-import com.app.ej.cs.utils.AnimationUtil
-import com.app.ej.cs.utils.Util
-import com.firebase.ui.auth.util.ui.SupportVectorDrawablesButton
-import com.google.android.material.button.MaterialButton
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
-import com.google.firebase.FirebaseException
-import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.*
-import com.google.firebase.auth.PhoneAuthProvider.ForceResendingToken
-import com.google.firebase.auth.PhoneAuthProvider.OnVerificationStateChangedCallbacks
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
-import com.google.gson.Gson
 import io.github.inflationx.calligraphy3.CalligraphyConfig
 import io.github.inflationx.calligraphy3.CalligraphyInterceptor
 import io.github.inflationx.viewpump.ViewPump
 import io.github.inflationx.viewpump.ViewPumpContextWrapper
-import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
-import java.io.IOException
-import java.net.HttpURLConnection
-import java.net.URL
 import java.util.*
-import java.util.concurrent.TimeUnit
-import kotlin.concurrent.timerTask
+
 
 class LoginActivityMain : AppCompatActivity() {
 
@@ -59,13 +30,8 @@ class LoginActivityMain : AppCompatActivity() {
 
   private val TAG = LoginActivityMain::class.java.simpleName
 
-
-
-
-  private var phoneButton: SupportVectorDrawablesButton? = null
-  private var emailButton: SupportVectorDrawablesButton? = null
-
-
+  private var phoneButton: TextView? = null
+  private var emailButton: TextView? = null
 
   fun startActivity(context: Context) {
     val intent = Intent(context, LoginActivityMain::class.java)
@@ -130,8 +96,30 @@ class LoginActivityMain : AppCompatActivity() {
 
     setContentView(R.layout.activity_login_main)
 
-    phoneButton = findViewById<View>(R.id.phone_button) as SupportVectorDrawablesButton
-    emailButton = findViewById<View>(R.id.email_button) as SupportVectorDrawablesButton
+    phoneButton = findViewById<TextView>(R.id.phone_button)
+    emailButton = findViewById<TextView>(R.id.email_button)
+
+    val loginLinearLayout = findViewById<LinearLayout>(R.id.login_ll)
+
+    val aniFade: Animation = AnimationUtils.loadAnimation(applicationContext, R.anim.fade_in)
+
+    aniFade.setAnimationListener(object : AnimationListener {
+
+      override fun onAnimationStart(animation: Animation) {
+        phoneButton!!.isEnabled = false
+        emailButton!!.isEnabled = false
+      }
+
+      override fun onAnimationRepeat(animation: Animation) {}
+
+      override fun onAnimationEnd(animation: Animation) {
+        phoneButton!!.isEnabled = true
+        emailButton!!.isEnabled = true
+      }
+
+    })
+
+    loginLinearLayout.startAnimation(aniFade)
 
     context = this
     activity = this

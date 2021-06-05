@@ -289,6 +289,9 @@ dependencies {
         transitive = true
     }
 
+    // For Kotlin users also import the Kotlin extensions library for Play Core:
+    implementation 'com.google.android.play:core-ktx:1.8.1'
+
 //    // For banners
 //    implementation('com.mopub:mopub-sdk-banner:5.17.0@aar') {
 //        transitive = true

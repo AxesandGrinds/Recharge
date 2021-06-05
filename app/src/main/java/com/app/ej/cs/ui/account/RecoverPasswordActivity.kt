@@ -158,6 +158,20 @@ class RecoverPasswordActivity:  AppCompatActivity(), View.OnClickListener,
 
     }
 
+    override fun onBackPressed() {
+
+//    super.onBackPressed()
+
+        Log.e("ATTENTION ATTENTION", "LoginActivityEmail onBackPressed()")
+
+        val intent = Intent(this, LoginActivityEmail::class.java)
+
+        startActivity(intent)
+
+        finish()
+
+    }
+
     private fun resetPassword(email: String) {
 
         showProgress()
