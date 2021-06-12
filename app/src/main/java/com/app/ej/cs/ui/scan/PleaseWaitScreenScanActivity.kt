@@ -1,5 +1,6 @@
 package com.app.ej.cs.ui.scan
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -10,8 +11,10 @@ import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import com.app.ej.cs.BuildConfig
 import com.app.ej.cs.R
 import com.app.ej.cs.ui.MainActivity
+import com.app.ej.cs.ui.MyMoPub
 import com.app.ej.cs.ui.account.RecoverPasswordActivity
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.interstitial.InterstitialAd
@@ -105,20 +108,49 @@ class PleaseWaitScreenScanActivity : AppCompatActivity(),
 
   }
 
-  private lateinit var mInterstitial: MoPubInterstitial
+  private val adUnit: String = "5ee244d94ff9448c8be9096bca4e0be4"
+  private val debugAdUnit: String = "24534e1901884e398f1253216226017e"
+
+  private fun initAds() {
+
+    mInterstitial = MoPubInterstitial(activity, adUnit)
+
+    mInterstitial!!.interstitialAdListener = this
+
+    mInterstitial!!.load()
+
+    startWaitBeforeAd()
+
+  }
+
+  override fun onDestroy() {
+
+    if (mInterstitial != null) {
+      mInterstitial!!.destroy()
+    }
+
+    super.onDestroy()
+
+  }
+
+  lateinit var context: Context
+  lateinit var activity: Activity
+
+  private var mInterstitial: MoPubInterstitial? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
     setContentView(R.layout.activity_please_wait_scan)
 
-    mInterstitial = MoPubInterstitial(this, "5ee244d94ff9448c8be9096bca4e0be4")
+    context = this
+    activity = this
 
-    mInterstitial.interstitialAdListener = this
+    MyMoPub().init(this, adUnit)
 
-    mInterstitial.load()
-
-    startWaitBeforeAd()
+    Handler(Looper.getMainLooper()).postDelayed({
+      initAds()
+    }, 200)
 
 //    MobileAds.initialize(this)
 //
@@ -197,9 +229,9 @@ class PleaseWaitScreenScanActivity : AppCompatActivity(),
 
   private fun showFullScreenAd() {
 
-    if (mInterstitial.isReady) {
+    if (mInterstitial!!.isReady) {
 
-      mInterstitial.show()
+      mInterstitial!!.show()
 
     }
     else {

@@ -1,13 +1,19 @@
 package com.app.ej.cs.ui.scan
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Activity.RESULT_OK
+import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -29,17 +35,17 @@ import com.app.ej.cs.repository.entity.User
 import com.app.ej.cs.repository.entity.UserAndFriendInfo
 import com.app.ej.cs.ui.DataRechargeDialog
 import com.app.ej.cs.ui.MainActivity
+import com.app.ej.cs.ui.MyMoPub
 import com.app.ej.cs.ui.account.LoginActivityMain
-import com.app.ej.cs.ui.account.PleaseWaitScreenRecoverActivity
 import com.app.ej.cs.ui.fab.FloatingActionButton
 import com.app.ej.cs.ui.fab.FloatingActionMenu
+import com.app.ej.cs.utils.NetworkUtil
 import com.app.ej.cs.vision.RecognitionActivityFinal
 import com.droidman.ktoasty.KToasty
 import com.fondesa.kpermissions.allGranted
 import com.fondesa.kpermissions.coroutines.sendSuspend
 import com.fondesa.kpermissions.extension.permissionsBuilder
 import com.github.marlonlom.utilities.timeago.TimeAgo
-import com.google.android.gms.ads.*
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
@@ -47,6 +53,8 @@ import com.google.android.play.core.install.InstallStateUpdatedListener
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import com.google.gson.Gson
 import com.mopub.mobileads.MoPubErrorCode
 import com.mopub.mobileads.MoPubView
@@ -57,6 +65,7 @@ import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
+
 
 class ScanFragment : Fragment(), ScanFragmentView {
 
@@ -429,17 +438,20 @@ private val TAG: String = "ATTENTION ATTENTION"
 
   }
 
-  lateinit var moPubView: MoPubView
+  var moPubView: MoPubView? = null
+
+  private val adUnit: String = "1e824cb53e3945b4872c4c9aceac86b2"
+  private val debugAdUnit: String = "b195f8dd8ded45fe847ad89ed1d016da"
 
   private fun initAds(view: View) {
 
     moPubView = view.findViewById(R.id.fs_moPubView)
 
-    moPubView.setAdUnitId("1e824cb53e3945b4872c4c9aceac86b2"); // Enter your Ad Unit ID from www.mopub.com
+    moPubView!!.setAdUnitId(adUnit); // Enter your Ad Unit ID from www.mopub.com
 //        moPubView.adSize = MoPubAdSize // Call this if you are not setting the ad size in XML or wish to use an ad size other than what has been set in the XML. Note that multiple calls to `setAdSize()` will override one another, and the MoPub SDK only considers the most recent one.
 //        moPubView.loadAd(MoPubAdSize) // Call this if you are not calling setAdSize() or setting the size in XML, or if you are using the ad size that has not already been set through either setAdSize() or in the XML
 
-    moPubView.bannerAdListener = object : MoPubView.BannerAdListener {
+    moPubView!!.bannerAdListener = object : MoPubView.BannerAdListener {
 
       override fun onBannerLoaded(banner: MoPubView) {
         Log.e(TAG, "ScanFragment onBannerLoaded")
@@ -463,7 +475,7 @@ private val TAG: String = "ATTENTION ATTENTION"
 
     }
 
-    moPubView.loadAd()
+    moPubView!!.loadAd()
 
   }
 
@@ -504,9 +516,14 @@ private val TAG: String = "ATTENTION ATTENTION"
   ): View? {
 
     val view = inflater.inflate(R.layout.scan_fragment_lists_layout, container, false)
-    scanFragmentPresenter.bind(this)
 
-    initAds(view)
+    MyMoPub().init(requireContext(), adUnit)
+
+    Handler(Looper.getMainLooper()).postDelayed({
+      initAds(view)
+    }, 200)
+
+    scanFragmentPresenter.bind(this)
 
     initScanMainUserDetails(view)
 
@@ -586,14 +603,14 @@ private val TAG: String = "ATTENTION ATTENTION"
       }
       else {
 
-        checkIfUpdateNecessary()
+        firebaseConfigCheckForUpdate()
 
       }
 
     }
     else {
 
-      checkIfUpdateNecessary()
+      firebaseConfigCheckForUpdate()
 
       val editor = sharedPref!!.edit()
       editor.putInt("weeklyInterstitialAd", 1)
@@ -664,7 +681,9 @@ private val TAG: String = "ATTENTION ATTENTION"
 
         scanFragmentPresenter.displayScanDetails()
 
-        checkBiDailyInterstitialAd()
+        Handler(Looper.getMainLooper()).postDelayed({
+          checkBiDailyInterstitialAd()
+        }, 200)
 
       }
 
@@ -703,7 +722,120 @@ private val TAG: String = "ATTENTION ATTENTION"
 
   }
 
-  private lateinit var appUpdateManager: AppUpdateManager
+  private var mFirebaseRemoteConfig: FirebaseRemoteConfig? = null
+
+  private fun firebaseConfigCheckForUpdate() {
+
+    val networkUtil: NetworkUtil = NetworkUtil()
+
+    if (networkUtil.isOnline(requireContext())) {
+
+      val defaultsRate: HashMap<String, Any> = HashMap()
+      defaultsRate["new_version_code"] = getVersionCode().toString()
+
+      mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
+      val configSettings: FirebaseRemoteConfigSettings = FirebaseRemoteConfigSettings.Builder()
+        .setMinimumFetchIntervalInSeconds(10) // change to 3600 on published app
+        .build()
+
+      mFirebaseRemoteConfig!!.setConfigSettingsAsync(configSettings)
+      mFirebaseRemoteConfig!!.setDefaultsAsync(defaultsRate)
+
+      mFirebaseRemoteConfig!!.fetchAndActivate()
+        .addOnCompleteListener(requireActivity()
+        ) {
+
+            task ->
+
+          if (task.isSuccessful) {
+
+            val newVersionCode: String = mFirebaseRemoteConfig!!.getString("new_version_code")
+
+            Log.e(LOG, "ScanFragment firebaseConfigCheckForUpdate newVersionCode: $newVersionCode")
+
+            if (newVersionCode.toLong() > getVersionCode())
+
+              showUpdateDialog()
+
+          }
+          else Log.e(LOG, "mFirebaseRemoteConfig.fetchAndActivate() not Successful")
+
+        }
+
+    }
+
+  }
+
+  private fun showUpdateDialog() {
+
+    val appPackageName: String = "com.app.ej.cs"
+
+    val dialogBuilder = AlertDialog.Builder(requireContext())
+
+    dialogBuilder.setMessage("This version of Recharge App is obsolete. Please update app from play store.")
+      .setCancelable(false)
+      .setPositiveButton("Proceed", DialogInterface.OnClickListener {
+
+          dialog, which ->
+
+        dialog.cancel()
+
+        try {
+
+          startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$appPackageName")))
+
+        }
+        catch (e: ActivityNotFoundException) {
+
+          startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$appPackageName")))
+
+        }
+
+      })
+
+    val alert = dialogBuilder.create()
+    alert.setTitle("Update")
+    alert.show()
+
+  }
+
+  lateinit var pInfo: PackageInfo
+
+  private fun getVersionCode() : Long {
+
+    var versionCode: Long = 0
+
+    try {
+
+      pInfo = requireActivity().packageManager.getPackageInfo(requireActivity().packageName, 0);
+
+      versionCode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+
+        Log.e(LOG, "ScanFragment longVersionCode: ${pInfo.longVersionCode.toString()}")
+
+        pInfo.longVersionCode
+
+      }
+      else {
+
+        pInfo.versionCode.toLong()
+
+      }
+
+    }
+    catch (e: PackageManager.NameNotFoundException) {
+
+      Log.e(LOG, "ScanFragment getVersionCode: NameNotFoundException: "+ e.message)
+
+    }
+
+    return versionCode
+
+}
+
+  private val LOG: String = "ATTENTION ATTENTION"
+
+  private var appUpdateManager: AppUpdateManager? = null
 
   private lateinit var installStateUpdatedListener: InstallStateUpdatedListener
 
@@ -713,7 +845,7 @@ private val TAG: String = "ATTENTION ATTENTION"
 
     appUpdateManager = AppUpdateManagerFactory.create(requireContext())
 
-    val appUpdateInfoTask = appUpdateManager.appUpdateInfo
+    val appUpdateInfoTask = appUpdateManager!!.appUpdateInfo
 
     appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
 
@@ -749,9 +881,9 @@ private val TAG: String = "ATTENTION ATTENTION"
 
           }
 
-          appUpdateManager.registerListener(installStateUpdatedListener)
+          appUpdateManager!!.registerListener(installStateUpdatedListener)
 
-          appUpdateManager
+          appUpdateManager!!
             .startUpdateFlowForResult(
               appUpdateInfo,
               AppUpdateType.FLEXIBLE,
@@ -763,7 +895,7 @@ private val TAG: String = "ATTENTION ATTENTION"
 
           updateType = AppUpdateType.IMMEDIATE
 
-          appUpdateManager
+          appUpdateManager!!
             .startUpdateFlowForResult(
               appUpdateInfo,
               AppUpdateType.IMMEDIATE,
@@ -788,8 +920,8 @@ private val TAG: String = "ATTENTION ATTENTION"
     ).apply {
 
       setAction("RESTART") {
-        appUpdateManager.unregisterListener(installStateUpdatedListener)
-        appUpdateManager.completeUpdate()
+        appUpdateManager!!.unregisterListener(installStateUpdatedListener)
+        appUpdateManager!!.completeUpdate()
       }
       setActionTextColor(resources.getColor(R.color.light_grey))
       show()
@@ -806,7 +938,7 @@ private val TAG: String = "ATTENTION ATTENTION"
 
       if (updateType == AppUpdateType.FLEXIBLE) {
 
-        appUpdateManager
+        appUpdateManager!!
           .appUpdateInfo
           .addOnSuccessListener {
 
@@ -823,7 +955,7 @@ private val TAG: String = "ATTENTION ATTENTION"
       }
       else if (updateType == AppUpdateType.IMMEDIATE) {
 
-        appUpdateManager
+        appUpdateManager!!
           .appUpdateInfo
           .addOnSuccessListener {
 
@@ -833,7 +965,7 @@ private val TAG: String = "ATTENTION ATTENTION"
               appUpdateInfo.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS
             ) {
 
-              appUpdateManager
+              appUpdateManager!!
                 .startUpdateFlowForResult(
                   appUpdateInfo,
                   AppUpdateType.IMMEDIATE,
@@ -857,10 +989,14 @@ private val TAG: String = "ATTENTION ATTENTION"
   }
 
   override fun onDestroy() {
-    super.onDestroy()
 
-    moPubView.destroy()
+    if (moPubView != null) {
+      moPubView!!.destroy()
+    }
+
     scanFragmentPresenter.unbind()
+
+    super.onDestroy()
 
   }
 

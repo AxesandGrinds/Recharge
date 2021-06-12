@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -12,6 +14,7 @@ import android.widget.ProgressBar
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.app.ej.cs.R
+import com.app.ej.cs.ui.MyMoPub
 import com.app.ej.cs.utils.ImeHelper
 import com.app.ej.cs.utils.NetworkUtil
 import com.app.ej.cs.utils.Util
@@ -81,7 +84,13 @@ class RecoverPasswordActivity:  AppCompatActivity(), View.OnClickListener,
 
         mSubmitButton!!.setOnClickListener(this)
 
-        initAds()
+//    adUni//t = debugAdUni//t
+
+        MyMoPub().init(this, adUnit)
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            initAds()
+        }, 200)
 
 //        val mAdView: AdView = findViewById(R.id.pract_adView)
 //
@@ -108,17 +117,20 @@ class RecoverPasswordActivity:  AppCompatActivity(), View.OnClickListener,
 
     }
 
-    lateinit var moPubView: MoPubView
+    var moPubView: MoPubView? = null
+
+    private var adUnit: String = "ca8da1a9954d436f9b81f39bf980712a"
+    private val debugAdUnit: String = "b195f8dd8ded45fe847ad89ed1d016da"
 
     private fun initAds() {
 
         moPubView = findViewById(R.id.pract_moPubView)
 
-        moPubView.setAdUnitId("ca8da1a9954d436f9b81f39bf980712a"); // Enter your Ad Unit ID from www.mopub.com
+        moPubView!!.setAdUnitId(adUnit); // Enter your Ad Unit ID from www.mopub.com
 //        moPubView.adSize = MoPubAdSize // Call this if you are not setting the ad size in XML or wish to use an ad size other than what has been set in the XML. Note that multiple calls to `setAdSize()` will override one another, and the MoPub SDK only considers the most recent one.
 //        moPubView.loadAd(MoPubAdSize) // Call this if you are not calling setAdSize() or setting the size in XML, or if you are using the ad size that has not already been set through either setAdSize() or in the XML
 
-        moPubView.bannerAdListener = object : MoPubView.BannerAdListener {
+        moPubView!!.bannerAdListener = object : MoPubView.BannerAdListener {
 
             override fun onBannerLoaded(banner: MoPubView) {
                 Log.e(TAG, "RecoverPasswordActivity onBannerLoaded")
@@ -142,7 +154,7 @@ class RecoverPasswordActivity:  AppCompatActivity(), View.OnClickListener,
 
         }
 
-        moPubView.loadAd()
+        moPubView!!.loadAd()
 
     }
 
@@ -250,9 +262,12 @@ class RecoverPasswordActivity:  AppCompatActivity(), View.OnClickListener,
     }
 
     override fun onDestroy() {
-        super.onDestroy()
 
-        moPubView.destroy()
+        if (moPubView != null) {
+            moPubView!!.destroy()
+        }
+
+        super.onDestroy()
 
     }
 

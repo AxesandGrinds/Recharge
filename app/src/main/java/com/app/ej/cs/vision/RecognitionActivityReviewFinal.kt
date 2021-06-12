@@ -25,6 +25,8 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -38,6 +40,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import com.app.ej.cs.R
 import com.app.ej.cs.ui.CodeInputActivity
+import com.app.ej.cs.ui.MyMoPub
 import com.app.ej.cs.utils.PhoneUtil
 import com.app.ej.cs.utils.Util
 import com.google.android.gms.ads.*
@@ -224,7 +227,11 @@ class RecognitionActivityReviewFinal :
 
     }
 
-    initAds()
+    MyMoPub().init(this, adUnit)
+
+    Handler(Looper.getMainLooper()).postDelayed({
+      initAds()
+    }, 200)
 
     // https://developers.google.com/ad-manager/mobile-ads-sdk/android/banner
 //    MobileAds.initialize(this)
@@ -278,17 +285,20 @@ class RecognitionActivityReviewFinal :
 
   }
 
-  lateinit var moPubView: MoPubView
+  var moPubView: MoPubView? = null
+
+  private val adUnit: String = "b1685e583a854f458cd3cf948b67c40a"
+  private val debugAdUnit: String = "b195f8dd8ded45fe847ad89ed1d016da"
 
   private fun initAds() {
 
     moPubView = findViewById(R.id.rra_moPubView)
 
-    moPubView.setAdUnitId("b1685e583a854f458cd3cf948b67c40a"); // Enter your Ad Unit ID from www.mopub.com
+    moPubView!!.setAdUnitId(adUnit); // Enter your Ad Unit ID from www.mopub.com
 //        moPubView.adSize = MoPubAdSize // Call this if you are not setting the ad size in XML or wish to use an ad size other than what has been set in the XML. Note that multiple calls to `setAdSize()` will override one another, and the MoPub SDK only considers the most recent one.
 //        moPubView.loadAd(MoPubAdSize) // Call this if you are not calling setAdSize() or setting the size in XML, or if you are using the ad size that has not already been set through either setAdSize() or in the XML
 
-    moPubView.bannerAdListener = object : MoPubView.BannerAdListener {
+    moPubView!!.bannerAdListener = object : MoPubView.BannerAdListener {
 
       override fun onBannerLoaded(banner: MoPubView) {
         Log.e(TAG, "RecognitionActivityReviewFinal onBannerLoaded")
@@ -312,14 +322,17 @@ class RecognitionActivityReviewFinal :
 
     }
 
-    moPubView.loadAd()
+    moPubView!!.loadAd()
 
   }
 
   override fun onDestroy() {
-    super.onDestroy()
 
-    moPubView.destroy()
+    if (moPubView != null) {
+      moPubView!!.destroy()
+    }
+
+    super.onDestroy()
 
   }
 

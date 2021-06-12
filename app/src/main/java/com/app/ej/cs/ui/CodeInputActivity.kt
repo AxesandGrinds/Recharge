@@ -1,6 +1,8 @@
 package com.app.ej.cs.ui
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -165,7 +167,12 @@ class CodeInputActivity : AppCompatActivity(),
 
     }
 
-    initAds()
+    MyMoPub().init(this, adUnit)
+
+    Handler(Looper.getMainLooper()).postDelayed({
+      initAds()
+    }, 200)
+
 
 //    MobileAds.initialize(this)
 //
@@ -194,17 +201,20 @@ class CodeInputActivity : AppCompatActivity(),
 
   }
 
-  lateinit var moPubView: MoPubView
+  var moPubView: MoPubView? = null
+
+  private val adUnit: String = "bfcaf3b320c7442fb7dd51b3dde50f68"
+  private val debugAdUnit: String = "b195f8dd8ded45fe847ad89ed1d016da"
 
   private fun initAds() {
 
     moPubView = findViewById(R.id.ciact_moPubView)
 
-    moPubView.setAdUnitId("bfcaf3b320c7442fb7dd51b3dde50f68"); // Enter your Ad Unit ID from www.mopub.com
+    moPubView!!.setAdUnitId(adUnit); // Enter your Ad Unit ID from www.mopub.com
 //        moPubView.adSize = MoPubAdSize // Call this if you are not setting the ad size in XML or wish to use an ad size other than what has been set in the XML. Note that multiple calls to `setAdSize()` will override one another, and the MoPub SDK only considers the most recent one.
 //        moPubView.loadAd(MoPubAdSize) // Call this if you are not calling setAdSize() or setting the size in XML, or if you are using the ad size that has not already been set through either setAdSize() or in the XML
 
-    moPubView.bannerAdListener = object : MoPubView.BannerAdListener {
+    moPubView!!.bannerAdListener = object : MoPubView.BannerAdListener {
 
       override fun onBannerLoaded(banner: MoPubView) {
         Log.e(TAG, "CodeInputActivity onBannerLoaded")
@@ -228,14 +238,17 @@ class CodeInputActivity : AppCompatActivity(),
 
     }
 
-    moPubView.loadAd()
+    moPubView!!.loadAd()
 
   }
 
   override fun onDestroy() {
-    super.onDestroy()
 
-    moPubView.destroy()
+    if (moPubView != null) {
+      moPubView!!.destroy()
+    }
+
+    super.onDestroy()
 
   }
 

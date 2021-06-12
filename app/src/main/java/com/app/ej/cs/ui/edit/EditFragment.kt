@@ -6,6 +6,8 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.ContactsContract
 import android.util.Log
 import android.view.LayoutInflater
@@ -31,6 +33,7 @@ import com.app.ej.cs.presenter.PickContactListener
 import com.app.ej.cs.repository.entity.Friend
 import com.app.ej.cs.repository.entity.User
 import com.app.ej.cs.repository.entity.UserAndFriendInfo
+import com.app.ej.cs.ui.MyMoPub
 import com.app.ej.cs.ui.account.RegisterDetailsActivity
 import com.app.ej.cs.utils.NetworkUtil
 import com.app.ej.cs.utils.PhoneUtil
@@ -114,24 +117,31 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
   }
 
   override fun onDestroy() {
-    super.onDestroy()
 
-    moPubView.destroy()
+    if (moPubView != null) {
+      moPubView!!.destroy()
+    }
+
     editFragmentPresenter.unbind()
+
+    super.onDestroy()
 
   }
 
-  lateinit var moPubView: MoPubView
+  var moPubView: MoPubView? = null
+
+  private val adUnit: String = "b12a73e64c8a4167a69e47961866bda4"
+  private val debugAdUnit: String = "b195f8dd8ded45fe847ad89ed1d016da"
 
   private fun initAds(view: View) {
 
     moPubView = view.findViewById(R.id.fe_moPubView)
 
-    moPubView.setAdUnitId("b12a73e64c8a4167a69e47961866bda4"); // Enter your Ad Unit ID from www.mopub.com
+    moPubView!!.setAdUnitId(adUnit); // Enter your Ad Unit ID from www.mopub.com
 //        moPubView.adSize = MoPubAdSize // Call this if you are not setting the ad size in XML or wish to use an ad size other than what has been set in the XML. Note that multiple calls to `setAdSize()` will override one another, and the MoPub SDK only considers the most recent one.
 //        moPubView.loadAd(MoPubAdSize) // Call this if you are not calling setAdSize() or setting the size in XML, or if you are using the ad size that has not already been set through either setAdSize() or in the XML
 
-    moPubView.bannerAdListener = object : MoPubView.BannerAdListener {
+    moPubView!!.bannerAdListener = object : MoPubView.BannerAdListener {
 
       override fun onBannerLoaded(banner: MoPubView) {
         Log.e(TAG, "EditFragment onBannerLoaded")
@@ -155,7 +165,7 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
 
     }
 
-    moPubView.loadAd()
+    moPubView!!.loadAd()
 
   }
 
@@ -203,7 +213,11 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
 
     initSaveButton(view)
 
-    initAds(view)
+    MyMoPub().init(requireContext(), adUnit)
+
+    Handler(Looper.getMainLooper()).postDelayed({
+      initAds(view)
+    }, 200)
 
     initAddOneMoreFriendButton(view)
     initEditMainRecyclerView(view)

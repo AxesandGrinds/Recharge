@@ -1,6 +1,8 @@
 package com.app.ej.cs.ui.account
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -11,9 +13,8 @@ import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.app.ej.cs.R
+import com.app.ej.cs.ui.MyMoPub
 import com.google.android.gms.ads.*
-import com.google.android.gms.ads.interstitial.InterstitialAd
-import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.mopub.mobileads.MoPubErrorCode
 import com.mopub.mobileads.MoPubInterstitial
 import java.util.*
@@ -49,9 +50,9 @@ class PleaseWaitScreenRecoverActivity : AppCompatActivity(),
 
   private fun showFullScreenAd() {
 
-    if (mInterstitial.isReady) {
+    if (mInterstitial!!.isReady) {
 
-      mInterstitial.show()
+      mInterstitial!!.show()
 
     }
     else {
@@ -89,7 +90,25 @@ class PleaseWaitScreenRecoverActivity : AppCompatActivity(),
 
   }
 
-  private lateinit var mInterstitial: MoPubInterstitial
+  private var mInterstitial: MoPubInterstitial? = null
+
+  private var adUnit: String = "255d2dc0c68345fa87b1b50c07e059eb"
+  private val debugAdUnit: String = "24534e1901884e398f1253216226017e"
+
+  private fun initAds() {
+
+    mInterstitial = MoPubInterstitial(activity, adUnit)
+
+    mInterstitial!!.interstitialAdListener = this
+
+    mInterstitial!!.load()
+
+    startWaitBeforeAd()
+
+  }
+
+  lateinit var context: Context
+  lateinit var activity: Activity
 
   @SuppressLint("MissingPermission")
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -97,13 +116,16 @@ class PleaseWaitScreenRecoverActivity : AppCompatActivity(),
 
     setContentView(R.layout.activity_please_wait_recover)
 
-    mInterstitial = MoPubInterstitial(this, "255d2dc0c68345fa87b1b50c07e059eb")
+    context = this
+    activity = this
 
-    mInterstitial.interstitialAdListener = this
+//    adUni//t = debugAdUni//t
 
-    mInterstitial.load()
+    MyMoPub().init(this, adUnit)
 
-    startWaitBeforeAd()
+    Handler(Looper.getMainLooper()).postDelayed({
+      initAds()
+    }, 200)
 
 //    MobileAds.initialize(this)
 //
@@ -149,8 +171,13 @@ class PleaseWaitScreenRecoverActivity : AppCompatActivity(),
   private val TAG: String = "ATTENTION ATTENTION"
 
   override fun onDestroy() {
-    mInterstitial.destroy()
+
+    if (mInterstitial != null) {
+      mInterstitial!!.destroy()
+    }
+
     super.onDestroy()
+
   }
 
   private fun goToRecoverPassword() {
