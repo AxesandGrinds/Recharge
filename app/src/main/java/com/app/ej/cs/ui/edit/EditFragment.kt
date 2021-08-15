@@ -54,6 +54,7 @@ import com.mopub.mobileads.MoPubErrorCode
 import com.mopub.mobileads.MoPubView
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
 import io.michaelrocks.libphonenumber.android.Phonenumber
+import java.lang.Exception
 
 class EditFragment : Fragment(), EditFragmentView, PickContactListener {
 
@@ -738,36 +739,45 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
     Log.e("ATTENTION ATTENTION", "allInfoJsonSaved: $allInfoJsonSaved")
     Log.e("ATTENTION ATTENTION", "allInfoJsonUnsaved: $allInfoJsonUnsaved")
 
-    if (allInfoJsonUnsaved != "defaultAll") {
+    try {
 
-      userAndFriendInfoUnsaved = gson.fromJson(allInfoJsonUnsaved, UserAndFriendInfo::class.java)
+      if (allInfoJsonUnsaved != "defaultAll") {
 
-      userAndFriendInfoUnsaved.friendList?.removeAt(index)
+        userAndFriendInfoUnsaved = gson.fromJson(allInfoJsonUnsaved, UserAndFriendInfo::class.java)
 
-      val size = userAndFriendInfoUnsaved.friendList?.size!! - 1
+        userAndFriendInfoUnsaved.friendList?.removeAt(index)
 
-      for (i in 0..size) {
+        val size = userAndFriendInfoUnsaved.friendList?.size!! - 1
 
-        userAndFriendInfoUnsaved.friendList!![i].index = i
-        userAndFriendInfoUnsaved.friendList!![i].description = "Friend ${i+1}"
+        for (i in 0..size) {
+
+          userAndFriendInfoUnsaved.friendList!![i].index = i
+          userAndFriendInfoUnsaved.friendList!![i].description = "Friend ${i+1}"
+
+        }
+
+        allInfoJsonUnsaved = Gson().toJson(userAndFriendInfoUnsaved)
+
+        val editor = sharedPref.edit()
+
+        editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
+
+        editor.apply()
+
+        val message: String = "You have successfully deleted an entry for a friend."
+
+        util.onShowMessageSuccess(message, requireContext())
 
       }
 
-      allInfoJsonUnsaved = Gson().toJson(userAndFriendInfoUnsaved)
-
-      val editor = sharedPref.edit()
-
-      editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
-
-      editor.apply()
-
-      val message: String = "You have successfully deleted an entry for a friend."
-
-      util.onShowMessageSuccess(message, requireContext())
+      editFragmentFriendViewAdapter.notifyDataSetChanged()
 
     }
+    catch (e: Exception) {
 
-    editFragmentFriendViewAdapter.notifyDataSetChanged()
+      Log.e("ATTENTION ATTENTION", "Error deleting friend entry: ${e.toString()}");
+
+    }
 
   }
 

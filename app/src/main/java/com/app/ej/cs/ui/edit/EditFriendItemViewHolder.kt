@@ -439,73 +439,47 @@ class EditFriendItemViewHolder(
     var allInfoJsonUnsaved = sharedPref.getString("allInfoUnsaved", "defaultAll")!!
     val allInfoUnsaved = gson.fromJson(allInfoJsonUnsaved, UserAndFriendInfo::class.java)
 
-    if (allInfoUnsaved.friendList?.size ?: 0 < model.index) {
+    val newFriend: Friend =
 
-      val newFriend: Friend =
+      Friend(
+        index = model.index,
+        description = "Friend ${model.index + 1}",
 
-        Friend(
-          index = model.index,
-          description = "Friend ${model.index + 1}",
+        folded = true,
 
-          folded = true,
+        name = null,
+        phone1 = null,
+        phone2 = null,
+        phone3 = null,
 
-          name = null,
-          phone1 = null,
-          phone2 = null,
-          phone3 = null,
+        network1 = null,
+        network2 = null,
+        network3 = null,
 
-          network1 = null,
-          network2 = null,
-          network3 = null,
+        bank1 = null,
+        bank2 = null,
+        bank3 = null,
+        bank4 = null,
 
-          bank1 = null,
-          bank2 = null,
-          bank3 = null,
-          bank4 = null,
+        accountNumber1 = null,
+        accountNumber2 = null,
+        accountNumber3 = null,
+        accountNumber4 = null,
+      )
 
-          accountNumber1 = null,
-          accountNumber2 = null,
-          accountNumber3 = null,
-          accountNumber4 = null,
-        )
+    if (model.index >= allInfoUnsaved.friendList?.size ?: 0) {
+//    if (allInfoUnsaved.friendList?.size ?: 0 < model.index) {
 
       allInfoUnsaved.friendList?.add(newFriend)
 
     }
 
-    if (userAndFriendInfo.friendList?.size ?: 0 < model.index) {
-
-      val newFriend: Friend =
-
-        Friend(
-          index = model.index,
-          description = "Friend ${model.index + 1}",
-
-          folded = true,
-
-          name = null,
-          phone1 = null,
-          phone2 = null,
-          phone3 = null,
-
-          network1 = null,
-          network2 = null,
-          network3 = null,
-
-          bank1 = null,
-          bank2 = null,
-          bank3 = null,
-          bank4 = null,
-
-          accountNumber1 = null,
-          accountNumber2 = null,
-          accountNumber3 = null,
-          accountNumber4 = null,
-        )
-
-      userAndFriendInfo.friendList?.add(newFriend)
-
-    }
+//    if (model.index >= userAndFriendInfo.friendList?.size ?: 0) {
+////    if (userAndFriendInfo.friendList?.size ?: 0 < model.index) {
+//
+//      userAndFriendInfo.friendList?.add(newFriend)
+//
+//    }
 
     allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
 
@@ -702,8 +676,8 @@ class EditFriendItemViewHolder(
           try {
 
             val name: String = friendNameEt.text.toString()
-            userAndFriendInfo.friendList?.get(model.index)?.name = name
             allInfoUnsaved.friendList?.get(model.index)?.name = name
+//            userAndFriendInfo.friendList?.get(model.index)?.name = name
 
           }
           catch (e: Exception) {
@@ -790,7 +764,7 @@ class EditFriendItemViewHolder(
         val allInfoUnsaved = gson.fromJson(allInfoJsonUnsaved, UserAndFriendInfo::class.java)
 
         val phone1: String = friendPhoneEt1.text.toString()
-        userAndFriendInfo.friendList?.get(model.index)?.phone1 = phone1
+//        userAndFriendInfo.friendList?.get(model.index)?.phone1 = phone1
         allInfoUnsaved.friendList?.get(model.index)?.phone1 = phone1
         allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
 
@@ -821,7 +795,7 @@ class EditFriendItemViewHolder(
         val allInfoUnsaved = gson.fromJson(allInfoJsonUnsaved, UserAndFriendInfo::class.java)
 
         val phone2: String = friendPhoneEt2.text.toString()
-        userAndFriendInfo.friendList?.get(model.index)?.phone2 = phone2
+//        userAndFriendInfo.friendList?.get(model.index)?.phone2 = phone2
         allInfoUnsaved.friendList?.get(model.index)?.phone2 = phone2
         allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
 
@@ -852,7 +826,7 @@ class EditFriendItemViewHolder(
         val allInfoUnsaved = gson.fromJson(allInfoJsonUnsaved, UserAndFriendInfo::class.java)
 
         val phone3: String = friendPhoneEt3.text.toString()
-        userAndFriendInfo.friendList?.get(model.index)?.phone3 = phone3
+//        userAndFriendInfo.friendList?.get(model.index)?.phone3 = phone3
         allInfoUnsaved.friendList?.get(model.index)?.phone3 = phone3
         allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
 
@@ -879,15 +853,15 @@ class EditFriendItemViewHolder(
         val allInfoUnsaved = gson.fromJson(allInfoJsonUnsaved, UserAndFriendInfo::class.java)
 
         if (selectedItem != "Choose Network") {
-          userAndFriendInfo.friendList?.get(model.index)?.network1 = network1
+//          userAndFriendInfo.friendList?.get(model.index)?.network1 = network1
           allInfoUnsaved.friendList?.get(model.index)?.network1 = network1
         }
         else {
 
           try {
 
-            userAndFriendInfo.friendList?.get(model.index)?.network1 = null
             allInfoUnsaved.friendList?.get(model.index)?.network1 = null
+//            userAndFriendInfo.friendList?.get(model.index)?.network1 = null
 
           }
           catch (e: Exception) {
@@ -933,15 +907,15 @@ class EditFriendItemViewHolder(
         val allInfoUnsaved = gson.fromJson(allInfoJsonUnsaved, UserAndFriendInfo::class.java)
 
         if (selectedItem != "Choose Network") {
-          userAndFriendInfo.friendList?.get(model.index)?.network2 = network2
           allInfoUnsaved.friendList?.get(model.index)?.network2 = network2
+//          userAndFriendInfo.friendList?.get(model.index)?.network2 = network2
         }
         else {
 
           try {
 
-            userAndFriendInfo.friendList?.get(model.index)?.network2 = null
             allInfoUnsaved.friendList?.get(model.index)?.network2 = null
+//            userAndFriendInfo.friendList?.get(model.index)?.network2 = null
 
           }
           catch (e: Exception) {
@@ -976,15 +950,15 @@ class EditFriendItemViewHolder(
         val allInfoUnsaved = gson.fromJson(allInfoJsonUnsaved, UserAndFriendInfo::class.java)
 
         if (selectedItem != "Choose Network") {
-          userAndFriendInfo.friendList?.get(model.index)?.network3 = network3
           allInfoUnsaved.friendList?.get(model.index)?.network3 = network3
+//          userAndFriendInfo.friendList?.get(model.index)?.network3 = network3
         }
         else {
 
           try {
 
-            userAndFriendInfo.friendList?.get(model.index)?.network3 = null
             allInfoUnsaved.friendList?.get(model.index)?.network3 = null
+//            userAndFriendInfo.friendList?.get(model.index)?.network3 = null
 
           }
           catch (e: Exception) {
@@ -1019,15 +993,15 @@ class EditFriendItemViewHolder(
         val allInfoUnsaved = gson.fromJson(allInfoJsonUnsaved, UserAndFriendInfo::class.java)
 
         if (selectedItem != "Choose Bank") {
-          userAndFriendInfo.friendList?.get(model.index)?.bank1 = bank1
           allInfoUnsaved.friendList?.get(model.index)?.bank1 = bank1
+//          userAndFriendInfo.friendList?.get(model.index)?.bank1 = bank1
         }
         else {
 
           try {
 
-            userAndFriendInfo.friendList?.get(model.index)?.bank1 = null
             allInfoUnsaved.friendList?.get(model.index)?.bank1 = null
+//            userAndFriendInfo.friendList?.get(model.index)?.bank1 = null
 
           }
           catch (e: Exception) {
@@ -1062,15 +1036,15 @@ class EditFriendItemViewHolder(
         val allInfoUnsaved = gson.fromJson(allInfoJsonUnsaved, UserAndFriendInfo::class.java)
 
         if (selectedItem != "Choose Bank") {
-          userAndFriendInfo.friendList?.get(model.index)?.bank2 = bank2
           allInfoUnsaved.friendList?.get(model.index)?.bank2 = bank2
+//          userAndFriendInfo.friendList?.get(model.index)?.bank2 = bank2
         }
         else {
 
           try {
 
-            userAndFriendInfo.friendList?.get(model.index)?.bank2 = null
             allInfoUnsaved.friendList?.get(model.index)?.bank2 = null
+//            userAndFriendInfo.friendList?.get(model.index)?.bank2 = null
 
           }
           catch (e: Exception) {
@@ -1105,15 +1079,15 @@ class EditFriendItemViewHolder(
         val allInfoUnsaved = gson.fromJson(allInfoJsonUnsaved, UserAndFriendInfo::class.java)
 
         if (selectedItem != "Choose Bank") {
-          userAndFriendInfo.friendList?.get(model.index)?.bank3 = bank3
           allInfoUnsaved.friendList?.get(model.index)?.bank3 = bank3
+//          userAndFriendInfo.friendList?.get(model.index)?.bank3 = bank3
         }
         else {
 
           try {
 
-            userAndFriendInfo.friendList?.get(model.index)?.bank3 = null
             allInfoUnsaved.friendList?.get(model.index)?.bank3 = null
+//            userAndFriendInfo.friendList?.get(model.index)?.bank3 = null
 
           }
           catch (e: Exception) {
@@ -1148,15 +1122,15 @@ class EditFriendItemViewHolder(
         val allInfoUnsaved = gson.fromJson(allInfoJsonUnsaved, UserAndFriendInfo::class.java)
 
         if (selectedItem != "Choose Bank") {
-          userAndFriendInfo.friendList?.get(model.index)?.bank4 = bank4
           allInfoUnsaved.friendList?.get(model.index)?.bank4 = bank4
+//          userAndFriendInfo.friendList?.get(model.index)?.bank4 = bank4
         }
         else {
 
           try {
 
-            userAndFriendInfo.friendList?.get(model.index)?.bank4 = null
             allInfoUnsaved.friendList?.get(model.index)?.bank4 = null
+//            userAndFriendInfo.friendList?.get(model.index)?.bank4 = null
 
           }
           catch (e: Exception) {
@@ -1198,7 +1172,7 @@ class EditFriendItemViewHolder(
 
         if (allInfoUnsaved.friendList?.size ?: 0 > model.index) {
 
-          userAndFriendInfo.friendList?.get(model.index)?.accountNumber1 = accountNumber1
+//          userAndFriendInfo.friendList?.get(model.index)?.accountNumber1 = accountNumber1
           allInfoUnsaved.friendList?.get(model.index)?.accountNumber1 = accountNumber1
           allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
 
@@ -1234,7 +1208,7 @@ class EditFriendItemViewHolder(
 
         if (allInfoUnsaved.friendList?.size ?: 0 > model.index) {
 
-          userAndFriendInfo.friendList?.get(model.index)?.accountNumber2 = accountNumber2
+//          userAndFriendInfo.friendList?.get(model.index)?.accountNumber2 = accountNumber2
           allInfoUnsaved.friendList?.get(model.index)?.accountNumber2 = accountNumber2
           allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
 
@@ -1270,7 +1244,7 @@ class EditFriendItemViewHolder(
 
         if (allInfoUnsaved.friendList?.size ?: 0 > model.index) {
 
-          userAndFriendInfo.friendList?.get(model.index)?.accountNumber3 = accountNumber3
+//          userAndFriendInfo.friendList?.get(model.index)?.accountNumber3 = accountNumber3
           allInfoUnsaved.friendList?.get(model.index)?.accountNumber3 = accountNumber3
           allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
 
@@ -1306,7 +1280,7 @@ class EditFriendItemViewHolder(
 
         if (allInfoUnsaved.friendList?.size ?: 0 > model.index) {
 
-          userAndFriendInfo.friendList?.get(model.index)?.accountNumber4 = accountNumber4
+//          userAndFriendInfo.friendList?.get(model.index)?.accountNumber4 = accountNumber4
           allInfoUnsaved.friendList?.get(model.index)?.accountNumber4 = accountNumber4
           allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
 
