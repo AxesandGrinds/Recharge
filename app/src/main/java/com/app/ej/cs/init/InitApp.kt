@@ -5,6 +5,7 @@ import android.content.Context
 import com.app.ej.cs.repository.impl.MemoryUserAndFriendsRepository
 import com.app.ej.cs.di.AppComponent
 import com.app.ej.cs.di.DaggerAppComponent
+import com.facebook.ads.AudienceNetworkAds
 
 class InitApp : Application() {
   
@@ -12,6 +13,9 @@ class InitApp : Application() {
 
   override fun onCreate() {
     super.onCreate()
+
+    // Initialize the Audience Network SDK
+    AudienceNetworkAds.initialize(this);
 
     InitApp.appContext = applicationContext
 

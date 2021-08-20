@@ -152,6 +152,8 @@ class PleaseWaitScreenScanActivity : AppCompatActivity(),
       initAds()
     }, 200)
 
+
+
 //    MobileAds.initialize(this)
 //
 //    loadInterstitialAd()

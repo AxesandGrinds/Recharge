@@ -271,31 +271,31 @@ private fun returnToLogin() {
   override fun friendById(id: Int): Friend? = friendsMap[id]
 
     // TODO DONE
-  override fun friendList(): MutableList<Friend> {
+    override fun friendList(): MutableList<Friend> {
 
-      val sharedPref = context.getSharedPreferences(PREFNAME, Context.MODE_PRIVATE)
+        val sharedPref = context.getSharedPreferences(PREFNAME, Context.MODE_PRIVATE)
 
-      val gson = Gson()
+        val gson = Gson()
 
-      var allInfoJson: String? = null
+        var allInfoJson: String? = null
 
-      allInfoJson = sharedPref.getString("allInfoSaved", "defaultAll")
+        allInfoJson = sharedPref.getString("allInfoSaved", "defaultAll")
 
-      if (allInfoJson != "defaultAll") {
+        if (allInfoJson != "defaultAll") {
 
-          val allInfo = gson.fromJson(allInfoJson, UserAndFriendInfo::class.java)
+            val allInfo = gson.fromJson(allInfoJson, UserAndFriendInfo::class.java)
 
-          Log.e("ATTENTION ATTENTION", "local allInfo.toString(): ${allInfo.toString()}")
+            Log.e("ATTENTION ATTENTION", "local allInfo.toString(): ${allInfo.toString()}")
 
-          usersList   = allInfo.usersList
-          assignValues("User")
+            usersList   = allInfo.usersList
+            assignValues("User")
 
-          if (allInfo.friendList != null) {
-              friendsList = allInfo.friendList!!
-              assignValues("Friend")
-          }
+            if (allInfo.friendList != null) {
+                friendsList = allInfo.friendList!!
+                assignValues("Friend")
+            }
 
-      }
+        }
 
         return if (friendsList != null) {
 
@@ -307,7 +307,46 @@ private fun returnToLogin() {
 
         }
 
-  }
+    }
+
+    // TODO DONE
+    override fun friendListUnsaved(): MutableList<Friend> {
+
+        val sharedPref = context.getSharedPreferences(PREFNAME, Context.MODE_PRIVATE)
+
+        val gson = Gson()
+
+        var allInfoJson: String? = null
+
+        allInfoJson = sharedPref.getString("allInfoUnsaved", "defaultAll")
+
+        if (allInfoJson != "defaultAll") {
+
+            val allInfo = gson.fromJson(allInfoJson, UserAndFriendInfo::class.java)
+
+            Log.e("ATTENTION ATTENTION", "local unsaved allInfo.toString(): ${allInfo.toString()}")
+
+            usersList   = allInfo.usersList
+            assignValues("User")
+
+            if (allInfo.friendList != null) {
+                friendsList = allInfo.friendList!!
+                assignValues("Friend")
+            }
+
+        }
+
+        return if (friendsList != null) {
+
+            friendsList!!
+
+        } else {
+
+            mutableListOf()
+
+        }
+
+    }
 
   override fun friendInsert(friend: Friend) {
       friendsMap[friend.index] = friend

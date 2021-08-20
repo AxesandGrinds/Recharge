@@ -39,6 +39,8 @@ import com.google.gson.Gson
 import io.michaelrocks.libphonenumber.android.NumberParseException
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
 import io.michaelrocks.libphonenumber.android.Phonenumber
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class EditFriendItemViewHolder(
@@ -109,12 +111,14 @@ class EditFriendItemViewHolder(
 
   private fun readFromLocal() {
 
+    Log.e("ATTENTION ATTENTION X", "readFromLocal() RAN")
+
     val sharedPref = view.context.getSharedPreferences(PREFNAME, Context.MODE_PRIVATE)
 
     val allInfoJsonSaved: String? = sharedPref.getString("allInfoSaved", "defaultAll")
     var allInfoJsonUnsaved = sharedPref.getString("allInfoUnsaved", "defaultAll")!!
 
-    if (allInfoJsonSaved != "defaultAll") {
+    if (allInfoJsonUnsaved != "defaultAll") {
 
       val allInfo = gson.fromJson(allInfoJsonSaved, UserAndFriendInfo::class.java)
 
@@ -226,7 +230,7 @@ class EditFriendItemViewHolder(
 
   }
 
-  private fun setBankSpinner(mBankSpinner: Spinner) {
+  private fun setBankSpinner(mBankSpinner: Spinner, chosenItem: String?, which: Int) {
 
     val networkAdapter = ArrayAdapter.createFromResource(
       view.context,
@@ -236,41 +240,84 @@ class EditFriendItemViewHolder(
     networkAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
     mBankSpinner.adapter = networkAdapter
 
-    mBankSpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
+    val bankList: List<String> = listOf(*activity.resources.getStringArray(R.array.banks_arrays))
 
-      override fun onNothingSelected(parent: AdapterView<*>?) {}
+    if (chosenItem != null) {
 
-      override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+      val position: Int = bankList.indexOf(chosenItem)
+
+      if (position != -1) {
 
         mBankSpinner.setSelection(position)
+
+        Log.e("ATTENTION ATTENTION", "Spinner Bank $which set to $chosenItem at $position")
 
       }
 
     }
+    else {
+
+      Log.e("ATTENTION ATTENTION", "Spinner Bank $which set to $chosenItem Choose Bank")
+
+    }
+
+//    mBankSpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
+//
+//      override fun onNothingSelected(parent: AdapterView<*>?) {}
+//
+//      override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+//
+//        mBankSpinner.setSelection(position)
+//
+//      }
+//
+//    }
 
   }
 
-  private fun setNetworkSpinner(mNetworkSpinner: Spinner) {
+  private fun setNetworkSpinner(mNetworkSpinner: Spinner, chosenItem: String?, which: Int) {
 
     val networkAdapter = ArrayAdapter.createFromResource(
       view.context,
       R.array.network_arrays,
       android.R.layout.simple_spinner_item
     )
+
     networkAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
     mNetworkSpinner.adapter = networkAdapter
 
-    mNetworkSpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
+    val networkList: List<String> = listOf(*activity.resources.getStringArray(R.array.network_arrays))
 
-      override fun onNothingSelected(parent: AdapterView<*>?) {
-      }
-      override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+    if (chosenItem != null) {
+
+      val position: Int = networkList.indexOf(chosenItem)
+
+      if (position != -1) {
 
         mNetworkSpinner.setSelection(position)
+
+        Log.e("ATTENTION ATTENTION", "Spinner Network $which set to $chosenItem at $position")
 
       }
 
     }
+    else {
+
+      Log.e("ATTENTION ATTENTION", "Spinner Network $which set to $chosenItem Choose Network")
+
+    }
+
+    //    mNetworkSpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
+//
+//      override fun onNothingSelected(parent: AdapterView<*>?) {
+//      }
+//      override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+//
+//        mNetworkSpinner.setSelection(position)
+//
+//      }
+//
+//    }
 
   }
 
@@ -489,6 +536,8 @@ class EditFriendItemViewHolder(
 
   }
 
+  private var hasLoaded: Boolean = false
+
   override fun bind(model: Friend) {
 
     currentFriend = model
@@ -502,14 +551,14 @@ class EditFriendItemViewHolder(
 
     checkModelsIndex(model)
 
-    setNetworkSpinner(friendNetworkSpinner1) // TODO Might need to convert to filterTo
-    setNetworkSpinner(friendNetworkSpinner2)
-    setNetworkSpinner(friendNetworkSpinner3)
+    setNetworkSpinner(friendNetworkSpinner1, model.network1, 1) // TODO Might need to convert to filterTo
+    setNetworkSpinner(friendNetworkSpinner2, model.network2, 2)
+    setNetworkSpinner(friendNetworkSpinner3, model.network3, 3)
 
-    setBankSpinner(friendBankSpinner1)
-    setBankSpinner(friendBankSpinner2)
-    setBankSpinner(friendBankSpinner3)
-    setBankSpinner(friendBankSpinner4)
+    setBankSpinner(friendBankSpinner1, model.bank1, 1)
+    setBankSpinner(friendBankSpinner2, model.bank2, 2)
+    setBankSpinner(friendBankSpinner3, model.bank3, 3)
+    setBankSpinner(friendBankSpinner4, model.bank4, 4)
 
 //    val typeface: Typeface = ResourcesCompat.getFont(activity, R.font.dancingscriptvariablefontwght)!!
 //    friendNumberTv.setTypeface(typeface, Typeface.NORMAL)
@@ -659,81 +708,21 @@ class EditFriendItemViewHolder(
       override fun beforeTextChanged(
         s: CharSequence, start: Int,
         count: Int, after: Int
-      ) {
-      }
+      ) {}
 
       override fun onTextChanged(
         s: CharSequence, start: Int,
         before: Int, count: Int
       ) {
 
+        Log.e("ATTENTION ATTENTION X", "friendNameEt.addTextChangedListener() onTextChanged RAN")
+
         val sharedPref = view.context.getSharedPreferences(PREFNAME, Context.MODE_PRIVATE)
         var allInfoJsonUnsaved = sharedPref.getString("allInfoUnsaved", "defaultAll")!!
         val allInfoUnsaved = gson.fromJson(allInfoJsonUnsaved, UserAndFriendInfo::class.java)
 
-        if (allInfoUnsaved.friendList?.size ?: 0 > model.index) {
-
-          try {
-
-            val name: String = friendNameEt.text.toString()
-            allInfoUnsaved.friendList?.get(model.index)?.name = name
-//            userAndFriendInfo.friendList?.get(model.index)?.name = name
-
-          }
-          catch (e: Exception) {
-
-            Log.e("ATTENTION ATTENTION", "EditFriendITemViewHolder friendNameEt.addTextChangedListener error: ${e.toString()}")
-
-            try {
-
-              val name: String = friendNameEt.text.toString()
-              allInfoUnsaved.friendList?.get(model.index)?.name = name
-
-            }
-            catch (e: Exception) {
-
-              Log.e("ATTENTION ATTENTION", "EditFriendITemViewHolder friendNameEt.addTextChangedListener error: ${e.toString()}")
-
-
-            }
-
-          }
-
-        }
-        else {
-
-          val newFriend: Friend =
-
-            Friend(
-              index = model.index,
-              description = "Friend ${model.index + 1}",
-
-              folded = false,
-
-              name = s.toString(),
-              phone1 = null,
-              phone2 = null,
-              phone3 = null,
-
-              network1 = null,
-              network2 = null,
-              network3 = null,
-
-              bank1 = null,
-              bank2 = null,
-              bank3 = null,
-              bank4 = null,
-
-              accountNumber1 = null,
-              accountNumber2 = null,
-              accountNumber3 = null,
-              accountNumber4 = null,
-              )
-
-          userAndFriendInfo.friendList?.add(newFriend)
-          allInfoUnsaved.friendList?.add(newFriend)
-
-        }
+        val name: String = s.toString()
+        allInfoUnsaved.friendList?.get(model.index)?.name = name
 
         allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
 
@@ -751,19 +740,20 @@ class EditFriendItemViewHolder(
       override fun beforeTextChanged(
         s: CharSequence, start: Int,
         count: Int, after: Int
-      ) {
-      }
+      ) {}
 
       override fun onTextChanged(
         s: CharSequence, start: Int,
         before: Int, count: Int
       ) {
 
+        Log.e("ATTENTION ATTENTION X", "friendPhoneEt1.addTextChangedListener() onTextChanged RAN")
+
         val sharedPref = view.context.getSharedPreferences(PREFNAME, Context.MODE_PRIVATE)
         var allInfoJsonUnsaved = sharedPref.getString("allInfoUnsaved", "defaultAll")!!
         val allInfoUnsaved = gson.fromJson(allInfoJsonUnsaved, UserAndFriendInfo::class.java)
 
-        val phone1: String = friendPhoneEt1.text.toString()
+        val phone1: String = s.toString()
 //        userAndFriendInfo.friendList?.get(model.index)?.phone1 = phone1
         allInfoUnsaved.friendList?.get(model.index)?.phone1 = phone1
         allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
@@ -782,8 +772,7 @@ class EditFriendItemViewHolder(
       override fun beforeTextChanged(
         s: CharSequence, start: Int,
         count: Int, after: Int
-      ) {
-      }
+      ) {}
 
       override fun onTextChanged(
         s: CharSequence, start: Int,
@@ -813,8 +802,7 @@ class EditFriendItemViewHolder(
       override fun beforeTextChanged(
         s: CharSequence, start: Int,
         count: Int, after: Int
-      ) {
-      }
+      ) {}
 
       override fun onTextChanged(
         s: CharSequence, start: Int,
@@ -1294,7 +1282,6 @@ class EditFriendItemViewHolder(
 
     })
 
-
     model.run {
 
       val friendNumberString: String = "Friend ${(index+1).toString()}"
@@ -1371,6 +1358,12 @@ class EditFriendItemViewHolder(
       transition(folded)
 
     }
+
+//    if (!hasLoaded) {
+//
+//      hasLoaded = true
+//
+//    }
 
   }
 

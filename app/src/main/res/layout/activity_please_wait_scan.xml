@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:gravity="center"
     android:background="#fff"
-    tools:context="com.app.ej.cs.ui.scan.PleaseWaitScreenScanActivity">
+    tools:context="com.app.ej.cs.ui.scan.PleaseWaitFBScreenScanActivity">
 
     <TextView
         android:id="@+id/welcome_back"

@@ -27,11 +27,12 @@ import com.app.ej.cs.vision.VisionProcessorBase
 import com.google.mlkit.vision.text.Text
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.TextRecognizer
+import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 
 /** Processor for the text detector demo.  */
 class TextRecognitionProcessor(context: Context) : VisionProcessorBase<Text>(context) {
 
-  private val textRecognizer: TextRecognizer = TextRecognition.getClient()
+  private val textRecognizer: TextRecognizer = TextRecognition.getClient(TextRecognizerOptions.Builder().build())
 
   var graphicOverlay: GraphicOverlay? = null
 

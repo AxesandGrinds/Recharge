@@ -1,6 +1,5 @@
 package com.app.ej.cs.ui.edit
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -8,12 +7,14 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.os.Parcelable
 import android.provider.ContactsContract
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
@@ -23,23 +24,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.ej.cs.R
 import com.app.ej.cs.conf.TAG
-import com.app.ej.cs.model.FriendListModel
-import com.app.ej.cs.presenter.EditFragmentPresenter
-import javax.inject.Inject
 import com.app.ej.cs.init.InitApp
+import com.app.ej.cs.model.FriendListModel
 import com.app.ej.cs.model.UserListModel
-import com.app.ej.cs.presenter.AddFriendDoneListener
+import com.app.ej.cs.presenter.EditFragmentPresenter
 import com.app.ej.cs.presenter.PickContactListener
 import com.app.ej.cs.repository.entity.Friend
 import com.app.ej.cs.repository.entity.User
 import com.app.ej.cs.repository.entity.UserAndFriendInfo
-import com.app.ej.cs.ui.MyMoPub
-import com.app.ej.cs.ui.account.RegisterDetailsActivity
 import com.app.ej.cs.utils.NetworkUtil
 import com.app.ej.cs.utils.PhoneUtil
 import com.app.ej.cs.utils.Util
+import com.app.ej.cs.utils.isKeyboardOpen
 import com.droidman.ktoasty.KToasty
-import com.google.android.gms.ads.*
+import com.facebook.ads.*
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
@@ -54,7 +52,8 @@ import com.mopub.mobileads.MoPubErrorCode
 import com.mopub.mobileads.MoPubView
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
 import io.michaelrocks.libphonenumber.android.Phonenumber
-import java.lang.Exception
+import javax.inject.Inject
+
 
 class EditFragment : Fragment(), EditFragmentView, PickContactListener {
 
@@ -79,6 +78,7 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
 
   override fun displayFriends(friendList: FriendListModel) {
     friendsListModel.friendList = friendList.friendList
+    initEditFriendRecyclerViewAfterLoad()
     editFragmentFriendViewAdapter.notifyDataSetChanged()
   }
 
@@ -122,6 +122,8 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
     if (moPubView != null) {
       moPubView!!.destroy()
     }
+
+    adView?.destroy()
 
     editFragmentPresenter.unbind()
 
@@ -170,6 +172,51 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
 
   }
 
+  private var adView: AdView? = null
+
+  private fun initFBAds(view: View) {
+
+    val adListener: AdListener = object : AdListener {
+
+      override fun onError(ad: Ad?, adError: AdError) {
+
+        Log.e(TAG, "EditFragment onBannerFailed: ${adError.errorMessage}")
+
+//        Toast.makeText(
+//          requireContext(),
+//          "Ad Error: " + adError.errorMessage,
+//          Toast.LENGTH_LONG
+//        ).show()
+
+      }
+
+      override fun onAdLoaded(ad: Ad?) {
+        Log.e(TAG, "EditFragment onBannerLoaded")
+      }
+
+      override fun onAdClicked(ad: Ad?) {
+        Log.e(TAG, "EditFragment onBannerClicked")
+      }
+
+      override fun onLoggingImpression(ad: Ad?) {
+        // Ad impression logged callback
+      }
+
+    }
+
+//    adView = AdView(requireContext(), "IMG_16_9_APP_INSTALL#411762013708850_411800960371622", AdSize.BANNER_HEIGHT_50)
+    adView = AdView(requireContext(), "411762013708850_411800960371622", AdSize.BANNER_HEIGHT_50)
+
+    val adContainer = view.findViewById(R.id.fe_banner) as LinearLayout
+
+    adContainer.addView(adView)
+
+    adView!!.loadAd()
+
+    adView?.loadAd(adView?.buildLoadAdConfig()?.withAdListener(adListener)?.build())
+
+  }
+
 //  @SuppressLint("MissingPermission")
 //  private fun initAds2(view: View) {
 //
@@ -200,6 +247,48 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
 //
 //  }
 
+//  override fun onCreate(savedInstanceState: Bundle?) {
+//    super.onCreate(savedInstanceState)
+//
+//    // Retain the instance between configuration changes
+//    retainInstance = true
+//  }
+
+  private var mBundleRecyclerViewState: Bundle? = null
+  private val KEY_RECYCLER_STATE = "recycler_state"
+
+  override fun onPause() {
+    super.onPause()
+
+    // save RecyclerView state
+//    mBundleRecyclerViewState = Bundle()
+//    val listState: Parcelable? = friendRecyclerView.layoutManager?.onSaveInstanceState()
+//    mBundleRecyclerViewState?.putParcelable(KEY_RECYCLER_STATE, listState)
+
+    if (requireActivity().isKeyboardOpen()) {
+
+//    val imm: InputMethodManager? = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+//    imm?.hideSoftInputFromWindow(friendRecyclerView.windowToken, 0)
+//      friendRecyclerView.context.inputService.hideSoftInputFromWindow(friendRecyclerView.windowToken, 0)
+
+      Log.e("ATTENTION ATTENTION", "KEYBOARD WAS OPEN")
+      val current: View? = requireActivity().currentFocus
+      current?.clearFocus()
+
+    }
+
+  }
+
+  override fun onResume() {
+    super.onResume()
+
+//    if (mBundleRecyclerViewState != null) {
+//      val listState = mBundleRecyclerViewState!!.getParcelable<Parcelable>(KEY_RECYCLER_STATE)
+//      friendRecyclerView.layoutManager?.onRestoreInstanceState(listState)
+//    }
+
+  }
+
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
@@ -214,10 +303,10 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
 
     initSaveButton(view)
 
-    MyMoPub().init(requireContext(), adUnit)
+//    MyMoPub().init(requireContext(), adUnit)
 
     Handler(Looper.getMainLooper()).postDelayed({
-      initAds(view)
+      initFBAds(view)
     }, 200)
 
     initAddOneMoreFriendButton(view)
@@ -624,7 +713,7 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
     itemTouchHelper.startDrag(viewHolder)
   }
 
-  private fun initEditFriendRecyclerView(view: View) {
+  private fun initEditFriendRecyclerViewAfterLoad() {
 
     if (friendsListModel.friendList?.size ?: 1 == 0) {
 
@@ -661,7 +750,13 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
 
       friendsListModel.friendList?.add(newFriend)
 
+      Log.e("ATTENTION ATTENTION IMP", "ADDED NEW FRIEND ON initEditFriendRecyclerView: MODEL INDEX $index")
+
     }
+
+  }
+
+  private fun initEditFriendRecyclerView(view: View) {
 
     friendRecyclerView = view.findViewById(R.id.edit_user_friends_recycler_view)
     friendRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)

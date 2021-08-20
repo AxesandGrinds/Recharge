@@ -553,7 +553,7 @@ class LoginActivityEmail : AppCompatActivity() {
 
   private fun goToPleaseWaitBeforeRecoverPassword() {
 
-    val intent = Intent(context, PleaseWaitScreenRecoverActivity::class.java)
+    val intent = Intent(context, PleaseWaitFBScreenRecoverActivity::class.java)
 
     if (emailEt.text?.trim().toString() != "") {
 

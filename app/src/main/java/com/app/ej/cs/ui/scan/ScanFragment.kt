@@ -18,6 +18,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -42,6 +43,7 @@ import com.app.ej.cs.ui.fab.FloatingActionMenu
 import com.app.ej.cs.utils.NetworkUtil
 import com.app.ej.cs.vision.RecognitionActivityFinal
 import com.droidman.ktoasty.KToasty
+import com.facebook.ads.*
 import com.fondesa.kpermissions.allGranted
 import com.fondesa.kpermissions.coroutines.sendSuspend
 import com.fondesa.kpermissions.extension.permissionsBuilder
@@ -479,6 +481,52 @@ private val TAG: String = "ATTENTION ATTENTION"
 
   }
 
+
+  private var adView: AdView? = null
+
+  private fun initFBAds(view: View) {
+
+    val adListener: AdListener = object : AdListener {
+
+      override fun onError(ad: Ad?, adError: AdError) {
+
+        Log.e(TAG, "ScanFragment onBannerFailed: ${adError.errorMessage}")
+
+//        Toast.makeText(
+//          requireContext(),
+//          "Ad Error: " + adError.errorMessage,
+//          Toast.LENGTH_LONG
+//        ).show()
+
+      }
+
+      override fun onAdLoaded(ad: Ad?) {
+        Log.e(TAG, "ScanFragment onBannerLoaded")
+      }
+
+      override fun onAdClicked(ad: Ad?) {
+        Log.e(TAG, "ScanFragment onBannerClicked")
+      }
+
+      override fun onLoggingImpression(ad: Ad?) {
+        // Ad impression logged callback
+      }
+
+    }
+
+//    adView = AdView(requireContext(), "IMG_16_9_APP_INSTALL#411762013708850_411799720371746", AdSize.BANNER_HEIGHT_50)
+    adView = AdView(requireContext(), "411762013708850_411799720371746", AdSize.BANNER_HEIGHT_50)
+
+    val adContainer = view.findViewById(R.id.fs_banner) as LinearLayout
+
+    adContainer.addView(adView)
+
+    adView!!.loadAd()
+
+    adView?.loadAd(adView?.buildLoadAdConfig()?.withAdListener(adListener)?.build())
+
+  }
+
 //  @SuppressLint("MissingPermission")
 //  private fun initAds2(view: View) {
 //
@@ -517,10 +565,10 @@ private val TAG: String = "ATTENTION ATTENTION"
 
     val view = inflater.inflate(R.layout.scan_fragment_lists_layout, container, false)
 
-    MyMoPub().init(requireContext(), adUnit)
+//    MyMoPub().init(requireContext(), adUnit)
 
     Handler(Looper.getMainLooper()).postDelayed({
-      initAds(view)
+      initFBAds(view)
     }, 200)
 
     scanFragmentPresenter.bind(this)
@@ -623,7 +671,7 @@ private val TAG: String = "ATTENTION ATTENTION"
 
   private fun goToPleaseWaitBeforeBiDailyInterstitialAd() {
 
-    val intent = Intent(context, PleaseWaitScreenScanActivity::class.java)
+    val intent = Intent(context, PleaseWaitFBScreenScanActivity::class.java)
 
     startActivity(intent)
     requireActivity().finish()
@@ -993,6 +1041,8 @@ private val TAG: String = "ATTENTION ATTENTION"
     if (moPubView != null) {
       moPubView!!.destroy()
     }
+
+    adView?.destroy()
 
     scanFragmentPresenter.unbind()
 

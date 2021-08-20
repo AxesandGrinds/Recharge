@@ -1937,7 +1937,7 @@ class PhoneUtil {
                                 code,
                                 accountNumber,
                                 amount
-                            ) // reversed
+                            ) // reverse
 
                             Toasty.success(
                                 context, "Transferring $amount to $name with $bank complete.",
@@ -2372,7 +2372,7 @@ class PhoneUtil {
                                 code,
                                 accountNumber,
                                 amount
-                            ) // reversed
+                            ) // reverse
 
                             Toasty.success(
                                 context, "Transferring $amount to $name with $bank complete.",

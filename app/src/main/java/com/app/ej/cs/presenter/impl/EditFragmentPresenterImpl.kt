@@ -49,7 +49,7 @@ class EditFragmentPresenterImpl @Inject constructor(
 
     }
 
-    val friendsMutableList = memoryUserAndFriendsRepository.friendList()
+    val friendsMutableList = memoryUserAndFriendsRepository.friendListUnsaved()
 
     view?.displayFriends(FriendListModel(friendsMutableList))
 

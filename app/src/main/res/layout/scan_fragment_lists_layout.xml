@@ -152,7 +152,7 @@
 
               </androidx.cardview.widget.CardView>-->
 
-              <FrameLayout
+              <LinearLayout
                   android:id="@+id/fs_fl_adView"
                   android:layout_width="320dp"
                   android:layout_height="50dp"
@@ -161,7 +161,8 @@
                   android:padding="0dp"
                   android:layout_marginTop="16dp"
                   android:layout_marginBottom="@dimen/details_margin"
-                  android:layout_below="@+id/detailsCv" >
+                  android:layout_below="@+id/detailsCv"
+                  android:orientation="vertical" >
 
                   <!--<com.google.android.gms.ads.AdView
                       xmlns:ads="http://schemas.android.com/apk/res-auto"
@@ -174,12 +175,19 @@
 
                   <com.mopub.mobileads.MoPubView
                       android:id="@+id/fs_moPubView"
+                      android:visibility="gone"
                       android:layout_width="match_parent"
                       android:layout_height="match_parent"
                       app:moPubAdSize="height_50" >
                   </com.mopub.mobileads.MoPubView>
 
-              </FrameLayout>
+                  <LinearLayout
+                      android:id="@+id/fs_banner"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      android:orientation="vertical" />
+
+              </LinearLayout>
 
           </RelativeLayout>
 

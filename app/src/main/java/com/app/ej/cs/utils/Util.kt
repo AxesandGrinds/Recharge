@@ -1,13 +1,17 @@
 package com.app.ej.cs.utils
 
+import android.app.Activity
 import android.content.Context
 import android.graphics.Color
+import android.graphics.Rect
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ImageSpan
+import android.util.TypedValue
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -17,6 +21,34 @@ import com.app.ej.cs.R
 import com.app.ej.cs.repository.entity.UserAndFriendInfo
 import com.droidman.ktoasty.KToasty
 import com.google.android.material.snackbar.Snackbar
+import kotlin.math.roundToInt
+
+
+fun Activity.getRootView(): View {
+    return findViewById<View>(android.R.id.content)
+}
+fun Context.convertDpToPx(dp: Float): Float {
+    return TypedValue.applyDimension(
+        TypedValue.COMPLEX_UNIT_DIP,
+        dp,
+        this.resources.displayMetrics
+    )
+}
+fun Activity.isKeyboardOpen(): Boolean {
+    val visibleBounds = Rect()
+    this.getRootView().getWindowVisibleDisplayFrame(visibleBounds)
+    val heightDiff = getRootView().height - visibleBounds.height()
+    val marginOfError = this.convertDpToPx(50F).roundToInt()
+//    val marginOfError = Math.round(this.convertDpToPx(50F))
+    return heightDiff > marginOfError
+}
+
+fun Activity.isKeyboardClosed(): Boolean {
+    return !this.isKeyboardOpen()
+}
+
+val Context.inputService get() = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
 
 class Util {
 

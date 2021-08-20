@@ -4,12 +4,18 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.app.ej.cs.R
 import com.app.ej.cs.utils.PhoneUtil
 import com.app.ej.cs.utils.Util
+import com.facebook.ads.Ad
+import com.facebook.ads.AdError
+import com.facebook.ads.AdListener
+import com.facebook.ads.AdSize
+import com.facebook.ads.AdView
 import com.google.android.gms.ads.*
 import com.mopub.mobileads.MoPubErrorCode
 import com.mopub.mobileads.MoPubView
@@ -167,10 +173,10 @@ class CodeInputActivity : AppCompatActivity(),
 
     }
 
-    MyMoPub().init(this, adUnit)
+//    MyMoPub().init(this, adUnit)
 
     Handler(Looper.getMainLooper()).postDelayed({
-      initAds()
+      initFBAds()
     }, 200)
 
 
@@ -242,11 +248,58 @@ class CodeInputActivity : AppCompatActivity(),
 
   }
 
+  private var adView: AdView? = null
+
+  private fun initFBAds() {
+
+    val adListener: AdListener = object : AdListener {
+
+      override fun onError(ad: Ad?, adError: AdError) {
+
+        Log.e(TAG, "CodeInputActivity onBannerFailed: ${adError.errorMessage}")
+
+//        Toast.makeText(
+//          this@CodeInputActivity,
+//          "Ad Error: " + adError.errorMessage,
+//          Toast.LENGTH_LONG
+//        ).show()
+
+      }
+
+      override fun onAdLoaded(ad: Ad?) {
+        Log.e(TAG, "CodeInputActivity onBannerLoaded")
+      }
+
+      override fun onAdClicked(ad: Ad?) {
+        Log.e(TAG, "CodeInputActivity onBannerClicked")
+      }
+
+      override fun onLoggingImpression(ad: Ad?) {
+        // Ad impression logged callback
+      }
+
+    }
+
+//    adView = AdView(requireContext(), "IMG_16_9_APP_INSTALL#411762013708850_411801847038200", AdSize.BANNER_HEIGHT_50)
+    adView = AdView(this@CodeInputActivity, "411762013708850_411801847038200", AdSize.BANNER_HEIGHT_50)
+
+    val adContainer: LinearLayout = findViewById<LinearLayout>(R.id.ciact_banner)
+
+    adContainer.addView(adView)
+
+    adView!!.loadAd()
+
+    adView?.loadAd(adView?.buildLoadAdConfig()?.withAdListener(adListener)?.build())
+
+  }
+
   override fun onDestroy() {
 
     if (moPubView != null) {
       moPubView!!.destroy()
     }
+
+    adView?.destroy()
 
     super.onDestroy()
 

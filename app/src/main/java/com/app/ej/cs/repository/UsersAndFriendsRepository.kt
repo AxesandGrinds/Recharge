@@ -17,6 +17,8 @@ interface UsersAndFriendsRepository {
 
   fun friendList(): MutableList<Friend>
 
+  fun friendListUnsaved(): MutableList<Friend>
+
   fun friendInsert(friend: Friend)
 
   fun friendInsert(friendList: MutableList<Friend>) = friendList.forEach { friendInsert(it) }

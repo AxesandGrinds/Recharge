@@ -8,9 +8,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ProgressBar
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.app.ej.cs.R
@@ -18,6 +16,11 @@ import com.app.ej.cs.ui.MyMoPub
 import com.app.ej.cs.utils.ImeHelper
 import com.app.ej.cs.utils.NetworkUtil
 import com.app.ej.cs.utils.Util
+import com.facebook.ads.Ad
+import com.facebook.ads.AdError
+import com.facebook.ads.AdListener
+import com.facebook.ads.AdSize
+import com.facebook.ads.AdView
 import com.google.android.gms.ads.*
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
@@ -86,10 +89,10 @@ class RecoverPasswordActivity:  AppCompatActivity(), View.OnClickListener,
 
 //    adUni//t = debugAdUni//t
 
-        MyMoPub().init(this, adUnit)
+//        MyMoPub().init(this, adUnit)
 
         Handler(Looper.getMainLooper()).postDelayed({
-            initAds()
+            initFBAds()
         }, 200)
 
 //        val mAdView: AdView = findViewById(R.id.pract_adView)
@@ -157,6 +160,53 @@ class RecoverPasswordActivity:  AppCompatActivity(), View.OnClickListener,
         moPubView!!.loadAd()
 
     }
+
+    private var adView: AdView? = null
+
+    private fun initFBAds() {
+
+        val adListener: AdListener = object : AdListener {
+
+            override fun onError(ad: Ad?, adError: AdError) {
+
+                Log.e(TAG, "RecoverPasswordActivity onBannerFailed: ${adError.errorMessage}")
+
+//                Toast.makeText(
+//                    this@RecoverPasswordActivity,
+//                    "Ad Error: " + adError.errorMessage,
+//                    Toast.LENGTH_LONG
+//                ).show()
+
+            }
+
+            override fun onAdLoaded(ad: Ad?) {
+                Log.e(TAG, "RecoverPasswordActivity onBannerLoaded")
+            }
+
+            override fun onAdClicked(ad: Ad?) {
+                Log.e(TAG, "RecoverPasswordActivity onBannerClicked")
+            }
+
+            override fun onLoggingImpression(ad: Ad?) {
+                // Ad impression logged callback
+            }
+
+        }
+
+//    adView = AdView(requireContext(), "IMG_16_9_APP_INSTALL#411762013708850_411802357038149", AdSize.BANNER_HEIGHT_50)
+        adView = AdView(this@RecoverPasswordActivity, "411762013708850_411802357038149", AdSize.BANNER_HEIGHT_50)
+
+        val adContainer: LinearLayout = findViewById<LinearLayout>(R.id.pract_banner)
+
+        adContainer.addView(adView)
+
+        adView!!.loadAd()
+
+        adView?.loadAd(adView?.buildLoadAdConfig()?.withAdListener(adListener)?.build())
+
+    }
+
+
 
     private val TAG: String = "ATTENTION ATTENTION"
 
@@ -266,6 +316,8 @@ class RecoverPasswordActivity:  AppCompatActivity(), View.OnClickListener,
         if (moPubView != null) {
             moPubView!!.destroy()
         }
+
+        adView?.destroy()
 
         super.onDestroy()
 

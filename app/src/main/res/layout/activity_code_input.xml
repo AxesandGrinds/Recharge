@@ -53,7 +53,7 @@
 
   </LinearLayout>
 
-  <FrameLayout
+  <LinearLayout
       android:id="@+id/ciact_fl_adView"
       android:layout_width="320dp"
       android:layout_height="50dp"
@@ -61,7 +61,8 @@
       android:layout_marginBottom="10dp"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent">
+      app:layout_constraintStart_toStartOf="parent"
+      android:orientation="vertical" >
 
     <!--<com.google.android.gms.ads.AdView
         xmlns:ads="http://schemas.android.com/apk/res-auto"
@@ -75,12 +76,19 @@
 
     <com.mopub.mobileads.MoPubView
         android:id="@+id/ciact_moPubView"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:moPubAdSize="height_50" >
     </com.mopub.mobileads.MoPubView>
 
-  </FrameLayout>
+    <LinearLayout
+        android:id="@+id/ciact_banner"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" />
+
+  </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
