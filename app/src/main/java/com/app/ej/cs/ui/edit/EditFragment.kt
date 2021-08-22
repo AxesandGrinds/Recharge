@@ -48,6 +48,7 @@ import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
+import com.ironsource.mediationsdk.IronSource
 import com.mopub.mobileads.MoPubErrorCode
 import com.mopub.mobileads.MoPubView
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
@@ -175,6 +176,8 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
   private var adView: AdView? = null
 
   private fun initFBAds(view: View) {
+
+    IronSource.setMetaData("Facebook_IS_CacheFlag","ALL");
 
     val adListener: AdListener = object : AdListener {
 

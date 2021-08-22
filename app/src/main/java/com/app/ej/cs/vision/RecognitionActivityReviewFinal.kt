@@ -49,6 +49,7 @@ import com.facebook.ads.AdListener
 import com.facebook.ads.AdSize
 import com.facebook.ads.AdView
 import com.google.android.gms.ads.*
+import com.ironsource.mediationsdk.IronSource
 import com.mopub.mobileads.MoPubErrorCode
 import com.mopub.mobileads.MoPubView
 import java.util.*
@@ -334,6 +335,8 @@ class RecognitionActivityReviewFinal :
   private var adView: AdView? = null
 
   private fun initFBAds() {
+
+    IronSource.setMetaData("Facebook_IS_CacheFlag","ALL");
 
     val adListener: AdListener = object : AdListener {
 

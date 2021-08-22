@@ -27,6 +27,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.ironsource.mediationsdk.IronSource
 import com.mopub.mobileads.MoPubErrorCode
 import com.mopub.mobileads.MoPubView
 
@@ -164,6 +165,8 @@ class RecoverPasswordActivity:  AppCompatActivity(), View.OnClickListener,
     private var adView: AdView? = null
 
     private fun initFBAds() {
+
+        IronSource.setMetaData("Facebook_IS_CacheFlag","ALL");
 
         val adListener: AdListener = object : AdListener {
 

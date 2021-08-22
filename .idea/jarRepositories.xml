@@ -46,5 +46,10 @@
       <option name="name" value="maven3" />
       <option name="url" value="https://s3.amazonaws.com/moat-sdk-builds" />
     </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven3" />
+      <option name="name" value="maven3" />
+      <option name="url" value="https://android-sdk.is.com/" />
+    </remote-repository>
   </component>
 </project>

@@ -17,6 +17,7 @@ import com.facebook.ads.Ad
 import com.facebook.ads.AdError
 import com.facebook.ads.InterstitialAd
 import com.facebook.ads.InterstitialAdListener
+import com.ironsource.mediationsdk.IronSource
 import java.util.*
 
 
@@ -88,6 +89,8 @@ class PleaseWaitFBScreenRecoverActivity : AppCompatActivity() {
   private var mInterstitial: InterstitialAd? = null
 
   private fun initFBAds() {
+
+    IronSource.setMetaData("Facebook_IS_CacheFlag","ALL");
 
     mInterstitial = InterstitialAd(this, "411762013708850_411802753704776")
 

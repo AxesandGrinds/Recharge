@@ -23,8 +23,8 @@ android {
         applicationId "com.app.ej.cs"
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 42
-        versionName "1.1.11"
+        versionCode 43
+        versionName "1.1.12"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
@@ -309,6 +309,10 @@ dependencies {
 //        transitive = true
 //    }
 
+//     // Add Facebook Network
+//    implementation (project(':facebookadapter-4.3.28'))
+    implementation 'com.ironsource.sdk:mediationsdk:7.1.8'
+    implementation 'com.ironsource.adapters:facebookadapter:4.3.28'
     implementation 'com.facebook.android:audience-network-sdk:6.5.1'
 
 }

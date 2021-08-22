@@ -58,6 +58,8 @@ import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import com.google.gson.Gson
+import com.ironsource.mediationsdk.IronSource
+import com.ironsource.mediationsdk.integration.IntegrationHelper
 import com.mopub.mobileads.MoPubErrorCode
 import com.mopub.mobileads.MoPubView
 import kotlinx.coroutines.CoroutineScope
@@ -486,6 +488,8 @@ private val TAG: String = "ATTENTION ATTENTION"
 
   private fun initFBAds(view: View) {
 
+    IronSource.setMetaData("Facebook_IS_CacheFlag","ALL");
+
     val adListener: AdListener = object : AdListener {
 
       override fun onError(ad: Ad?, adError: AdError) {
@@ -524,6 +528,8 @@ private val TAG: String = "ATTENTION ATTENTION"
     adView!!.loadAd()
 
     adView?.loadAd(adView?.buildLoadAdConfig()?.withAdListener(adListener)?.build())
+
+//    IntegrationHelper.validateIntegration(requireActivity())
 
   }
 
