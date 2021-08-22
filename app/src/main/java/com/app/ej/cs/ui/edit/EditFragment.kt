@@ -308,9 +308,10 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
 
 //    MyMoPub().init(requireContext(), adUnit)
 
-    Handler(Looper.getMainLooper()).postDelayed({
-      initFBAds(view)
-    }, 200)
+//    Handler(Looper.getMainLooper()).postDelayed({
+//    }, 200)
+
+    initFBAds(view)
 
     initAddOneMoreFriendButton(view)
     initEditMainRecyclerView(view)

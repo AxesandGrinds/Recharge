@@ -178,10 +178,10 @@ class PleaseWaitFBScreenScanActivity : AppCompatActivity() {
     context = this
     activity = this
 
-    Handler(Looper.getMainLooper()).postDelayed({
-      initFBAds()
-    }, 200)
+//    Handler(Looper.getMainLooper()).postDelayed({
+//    }, 200)
 
+    initFBAds()
 
   }
 

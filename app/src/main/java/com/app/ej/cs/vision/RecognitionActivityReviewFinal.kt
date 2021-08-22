@@ -235,9 +235,10 @@ class RecognitionActivityReviewFinal :
 
 //    MyMoPub().init(this, adUnit)
 
-    Handler(Looper.getMainLooper()).postDelayed({
-      initFBAds()
-    }, 200)
+//    Handler(Looper.getMainLooper()).postDelayed({
+//    }, 200)
+
+    initFBAds()
 
     // https://developers.google.com/ad-manager/mobile-ads-sdk/android/banner
 //    MobileAds.initialize(this)

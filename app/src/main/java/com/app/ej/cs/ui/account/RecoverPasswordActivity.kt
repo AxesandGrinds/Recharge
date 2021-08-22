@@ -92,9 +92,10 @@ class RecoverPasswordActivity:  AppCompatActivity(), View.OnClickListener,
 
 //        MyMoPub().init(this, adUnit)
 
-        Handler(Looper.getMainLooper()).postDelayed({
-            initFBAds()
-        }, 200)
+//        Handler(Looper.getMainLooper()).postDelayed({
+//        }, 200)
+
+        initFBAds()
 
 //        val mAdView: AdView = findViewById(R.id.pract_adView)
 //

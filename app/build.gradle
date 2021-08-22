@@ -23,8 +23,8 @@ android {
         applicationId "com.app.ej.cs"
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 43
-        versionName "1.1.12"
+        versionCode 44
+        versionName "1.1.13"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
@@ -229,8 +229,8 @@ dependencies {
     implementation 'androidx.annotation:annotation:1.2.0'
 
     // CameraX
-    implementation "androidx.camera:camera-camera2:1.1.0-alpha07"
-    implementation "androidx.camera:camera-lifecycle:1.1.0-alpha07"
+    implementation "androidx.camera:camera-camera2:1.1.0-alpha08"
+    implementation "androidx.camera:camera-lifecycle:1.1.0-alpha08"
     implementation "androidx.camera:camera-view:1.0.0-SNAPSHOT"
 
 

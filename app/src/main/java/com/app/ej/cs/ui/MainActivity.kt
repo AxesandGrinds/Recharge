@@ -191,7 +191,7 @@ class MainActivity : AppCompatActivity() {
 
     if (!registeredFullyEmail && !registeredFullyLocation) {
 
-      returnToLoginCountDown(1000)
+      returnToLoginCountDown(0)
 
     }
 

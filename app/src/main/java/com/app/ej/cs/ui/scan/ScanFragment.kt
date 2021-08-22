@@ -316,7 +316,11 @@ private val TAG: String = "ATTENTION ATTENTION"
 
   }
 
+  lateinit var mContext: Context
+
   override fun onAttach(context: Context) {
+
+    mContext = context
 
     (context.applicationContext as InitApp)
       .appComp().inject(this)
@@ -518,6 +522,13 @@ private val TAG: String = "ATTENTION ATTENTION"
 
     }
 
+    if (context == null) {
+
+      return
+
+    }
+
+
 //    adView = AdView(requireContext(), "IMG_16_9_APP_INSTALL#411762013708850_411799720371746", AdSize.BANNER_HEIGHT_50)
     adView = AdView(requireContext(), "411762013708850_411799720371746", AdSize.BANNER_HEIGHT_50)
 
@@ -573,9 +584,10 @@ private val TAG: String = "ATTENTION ATTENTION"
 
 //    MyMoPub().init(requireContext(), adUnit)
 
-    Handler(Looper.getMainLooper()).postDelayed({
-      initFBAds(view)
-    }, 200)
+//    Handler(Looper.getMainLooper()).postDelayed({
+//    }, 200)
+
+    initFBAds(view)
 
     scanFragmentPresenter.bind(this)
 
