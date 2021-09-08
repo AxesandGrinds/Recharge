@@ -18,7 +18,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
+import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -36,11 +36,11 @@ import com.app.ej.cs.repository.entity.User
 import com.app.ej.cs.repository.entity.UserAndFriendInfo
 import com.app.ej.cs.ui.DataRechargeDialog
 import com.app.ej.cs.ui.MainActivity
-import com.app.ej.cs.ui.MyMoPub
 import com.app.ej.cs.ui.account.LoginActivityMain
 import com.app.ej.cs.ui.fab.FloatingActionButton
 import com.app.ej.cs.ui.fab.FloatingActionMenu
 import com.app.ej.cs.utils.NetworkUtil
+import com.app.ej.cs.utils.ironSourceAppKey
 import com.app.ej.cs.vision.RecognitionActivityFinal
 import com.droidman.ktoasty.KToasty
 import com.facebook.ads.*
@@ -58,8 +58,11 @@ import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import com.google.gson.Gson
+import com.ironsource.mediationsdk.ISBannerSize
 import com.ironsource.mediationsdk.IronSource
-import com.ironsource.mediationsdk.integration.IntegrationHelper
+import com.ironsource.mediationsdk.IronSourceBannerLayout
+import com.ironsource.mediationsdk.logger.IronSourceError
+import com.ironsource.mediationsdk.sdk.BannerListener
 import com.mopub.mobileads.MoPubErrorCode
 import com.mopub.mobileads.MoPubView
 import kotlinx.coroutines.CoroutineScope
@@ -327,15 +330,32 @@ private val TAG: String = "ATTENTION ATTENTION"
 
     super.onAttach(context)
 
+    try {
+
+      initFBAds()
+
+    }
+    catch (e: Exception) {
+
+      Log.e(TAG, "Error running initFBAds() from ScanFragment onAttach")
+
+    }
+
+    Log.e(TAG, "LifeCycle ScanFragment onAttach Ran")
+
   }
 
   override fun onDetach() {
     super.onDetach()
+
   }
 
   override fun onPause() {
     Log.e(TAG, "OnPause of ScanFragment")
     super.onPause()
+
+    IronSource.onPause(requireActivity())
+
   }
 
   var isOpen: Boolean = false
@@ -490,9 +510,16 @@ private val TAG: String = "ATTENTION ATTENTION"
 
   private var adView: AdView? = null
 
-  private fun initFBAds(view: View) {
+  private lateinit var ironSourceBannerLayout: IronSourceBannerLayout
 
-    IronSource.setMetaData("Facebook_IS_CacheFlag","ALL");
+  private lateinit var bannerContainer: FrameLayout
+
+  private fun initFBAds() {
+
+    IronSource.setMetaData("Facebook_IS_CacheFlag","ALL")
+
+    var facebookAdsRefreshRate: Int = 0
+    var facebookAdsRemoved: Boolean = false
 
     val adListener: AdListener = object : AdListener {
 
@@ -506,10 +533,37 @@ private val TAG: String = "ATTENTION ATTENTION"
 //          Toast.LENGTH_LONG
 //        ).show()
 
+        activity?.runOnUiThread {
+
+          Runnable {
+            bannerContainer.removeView(adView)
+            facebookAdsRemoved = true
+          }
+
+        }
+
       }
 
       override fun onAdLoaded(ad: Ad?) {
         Log.e(TAG, "ScanFragment onBannerLoaded")
+
+        activity?.runOnUiThread {
+
+          Runnable {
+
+            if (facebookAdsRefreshRate > 0 && facebookAdsRemoved) {
+              bannerContainer.addView(adView)
+              facebookAdsRemoved = false
+            }
+
+            bannerContainer.removeView(ironSourceBannerLayout)
+
+            facebookAdsRefreshRate++
+
+          }
+
+        }
+
       }
 
       override fun onAdClicked(ad: Ad?) {
@@ -517,7 +571,7 @@ private val TAG: String = "ATTENTION ATTENTION"
       }
 
       override fun onLoggingImpression(ad: Ad?) {
-        // Ad impression logged callback
+      // Ad impression logged callback
       }
 
     }
@@ -528,15 +582,88 @@ private val TAG: String = "ATTENTION ATTENTION"
 
     }
 
+//    adView = AdView(requireContext(), "IMG_16_9_APP_INSTALL#411762013708850_411799720371746", AdSize.BANNER_HEIGHT_50) // TEST
+//    val adContainer = view.findViewById(R.id.fs_banner) as LinearLayout
+//    adContainer.addView(adView)
 
-//    adView = AdView(requireContext(), "IMG_16_9_APP_INSTALL#411762013708850_411799720371746", AdSize.BANNER_HEIGHT_50)
     adView = AdView(requireContext(), "411762013708850_411799720371746", AdSize.BANNER_HEIGHT_50)
 
-    val adContainer = view.findViewById(R.id.fs_banner) as LinearLayout
+    IronSource.init(requireActivity(), ironSourceAppKey, IronSource.AD_UNIT.BANNER)
 
-    adContainer.addView(adView)
+    ironSourceBannerLayout = IronSource.createBanner(requireActivity(), ISBannerSize.BANNER)
 
-    adView!!.loadAd()
+    val layoutParams: FrameLayout.LayoutParams = FrameLayout.LayoutParams(
+      FrameLayout.LayoutParams.MATCH_PARENT,
+      FrameLayout.LayoutParams.WRAP_CONTENT
+    )
+
+    bannerContainer.addView(adView)
+
+    bannerContainer.addView(ironSourceBannerLayout, 0, layoutParams)
+
+    var ironSourceRefreshRate: Int = 0
+    var ironSourceRemoved: Boolean = false
+
+    ironSourceBannerLayout.bannerListener = object : BannerListener {
+
+      override fun onBannerAdLoaded() {
+        // Called after a banner ad has been successfully loaded
+
+        activity?.runOnUiThread {
+
+          Runnable {
+
+            if (ironSourceRefreshRate > 0 && ironSourceRemoved) {
+              bannerContainer.addView(ironSourceBannerLayout, 0, layoutParams)
+              ironSourceRemoved = false
+            }
+
+            bannerContainer.removeView(adView)
+
+            ironSourceRefreshRate++
+
+          }
+
+        }
+
+      }
+
+      override fun onBannerAdLoadFailed(error: IronSourceError) {
+        // Called after a banner has attempted to load an ad but failed.
+
+        activity?.runOnUiThread {
+
+          Runnable {
+            bannerContainer.removeView(ironSourceBannerLayout)
+            ironSourceRemoved = true
+//            bannerContainer.removeAllViews()
+          }
+
+        }
+
+      }
+
+      override fun onBannerAdClicked() {
+        // Called after a banner has been clicked.
+      }
+
+      override fun onBannerAdScreenPresented() {
+        // Called when a banner is about to present a full screen content.
+      }
+
+      override fun onBannerAdScreenDismissed() {
+        // Called after a full screen content has been dismissed
+      }
+
+      override fun onBannerAdLeftApplication() {
+        // Called when a user would be taken out of the application context.
+      }
+
+    }
+
+    IronSource.loadBanner(ironSourceBannerLayout)
+
+    adView?.loadAd()
 
     adView?.loadAd(adView?.buildLoadAdConfig()?.withAdListener(adListener)?.build())
 
@@ -587,7 +714,9 @@ private val TAG: String = "ATTENTION ATTENTION"
 //    Handler(Looper.getMainLooper()).postDelayed({
 //    }, 200)
 
-    initFBAds(view)
+    bannerContainer = view.findViewById<FrameLayout>(R.id.ironsSource_fs_banner_container)
+
+    initFBAds()
 
     scanFragmentPresenter.bind(this)
 
@@ -819,9 +948,15 @@ private val TAG: String = "ATTENTION ATTENTION"
 
             Log.e(LOG, "ScanFragment firebaseConfigCheckForUpdate newVersionCode: $newVersionCode")
 
-            if (newVersionCode.toLong() > getVersionCode())
+            if (getVersionCode() != 0L) {
 
-              showUpdateDialog()
+              if (newVersionCode.toLong() > getVersionCode()) {
+
+                showUpdateDialog()
+
+              }
+
+            }
 
           }
           else Log.e(LOG, "mFirebaseRemoteConfig.fetchAndActivate() not Successful")
@@ -869,7 +1004,11 @@ private val TAG: String = "ATTENTION ATTENTION"
 
   private fun getVersionCode() : Long {
 
-    var versionCode: Long = 0
+    var versionCode: Long = 0L
+
+    if (!isAdded) {
+      return versionCode
+    }
 
     try {
 
@@ -892,6 +1031,16 @@ private val TAG: String = "ATTENTION ATTENTION"
     catch (e: PackageManager.NameNotFoundException) {
 
       Log.e(LOG, "ScanFragment getVersionCode: NameNotFoundException: "+ e.message)
+
+    }
+    catch (e: IllegalStateException) {
+
+      Log.e(LOG, "ScanFragment getVersionCode: IllegalStateException: " + e.message)
+
+    }
+    catch (e: Exception) {
+
+      Log.e(LOG, "ScanFragment getVersionCode: Exception Occurred: " + e.message)
 
     }
 
@@ -1048,6 +1197,21 @@ private val TAG: String = "ATTENTION ATTENTION"
 
     super.onResume()
 
+    IronSource.onResume(requireActivity())
+
+    try {
+
+      initFBAds()
+
+    }
+    catch (e: Exception) {
+
+      Log.e(TAG, "Error running initFBAds() from ScanFragment onResume")
+
+    }
+
+    Log.e(TAG, "LifeCycle ScanFragment onResume Ran")
+
   }
 
   override fun onStart() {
@@ -1056,11 +1220,11 @@ private val TAG: String = "ATTENTION ATTENTION"
 
   override fun onDestroy() {
 
-    if (moPubView != null) {
-      moPubView!!.destroy()
-    }
+    moPubView?.destroy()
 
     adView?.destroy()
+
+    IronSource.destroyBanner(ironSourceBannerLayout)
 
     scanFragmentPresenter.unbind()
 

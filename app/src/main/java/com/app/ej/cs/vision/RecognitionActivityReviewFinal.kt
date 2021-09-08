@@ -43,13 +43,18 @@ import com.app.ej.cs.ui.CodeInputActivity
 import com.app.ej.cs.ui.MyMoPub
 import com.app.ej.cs.utils.PhoneUtil
 import com.app.ej.cs.utils.Util
+import com.app.ej.cs.utils.ironSourceAppKey
 import com.facebook.ads.Ad
 import com.facebook.ads.AdError
 import com.facebook.ads.AdListener
 import com.facebook.ads.AdSize
 import com.facebook.ads.AdView
 import com.google.android.gms.ads.*
+import com.ironsource.mediationsdk.ISBannerSize
 import com.ironsource.mediationsdk.IronSource
+import com.ironsource.mediationsdk.IronSourceBannerLayout
+import com.ironsource.mediationsdk.logger.IronSourceError
+import com.ironsource.mediationsdk.sdk.BannerListener
 import com.mopub.mobileads.MoPubErrorCode
 import com.mopub.mobileads.MoPubView
 import java.util.*
@@ -335,9 +340,16 @@ class RecognitionActivityReviewFinal :
 
   private var adView: AdView? = null
 
+  private lateinit var ironSourceBannerLayout: IronSourceBannerLayout
+
   private fun initFBAds() {
 
-    IronSource.setMetaData("Facebook_IS_CacheFlag","ALL");
+    IronSource.setMetaData("Facebook_IS_CacheFlag","ALL")
+
+    var facebookAdsRefreshRate: Int = 0
+    var facebookAdsRemoved: Boolean = false
+
+    val bannerContainer: FrameLayout = findViewById<FrameLayout>(R.id.ironsSource_rra_banner_container)
 
     val adListener: AdListener = object : AdListener {
 
@@ -351,10 +363,37 @@ class RecognitionActivityReviewFinal :
 //          Toast.LENGTH_LONG
 //        ).show()
 
+        this@RecognitionActivityReviewFinal.runOnUiThread {
+
+          Runnable {
+            bannerContainer.removeView(adView)
+            facebookAdsRemoved = true
+          }
+
+        }
+
       }
 
       override fun onAdLoaded(ad: Ad?) {
         Log.e(TAG, "RecognitionActivityReviewFinal onBannerLoaded")
+
+        this@RecognitionActivityReviewFinal.runOnUiThread {
+
+          Runnable {
+
+            if (facebookAdsRefreshRate > 0 && facebookAdsRemoved) {
+              bannerContainer.addView(adView)
+              facebookAdsRemoved = false
+            }
+
+            bannerContainer.removeView(ironSourceBannerLayout)
+
+            facebookAdsRefreshRate++
+
+          }
+
+        }
+
       }
 
       override fun onAdClicked(ad: Ad?) {
@@ -368,11 +407,85 @@ class RecognitionActivityReviewFinal :
     }
 
 //    adView = AdView(requireContext(), "IMG_16_9_APP_INSTALL#411762013708850_411801847038200", AdSize.BANNER_HEIGHT_50)
+//    val adContainer: LinearLayout = findViewById<LinearLayout>(R.id.rra_banner)
+//    adContainer.addView(adView)
+
     adView = AdView(this@RecognitionActivityReviewFinal, "411762013708850_411801847038200", AdSize.BANNER_HEIGHT_50)
 
-    val adContainer: LinearLayout = findViewById<LinearLayout>(R.id.rra_banner)
+    IronSource.init(this, ironSourceAppKey, IronSource.AD_UNIT.BANNER)
 
-    adContainer.addView(adView)
+    ironSourceBannerLayout = IronSource.createBanner(this, ISBannerSize.BANNER)
+
+    val layoutParams: FrameLayout.LayoutParams = FrameLayout.LayoutParams(
+      FrameLayout.LayoutParams.MATCH_PARENT,
+      FrameLayout.LayoutParams.WRAP_CONTENT
+    )
+
+    bannerContainer.addView(adView)
+
+    bannerContainer.addView(ironSourceBannerLayout, 0, layoutParams)
+
+    var ironSourceRefreshRate: Int = 0
+    var ironSourceRemoved: Boolean = false
+
+    ironSourceBannerLayout.bannerListener = object : BannerListener {
+
+      override fun onBannerAdLoaded() {
+        // Called after a banner ad has been successfully loaded
+
+        this@RecognitionActivityReviewFinal.runOnUiThread {
+
+          Runnable {
+
+            if (ironSourceRefreshRate > 0 && ironSourceRemoved) {
+              bannerContainer.addView(ironSourceBannerLayout, 0, layoutParams)
+              ironSourceRemoved = false
+            }
+
+            bannerContainer.removeView(adView)
+
+            ironSourceRefreshRate++
+
+          }
+
+        }
+
+      }
+
+      override fun onBannerAdLoadFailed(error: IronSourceError) {
+        // Called after a banner has attempted to load an ad but failed.
+
+        this@RecognitionActivityReviewFinal.runOnUiThread {
+
+          Runnable {
+            bannerContainer.removeView(ironSourceBannerLayout)
+            ironSourceRemoved = true
+//                        bannerContainer.removeAllViews()
+          }
+
+        }
+
+      }
+
+      override fun onBannerAdClicked() {
+        // Called after a banner has been clicked.
+      }
+
+      override fun onBannerAdScreenPresented() {
+        // Called when a banner is about to present a full screen content.
+      }
+
+      override fun onBannerAdScreenDismissed() {
+        // Called after a full screen content has been dismissed
+      }
+
+      override fun onBannerAdLeftApplication() {
+        // Called when a user would be taken out of the application context.
+      }
+
+    }
+
+    IronSource.loadBanner(ironSourceBannerLayout)
 
     adView!!.loadAd()
 
@@ -380,13 +493,27 @@ class RecognitionActivityReviewFinal :
 
   }
 
+  override fun onResume() {
+    super.onResume()
+
+    IronSource.onResume(this)
+
+  }
+
+  override fun onPause() {
+    super.onPause()
+
+    IronSource.onPause(this)
+
+  }
+
   override fun onDestroy() {
 
-    if (moPubView != null) {
-      moPubView!!.destroy()
-    }
+    moPubView?.destroy()
 
     adView?.destroy()
+
+    IronSource.destroyBanner(ironSourceBannerLayout)
 
     super.onDestroy()
 

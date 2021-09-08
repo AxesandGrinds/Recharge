@@ -49,6 +49,7 @@ fun Activity.isKeyboardClosed(): Boolean {
 
 val Context.inputService get() = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
+val ironSourceAppKey: String = "10b3b2c6d";
 
 class Util {
 

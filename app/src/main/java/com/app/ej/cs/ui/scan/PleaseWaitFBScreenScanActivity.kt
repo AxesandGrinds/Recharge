@@ -13,11 +13,14 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.app.ej.cs.R
 import com.app.ej.cs.ui.MainActivity
+import com.app.ej.cs.utils.ironSourceAppKey
 import com.facebook.ads.Ad
 import com.facebook.ads.AdError
 import com.facebook.ads.InterstitialAd
 import com.facebook.ads.InterstitialAdListener
 import com.ironsource.mediationsdk.IronSource
+import com.ironsource.mediationsdk.logger.IronSourceError
+import com.ironsource.mediationsdk.sdk.InterstitialListener
 import java.util.*
 
 
@@ -52,13 +55,12 @@ class PleaseWaitFBScreenScanActivity : AppCompatActivity() {
 
     waitComplete = true
 
-    if (mInterstitial!!.isAdLoaded && !hasShown) {
+    if (IronSource.isInterstitialReady() && !hasShown) {
 
       hasShown = true
-      mInterstitial!!.show()
+      IronSource.showInterstitial("FSFullscreen")
 
     }
-
 
   }
 
@@ -88,7 +90,7 @@ class PleaseWaitFBScreenScanActivity : AppCompatActivity() {
 
   private var mInterstitial: InterstitialAd? = null
 
-  private fun initFBAds() {
+  /*private fun initFBAdsOld() {
 
     IronSource.setMetaData("Facebook_IS_CacheFlag","ALL");
 
@@ -158,6 +160,124 @@ class PleaseWaitFBScreenScanActivity : AppCompatActivity() {
     }
 
     mInterstitial?.loadAd(mInterstitial?.buildLoadAdConfig()?.withAdListener(interstitialAdListener)?.build())
+
+    startWaitBeforeAd()
+
+  }*/
+
+  private fun initFBAds() {
+
+    IronSource.setMetaData("Facebook_IS_CacheFlag","ALL")
+
+    IronSource.init(this, ironSourceAppKey, IronSource.AD_UNIT.INTERSTITIAL)
+
+    val ironSourceInterstitialListener: InterstitialListener = object : InterstitialListener {
+
+      /**
+       * Invoked when Interstitial Ad is ready to be shown after load function was called.
+       */
+      override fun onInterstitialAdReady() {
+        Log.d(TAG, "PleaseWaitFBScreenScanActivity Interstitial Ad Ready!")
+
+        if (waitComplete) {
+
+          hasShown = true
+          IronSource.showInterstitial("FSFullscreen")
+
+        }
+        else {
+
+          Handler(Looper.getMainLooper()).postDelayed({
+
+            if (!hasShown) {
+
+              hasShown = true
+              waitComplete = true
+              IronSource.showInterstitial("FSFullscreen")
+
+            }
+
+          }, 1000)
+
+        }
+
+      }
+
+      /**
+       * invoked when there is no Interstitial Ad available after calling load function.
+       */
+      override fun onInterstitialAdLoadFailed(error: IronSourceError) {
+        Log.d(TAG, "PleaseWaitFBScreenScanActivity Interstitial Ad Load Failed: " + error.errorMessage)
+
+        val handler = Handler(Looper.getMainLooper())
+
+        val r = Runnable {
+
+          goToMain()
+
+        }
+
+        handler.postDelayed(r, 500)
+
+      }
+
+      /**
+       * Invoked when the Interstitial Ad Unit is opened
+       */
+      override fun onInterstitialAdOpened() {
+        Log.d(TAG, "PleaseWaitFBScreenScanActivity Interstitial Ad Opened!")
+
+      }
+
+      /*
+       * Invoked when the ad is closed and the user is about to return to the application.
+       */
+      override fun onInterstitialAdClosed() {
+        Log.d(TAG, "PleaseWaitFBScreenScanActivity Interstitial Ad Closed!")
+        goToMain()
+      }
+
+      /**
+       * Invoked when Interstitial ad failed to show.
+       * @param error - An object which represents the reason of showInterstitial failure.
+       */
+      override fun onInterstitialAdShowFailed(error: IronSourceError) {
+        Log.d(TAG, "PleaseWaitFBScreenScanActivity Interstitial Ad Show Failed!: " + error.errorMessage)
+
+        val handler = Handler(Looper.getMainLooper())
+
+        val r = Runnable {
+
+          goToMain()
+
+        }
+
+        handler.postDelayed(r, 500)
+
+      }
+
+      /*
+       * Invoked when the end user clicked on the interstitial ad, for supported networks only.
+       */
+      override fun onInterstitialAdClicked() {
+        Log.d(TAG, "PleaseWaitFBScreenScanActivity Interstitial Ad Clicked!")
+
+      }
+
+      /** Invoked right before the Interstitial screen is about to open.
+       *  NOTE - This event is available only for some of the networks.
+       *  You should NOT treat this event as an interstitial impression, but rather use InterstitialAdOpenedEvent
+       */
+      override fun onInterstitialAdShowSucceeded() {
+        Log.d(TAG, "PleaseWaitFBScreenScanActivity Interstitial Ad Show Succeeded!")
+
+      }
+
+    }
+
+    IronSource.setInterstitialListener(ironSourceInterstitialListener)
+
+    IronSource.loadInterstitial()
 
     startWaitBeforeAd()
 

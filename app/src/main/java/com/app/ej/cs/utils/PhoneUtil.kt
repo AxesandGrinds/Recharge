@@ -195,6 +195,14 @@ class PhoneUtil {
             @SuppressLint("MissingPermission")
             val activeSubscriptionInfoList = localSubscriptionManager.activeSubscriptionInfoList
 
+            if (activeSubscriptionInfoList == null) {
+
+                Log.e("ATTENTION ATTENTION", "activeSubscriptionInfoList == null. SendToSim won't work.")
+
+                return
+
+            }
+
             for (phoneAccountHandle in list) {
 
                 if (simNumber == 0) {
@@ -227,8 +235,6 @@ class PhoneUtil {
                         return
 
                     }
-
-
 
                     return
 

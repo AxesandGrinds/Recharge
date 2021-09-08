@@ -183,9 +183,17 @@
 
                   <LinearLayout
                       android:id="@+id/fs_banner"
+                      android:visibility="gone"
                       android:layout_width="match_parent"
                       android:layout_height="match_parent"
                       android:orientation="vertical" />
+
+                  <FrameLayout
+                      android:id="@+id/ironsSource_fs_banner_container"
+                      android:visibility="visible"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      android:layout_gravity="bottom" />
 
               </LinearLayout>
 

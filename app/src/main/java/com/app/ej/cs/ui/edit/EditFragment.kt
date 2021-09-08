@@ -13,6 +13,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.Toast
@@ -32,10 +33,7 @@ import com.app.ej.cs.presenter.PickContactListener
 import com.app.ej.cs.repository.entity.Friend
 import com.app.ej.cs.repository.entity.User
 import com.app.ej.cs.repository.entity.UserAndFriendInfo
-import com.app.ej.cs.utils.NetworkUtil
-import com.app.ej.cs.utils.PhoneUtil
-import com.app.ej.cs.utils.Util
-import com.app.ej.cs.utils.isKeyboardOpen
+import com.app.ej.cs.utils.*
 import com.droidman.ktoasty.KToasty
 import com.facebook.ads.*
 import com.google.android.material.button.MaterialButton
@@ -48,7 +46,11 @@ import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
+import com.ironsource.mediationsdk.ISBannerSize
 import com.ironsource.mediationsdk.IronSource
+import com.ironsource.mediationsdk.IronSourceBannerLayout
+import com.ironsource.mediationsdk.logger.IronSourceError
+import com.ironsource.mediationsdk.sdk.BannerListener
 import com.mopub.mobileads.MoPubErrorCode
 import com.mopub.mobileads.MoPubView
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
@@ -109,6 +111,19 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
 
     super.onAttach(context)
 
+    try {
+
+      initFBAds()
+
+    }
+    catch (e: Exception) {
+
+      Log.e(TAG, "Error running initFBAds() from EditFragment onAttach")
+
+    }
+
+    Log.e(TAG, "LifeCycle EditFragment onAttach Ran")
+
   }
 
   override fun onStart() {
@@ -120,11 +135,11 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
 
   override fun onDestroy() {
 
-    if (moPubView != null) {
-      moPubView!!.destroy()
-    }
+    moPubView?.destroy()
 
     adView?.destroy()
+
+    IronSource.destroyBanner(ironSourceBannerLayout)
 
     editFragmentPresenter.unbind()
 
@@ -175,9 +190,16 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
 
   private var adView: AdView? = null
 
-  private fun initFBAds(view: View) {
+  private lateinit var ironSourceBannerLayout: IronSourceBannerLayout
 
-    IronSource.setMetaData("Facebook_IS_CacheFlag","ALL");
+  private lateinit var bannerContainer: FrameLayout
+
+  private fun initFBAds() {
+
+    IronSource.setMetaData("Facebook_IS_CacheFlag","ALL")
+
+    var facebookAdsRefreshRate: Int = 0
+    var facebookAdsRemoved: Boolean = false
 
     val adListener: AdListener = object : AdListener {
 
@@ -191,10 +213,38 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
 //          Toast.LENGTH_LONG
 //        ).show()
 
+        activity?.runOnUiThread {
+
+          Runnable {
+            bannerContainer.removeView(adView)
+            facebookAdsRemoved = true
+          }
+
+        }
+
       }
 
       override fun onAdLoaded(ad: Ad?) {
+
         Log.e(TAG, "EditFragment onBannerLoaded")
+
+        activity?.runOnUiThread {
+
+          Runnable {
+
+            if (facebookAdsRefreshRate > 0 && facebookAdsRemoved) {
+              bannerContainer.addView(adView)
+              facebookAdsRemoved = false
+            }
+
+            bannerContainer.removeView(ironSourceBannerLayout)
+
+            facebookAdsRefreshRate++
+
+          }
+
+        }
+
       }
 
       override fun onAdClicked(ad: Ad?) {
@@ -208,11 +258,84 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
     }
 
 //    adView = AdView(requireContext(), "IMG_16_9_APP_INSTALL#411762013708850_411800960371622", AdSize.BANNER_HEIGHT_50)
+//    val adContainer = view.findViewById(R.id.fe_banner) as LinearLayout
+//    adContainer.addView(adView)
+
     adView = AdView(requireContext(), "411762013708850_411800960371622", AdSize.BANNER_HEIGHT_50)
 
-    val adContainer = view.findViewById(R.id.fe_banner) as LinearLayout
+    IronSource.init(requireActivity(), ironSourceAppKey, IronSource.AD_UNIT.BANNER)
 
-    adContainer.addView(adView)
+    ironSourceBannerLayout = IronSource.createBanner(requireActivity(), ISBannerSize.BANNER)
+
+    val layoutParams: FrameLayout.LayoutParams = FrameLayout.LayoutParams(
+      FrameLayout.LayoutParams.MATCH_PARENT,
+      FrameLayout.LayoutParams.WRAP_CONTENT
+    )
+
+    bannerContainer.addView(adView)
+
+    bannerContainer.addView(ironSourceBannerLayout, 0, layoutParams)
+
+    var ironSourceRefreshRate: Int = 0
+    var ironSourceRemoved: Boolean = false
+
+    ironSourceBannerLayout.bannerListener = object : BannerListener {
+
+      override fun onBannerAdLoaded() {
+        // Called after a banner ad has been successfully loaded
+
+        activity?.runOnUiThread {
+
+          Runnable {
+
+            if (ironSourceRefreshRate > 0 && ironSourceRemoved) {
+              bannerContainer.addView(ironSourceBannerLayout, 0, layoutParams)
+              ironSourceRemoved = false
+            }
+
+            bannerContainer.removeView(adView)
+
+            ironSourceRefreshRate++
+
+          }
+
+        }
+
+      }
+
+      override fun onBannerAdLoadFailed(error: IronSourceError) {
+        // Called after a banner has attempted to load an ad but failed.
+
+        activity?.runOnUiThread {
+
+          Runnable {
+            bannerContainer.removeView(ironSourceBannerLayout)
+            ironSourceRemoved = true
+//            bannerContainer.removeAllViews()
+          }
+
+        }
+
+      }
+
+      override fun onBannerAdClicked() {
+        // Called after a banner has been clicked.
+      }
+
+      override fun onBannerAdScreenPresented() {
+        // Called when a banner is about to present a full screen content.
+      }
+
+      override fun onBannerAdScreenDismissed() {
+        // Called after a full screen content has been dismissed
+      }
+
+      override fun onBannerAdLeftApplication() {
+        // Called when a user would be taken out of the application context.
+      }
+    }
+
+    IronSource.loadBanner(ironSourceBannerLayout)
 
     adView!!.loadAd()
 
@@ -263,6 +386,8 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
   override fun onPause() {
     super.onPause()
 
+    IronSource.onPause(requireActivity())
+
     // save RecyclerView state
 //    mBundleRecyclerViewState = Bundle()
 //    val listState: Parcelable? = friendRecyclerView.layoutManager?.onSaveInstanceState()
@@ -284,6 +409,21 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
 
   override fun onResume() {
     super.onResume()
+
+    IronSource.onResume(requireActivity())
+
+    try {
+
+      initFBAds()
+
+    }
+    catch (e: Exception) {
+
+      Log.e(TAG, "Error running initFBAds() from EditFragment onResume")
+
+    }
+
+    Log.e(TAG, "LifeCycle ScanFragment EditFragment Ran")
 
 //    if (mBundleRecyclerViewState != null) {
 //      val listState = mBundleRecyclerViewState!!.getParcelable<Parcelable>(KEY_RECYCLER_STATE)
@@ -311,7 +451,9 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
 //    Handler(Looper.getMainLooper()).postDelayed({
 //    }, 200)
 
-    initFBAds(view)
+    bannerContainer = view.findViewById<FrameLayout>(R.id.ironsSource_fe_banner_container)
+
+    initFBAds()
 
     initAddOneMoreFriendButton(view)
     initEditMainRecyclerView(view)
