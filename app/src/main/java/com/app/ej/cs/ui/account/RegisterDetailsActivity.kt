@@ -330,24 +330,24 @@ class RegisterDetailsActivity() : AppCompatActivity(),
     private   fun showPinUpdateMessage(newPin: String) {
         val msg: String = "Your pin $newPin has been set. Press send to complete."
         val pinUpdateMessageToast: Toast = KToasty.success(context, msg, Toast.LENGTH_LONG, true)
-        val pinUpdateMessageSnackbar: Snackbar = Snackbar.make(
-                (rda_coordinatorLayout),
-                "",
-                Snackbar.LENGTH_LONG
-        )
+//        val pinUpdateMessageSnackbar: Snackbar = Snackbar.make(
+//                (rda_coordinatorLayout),
+//                "",
+//                Snackbar.LENGTH_LONG
+//        )
         pinUpdateMessageToast.show()
-        pinUpdateMessageSnackbar.show()
+//        pinUpdateMessageSnackbar.show()
     }
 
     private   fun showErrorMessage(message: String) {
         val errorMessageToast: Toast = KToasty.error(context, message, Toast.LENGTH_LONG, true)
-        val errorMessageSnackbar: Snackbar = Snackbar.make(
-                (rda_coordinatorLayout),
-                "",
-                Snackbar.LENGTH_LONG
-        )
+//        val errorMessageSnackbar: Snackbar = Snackbar.make(
+//                (rda_coordinatorLayout),
+//                "",
+//                Snackbar.LENGTH_LONG
+//        )
         errorMessageToast.show()
-        errorMessageSnackbar.show()
+//        errorMessageSnackbar.show()
     }
 
     // TODO Use with future update

@@ -1138,6 +1138,7 @@ private val TAG: String = "ATTENTION ATTENTION"
         appUpdateManager!!.unregisterListener(installStateUpdatedListener)
         appUpdateManager!!.completeUpdate()
       }
+
       setActionTextColor(resources.getColor(R.color.light_grey))
       show()
 

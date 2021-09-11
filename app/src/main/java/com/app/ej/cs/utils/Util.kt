@@ -20,7 +20,7 @@ import androidx.core.content.res.ResourcesCompat
 import com.app.ej.cs.R
 import com.app.ej.cs.repository.entity.UserAndFriendInfo
 import com.droidman.ktoasty.KToasty
-import com.google.android.material.snackbar.Snackbar
+//import com.google.android.material.snackbar.Snackbar
 import kotlin.math.roundToInt
 
 
@@ -106,10 +106,10 @@ class Util {
 
     fun onShowMessage(message: String, context: Context, view: View) {
 
-        val snackbar = Snackbar.make(view, "", Snackbar.LENGTH_SHORT)
+//        val snackbar = Snackbar.make(view, "", Snackbar.LENGTH_SHORT)
         val toast    = KToasty.info(context, message, Toast.LENGTH_SHORT, true)
 
-        snackbar.show()
+//        snackbar.show()
         toast.show()
 
     }
@@ -132,10 +132,10 @@ class Util {
 
     fun onShowMessageSuccess(message: String, context: Context, view: View) {
 
-        val snackbar = Snackbar.make(view, "", Snackbar.LENGTH_SHORT)
+//        val snackbar = Snackbar.make(view, "", Snackbar.LENGTH_SHORT)
         val toast    = KToasty.success(context, message, Toast.LENGTH_SHORT, true)
 
-        snackbar.show()
+//        snackbar.show()
         toast.show()
 
     }
@@ -158,10 +158,10 @@ class Util {
 
     fun onShowErrorMessage(message: String, context: Context, view: View) {
 
-        val snackbar = Snackbar.make(view, "", Snackbar.LENGTH_SHORT)
+//        val snackbar = Snackbar.make(view, "", Snackbar.LENGTH_SHORT)
         val toast    = KToasty.error(context, message, Toast.LENGTH_SHORT, true)
 
-        snackbar.show()
+//        snackbar.show()
         toast.show()
 
     }

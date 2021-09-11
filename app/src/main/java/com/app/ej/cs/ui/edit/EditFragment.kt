@@ -492,10 +492,10 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
     }
     else {
 
-      val snackbar = Snackbar.make(viewSave, "", Snackbar.LENGTH_LONG)
+//      val snackbar = Snackbar.make(viewSave, "", Snackbar.LENGTH_LONG)
       val toast = KToasty.info(requireContext(), "You need internet access to save.", Toast.LENGTH_LONG)
 
-      snackbar.show()
+//      snackbar.show()
       toast.show()
 
     }
@@ -514,10 +514,10 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
   private fun updateEmail(message: String) {
 
 
-    val snackbar = Snackbar.make(requireView(), "", Snackbar.LENGTH_LONG)
+//    val snackbar = Snackbar.make(requireView(), "", Snackbar.LENGTH_LONG)
     val toast = KToasty.info(requireContext(), message, Toast.LENGTH_LONG)
 
-    snackbar.show()
+//    snackbar.show()
     toast.show()
 
   }
