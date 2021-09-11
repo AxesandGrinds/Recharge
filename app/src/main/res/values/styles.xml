@@ -31,9 +31,11 @@
   </style>
 
   <style name="SplashTheme" parent ="Theme.MaterialComponents.Light.NoActionBar">
-    <item name="android:windowBackground">@drawable/splash_screen_background</item>
     <item name="android:windowNoTitle">true</item>
-    <item name="android:windowFullscreen">true</item>
+<!--    <item name="android:windowFullscreen">true</item>-->
+    <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+    <item name="android:statusBarColor" tools:targetApi="lollipop">@color/colorPrimary3</item>
+    <item name="android:windowBackground">@drawable/splash_screen_background</item>
     <item name="colorPrimary">@color/colorPrimary3</item>
     <item name="colorPrimaryDark">@color/colorPrimary3</item>
     <item name="colorAccent">@color/colorAccent3</item>

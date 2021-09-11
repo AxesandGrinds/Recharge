@@ -81,6 +81,7 @@ import java.io.IOException
 import java.util.*
 import kotlin.collections.HashMap
 import kotlin.concurrent.fixedRateTimer
+import com.google.android.gms.location.LocationRequest
 
 
 class RegisterDetailsActivity() : AppCompatActivity(),

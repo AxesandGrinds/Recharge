@@ -173,6 +173,7 @@ class LoginActivityPhone : AppCompatActivity() {
 
         if (e is FirebaseAuthInvalidCredentialsException) {
           phone_numberEt.error = "Invalid phone number."
+          println("ATTENTION ATTENTION: FirebaseAuthInvalidCredentialsException: ${e.message}")
         }
         else if (e is FirebaseTooManyRequestsException) {
           Snackbar.make(findViewById(android.R.id.content), "Quota exceeded.",

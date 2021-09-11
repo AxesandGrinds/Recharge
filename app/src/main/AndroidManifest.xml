@@ -159,13 +159,16 @@
 
 
 
-        <activity android:name=".ui.SplashScreenActivity"
+        <activity
+            android:name=".ui.SplashScreenActivity"
+            android:exported="true"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden"
             android:theme="@style/SplashTheme">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.VIEW" />
+<!--                <action android:name="android.intent.action.VIEW" />-->
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
@@ -201,6 +204,7 @@
 
         <activity
             android:name=".ui.MainActivity"
+            android:exported="true"
             android:screenOrientation="portrait"
             android:label="@string/app_name"
             android:theme="@style/AppBarTheme">
@@ -208,6 +212,7 @@
 
         <activity
             android:name=".ui.CodeInputActivity"
+            android:exported="false"
             android:screenOrientation="portrait"
             android:label="@string/app_name"
             android:theme="@style/AppBarTheme">
@@ -215,6 +220,7 @@
 
         <activity
             android:name=".ui.account.RegisterActivity"
+            android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/AppBarTheme.NoActionBar"
             android:launchMode="singleTop"
@@ -222,6 +228,7 @@
 
         <activity
             android:name=".ui.account.RegisterDetailsActivity"
+            android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/AppBarTheme.NoActionBar"
             android:launchMode="singleTop"
@@ -229,6 +236,7 @@
 
         <activity
             android:name=".ui.account.LoginActivityMain"
+            android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/LoginAppTheme"
             android:launchMode="singleTop"
@@ -236,6 +244,7 @@
 
         <activity
             android:name=".ui.account.LoginActivityPhone"
+            android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/LoginAppTheme"
             android:launchMode="singleTop"
@@ -243,6 +252,7 @@
 
         <activity
             android:name=".ui.account.LoginActivityEmail"
+            android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/LoginAppTheme"
             android:launchMode="singleTop"
@@ -250,6 +260,7 @@
 
         <activity
             android:name=".ui.account.RecoverPasswordActivity"
+            android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/AppBarTheme"
             android:launchMode="singleTop"
