@@ -23,8 +23,8 @@ android {
         applicationId "com.app.ej.cs"
         minSdkVersion 19
         targetSdkVersion 31
-        versionCode 47
-        versionName "1.1.15"
+        versionCode 48
+        versionName "1.1.16"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
@@ -135,7 +135,7 @@ dependencies {
 
     //Google sign in dependencies
     //noinspection GradleDependency
-    implementation 'com.google.firebase:firebase-auth-ktx:19.4.0'
+    implementation 'com.google.firebase:firebase-auth-ktx:21.0.1'
 
     implementation 'io.github.inflationx:viewpump:2.0.3'
 

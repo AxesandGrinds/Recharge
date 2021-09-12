@@ -496,26 +496,36 @@ class RecognitionActivityReviewFinal :
   override fun onResume() {
     super.onResume()
 
+    Log.e(TAG, "RecognitionActivityReviewFinal onResume Called")
+
     IronSource.onResume(this)
+
+    initFBAds()
 
   }
 
   override fun onPause() {
     super.onPause()
 
+    Log.e(TAG, "RecognitionActivityReviewFinal onPause Called")
+
     IronSource.onPause(this)
+
+    IronSource.destroyBanner(ironSourceBannerLayout)
 
   }
 
   override fun onDestroy() {
 
-    moPubView?.destroy()
-
-    adView?.destroy()
-
     IronSource.destroyBanner(ironSourceBannerLayout)
 
     super.onDestroy()
+
+    Log.e(TAG, "RecognitionActivityReviewFinal onDestroy Called")
+
+    moPubView?.destroy()
+
+    adView?.destroy()
 
   }
 

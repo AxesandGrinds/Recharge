@@ -354,7 +354,8 @@ private val TAG: String = "ATTENTION ATTENTION"
     Log.e(TAG, "OnPause of ScanFragment")
     super.onPause()
 
-    IronSource.onPause(requireActivity())
+    IronSource.destroyBanner(ironSourceBannerLayout)
+//    IronSource.onPause(requireActivity())
 
   }
 
@@ -1196,9 +1197,7 @@ private val TAG: String = "ATTENTION ATTENTION"
 
     }
 
-    super.onResume()
-
-    IronSource.onResume(requireActivity())
+//    IronSource.onResume(requireActivity())
 
     try {
 
@@ -1212,6 +1211,8 @@ private val TAG: String = "ATTENTION ATTENTION"
     }
 
     Log.e(TAG, "LifeCycle ScanFragment onResume Ran")
+
+    super.onResume()
 
   }
 

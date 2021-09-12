@@ -12,6 +12,7 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.app.ej.cs.R
+import com.app.ej.cs.ui.CodeInputActivity
 import com.app.ej.cs.ui.MyMoPub
 import com.app.ej.cs.utils.ImeHelper
 import com.app.ej.cs.utils.NetworkUtil
@@ -430,26 +431,36 @@ class RecoverPasswordActivity:  AppCompatActivity(), View.OnClickListener,
     override fun onResume() {
         super.onResume()
 
+        Log.e(TAG, "RecoverPasswordActivity onResume Called")
+
         IronSource.onResume(this)
+
+        initFBAds()
 
     }
 
     override fun onPause() {
         super.onPause()
 
+        Log.e(TAG, "RecoverPasswordActivity onResume Called")
+
         IronSource.onPause(this)
+
+        IronSource.destroyBanner(ironSourceBannerLayout)
 
     }
 
     override fun onDestroy() {
 
-        moPubView?.destroy()
-
-        adView?.destroy()
-
         IronSource.destroyBanner(ironSourceBannerLayout)
 
         super.onDestroy()
+
+        Log.e(TAG, "RecoverPasswordActivity onResume Called")
+
+        moPubView?.destroy()
+
+        adView?.destroy()
 
     }
 

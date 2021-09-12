@@ -7,7 +7,6 @@
     <item name="android:fitsSystemWindows">true</item>
   </style>
 
-
   <style name="AppBarTheme" parent="Theme.MaterialComponents.Light">
     <item name="colorPrimary">@color/scan_background</item>
     <item name="colorPrimaryDark">@color/colorPrimary3</item>
@@ -19,7 +18,6 @@
   <style name="AppTheme.AppBarOverlay2" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
     <item name="android:textColorPrimary">@color/colorPrimary3</item>
   </style>
-
 
   <style name="RecognitionTheme" parent="Theme.MaterialComponents.Light">
     <item name="colorPrimary">@color/scan_background</item>
@@ -50,13 +48,11 @@
     <item name="android:statusBarColor" tools:targetApi="lollipop">@color/white</item>
   </style>
 
-
   <style name="MyDialogTheme" parent="Theme.MaterialComponents.Light.Dialog.Alert">
     <item name="colorPrimary">@color/colorPrimary3</item>
     <item name="colorPrimaryDark">@color/colorPrimaryDark3</item>
     <item name="colorAccent">@color/colorAccent3</item>
   </style>
-
 
   <style name="Theme.MainActivity" parent="AppTheme"/>
   <style name="Theme.PreviewActivity" parent="Theme.MaterialComponents.NoActionBar"/>
@@ -87,7 +83,6 @@
     <item name="colorControlNormal">@color/colorPrimary3</item>
     <item name="colorControlActivated">@color/colorPrimary3</item>
   </style>
-
 
   <style name="RechargeThemeOverlayOutlinedDense">
     <item name="editTextStyle">@style/RechargeTextInputEditText_FilledBox_dense_h
@@ -133,8 +128,6 @@
    <item name="boxCollapsedPaddingTop">@dimen/box_collapsed_padding_top</item>
   </style>
 
-
-
   <style name="TextLabelMandatory" parent="Widget.MaterialComponents.TextInputLayout.FilledBox.Dense">
     <item name="materialThemeOverlay">@style/RechargeThemeOverlayOutlinedDense</item>
     <item name="colorPrimary">@color/colorPrimary3</item>
@@ -152,8 +145,6 @@
     <item name="boxBackgroundColor">@color/red</item>
    <item name="boxCollapsedPaddingTop">@dimen/box_collapsed_padding_top</item>
   </style>
-
-
 
   <style name="TextLabelCreatePin" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
     <item name="colorPrimary">@color/colorPrimary3</item>

@@ -184,6 +184,9 @@ class CodeInputActivity : AppCompatActivity(),
 //    Handler(Looper.getMainLooper()).postDelayed({
 //    }, 200)
 
+
+    bannerContainer = findViewById<FrameLayout>(R.id.ironsSource_ciact_banner_container)
+
     initFBAds()
 
 //    MobileAds.initialize(this)
@@ -258,6 +261,8 @@ class CodeInputActivity : AppCompatActivity(),
 
   private lateinit var ironSourceBannerLayout: IronSourceBannerLayout
 
+  private lateinit var bannerContainer: FrameLayout
+
   private fun initFBAds() {
 
     IronSource.setMetaData("Facebook_IS_CacheFlag","ALL")
@@ -265,13 +270,11 @@ class CodeInputActivity : AppCompatActivity(),
     var facebookAdsRefreshRate: Int = 0
     var facebookAdsRemoved: Boolean = false
 
-    val bannerContainer: FrameLayout = findViewById<FrameLayout>(R.id.ironsSource_ciact_banner_container)
-
     val adListener: AdListener = object : AdListener {
 
       override fun onError(ad: Ad?, adError: AdError) {
 
-        Log.e(TAG, "CodeInputActivity onBannerFailed: ${adError.errorMessage}")
+        Log.e(TAG, "CodeInputActivity FB Banner onError: ${adError.errorMessage}")
 
 //        Toast.makeText(
 //          this@CodeInputActivity,
@@ -349,6 +352,8 @@ class CodeInputActivity : AppCompatActivity(),
       override fun onBannerAdLoaded() {
         // Called after a banner ad has been successfully loaded
 
+        Log.e(TAG, "CodeInputActivity onBannerAdLoaded")
+
         this@CodeInputActivity.runOnUiThread {
 
           Runnable {
@@ -370,6 +375,8 @@ class CodeInputActivity : AppCompatActivity(),
 
       override fun onBannerAdLoadFailed(error: IronSourceError) {
         // Called after a banner has attempted to load an ad but failed.
+
+        Log.e(TAG, "CodeInputActivity onBannerFailed: ${error.errorMessage}")
 
         this@CodeInputActivity.runOnUiThread {
 
@@ -412,26 +419,36 @@ class CodeInputActivity : AppCompatActivity(),
   override fun onResume() {
     super.onResume()
 
+    Log.e(TAG, "CodeInputActivity onResume Called")
+
     IronSource.onResume(this)
+
+    initFBAds()
 
   }
 
   override fun onPause() {
     super.onPause()
 
+    Log.e(TAG, "CodeInputActivity onPause Called")
+
     IronSource.onPause(this)
+
+    IronSource.destroyBanner(ironSourceBannerLayout)
 
   }
 
   override fun onDestroy() {
 
+    IronSource.destroyBanner(ironSourceBannerLayout)
+
+    super.onDestroy()
+
     moPubView?.destroy()
 
     adView?.destroy()
 
-    IronSource.destroyBanner(ironSourceBannerLayout)
-
-    super.onDestroy()
+    Log.e(TAG, "CodeInputActivity onDestroy Called")
 
   }
 
