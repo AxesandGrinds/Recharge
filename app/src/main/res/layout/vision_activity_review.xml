@@ -66,7 +66,7 @@
       app:layout_constraintStart_toStartOf="parent"
       android:orientation="vertical" >
 
-    <!--<com.google.android.gms.ads.AdView
+    <com.google.android.gms.ads.AdView
         xmlns:ads="http://schemas.android.com/apk/res-auto"
         android:id="@+id/rra_adView"
         android:layout_width="match_parent"
@@ -74,9 +74,9 @@
         android:layout_gravity="center"
         ads:adSize="BANNER"
         ads:adUnitId="@string/adunitid_rra">
-    </com.google.android.gms.ads.AdView>-->
+    </com.google.android.gms.ads.AdView>
 
-    <com.mopub.mobileads.MoPubView
+    <!--<com.mopub.mobileads.MoPubView
         android:id="@+id/rra_moPubView"
         android:visibility="gone"
         android:layout_width="match_parent"
@@ -96,7 +96,7 @@
         android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom" />
+        android:layout_gravity="bottom" />-->
 
   </LinearLayout>
 

@@ -1,3 +1,3 @@
-package com.app.ej.cs.common.events
+package com.ej.recharge.common.events
 
 typealias OnViewHolderItemSelected<T> = (T) -> Unit

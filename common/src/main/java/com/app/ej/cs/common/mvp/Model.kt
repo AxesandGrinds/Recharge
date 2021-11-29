@@ -1,4 +1,4 @@
-package com.app.ej.cs.common.mvp
+package com.ej.recharge.common.mvp
 
 /**
  * It's the Model in MVP

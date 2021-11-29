@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fs_coordinatorLayout"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+  <androidx.core.widget.NestedScrollView
+      android:scrollbars="none"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:padding="0dp" >
+
+      <LinearLayout
+          android:id="@+id/scan_frag_LLV"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:background="@color/scan_background"
+          android:paddingBottom="12dp"
+          android:orientation="vertical" >
+
+          <RelativeLayout
+              android:id="@+id/layout"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_marginTop="-70dp" >
+
+              <androidx.cardview.widget.CardView
+                  android:id="@+id/detailsCv"
+                  android:layout_width="match_parent"
+                  android:layout_height="160dp"
+                  app:cardElevation="@dimen/card_elevation_scan"
+                  app:cardCornerRadius="50dp"
+                  android:clickable="false"
+                  android:focusable="false"
+                  android:background="?selectableItemBackground"
+                  android:layout_centerHorizontal="true"
+                  android:gravity="center"
+                  android:layout_marginTop="@dimen/layout_margin_top_user" >
+
+                  <LinearLayout
+                      android:id="@+id/scan_frag_details_LLV"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      android:background="@color/optional_background_even2"
+                      android:gravity="center|center_horizontal|center_vertical"
+                      android:layout_gravity="center"
+                      android:orientation="vertical" >
+
+                      <TextView
+                          android:id="@+id/nameTv"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:layout_marginTop="70dp"
+                          android:text="@string/getting_name"
+                          android:textColor="@color/background_color"
+                          android:textSize="17sp" />
+
+                      <TextView
+                          android:id="@+id/emailTv"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:layout_marginTop="@dimen/details_margin"
+                          android:gravity="center|center_horizontal|center_vertical"
+                          android:textColor="@color/background_color"
+                          android:drawablePadding="5dp"
+                          app:drawableLeftCompat="@drawable/ic_email_24dp"
+                          app:drawableStartCompat="@drawable/ic_email_24dp" />
+
+                      <TextView
+                          android:id="@+id/createdTv"
+                          android:layout_width="wrap_content"
+                          android:layout_height="40dp"
+                          android:layout_marginTop="0dp"
+                          android:layout_marginBottom="@dimen/details_margin"
+                          android:gravity="center|center_horizontal|center_vertical"
+                          android:textColor="@color/background_color"
+                          android:drawablePadding="5dp"
+                          app:drawableStartCompat="@drawable/ic_access_time_24dp"
+                          app:drawableLeftCompat="@drawable/ic_access_time_24dp" />
+
+                  </LinearLayout>
+
+              </androidx.cardview.widget.CardView>
+
+              <!--<androidx.cardview.widget.CardView
+                  android:id="@+id/emailCv"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  app:cardElevation="@dimen/card_elevation_scan"
+                  app:cardCornerRadius="4dp"
+                  android:clickable="true"
+                  android:focusable="true"
+                  android:background="?selectableItemBackground"
+                  android:layout_below="@+id/nameCv"
+                  android:layout_centerHorizontal="true"
+                  android:gravity="center_horizontal"
+                  android:layout_marginTop="@dimen/layout_margin_top_user" >
+
+                  <TextView
+                      android:id="@+id/emailTv"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_centerHorizontal="true"
+                      android:background="@color/card_color_user"
+                      android:drawablePadding="5dp"
+                      android:gravity="center|center_horizontal|center_vertical"
+                      android:paddingStart="20dp"
+                      android:paddingLeft="20dp"
+                      android:paddingEnd="20dp"
+                      android:paddingRight="20dp"
+                      android:textColor="@color/background_color"
+                      app:drawableLeftCompat="@drawable/ic_email_24dp"
+                      app:drawableStartCompat="@drawable/ic_email_24dp" />
+
+              </androidx.cardview.widget.CardView>-->
+
+              <!--<androidx.cardview.widget.CardView
+                  android:id="@+id/createdCv"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  app:cardElevation="@dimen/card_elevation_scan"
+                  app:cardCornerRadius="4dp"
+                  android:clickable="true"
+                  android:focusable="true"
+                  android:background="?selectableItemBackground"
+                  android:layout_below="@+id/emailCv"
+                  android:layout_centerHorizontal="true"
+                  android:gravity="center_horizontal"
+                  android:layout_marginTop="@dimen/layout_margin_top_user"
+                  android:layout_marginBottom="10dp" >
+
+                  <TextView
+                      android:id="@+id/createdTv"
+                      android:layout_width="wrap_content"
+                      android:layout_height="40dp"
+                      android:paddingLeft="20dp"
+                      android:paddingStart="20dp"
+                      android:paddingRight="20dp"
+                      android:paddingEnd="20dp"
+                      android:background="@color/card_color_user"
+                      android:drawablePadding="5dp"
+                      android:layout_centerHorizontal="true"
+                      android:gravity="center|center_horizontal|center_vertical"
+                      android:textColor="@color/background_color"
+                      app:drawableStartCompat="@drawable/ic_access_time_24dp"
+                      app:drawableLeftCompat="@drawable/ic_access_time_24dp" />
+
+              </androidx.cardview.widget.CardView>-->
+
+              <LinearLayout
+                  android:id="@+id/fs_fl_adView"
+                  android:layout_width="320dp"
+                  android:layout_height="50dp"
+                  android:layout_gravity="center"
+                  android:layout_centerHorizontal="true"
+                  android:padding="0dp"
+                  android:layout_marginTop="16dp"
+                  android:layout_marginBottom="@dimen/details_margin"
+                  android:layout_below="@+id/detailsCv"
+                  android:orientation="vertical" >
+
+                  <com.google.android.gms.ads.AdView
+                      xmlns:ads="http://schemas.android.com/apk/res-auto"
+                      android:id="@+id/fs_adView"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      ads:adSize="BANNER"
+                      ads:adUnitId="@string/adunitid_sf">
+                  </com.google.android.gms.ads.AdView>
+
+                  <!--<com.mopub.mobileads.MoPubView
+                      android:id="@+id/fs_moPubView"
+                      android:visibility="gone"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      app:moPubAdSize="height_50" >
+                  </com.mopub.mobileads.MoPubView>
+
+                  <LinearLayout
+                      android:id="@+id/fs_banner"
+                      android:visibility="gone"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      android:orientation="vertical" />
+
+                  <FrameLayout
+                      android:id="@+id/ironsSource_fs_banner_container"
+                      android:visibility="visible"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_gravity="bottom" />-->
+
+              </LinearLayout>
+
+          </RelativeLayout>
+
+          <androidx.recyclerview.widget.RecyclerView
+              android:id="@+id/home_user_main_recycler_view"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="0dp"
+              android:layout_marginBottom="0dp"
+              android:layout_marginRight="@dimen/card_elevation_scan"
+              android:layout_marginLeft="@dimen/card_elevation_scan" />
+
+          <androidx.recyclerview.widget.RecyclerView
+              android:id="@+id/home_user_second_recycler_view"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="0dp"
+              android:layout_marginBottom="0dp"
+              android:layout_marginRight="@dimen/card_elevation_scan"
+              android:layout_marginLeft="@dimen/card_elevation_scan" />
+
+          <androidx.recyclerview.widget.RecyclerView
+              android:id="@+id/home_user_friends_recycler_view"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="0dp"
+              android:layout_marginBottom="30dp"
+              android:layout_marginRight="@dimen/card_elevation_scan"
+              android:layout_marginLeft="@dimen/card_elevation_scan"/>
+
+      </LinearLayout>
+
+
+  </androidx.core.widget.NestedScrollView>
+
+
+
+
+
+    <com.ej.recharge.ui.fab.FloatingActionMenu
+        android:id="@+id/fam"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="0dp"
+        android:paddingBottom="0dp"
+        android:paddingEnd="0dp"
+        android:paddingStart="0dp"
+        android:layout_marginBottom="18dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        app:menu_icon="@drawable/ic_baseline_linked_camera_24"
+        app:fab_shadowColor="#66000000"
+        app:menu_backgroundColor="@android:color/transparent"
+        app:menu_colorNormal="@color/colorPrimary3"
+        app:menu_colorPressed="@color/green"
+        app:menu_colorRipple="#9C27B0"
+        app:menu_labels_ellipsize="end"
+        app:menu_labels_singleLine="true"
+        app:menu_fab_label="Choose # to recharge">
+
+        <com.ej.recharge.ui.fab.FloatingActionButton
+            android:id="@+id/fab1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_phone_android_black_24dp"
+            app:fab_size="mini"
+            app:fab_label="@string/phoneNumber01"
+            tools:ignore="VectorDrawableCompat" />
+
+        <com.ej.recharge.ui.fab.FloatingActionButton
+            android:id="@+id/fab2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_phone_android_black_24dp"
+            app:fab_size="mini"
+            app:fab_label="@string/phone2"
+            tools:ignore="VectorDrawableCompat" />
+
+    </com.ej.recharge.ui.fab.FloatingActionMenu>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

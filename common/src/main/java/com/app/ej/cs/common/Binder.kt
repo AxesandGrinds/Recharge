@@ -1,4 +1,4 @@
-package com.app.ej.cs.common
+package com.ej.recharge.common
 
 /**
  * Abstraction of any object which can bind a model to an android  View

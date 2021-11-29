@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.app.ej.cs",
+  "applicationId": "com.ej.recharge",
   "variantName": "debug",
   "elements": [
     {

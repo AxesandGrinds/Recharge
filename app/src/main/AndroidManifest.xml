@@ -2,7 +2,8 @@
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.app.ej.cs" >
+    package="com.ej.recharge"
+    android:installLocation="auto" >
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -172,7 +173,7 @@
             android:windowSoftInputMode="stateHidden" />
 
         <activity
-            android:name=".ui.scan.PleaseWaitScreenScanActivity"
+            android:name=".ui.home.PleaseWaitScreenHomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/LoginAppTheme"
             android:launchMode="singleTop"
@@ -186,7 +187,7 @@
             android:windowSoftInputMode="stateHidden" />
 
         <activity
-            android:name=".ui.scan.PleaseWaitFBScreenScanActivity"
+            android:name=".ui.home.PleaseWaitFBScreenHomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/LoginAppTheme"
             android:launchMode="singleTop"

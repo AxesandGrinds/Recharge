@@ -1,9 +1,9 @@
-package com.app.ej.cs.common.mvp.impl
+package com.ej.recharge.common.mvp.impl
 
 import androidx.annotation.CallSuper
-import com.app.ej.cs.common.mvp.Model
-import com.app.ej.cs.common.mvp.Presenter
-import com.app.ej.cs.common.mvp.View
+import com.ej.recharge.common.mvp.Model
+import com.ej.recharge.common.mvp.Presenter
+import com.ej.recharge.common.mvp.View
 
 /**
  * Base class for Presenters¬

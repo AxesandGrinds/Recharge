@@ -44,24 +44,34 @@
     <string name="code_input_instructions">Enter the recharge code below.</string>
 
 
+    <string name="pref_key_group_recognized_text_in_blocks" translatable="false">grtib</string>
+    <string name="pref_key_info_hide" translatable="false">ih</string>
 
 
-
-    <string name="admob_app_id">ca-app-pub-5127161627511605~6097746121</string>
-    <string name="adunitid_sf">ca-app-pub-5127161627511605/4753886624</string>
-    <string name="adunitid_sf_int">ca-app-pub-5127161627511605/6554467118</string>
-    <string name="adunitid_ef">ca-app-pub-5127161627511605/7738949094</string>
-    <!--    Recognition Review-->
-    <string name="adunitid_rra">ca-app-pub-5127161627511605/1844846741</string>
+    <string name="admob_app_id">ca-app-pub-7671905867026300~6551918211</string>
     <!--    Code Input   -->
-    <string name="adunitid_ciact">ca-app-pub-5127161627511605/5891849065</string>
-
-
-
+    <string name="adunitid_ciact">ca-app-pub-7671905867026300/4192831260</string>
     <!--    Password Reset   -->
-    <string name="adunitid_pract">ca-app-pub-5127161627511605/5750786793</string>
+    <string name="adunitid_pract">ca-app-pub-7671905867026300/5914651639</string>
+    <!--    Recognition Review-->
+    <string name="adunitid_rra">ca-app-pub-7671905867026300/2329085259</string>
+    <!--    Edit Fragment-->
+    <string name="adunitid_ef">ca-app-pub-7671905867026300/7052279963</string>
+    <!--    Home Fragment-->
+    <string name="adunitid_sf">ca-app-pub-7671905867026300/3468258171</string>
 
 
+<!--    <string name="admob_app_id">ca-app-pub-5127161627511605~6097746121</string>-->
+    <!--<string name="adunitid_sf">ca-app-pub-5127161627511605/4753886624</string>-->
+    <string name="adunitid_sf_int">ca-app-pub-5127161627511605/6554467118</string>
+    <!--    Edit Fragment-->
+    <!--<string name="adunitid_ef">ca-app-pub-5127161627511605/7738949094</string>-->
+    <!--    Recognition Review-->
+    <!--<string name="adunitid_rra">ca-app-pub-5127161627511605/1844846741</string>-->
+    <!--    Code Input   -->
+    <!--<string name="adunitid_ciact">ca-app-pub-5127161627511605/5891849065</string>-->
+    <!--    Password Reset   -->
+    <!--<string name="adunitid_pract">ca-app-pub-5127161627511605/5750786793</string>-->
     <!--    activity_password_reset_interstitial-->
     <string name="adunitid_pract_int">ca-app-pub-5127161627511605/8927614471</string>
 

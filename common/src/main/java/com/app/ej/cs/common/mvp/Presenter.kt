@@ -1,4 +1,4 @@
-package com.app.ej.cs.common.mvp
+package com.ej.recharge.common.mvp
 
 /**
  * A Presenter in the MVP architecture. It's bound to a specific View

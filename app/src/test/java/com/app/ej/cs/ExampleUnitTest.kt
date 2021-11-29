@@ -1,4 +1,4 @@
-package com.app.ej.cs
+package com.ej.recharge
 
 import org.junit.Test
 

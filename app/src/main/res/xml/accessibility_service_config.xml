@@ -2,11 +2,11 @@
 <accessibility-service
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:description="@string/accessibility_service_description"
-    android:packageNames="com.android.server.telecom|com.app.ej.cs"
+    android:packageNames="com.android.server.telecom|com.ej.recharge"
     android:accessibilityEventTypes="typeWindowStateChanged|typeWindowContentChanged"
     android:accessibilityFlags="flagDefault"
     android:accessibilityFeedbackType="feedbackAllMask"
     android:notificationTimeout="6000"
     android:canRetrieveWindowContent="true"
-    android:settingsActivity="com.app.ej.cs.ui.MainActivity"
+    android:settingsActivity="com.ej.recharge.ui.MainActivity"
     />

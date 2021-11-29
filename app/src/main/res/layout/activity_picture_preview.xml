@@ -15,17 +15,17 @@
             android:layout_gravity="center_horizontal"
             android:adjustViewBounds="true" />
 
-        <com.app.ej.cs.vision.cameraview.MessageView
+        <com.ej.recharge.vision.cameraview.MessageView
             android:id="@+id/nativeCaptureResolution"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-        <com.app.ej.cs.vision.cameraview.MessageView
+        <com.ej.recharge.vision.cameraview.MessageView
             android:id="@+id/captureLatency"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-        <com.app.ej.cs.vision.cameraview.MessageView
+        <com.ej.recharge.vision.cameraview.MessageView
             android:id="@+id/exifRotation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
