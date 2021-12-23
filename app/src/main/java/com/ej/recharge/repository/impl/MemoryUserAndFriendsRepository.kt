@@ -160,6 +160,8 @@ class MemoryUserAndFriendsRepository(appContext: Context) : UsersAndFriendsRepos
                     accountNumber2 = friend.accountNumber2,
                     accountNumber3 = friend.accountNumber3,
                     accountNumber4 = friend.accountNumber4,
+                    showDeleteCheckBox = friend.showDeleteCheckBox,
+                    deleteCheckBox = friend.deleteCheckBox,
                     )
         )
 

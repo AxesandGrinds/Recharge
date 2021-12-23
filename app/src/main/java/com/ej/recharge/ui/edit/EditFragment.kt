@@ -5,9 +5,6 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.os.Parcelable
 import android.provider.ContactsContract
 import android.util.Log
 import android.view.LayoutInflater
@@ -38,7 +35,6 @@ import com.droidman.ktoasty.KToasty
 //import com.facebook.ads.*
 import com.google.android.gms.ads.*
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -47,12 +43,7 @@ import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
-import com.ironsource.mediationsdk.ISBannerSize
-import com.ironsource.mediationsdk.IronSource
 import com.ironsource.mediationsdk.IronSourceBannerLayout
-import com.ironsource.mediationsdk.logger.IronSourceError
-import com.ironsource.mediationsdk.sdk.BannerListener
-import com.mopub.mobileads.MoPubErrorCode
 import com.mopub.mobileads.MoPubView
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
 import io.michaelrocks.libphonenumber.android.Phonenumber
@@ -86,6 +77,224 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
     editFragmentFriendViewAdapter.notifyDataSetChanged()
   }
 
+  private fun showDeleteOptions() {
+
+    if (friendsListModel.friendList?.size != 0) {
+
+//      showDeleteCheckBox = true
+
+      friendRemoveLl.visibility = View.GONE
+      friendRemoveBtn.visibility = View.GONE
+
+      friendCompleteDeleteLl.visibility = View.VISIBLE
+      friendCancelDeleteLl.visibility   = View.VISIBLE
+
+//      friendRemoveCancelView.visibility = View.VISIBLE
+//      friendRemoveView.visibility       = View.VISIBLE
+
+      for ((i, friend) in friendsListModel.friendList!!.withIndex()) {
+
+        friendsListModel.friendList!![i].deleteCheckBox = false
+        friendsListModel.friendList!![i].showDeleteCheckBox = true
+
+      }
+
+      friendCompleteDeleteLl.setOnClickListener {
+
+        if (removeIndexes.size != 0)
+          deleteContacts()
+
+      }
+
+      friendCompleteDeleteBtn.setOnClickListener {
+
+        if (removeIndexes.size != 0)
+          deleteContacts()
+
+      }
+
+      friendCancelDeleteLl.setOnClickListener {
+
+        removeDeleteOptions()
+
+      }
+
+      friendCancelDeleteBtn.setOnClickListener {
+
+        removeDeleteOptions()
+
+      }
+
+      editFragmentFriendViewAdapter.notifyDataSetChanged()
+
+    }
+
+  }
+
+  private fun removeDeleteOptions() {
+
+//    showDeleteCheckBox = false
+
+    friendRemoveLl.visibility = View.VISIBLE
+    friendRemoveBtn.visibility = View.VISIBLE
+
+    friendCompleteDeleteLl.visibility = View.GONE
+    friendCancelDeleteLl.visibility   = View.GONE
+
+//    friendRemoveCancelView.visibility = View.GONE
+//    friendRemoveView.visibility       = View.GONE
+
+    for ((i, friend) in friendsListModel.friendList!!.withIndex()) {
+
+      friendsListModel.friendList!![i].deleteCheckBox = false
+      friendsListModel.friendList!![i].showDeleteCheckBox = false
+
+    }
+
+    if (removeIndexes.size != 0)
+    removeIndexes.clear()
+
+    editFragmentFriendViewAdapter.notifyDataSetChanged()
+
+  }
+
+  private var removeIndexes: MutableList<Int> = mutableListOf()
+
+  override fun addContactToIndex(index: Int) {
+    removeIndexes.add(index)
+  }
+
+  override fun removeContactFromIndex(index: Int) {
+    removeIndexes.remove(index)
+  }
+
+  override fun deleteContacts() {
+
+    val dialogBuilder = AlertDialog.Builder(requireContext())
+
+    dialogBuilder.setMessage("Do you want to delete selected friends?")
+      .setCancelable(true)
+      .setPositiveButton("Proceed", DialogInterface.OnClickListener {
+
+          dialog, id -> dialog.cancel()
+
+        for (index in removeIndexes) {
+
+          runDeleteContacts(index)
+
+        }
+
+        runReOrderContacts()
+        removeIndexes.clear()
+
+      })
+      .setNegativeButton("Cancel", DialogInterface.OnClickListener {
+          dialog, id -> dialog.cancel()
+      })
+
+    val alert = dialogBuilder.create()
+    alert.setTitle("Are You Sure?")
+    alert.show()
+
+  }
+
+  private fun runDeleteContacts(index: Int) {
+
+    for ((i, friend) in friendsListModel.friendList!!.withIndex()) {
+
+      if (friendsListModel.friendList?.get(i)?.index == index) {
+
+        friendsListModel.friendList?.remove(friend)
+
+      }
+
+    }
+
+  }
+
+  private fun runReOrderContacts() {
+
+    var size = friendsListModel.friendList?.size!! - 1
+
+    for (i in 0..size) {
+
+      friendsListModel.friendList!![i].index = i
+      friendsListModel.friendList!![i].description = "Friend ${i+1}"
+
+    }
+
+    runDeleteContactsLocal()
+
+  }
+
+
+
+
+  private fun runDeleteContactsLocal() {
+
+    val sharedPref = activity?.getSharedPreferences(PREFNAME, Context.MODE_PRIVATE)
+
+    allInfoJsonUnsaved = sharedPref!!.getString("allInfoUnsaved", allInfoJsonSaved)!!
+
+    Log.e("ATTENTION ATTENTION", "allInfoJsonSaved: $allInfoJsonSaved")
+    Log.e("ATTENTION ATTENTION", "allInfoJsonUnsaved: $allInfoJsonUnsaved")
+
+    try {
+
+      if (allInfoJsonUnsaved != "defaultAll") {
+
+        userAndFriendInfoUnsaved = gson.fromJson(allInfoJsonUnsaved, UserAndFriendInfo::class.java)
+
+        for (index in removeIndexes) {
+
+          for ((i, friend) in userAndFriendInfoUnsaved.friendList!!.withIndex()) {
+
+            if (userAndFriendInfoUnsaved.friendList?.get(i)?.index == index) {
+
+              userAndFriendInfoUnsaved.friendList?.remove(friend)
+
+            }
+
+          }
+
+        }
+
+        val size = userAndFriendInfoUnsaved.friendList?.size!! - 1
+
+        for (i in 0..size) {
+
+          userAndFriendInfoUnsaved.friendList!![i].index = i
+          userAndFriendInfoUnsaved.friendList!![i].description = "Friend ${i+1}"
+
+        }
+
+        allInfoJsonUnsaved = Gson().toJson(userAndFriendInfoUnsaved)
+
+        val editor = sharedPref.edit()
+
+        editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
+
+        editor.apply()
+
+        val message: String = "You have successfully deleted an entry for a friend."
+
+        util.onShowMessageSuccess(message, requireContext())
+
+      }
+
+      editFragmentFriendViewAdapter.notifyDataSetChanged()
+
+    }
+    catch (e: Exception) {
+
+      Log.e("ATTENTION ATTENTION", "Error deleting friend entry: ${e.toString()}");
+
+    }
+
+  }
+
+//  private var showDeleteCheckBox: Boolean = false
+
   private val PICK_CONTACT_REQUEST: Int = 500
 
   @Inject
@@ -102,6 +311,18 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
   private lateinit var friendRecyclerView: RecyclerView
   private lateinit var editFragmentFriendViewAdapter: EditFriendViewAdapter
   private val friendsListModel = FriendListModel(mutableListOf())
+
+
+  private lateinit var friendRemoveBtn: ImageButton
+  private lateinit var friendCompleteDeleteBtn: ImageButton
+  private lateinit var friendCancelDeleteBtn: ImageButton
+
+  private lateinit var friendRemoveLl: LinearLayout
+  private lateinit var friendCompleteDeleteLl: LinearLayout
+  private lateinit var friendCancelDeleteLl: LinearLayout
+
+  private lateinit var friendRemoveCancelView: View
+  private lateinit var friendRemoveView: View
 
   private var util: Util = Util()
 
@@ -692,6 +913,8 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
           accountNumber2 = null,
           accountNumber3 = null,
           accountNumber4 = null,
+          showDeleteCheckBox = false,
+          deleteCheckBox = false,
         )
 
       val sharedPref = requireContext().getSharedPreferences(PREFNAME, Context.MODE_PRIVATE)
@@ -926,6 +1149,8 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
           accountNumber2 = null,
           accountNumber3 = null,
           accountNumber4 = null,
+          showDeleteCheckBox = false,
+          deleteCheckBox = false,
 
           )
 
@@ -938,6 +1163,27 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
   }
 
   private fun initEditFriendRecyclerView(view: View) {
+
+    friendRemoveLl = view.findViewById(R.id.remove_friends_layout)
+    friendRemoveBtn = view.findViewById(R.id.remove_friends_btn)
+
+    friendCompleteDeleteLl = view.findViewById(R.id.remove_layout)
+    friendCancelDeleteLl   = view.findViewById(R.id.remove_cancel_layout)
+
+    friendCompleteDeleteBtn = view.findViewById(R.id.remove_btn)
+    friendCancelDeleteBtn   = view.findViewById(R.id.remove_cancel_btn)
+
+//    friendRemoveCancelView = view.findViewById(R.id.remove_cancel_view)
+//    friendRemoveView = view.findViewById(R.id.remove_view)
+
+    friendRemoveLl.setOnClickListener {
+      showDeleteOptions()
+    }
+
+    friendRemoveBtn.setOnClickListener {
+      showDeleteOptions()
+    }
+
 
     friendRecyclerView = view.findViewById(R.id.edit_user_friends_recycler_view)
     friendRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -1147,6 +1393,8 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
           accountNumber2 = null,
           accountNumber3 = null,
           accountNumber4 = null,
+          showDeleteCheckBox = false,
+          deleteCheckBox = false,
 
           )
 

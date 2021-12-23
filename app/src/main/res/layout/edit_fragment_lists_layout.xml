@@ -83,7 +83,7 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/saveCv"
-            android:layout_width="180dp"
+            android:layout_width="150dp"
             android:layout_height="60dp"
             app:cardElevation="@dimen/card_elevation_scan"
             app:cardCornerRadius="25dp"
@@ -102,7 +102,7 @@
                 android:layout_gravity="center_horizontal"
                 android:background="@color/colorPrimary3"
                 android:text="@string/save_details"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 android:textColor="@color/white"
                 app:backgroundTint="@color/colorPrimary3" />
 
@@ -158,15 +158,17 @@
               android:layout_gravity="center">
 
 
-          <LinearLayout
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+               android:orientation="vertical">
 
             <ImageButton
                 android:id="@+id/add_one_more_friend_btn"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 app:tint="@drawable/add_new_friend_selector_background"
@@ -174,21 +176,181 @@
                 android:background="@color/add_one_more_friend_button_color"
                 android:contentDescription="@string/add_one_more_friend_content_description" />
 
-            <TextView
-                android:id="@+id/add_one_more_friend_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/add_friend"
-                android:textSize="15sp"
-                android:textColor="@color/white"
-                android:layout_gravity="center"
-                android:gravity="center"/>
+
+              <LinearLayout
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+
+                  android:layout_gravity="center"
+                  android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/add_one_more_friend_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/add"
+                    android:textSize="10sp"
+                    android:textColor="@color/white"
+                    android:layout_gravity="center"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/add_one_more_friend_2_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/friend"
+                    android:textSize="10sp"
+                    android:textColor="@color/white"
+                    android:layout_gravity="center"
+                    android:gravity="center"/>
+
+
+              </LinearLayout>
 
           </LinearLayout>
 
+            <!--<View
+                android:visibility="visible"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:layout_weight="1" />-->
+
+            <LinearLayout
+                android:id="@+id/remove_friends_layout"
+                android:visibility="visible"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+              <ImageButton
+                  android:id="@+id/remove_friends_btn"
+                  android:layout_width="35dp"
+                  android:layout_height="35dp"
+                  android:layout_gravity="center"
+                  android:layout_weight="1"
+                  app:tint="@drawable/add_new_friend_selector_background"
+                  app:srcCompat="@drawable/ic_baseline_remove_24"
+                  android:background="@color/add_one_more_friend_button_color"
+                  android:contentDescription="@string/add_one_more_friend_content_description" />
+
+
+              <LinearLayout
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_gravity="center"
+                  android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/remove_friends_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/remove_friends"
+                    android:textSize="10sp"
+                    android:textColor="@color/white"
+                    android:layout_gravity="center"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/remove_friends_2_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/friend"
+                    android:textSize="10sp"
+                    android:textColor="@color/white"
+                    android:layout_gravity="center"
+                    android:gravity="center"/>
+
+              </LinearLayout>
+
+            </LinearLayout>
+
+            <!--<View
+                android:visibility="visible"
+                android:id="@+id/remove_view"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center" />-->
+
+            <LinearLayout
+                android:id="@+id/remove_layout"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:orientation="vertical"
+                android:layout_weight="1" >
+
+              <ImageButton
+                  android:id="@+id/remove_btn"
+                  android:layout_width="35dp"
+                  android:layout_height="35dp"
+                  android:layout_gravity="center"
+                  android:layout_weight="1"
+                  app:tint="@drawable/add_new_friend_selector_background"
+                  app:srcCompat="@drawable/ic_baseline_person_remove_alt_1_24"
+                  android:background="@color/add_one_more_friend_button_color"
+                  android:contentDescription="@string/add_one_more_friend_content_description" />
+
+              <TextView
+                  android:id="@+id/remove_tv"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="@string/complete_remove_friends"
+                  android:textSize="10sp"
+                  android:textColor="@color/white"
+                  android:layout_gravity="center"
+                  android:gravity="center"/>
+
+            </LinearLayout>
+
+            <!--<View
+                android:visibility="visible"
+                android:id="@+id/remove_cancel_view"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center" />-->
+
+            <LinearLayout
+                android:id="@+id/remove_cancel_layout"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:orientation="vertical"
+                android:layout_weight="1" >
+
+              <ImageButton
+                  android:id="@+id/remove_cancel_btn"
+                  android:layout_width="35dp"
+                  android:layout_height="35dp"
+                  android:layout_gravity="center"
+                  android:layout_weight="1"
+                  app:tint="@drawable/add_new_friend_selector_background"
+                  app:srcCompat="@drawable/ic_baseline_cancel_24"
+                  android:background="@color/add_one_more_friend_button_color"
+                  android:contentDescription="@string/add_one_more_friend_content_description" />
+
+              <TextView
+                  android:id="@+id/remove_cancel_tv"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="@string/cancel_remove_friends"
+                  android:textSize="10sp"
+                  android:textColor="@color/white"
+                  android:layout_gravity="center"
+                  android:gravity="center"/>
+
+            </LinearLayout>
+
             <View
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:visibility="visible"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_gravity="center"
                 android:layout_weight="1" />
 
@@ -201,7 +363,7 @@
 
               <androidx.cardview.widget.CardView
                   android:id="@+id/save2Cv"
-                  android:layout_width="180dp"
+                  android:layout_width="150dp"
                   android:layout_height="60dp"
                   app:cardElevation="@dimen/card_elevation_scan"
                   app:cardCornerRadius="25dp"
@@ -218,7 +380,7 @@
                     android:layout_gravity="center_horizontal"
                     android:background="@color/colorPrimary3"
                     android:text="@string/save_details"
-                    android:textSize="18sp"
+                    android:textSize="14sp"
                     android:textColor="@color/white"
                     app:backgroundTint="@color/colorPrimary3" />
 

@@ -21,13 +21,13 @@ import kotlinx.android.synthetic.main.edit_friend_list_item_layout.view.*
 class EditFriendViewAdapter(
         private val model: FriendListModel,
         private val activity: Activity,
+//        private var showDeleteCheckBox: Boolean = false,
         private val pickContactListener: PickContactListener,
         private val editFragment: EditFragment? = null,
         private val listener: OnViewHolderItemSelected<Friend?>? = null
 ) :
 
   RecyclerView.Adapter<EditFriendItemViewHolder>() {
-
 
     private val PREFNAME: String = "local_user"
 
@@ -149,6 +149,8 @@ class EditFriendViewAdapter(
                 accountNumber2 = null,
                 accountNumber3 = null,
                 accountNumber4 = null,
+                showDeleteCheckBox = false,
+                deleteCheckBox = false,
             ),
 
             Friend(
@@ -175,6 +177,8 @@ class EditFriendViewAdapter(
                 accountNumber2 = null,
                 accountNumber3 = null,
                 accountNumber4 = null,
+                showDeleteCheckBox = false,
+                deleteCheckBox = false,
             )
 
 

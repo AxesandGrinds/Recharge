@@ -47,6 +47,7 @@ class EditFriendItemViewHolder(
 
   private val view: View,
   private val activity: Activity,
+//  private var showDeleteCheckBox: Boolean = false,
   listener: OnViewHolderItemSelected<Friend?>? = null,
   private val pickContactListener: PickContactListener,
 ) : RecyclerView.ViewHolder(view), Binder<Friend> { // , AddFriendDoneListener {
@@ -92,6 +93,8 @@ class EditFriendItemViewHolder(
   private val friendDivider4: View = view.findViewById(R.id.friendDivider4)
   private val friendDivider5: View = view.findViewById(R.id.friendDivider5)
   private val friendDivider6: View = view.findViewById(R.id.friendDivider6)
+
+  private val friendDeleteCheckBox: CheckBox = view.findViewById(R.id.friendDeleteCheckbox)
 
   private lateinit var currentFriend: Friend
 
@@ -209,6 +212,8 @@ class EditFriendItemViewHolder(
           accountNumber2 = null,
           accountNumber3 = null,
           accountNumber4 = null,
+          showDeleteCheckBox = false,
+          deleteCheckBox = false,
 
           )
 
@@ -512,6 +517,8 @@ class EditFriendItemViewHolder(
         accountNumber2 = null,
         accountNumber3 = null,
         accountNumber4 = null,
+        showDeleteCheckBox = false,
+        deleteCheckBox = false,
       )
 
     if (model.index >= allInfoUnsaved.friendList?.size ?: 0) {
@@ -646,6 +653,8 @@ class EditFriendItemViewHolder(
             accountNumber2 = null,
             accountNumber3 = null,
             accountNumber4 = null,
+            showDeleteCheckBox = false,
+            deleteCheckBox = false,
           )
 
         allInfoUnsaved.friendList?.add(newFriend)
@@ -685,6 +694,8 @@ class EditFriendItemViewHolder(
             accountNumber2 = null,
             accountNumber3 = null,
             accountNumber4 = null,
+            showDeleteCheckBox = false,
+            deleteCheckBox = false,
           )
 
         userAndFriendInfo.friendList?.add(newFriend)
@@ -1282,6 +1293,22 @@ class EditFriendItemViewHolder(
 
     })
 
+    friendDeleteCheckBox.setOnCheckedChangeListener {
+        buttonView, isChecked ->
+
+      if (isChecked) {
+
+        currentFriend.let { pickContactListener.addContactToIndex(it.index) }
+
+      }
+      else {
+
+        currentFriend.let { pickContactListener.removeContactFromIndex(it.index) }
+
+      }
+
+    }
+
     model.run {
 
       val friendNumberString: String = "Friend ${(index+1).toString()}"
@@ -1355,9 +1382,36 @@ class EditFriendItemViewHolder(
         friendBankAccountEt4.setText(accountNumber4)
       }
 
+      if (showDeleteCheckBox != null) {
+
+        if (showDeleteCheckBox!!) {
+          friendDeleteCheckBox.visibility = View.VISIBLE
+        }
+        else {
+          friendDeleteCheckBox.visibility = View.GONE
+        }
+        friendDeleteCheckBox.isChecked = deleteCheckBox!!
+
+      }
+
       transition(folded)
 
     }
+
+    if (model.showDeleteCheckBox!!) {
+
+      friendDeleteCheckBox.visibility = View.VISIBLE
+
+    }
+    else {
+
+      friendDeleteCheckBox.visibility = View.GONE
+
+    }
+
+//    println("ATTENTION ATTENTION: EditFriendItemViewHolder showDeleteCheckBox: ${showDeleteCheckBox.toString()}")
+    Log.e("ATTENTION ATTENTION", "EditFriendItemViewHolder model.showDeleteCheckBox: ${model.showDeleteCheckBox.toString()}")
+    Log.e("ATTENTION ATTENTION", "EditFriendItemViewHolder model.deleteCheckBox: ${model.deleteCheckBox.toString()}")
 
 //    if (!hasLoaded) {
 //

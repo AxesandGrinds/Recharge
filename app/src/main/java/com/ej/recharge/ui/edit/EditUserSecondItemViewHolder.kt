@@ -172,6 +172,8 @@ class EditUserSecondItemViewHolder(
                 accountNumber2 = null,
                 accountNumber3 = null,
                 accountNumber4 = null,
+                showDeleteCheckBox = false,
+                deleteCheckBox = false,
               )
 
       )

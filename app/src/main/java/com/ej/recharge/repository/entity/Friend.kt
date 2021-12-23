@@ -64,13 +64,20 @@ data class Friend(
         @SerializedName("accountNumber4")
         var accountNumber4: String?,
 
+        @SerializedName("showDeleteCheckBox")
+        var showDeleteCheckBox: Boolean?,
+
+        @SerializedName("deleteCheckBox")
+        var deleteCheckBox: Boolean?,
+
   ) {
 
     constructor() : this(
             0, "", false, null, null,
             null, null, null, null, null,
             null, null, null, null, null,
-            null, null, null)
+            null, null, null,
+            false, false)
 }
 
 data class FriendInfo(

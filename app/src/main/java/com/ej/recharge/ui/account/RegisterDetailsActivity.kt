@@ -57,7 +57,6 @@ import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.gms.tasks.Task
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
@@ -109,6 +108,18 @@ class RegisterDetailsActivity() : AppCompatActivity(),
     private var phone1Layout: TextInputLayout? = null
     private var pin1Et: TextInputEditText? = null
     private var pin2Et: TextInputEditText? = null
+
+    override fun addContactToIndex(index: Int) {
+
+    }
+
+    override fun removeContactFromIndex(index: Int) {
+
+    }
+
+    override fun deleteContacts() {
+
+    }
 
     override fun pickContact(index: Int) {
 
@@ -1121,6 +1132,8 @@ class RegisterDetailsActivity() : AppCompatActivity(),
                 accountNumber2 = null,
                 accountNumber3 = null,
                 accountNumber4 = null,
+                showDeleteCheckBox = false,
+                deleteCheckBox = false,
             )
 
         userMainListModel.userList   = mutableListOf(newUser1)
@@ -2255,6 +2268,8 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
     private var myFixedRateTimer: Timer? = null
 
+    private var runEmailVerifiedNoticeOnce: Int = 0
+
     private fun runEmailCheck(editor: SharedPreferences.Editor) {
 
         mProgressBar.visibility = View.GONE
@@ -2296,9 +2311,11 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
                                 myFixedRateTimer?.cancel()
 
-                                val message: String = "Email verified. Account created."
-
-                                util.onShowMessageSuccessLong(message, context)
+                                if (runEmailVerifiedNoticeOnce == 0) {
+                                    val message: String = "Email verified. Account created."
+                                    util.onShowMessageSuccessLong(message, context)
+                                    runEmailVerifiedNoticeOnce++
+                                }
 
                                 registrationComplete = true
 

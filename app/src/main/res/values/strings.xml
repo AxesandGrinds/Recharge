@@ -166,6 +166,10 @@
 
 
     <string name="add_friend">Add Friend</string>
+    <string name="add">Add</string>
+    <string name="remove_friends">Remove</string>
+    <string name="complete_remove_friends">Complete</string>
+    <string name="cancel_remove_friends">Cancel</string>
 
     <string name="expand">Expand</string>
     <string name="rearrange">Rearrange</string>

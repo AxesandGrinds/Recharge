@@ -77,7 +77,7 @@ class PhoneUtil {
 
         when {
 
-            Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP_MR1 -> {
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1 -> {
 
                 val subscriptionManager = context.getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE) as SubscriptionManager
 
@@ -85,20 +85,21 @@ class PhoneUtil {
                 simCount = activeSubscriptionInfoList.size
 
             }
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> {
-
-                simCount = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
-
-                    telephonyManager.phoneCount
-
-                }
-                else {
-
-                    telephonyManager.activeModemCount
-
-                }
-
-            }
+//            // Not working Correctly. Returns dual sim for single sim phone
+//            Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> {
+//
+//                simCount = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+//
+//                    telephonyManager.phoneCount
+//
+//                }
+//                else {
+//
+//                    telephonyManager.activeModemCount
+//
+//                }
+//
+//            }
             else -> {
 
                 simCount = 1
@@ -106,6 +107,8 @@ class PhoneUtil {
             }
 
         }
+
+        Log.e("ATTENTION ATTENTION", "isDualSim simCount: ${simCount.toString()}")
 
         return simCount > 1
 
