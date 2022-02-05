@@ -1,5 +1,6 @@
 package com.ej.recharge.ui.edit
 
+//import com.facebook.ads.*
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -20,6 +21,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.droidman.ktoasty.KToasty
 import com.ej.recharge.R
 import com.ej.recharge.conf.TAG
 import com.ej.recharge.init.InitApp
@@ -31,10 +33,9 @@ import com.ej.recharge.repository.entity.Friend
 import com.ej.recharge.repository.entity.User
 import com.ej.recharge.repository.entity.UserAndFriendInfo
 import com.ej.recharge.utils.*
-import com.droidman.ktoasty.KToasty
-//import com.facebook.ads.*
 import com.google.android.gms.ads.*
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -168,6 +169,21 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
     removeIndexes.remove(index)
   }
 
+  fun saveReminder() {
+
+//    val snackbar = Snackbar.make(requireView(), "Remember to tap the save button.", Snackbar.LENGTH_LONG)
+//      snackbar.show()
+
+    val snackbar = Snackbar.make(requireView(), "Remember to tap the save button.", Snackbar.LENGTH_INDEFINITE)
+
+    snackbar.setAction("Dismiss") { // Call your action method here
+      snackbar.dismiss()
+    }
+
+    snackbar.show()
+
+  }
+
   override fun deleteContacts() {
 
     val dialogBuilder = AlertDialog.Builder(requireContext())
@@ -186,6 +202,7 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
 
         runReOrderContacts()
         removeIndexes.clear()
+        saveReminder()
 
       })
       .setNegativeButton("Cancel", DialogInterface.OnClickListener {
@@ -1222,6 +1239,7 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
             .setPositiveButton("Proceed", DialogInterface.OnClickListener {
               dialog, id -> dialog.cancel()
               runDeleteContact(index)
+              saveReminder()
             })
             .setNegativeButton("Cancel", DialogInterface.OnClickListener {
               dialog, id -> dialog.cancel()

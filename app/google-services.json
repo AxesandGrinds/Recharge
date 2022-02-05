@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "1065990802806-h7e3mkf92dcdtasdtcardt60td9ip6m0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ej.recharge",
+            "certificate_hash": "3688a233018aad634814ec11ec771d2d05d3ba1c"
+          }
+        },
+        {
           "client_id": "1065990802806-scuvr9lldtr1neik3v3c63rp3i51e4pu.apps.googleusercontent.com",
           "client_type": 3
         }

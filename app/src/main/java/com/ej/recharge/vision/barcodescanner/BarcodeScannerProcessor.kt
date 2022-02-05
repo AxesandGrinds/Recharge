@@ -20,12 +20,13 @@ import android.content.Context
 import android.util.Log
 import com.ej.recharge.vision.barcodescanner.BarcodeGraphic
 import com.google.android.gms.tasks.Task
-import com.google.mlkit.vision.barcode.Barcode
+//import com.google.mlkit.vision.barcode.Barcode
 import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
 import com.ej.recharge.vision.GraphicOverlay
 import com.ej.recharge.vision.VisionProcessorBase
+import com.google.mlkit.vision.barcode.common.Barcode
 
 /** Barcode Detector Demo.  */
 class BarcodeScannerProcessor(context: Context) : VisionProcessorBase<List<Barcode>>(context) {

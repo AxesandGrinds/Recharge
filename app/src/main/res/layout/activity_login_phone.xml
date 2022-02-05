@@ -63,7 +63,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/h_email"
-                    android:inputType="number"
+                    android:inputType="phone"
                     android:shadowColor="@color/login_edit_text_color"
                     android:textColorHint="@color/login_edit_text_color"
                     android:textColor="@color/login_edit_text_color"
@@ -73,42 +73,275 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/h_verification_code"
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/passcode_explanation_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="55dp"
+                android:layout_marginTop="10dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:paddingTop="10dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                android:text="@string/verification_code"/>
+
+
+            <com.ej.recharge.utils.PinEntryEditText
+                android:visibility="visible"
+                android:id="@+id/txt_pin_entry"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="0dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="40dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:textColorHint="@color/login_edit_text_hint_color"
-                app:hintTextColor="@color/login_edit_text_color"
-                app:boxStrokeColor="@color/login_edit_text_color"
-                app:boxBackgroundColor="@color/login_background_color"
-                style="@style/TextLabelLogin"
-                android:hint="@string/verification_code">
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:paddingTop="10dp"
+                android:cursorVisible="false"
+                android:digits="1234567890"
+                android:inputType="number"
+                android:maxLength="6"
+                android:textIsSelectable="false"
+                android:textSize="20sp" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/verification_codeEt"
-                    android:layout_width="match_parent"
+
+            <LinearLayout
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:paddingTop="0dp"
+                android:background="@color/login_background_color">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/h_pc1"
+                    android:layout_width="50dp"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/h_email"
-                    android:inputType="number"
-                    android:shadowColor="@color/login_edit_text_color"
-                    android:textColorHint="@color/login_edit_text_color"
-                    android:textColor="@color/login_edit_text_color"
-                    android:textColorHighlight="@color/login_edit_text_color"
-                    android:textColorLink="@color/login_edit_text_color"
-                    style="@style/TextLabelLogin" />
+                    android:layout_marginTop="0dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:textColorHint="@color/login_edit_text_hint_color"
+                    app:hintTextColor="@color/login_edit_text_color"
+                    app:boxStrokeColor="@color/login_edit_text_color"
+                    app:boxBackgroundColor="@color/login_background_color"
+                    style="@style/TextLabelLogin"
+                    android:hint="0">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/pc1Et"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:gravity="center"
+                        android:shadowColor="@color/login_edit_text_color"
+                        android:textColorHint="@color/login_edit_text_color"
+                        android:textColor="@color/login_edit_text_color"
+                        android:textColorHighlight="@color/login_edit_text_color"
+                        android:textColorLink="@color/login_edit_text_color"
+                        style="@style/TextLabelLogin" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/h_pc2"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:textColorHint="@color/login_edit_text_hint_color"
+                    app:hintTextColor="@color/login_edit_text_color"
+                    app:boxStrokeColor="@color/login_edit_text_color"
+                    app:boxBackgroundColor="@color/login_background_color"
+                    style="@style/TextLabelLogin"
+                    android:hint="0">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/pc2Et"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:gravity="center"
+                        android:shadowColor="@color/login_edit_text_color"
+                        android:textColorHint="@color/login_edit_text_color"
+                        android:textColor="@color/login_edit_text_color"
+                        android:textColorHighlight="@color/login_edit_text_color"
+                        android:textColorLink="@color/login_edit_text_color"
+                        style="@style/TextLabelLogin" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/h_pc3"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:textColorHint="@color/login_edit_text_hint_color"
+                    app:hintTextColor="@color/login_edit_text_color"
+                    app:boxStrokeColor="@color/login_edit_text_color"
+                    app:boxBackgroundColor="@color/login_background_color"
+                    style="@style/TextLabelLogin"
+                    android:hint="0">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/pc3Et"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:gravity="center"
+                        android:shadowColor="@color/login_edit_text_color"
+                        android:textColorHint="@color/login_edit_text_color"
+                        android:textColor="@color/login_edit_text_color"
+                        android:textColorHighlight="@color/login_edit_text_color"
+                        android:textColorLink="@color/login_edit_text_color"
+                        style="@style/TextLabelLogin" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/h_pc4"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:textColorHint="@color/login_edit_text_hint_color"
+                    app:hintTextColor="@color/login_edit_text_color"
+                    app:boxStrokeColor="@color/login_edit_text_color"
+                    app:boxBackgroundColor="@color/login_background_color"
+                    style="@style/TextLabelLogin"
+                    android:hint="0">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/pc4Et"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:gravity="center"
+                        android:shadowColor="@color/login_edit_text_color"
+                        android:textColorHint="@color/login_edit_text_color"
+                        android:textColor="@color/login_edit_text_color"
+                        android:textColorHighlight="@color/login_edit_text_color"
+                        android:textColorLink="@color/login_edit_text_color"
+                        style="@style/TextLabelLogin" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/h_pc5"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:textColorHint="@color/login_edit_text_hint_color"
+                    app:hintTextColor="@color/login_edit_text_color"
+                    app:boxStrokeColor="@color/login_edit_text_color"
+                    app:boxBackgroundColor="@color/login_background_color"
+                    style="@style/TextLabelLogin"
+                    android:hint="0">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/pc5Et"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:gravity="center"
+                        android:shadowColor="@color/login_edit_text_color"
+                        android:textColorHint="@color/login_edit_text_color"
+                        android:textColor="@color/login_edit_text_color"
+                        android:textColorHighlight="@color/login_edit_text_color"
+                        android:textColorLink="@color/login_edit_text_color"
+                        style="@style/TextLabelLogin" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/h_pc6"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:textColorHint="@color/login_edit_text_hint_color"
+                    app:hintTextColor="@color/login_edit_text_color"
+                    app:boxStrokeColor="@color/login_edit_text_color"
+                    app:boxBackgroundColor="@color/login_background_color"
+                    style="@style/TextLabelLogin"
+                    android:hint="0">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/pc6Et"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:gravity="center"
+                        android:shadowColor="@color/login_edit_text_color"
+                        android:textColorHint="@color/login_edit_text_color"
+                        android:textColor="@color/login_edit_text_color"
+                        android:textColorHighlight="@color/login_edit_text_color"
+                        android:textColorLink="@color/login_edit_text_color"
+                        style="@style/TextLabelLogin" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+            </LinearLayout>
+
+
+<!--            <com.google.android.material.textfield.TextInputLayout-->
+<!--                android:id="@+id/h_verification_code"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="0dp"-->
+<!--                android:layout_marginBottom="10dp"-->
+<!--                android:layout_marginLeft="20dp"-->
+<!--                android:layout_marginRight="20dp"-->
+<!--                android:textColorHint="@color/login_edit_text_hint_color"-->
+<!--                app:hintTextColor="@color/login_edit_text_color"-->
+<!--                app:boxStrokeColor="@color/login_edit_text_color"-->
+<!--                app:boxBackgroundColor="@color/login_background_color"-->
+<!--                style="@style/TextLabelLogin"-->
+<!--                android:hint="@string/verification_code">-->
+
+<!--                <com.google.android.material.textfield.TextInputEditText-->
+<!--                    android:id="@+id/verification_codeEt"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:inputType="number"-->
+<!--                    android:shadowColor="@color/login_edit_text_color"-->
+<!--                    android:textColorHint="@color/login_edit_text_color"-->
+<!--                    android:textColor="@color/login_edit_text_color"-->
+<!--                    android:textColorHighlight="@color/login_edit_text_color"-->
+<!--                    android:textColorLink="@color/login_edit_text_color"-->
+<!--                    style="@style/TextLabelLogin" />-->
+
+<!--            </com.google.android.material.textfield.TextInputLayout>-->
 
             <com.google.android.material.button.MaterialButton
+                android:visibility="visible"
                 android:id="@+id/send_verify_button"
                 android:layout_width="wrap_content"
                 android:layout_height="55dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="40dp"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
                 android:theme="@style/AppTheme"
                 android:padding="10dp"
@@ -124,7 +357,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="55dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="40dp"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
                 android:theme="@style/AppTheme"
                 android:padding="10dp"
@@ -135,7 +368,22 @@
                 app:iconPadding="2dp"
                 app:cornerRadius="8dp" />
 
+
+            <TextView
+                android:id="@+id/countdown_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="55dp"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                android:layout_gravity="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                tools:text="Countdown: 60 seconds"
+                android:textAllCaps="false"
+                android:textSize="16sp" />
+
+
             <com.google.android.material.button.MaterialButton
+                android:visibility="gone"
                 android:id="@+id/verify_button"
                 android:layout_width="wrap_content"
                 android:layout_height="55dp"
@@ -144,7 +392,7 @@
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
                 android:theme="@style/AppTheme"
                 android:padding="10dp"
-                android:text="@string/sign_in"
+                android:text="@string/verify_2"
                 android:textAllCaps="false"
                 android:textSize="16sp"
                 app:backgroundTint="@color/colorAccent"

@@ -21,7 +21,8 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
 import com.ej.recharge.vision.GraphicOverlay
-import com.google.mlkit.vision.barcode.Barcode
+import com.google.mlkit.vision.barcode.common.Barcode
+//import com.google.mlkit.vision.barcode.Barcode
 import kotlin.math.max
 import kotlin.math.min
 

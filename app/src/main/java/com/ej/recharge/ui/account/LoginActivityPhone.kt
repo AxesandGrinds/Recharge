@@ -8,7 +8,9 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Bundle
+import android.text.Editable
 import android.text.TextUtils
+import android.text.TextWatcher
 import android.transition.Fade
 import android.util.Log
 import android.view.View
@@ -24,11 +26,14 @@ import com.ej.recharge.repository.entity.User
 import com.ej.recharge.repository.entity.UserAndFriendInfo
 import com.ej.recharge.ui.MainActivity
 import com.ej.recharge.utils.AnimationUtil
+import com.ej.recharge.utils.PinEntryEditText
+import com.ej.recharge.utils.TimerFlow
 import com.ej.recharge.utils.Util
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.*
@@ -44,13 +49,22 @@ import io.github.inflationx.calligraphy3.CalligraphyConfig
 import io.github.inflationx.calligraphy3.CalligraphyInterceptor
 import io.github.inflationx.viewpump.ViewPump
 import io.github.inflationx.viewpump.ViewPumpContextWrapper
-import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
+//import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
+import com.google.i18n.phonenumbers.Phonenumber.PhoneNumber;
+import com.google.i18n.phonenumbers.NumberParseException;
+import com.google.i18n.phonenumbers.PhoneNumberUtil;
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.concurrent.timerTask
+
 
 class LoginActivityPhone : AppCompatActivity() {
 
@@ -60,23 +74,25 @@ class LoginActivityPhone : AppCompatActivity() {
   private val TAG = LoginActivityPhone::class.java.simpleName
 
   private var phone_number_holder: TextInputLayout? = null
-  private  var verification_code_holder:TextInputLayout? = null
+//  private  var verification_code_holder:TextInputLayout? = null
 
   private lateinit var phone_numberEt: TextInputEditText
-  private lateinit  var verification_codeEt:TextInputEditText
+//  private lateinit  var verification_codeEt:TextInputEditText
+  private lateinit var countdown_tv: TextView
+  private lateinit var passcode_explanation_tv: TextView
 
   private var mDetailText: TextView? = null
 
   private lateinit var mProgressBar: ProgressBar
 
   private lateinit var mFirestore: FirebaseFirestore
-  private lateinit var auth: FirebaseAuth
-  private lateinit var firebaseUser: FirebaseUser
+  private lateinit var mAuth: FirebaseAuth
+  private lateinit var mFirebaseUser: FirebaseUser
   private lateinit var myUserId: String
 
   private lateinit var sendVerificationButton: MaterialButton
   private lateinit var resendVerificationButton:MaterialButton
-  private lateinit var verifyLoginButton:MaterialButton
+  private lateinit var loginButton:MaterialButton
   private lateinit var registerButton: MaterialButton
 
   private val PHONE_VERIFY_REQUEST_CODE = 64206
@@ -144,7 +160,7 @@ class LoginActivityPhone : AppCompatActivity() {
   override fun onStart() {
     super.onStart()
 
-    val currentUser = auth.currentUser
+    val currentUser = mAuth.currentUser
     updateUI(currentUser)
     if (mVerificationInProgress && validatePhoneNumber()) {
       startPhoneNumberVerification(phone_numberEt.text.toString())
@@ -154,15 +170,15 @@ class LoginActivityPhone : AppCompatActivity() {
 
   private fun initPhone() {
 
-    mCallbacks = object : OnVerificationStateChangedCallbacks() {
+    mCallbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
       override fun onVerificationCompleted(credential: PhoneAuthCredential) {
 
-        Log.d(TAG, "onVerificationCompleted:$credential")
+        Log.e(TAG, "onVerificationCompleted:$credential")
         mVerificationInProgress = false
         updateUI(STATE_VERIFY_SUCCESS, credential)
         val timer = Timer()
-        timer.schedule(timerTask { signInWithPhoneAuthCredential(credential) }, 2000)
+        timer.schedule(timerTask { signInWithPhoneAuthCredential(credential) }, 1000)
 
       }
 
@@ -172,13 +188,13 @@ class LoginActivityPhone : AppCompatActivity() {
         mVerificationInProgress = false
 
         if (e is FirebaseAuthInvalidCredentialsException) {
-          phone_numberEt.error = "Invalid phone number."
-          println("ATTENTION ATTENTION: FirebaseAuthInvalidCredentialsException: ${e.message}")
+//          phone_numberEt.error = "Invalid phone number."
+          Log.e("ATTENTION ATTENTION", "FirebaseAuthInvalidCredentialsException: ${e.message}")
+          Log.e("ATTENTION ATTENTION", "FirebaseAuthInvalidCredentialsException: Invalid phone number")
         }
         else if (e is FirebaseTooManyRequestsException) {
           Snackbar.make(findViewById(android.R.id.content), "Quota exceeded.",
             Snackbar.LENGTH_SHORT).show()
-
         }
 
         updateUI(STATE_VERIFY_FAILED)
@@ -203,19 +219,22 @@ class LoginActivityPhone : AppCompatActivity() {
   }
 
   private fun startPhoneNumberVerification(phoneNumber: String) {
-    PhoneAuthProvider.getInstance().verifyPhoneNumber(
-      phoneNumber,
-      10,
-      TimeUnit.SECONDS,
-      this,
-      mCallbacks
-    )
+
+    val options = PhoneAuthOptions.newBuilder(mAuth)
+      .setPhoneNumber(phoneNumber) // Phone number to verify
+      .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
+      .setActivity(this) // Activity (for callback binding)
+      .setCallbacks(mCallbacks) // OnVerificationStateChangedCallbacks
+      .build()
+    PhoneAuthProvider.verifyPhoneNumber(options)
+
     mVerificationInProgress = true
+
   }
 
   private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
 
-    auth.signInWithCredential(credential).addOnCompleteListener(this) { task ->
+    mAuth.signInWithCredential(credential).addOnCompleteListener(this) { task ->
 
       if (task.isSuccessful) {
 
@@ -306,7 +325,8 @@ class LoginActivityPhone : AppCompatActivity() {
 
         if (task.exception is FirebaseAuthInvalidCredentialsException) {
 
-          verification_codeEt.error = "Invalid code."
+          passcode_explanation_tv.text = "Invalid code."
+//          verification_codeEt.error = "Invalid code."
 
         }
 
@@ -382,7 +402,7 @@ class LoginActivityPhone : AppCompatActivity() {
   }
 
   private fun updateUI(uiState: Int) {
-    auth!!.currentUser?.let { updateUI(uiState, it, null) }
+    mAuth!!.currentUser?.let { updateUI(uiState, it, null) }
   }
 
   private fun updateUI(user: FirebaseUser?) {
@@ -407,12 +427,10 @@ class LoginActivityPhone : AppCompatActivity() {
 
       STATE_INITIALIZED -> {
         mDetailText?.text = null
-
       }
       STATE_CODE_SENT -> {
         mDetailText!!.setText(R.string.status_code_sent)
         mDetailText?.setTextColor(ContextCompat.getColor(this,R.color.green))
-
       }
 
       STATE_VERIFY_FAILED -> {
@@ -425,7 +443,10 @@ class LoginActivityPhone : AppCompatActivity() {
 
           if (cred.smsCode != null) {
 
-            verification_codeEt.setText(cred.smsCode)
+            mDetailText!!.text = ""
+
+//            verification_codeEt.setText(cred.smsCode)
+            txtPinEntry.setText(cred.smsCode)
 
           }
 
@@ -440,6 +461,7 @@ class LoginActivityPhone : AppCompatActivity() {
       }
       STATE_SIGNIN_SUCCESS -> {
 
+        mDetailText!!.text = ""
 
       }
 
@@ -452,11 +474,13 @@ class LoginActivityPhone : AppCompatActivity() {
 
     val phoneNumber: String = phone_numberEt.text!!.trim().toString()
 
-    if (TextUtils.isEmpty(phoneNumber) || phoneNumber.length !=  11) {
+    if (TextUtils.isEmpty(phoneNumber) || phoneNumber.length <  10) {
 
       AnimationUtil.shakeView(phone_numberEt, this)
 
       phone_numberEt.error = "Invalid phone number."
+
+      Log.e("ATTENTION ATTENTION", "validatePhoneNumber: Invalid phone number")
 
       return false
 
@@ -467,10 +491,12 @@ class LoginActivityPhone : AppCompatActivity() {
   }
 
   private fun validateCode(): Boolean {
-    val verificationCode = verification_codeEt!!.text.toString()
+//    val verificationCode = verification_codeEt!!.text.toString()
+    val verificationCode = txtPinEntry.text.toString()
     if (TextUtils.isEmpty(verificationCode)) {
-      AnimationUtil.shakeView(verification_codeEt!!, this)
-      verification_codeEt!!.error = "Code is empty."
+      AnimationUtil.shakeView(txtPinEntry!!, this)
+//      verification_codeEt!!.error = "Code is empty."
+      txtPinEntry.setText("Code is empty.")
       return false
     }
     return true
@@ -505,15 +531,15 @@ class LoginActivityPhone : AppCompatActivity() {
         if (capabilities != null) {
 
           if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
-            Log.i("Internet", "NetworkCapabilities.TRANSPORT_CELLULAR")
+            Log.e("Internet", "NetworkCapabilities.TRANSPORT_CELLULAR")
             return true
           }
           else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
-            Log.i("Internet", "NetworkCapabilities.TRANSPORT_WIFI")
+            Log.e("Internet", "NetworkCapabilities.TRANSPORT_WIFI")
             return true
           }
           else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
-            Log.i("Internet", "NetworkCapabilities.TRANSPORT_ETHERNET")
+            Log.e("Internet", "NetworkCapabilities.TRANSPORT_ETHERNET")
             return true
           }
 
@@ -581,7 +607,7 @@ class LoginActivityPhone : AppCompatActivity() {
 
       }
       catch (e: IOException) {
-        Log.i("Error", "Error checking internet connection", e)
+        Log.e("Error", "Error checking internet connection", e)
         return false
       }
 
@@ -612,7 +638,42 @@ class LoginActivityPhone : AppCompatActivity() {
     mVerificationInProgress = savedInstanceState.getBoolean(KEY_VERIFY_IN_PROGRESS)
   }
 
+  @ExperimentalCoroutinesApi
+  private suspend fun setCountDown(millisInFuture: Long, countDownInterval: Long) {
 
+    TimerFlow.create(millisInFuture, countDownInterval).collect {
+
+      val originalInSeconds = it.toString().take(2)
+      var inSeconds: String = Math.ceil(it.toDouble() / 1000).toInt().toString()
+
+      var text: String = ""
+
+      if (inSeconds == "1") {
+        text = "Countdown: ${inSeconds} seconds"
+      }
+      else {
+        text = "Countdown: ${inSeconds} second"
+      }
+
+      countdown_tv.text = text
+      Log.e("ATTENTION ATTENTION", text)
+
+      if (it == 0L) {
+        countdown_tv.visibility = View.GONE
+        resendVerificationButton.visibility = View.VISIBLE
+        loginButton.visibility = View.GONE
+        passcode_explanation_tv.visibility = View.GONE
+        txtPinEntry.setText("")
+        txtPinEntry.visibility = View.GONE
+      }
+
+    }
+  }
+
+  var passCode: String = ""
+  private lateinit var txtPinEntry: PinEntryEditText
+
+//  @ExperimentalCoroutinesApi
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
@@ -646,28 +707,46 @@ class LoginActivityPhone : AppCompatActivity() {
 
     setContentView(R.layout.activity_login_phone)
 
-    mProgressBar             = findViewById<View>(R.id.progress_bar) as ProgressBar
-    phone_number_holder      = findViewById<View>(R.id.h_phone) as TextInputLayout
-    verification_code_holder = findViewById<View>(R.id.h_verification_code) as TextInputLayout
-    phone_numberEt           = findViewById<View>(R.id.phoneEt) as TextInputEditText
-    verification_codeEt      = findViewById<View>(R.id.verification_codeEt) as TextInputEditText
+    mProgressBar            = findViewById<View>(R.id.progress_bar) as ProgressBar
+    phone_number_holder     = findViewById<View>(R.id.h_phone) as TextInputLayout
+//    verification_code_holder = findViewById<View>(R.id.h_verification_code) as TextInputLayout
+    phone_numberEt          = findViewById<View>(R.id.phoneEt) as TextInputEditText
+//    verification_codeEt      = findViewById<View>(R.id.verification_codeEt) as TextInputEditText
     sendVerificationButton   = findViewById<View>(R.id.send_verify_button) as MaterialButton
     resendVerificationButton = findViewById<View>(R.id.resend_verify_button) as MaterialButton
-    verifyLoginButton        = findViewById<View>(R.id.verify_button) as MaterialButton
+    loginButton             = findViewById<View>(R.id.verify_button) as MaterialButton
+    countdown_tv            = findViewById<View>(R.id.countdown_tv) as TextView
+
+    passcode_explanation_tv = findViewById<View>(R.id.passcode_explanation_tv) as TextView
 
     mDetailText = findViewById(R.id.detail)
     context = this@LoginActivityPhone
+
+    FirebaseApp.initializeApp(this)
+
     mFirestore = Firebase.firestore
-    auth = Firebase.auth
+    mAuth = Firebase.auth
 
     mProgressBar.visibility = View.GONE
     mProgressBar.isIndeterminate = true
+
+    txtPinEntry = findViewById<View>(R.id.txt_pin_entry) as PinEntryEditText
+    txtPinEntry.addTextChangedListener(object : TextWatcher {
+      override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+      override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+      override fun afterTextChanged(s: Editable) {
+        passCode = s.toString()
+      }
+
+    })
+
+    txtPinEntry.visibility = View.GONE
 
     try {
       val field = TextInputLayout::class.java.getDeclaredField("defaultStrokeColor")
       field.isAccessible = true
       field[phone_number_holder] = ContextCompat.getColor(context, R.color.colorAccent)
-      field[verification_code_holder] = ContextCompat.getColor(context, R.color.colorAccent)
+//      field[verification_code_holder] = ContextCompat.getColor(context, R.color.colorAccent)
     }
     catch (e: NoSuchFieldException) {
       Log.w("TAG", "Failed to change box color, item might look wrong")
@@ -686,7 +765,8 @@ class LoginActivityPhone : AppCompatActivity() {
       }
     }
 
-    phoneNumberUtil = PhoneNumberUtil.createInstance(context)
+//    phoneNumberUtil = PhoneNumberUtil.createInstance(context)
+    phoneNumberUtil = PhoneNumberUtil.getInstance()
 
     resendVerificationButton.visibility = View.GONE
     sendVerificationButton.setOnClickListener(View.OnClickListener {
@@ -697,11 +777,17 @@ class LoginActivityPhone : AppCompatActivity() {
 
           val originalNumber = Objects.requireNonNull(phone_numberEt.text).toString()
           val phoneNumber = phoneNumberUtil.parse(originalNumber, "NG")
+          var nationalNumber: String = phoneNumberUtil.format(phoneNumber, PhoneNumberUtil.PhoneNumberFormat.NATIONAL)
+          var internationalNumber = phoneNumberUtil.format(phoneNumber, PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL)
           e164Number = phoneNumberUtil.format(phoneNumber, PhoneNumberUtil.PhoneNumberFormat.E164)
-          val finalLoginNumber: String = retrieveCorrectNumber(e164Number)
-          Log.i("ATTENTION ATTENTION", "e164Number: $e164Number")
-          Log.i("ATTENTION ATTENTION", "finalLoginNumber: $finalLoginNumber")
-          startPhoneNumberVerification(finalLoginNumber)
+          val finalLoginNumber: String = retrieveCorrectNumber("0$nationalNumber")
+          Log.e("ATTENTION ATTENTION", "originalNumber: $originalNumber")
+          Log.e("ATTENTION ATTENTION", "phoneNumber: $phoneNumber")
+          Log.e("ATTENTION ATTENTION", "nationalNumber: $nationalNumber")
+          Log.e("ATTENTION ATTENTION", "internationalNumber: $internationalNumber")
+          Log.e("ATTENTION ATTENTION", "e164Number: $e164Number")
+          Log.e("ATTENTION ATTENTION", "finalLoginNumber: $finalLoginNumber")
+          startPhoneNumberVerification(originalNumber)
 
         }
         catch (e: Exception) {
@@ -709,8 +795,17 @@ class LoginActivityPhone : AppCompatActivity() {
           e.printStackTrace()
 
         }
-        resendVerificationButton.visibility = View.VISIBLE
+//        resendVerificationButton.visibility = View.VISIBLE
         sendVerificationButton.visibility = View.GONE
+        countdown_tv.visibility = View.VISIBLE
+        loginButton.visibility = View.VISIBLE
+        passcode_explanation_tv.visibility = View.VISIBLE
+        txtPinEntry.visibility = View.VISIBLE
+
+                CoroutineScope(Dispatchers.Main).launch {
+          setCountDown(60000, 1000)
+        }
+
       }
 
     })
@@ -728,7 +823,16 @@ class LoginActivityPhone : AppCompatActivity() {
 
           if (mResendToken != null) {
 
-            resendVerificationCode(finalLoginNumber, mResendToken)
+            resendVerificationCode(originalNumber, mResendToken)
+
+            countdown_tv.visibility = View.VISIBLE
+            loginButton.visibility = View.VISIBLE
+            passcode_explanation_tv.visibility = View.VISIBLE
+            txtPinEntry.visibility = View.VISIBLE
+
+            CoroutineScope(Dispatchers.Main).launch {
+              setCountDown(60000, 1000)
+            }
 
           }
           else {
@@ -749,10 +853,19 @@ class LoginActivityPhone : AppCompatActivity() {
       }
 
     }
-    verifyLoginButton.setOnClickListener {
-      val code = verification_codeEt.text.toString()
+
+
+//    loginButton.setOnClickListener {
+//      val code = verification_codeEt.text.toString()
+//      if (validateCode()) {
+//        mVerificationId?.let { it1 -> verifyPhoneNumberWithCode(it1, code) }
+//      }
+//    }
+
+    loginButton.setOnClickListener {
+//      val code = verification_codeEt.text.toString()
       if (validateCode()) {
-        mVerificationId?.let { it1 -> verifyPhoneNumberWithCode(it1, code) }
+        mVerificationId?.let { it1 -> verifyPhoneNumberWithCode(it1, passCode) }
       }
     }
 
@@ -774,7 +887,7 @@ class LoginActivityPhone : AppCompatActivity() {
 
   private fun resendVerificationCode(phoneNumber: String, token: ForceResendingToken) {
 
-    val options = PhoneAuthOptions.newBuilder(auth)
+    val options = PhoneAuthOptions.newBuilder(mAuth)
       .setPhoneNumber(phoneNumber)
       .setTimeout(60L, TimeUnit.SECONDS)
       .setActivity(this)
@@ -782,6 +895,8 @@ class LoginActivityPhone : AppCompatActivity() {
       .setForceResendingToken(token)
       .build()
     PhoneAuthProvider.verifyPhoneNumber(options)
+
+    mVerificationInProgress = true
 
   }
 
@@ -799,6 +914,9 @@ class LoginActivityPhone : AppCompatActivity() {
       finalNumber = internationalNumber
 
     }
+
+//    var finalFinalNumber: String = ""
+//    finalFinalNumber = "${finalNumber.substring(0,4)} ${finalNumber.substring(4,7)}-${finalNumber.substring(7,10)}-${finalNumber.substring(10,14)}"
 
     return finalNumber
 

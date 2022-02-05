@@ -99,6 +99,7 @@
     <string name="header">Header</string>
     <string name="sign_in">Sign In</string>
     <string name="verify">Verify Code</string>
+    <string name="verify_2">Verify</string>
     <string name="new_here">New here ? Sign Up instead</string>
     <string name="amount">ex. 1000 for N1000</string>
     <string name="airtime_balance">Check airtime balance</string>
@@ -334,7 +335,8 @@
     <string name="username">Username</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
-    <string name="enter_number">Phone #: ex. 0803&#8230;</string>
+    <string name="enter_number">Phone #: ex. +234703&#8230;</string>
+    <string name="enter_number2">Phone #: ex. 0703&#8230;</string>
     <string name="verification_code">Code: ex. 123456</string>
     <string name="verification_code2">Verification ex. 123456</string>
     <string name="agree">By creating an account you agree to our</string>

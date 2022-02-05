@@ -230,8 +230,8 @@ class LoginActivityEmail : AppCompatActivity() {
       STATE_VERIFY_SUCCESS ->
       {
 
-        mDetailText!!.setText(R.string.status_sign_in_success)
-        mDetailText?.setTextColor(ContextCompat.getColor(this,R.color.green))
+//        mDetailText!!.setText(R.string.status_sign_in_success)
+//        mDetailText?.setTextColor(ContextCompat.getColor(this,R.color.green))
 
       }
       STATE_SIGNIN_FAILED -> {
@@ -242,8 +242,8 @@ class LoginActivityEmail : AppCompatActivity() {
       }
       STATE_SIGNIN_SUCCESS -> {
 
-        mDetailText!!.setText(R.string.status_sign_in_success)
-        mDetailText?.setTextColor(ContextCompat.getColor(this,R.color.green))
+//        mDetailText!!.setText(R.string.status_sign_in_success)
+//        mDetailText?.setTextColor(ContextCompat.getColor(this,R.color.green))
 
       }
 
