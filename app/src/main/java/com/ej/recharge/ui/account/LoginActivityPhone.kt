@@ -184,7 +184,7 @@ class LoginActivityPhone : AppCompatActivity() {
 
       override fun onVerificationFailed(e: FirebaseException) {
 
-        Log.w(TAG, "onVerificationFailed", e)
+        Log.e(TAG, "onVerificationFailed", e)
         mVerificationInProgress = false
 
         if (e is FirebaseAuthInvalidCredentialsException) {
@@ -683,7 +683,7 @@ class LoginActivityPhone : AppCompatActivity() {
           CalligraphyInterceptor(
             CalligraphyConfig.Builder()
               .setDefaultFontPath("font/bold.ttf")
-              .setFontAttrId(R.attr.fontPath)
+//              .setFontAttrId(R.attr.fontPath)
               .build()
           )
         )

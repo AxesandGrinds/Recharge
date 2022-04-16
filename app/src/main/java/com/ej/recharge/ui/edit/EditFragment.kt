@@ -39,6 +39,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
@@ -194,15 +195,33 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
 
           dialog, id -> dialog.cancel()
 
-        for (index in removeIndexes) {
 
-          runDeleteContacts(index)
+        if (networkUtil.isOnline(requireContext())) {
+
+
+          for (index in removeIndexes) {
+
+            runDeleteContacts(index)
+
+          }
+
+          runReOrderContacts()
+          removeIndexes.clear()
+
+          updateData(true)
+
+        }
+        else {
+
+//      val snackbar = Snackbar.make(viewSave, "", Snackbar.LENGTH_LONG)
+          val toast = KToasty.info(requireContext(), "You need internet access to remove friends.", Toast.LENGTH_LONG)
+
+//      snackbar.show()
+          toast.show()
 
         }
 
-        runReOrderContacts()
-        removeIndexes.clear()
-        saveReminder()
+//        saveReminder()
 
       })
       .setNegativeButton("Cancel", DialogInterface.OnClickListener {
@@ -760,7 +779,7 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
 
     if (networkUtil.isOnline(requireContext())) {
 
-      updateData()
+      updateData(false)
 
     }
     else {
@@ -810,17 +829,52 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
 
   }
 
-  private fun updateData() {
+
+
+  private fun readDataFromFirestoreSaveToLocal(documentSnapshot: DocumentSnapshot) {
+
+    val sharedPref = requireContext().getSharedPreferences(PREFNAME, Context.MODE_PRIVATE)
+
+    val editor = sharedPref!!.edit()
+
+    try {
+
+      val userHashMap = documentSnapshot.data
+
+      Log.e("userHashMap", userHashMap.toString())
+
+      val allInfo = documentSnapshot.toObject(UserAndFriendInfo::class.java) ?: UserAndFriendInfo()
+
+      allInfoJsonSaved = Gson().toJson(allInfo)
+
+      editor.putString("allInfoSaved", allInfoJsonSaved)
+      editor.putString("allInfoUnsaved", allInfoJsonSaved)
+
+      editor.apply()
+
+      friendsListModel.friendList = allInfo.friendList
+      editFragmentFriendViewAdapter.notifyDataSetChanged()
+
+    }
+    catch (ex: Exception) {
+
+      Log.e(TAG, ex.toString())
+
+    }
+
+  }
+
+  private fun updateData(isAddOrRemove: Boolean) {
 
     val sharedPref = activity?.getSharedPreferences(PREFNAME, Context.MODE_PRIVATE)
 
     val editor = sharedPref!!.edit()
 
+    allInfoJsonUnsaved = sharedPref.getString("allInfoUnsaved", "allInfoJsonSaved").toString()
     allInfoJsonSaved   = sharedPref.getString("allInfoSaved", "allInfoJsonSaved").toString()
-    allInfoJsonUnsaved = sharedPref.getString("allInfoUnsaved", allInfoJsonSaved).toString()
 
     userAndFriendInfoUnsaved = gson.fromJson(allInfoJsonUnsaved, UserAndFriendInfo::class.java)
-    userAndFriendInfoSaved = gson.fromJson(allInfoJsonSaved, UserAndFriendInfo::class.java)
+    userAndFriendInfoSaved   = gson.fromJson(allInfoJsonSaved,   UserAndFriendInfo::class.java)
 
     val user = firebaseUser
 
@@ -846,21 +900,43 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
 
     }
 
-
     if (userAndFriendInfoUnsaved.usersList.size > 0 && util.checkIfAllMandatoryExist(userAndFriendInfoUnsaved)) {
 
       mFirestore
         .collection("users")
         .document(userId)
-        .set(userAndFriendInfoUnsaved, SetOptions.merge())
+        .set(userAndFriendInfoUnsaved)
+//        .set(userAndFriendInfoUnsaved, SetOptions.merge())
         .addOnSuccessListener {
 
-          editor.putString("allInfoSaved",   allInfoJsonUnsaved)
-          editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
-          editor.apply()
+          if (!isAddOrRemove) {
+            util.onShowMessage("Save complete!", requireContext(), requireView())
+            Log.d(TAG, "Save complete!")
+          }
 
-          util.onShowMessage("Save complete!", requireContext(), requireView())
-          Log.d(TAG, "Save complete!")
+          friendsListModel.friendList = userAndFriendInfoUnsaved.friendList
+//          editFragmentFriendViewAdapter.notifyDataSetChanged()
+
+          mFirestore
+            .collection("users")
+            .document(userId)
+            .get()
+            .addOnSuccessListener {
+
+                userDocumentSnapshot ->
+
+              val allInfo = userDocumentSnapshot.toObject(UserAndFriendInfo::class.java) ?: UserAndFriendInfo()
+
+              if (allInfo.usersList.size > 0 && allInfo.usersList[0].uid == userId) {
+
+                readDataFromFirestoreSaveToLocal(userDocumentSnapshot)
+
+              }
+
+            }
+            .addOnFailureListener { e ->
+              Log.e(TAG, "Error saving", e)
+            }
 
         }
         .addOnFailureListener {
@@ -902,68 +978,82 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
 
     oneMoreFriendBtn.setOnClickListener() { _ ->
 
-      val index: Int = friendsListModel.friendList?.size ?: 0
-
-      val newFriend: Friend =
-
-        Friend(
-          index = index,
-          description = "Friend ${index + 1}",
-
-          folded = true,
-
-          name = null,
-          phone1 = null,
-          phone2 = null,
-          phone3 = null,
-
-          network1 = null,
-          network2 = null,
-          network3 = null,
-
-          bank1 = null,
-          bank2 = null,
-          bank3 = null,
-          bank4 = null,
-
-          accountNumber1 = null,
-          accountNumber2 = null,
-          accountNumber3 = null,
-          accountNumber4 = null,
-          showDeleteCheckBox = false,
-          deleteCheckBox = false,
-        )
-
       val sharedPref = requireContext().getSharedPreferences(PREFNAME, Context.MODE_PRIVATE)
 
       var allInfoJson: String? = null
 
       allInfoJsonUnsaved = sharedPref.getString("allInfoUnsaved", "defaultAll")!!
 
-      if (allInfoJsonUnsaved != "defaultAll") {
+      if (networkUtil.isOnline(requireContext())) {
 
-        val allInfo = gson.fromJson(allInfoJsonUnsaved, UserAndFriendInfo::class.java)
+        if (allInfoJsonUnsaved != "defaultAll") {
 
-        allInfo.friendList?.add(newFriend)
+          val allInfo = gson.fromJson(allInfoJsonUnsaved, UserAndFriendInfo::class.java)
 
-        friendsListModel.friendList?.add(newFriend)
+          val index: Int = allInfo.friendList?.size ?: 0
 
-        val editor = sharedPref.edit()
+          val newFriend: Friend =
 
-        allInfoJsonUnsaved = Gson().toJson(allInfo)
+            Friend(
+              index = index,
+              description = "Friend ${index + 1}",
 
-        editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
+              folded = true,
 
-        editor.apply()
+              name = null,
+              phone1 = null,
+              phone2 = null,
+              phone3 = null,
 
-        val message: String = "You have successfully added an entry for one more friend."
-        util.onShowMessage(message, requireContext())
-        Log.e("ATTENTION ATTENTION", "One More Friend Button Clicked. New Friend Added")
+              network1 = null,
+              network2 = null,
+              network3 = null,
 
-        editFragmentFriendViewAdapter.notifyDataSetChanged()
+              bank1 = null,
+              bank2 = null,
+              bank3 = null,
+              bank4 = null,
+
+              accountNumber1 = null,
+              accountNumber2 = null,
+              accountNumber3 = null,
+              accountNumber4 = null,
+              showDeleteCheckBox = false,
+              deleteCheckBox = false,
+            )
+
+          allInfo.friendList?.add(newFriend)
+
+          friendsListModel.friendList?.add(newFriend)
+
+          val editor = sharedPref.edit()
+
+          allInfoJsonUnsaved = Gson().toJson(allInfo)
+
+          editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
+
+          editor.apply()
+
+          val message: String = "You have successfully added an entry for one more friend."
+          util.onShowMessage(message, requireContext())
+          Log.e("ATTENTION ATTENTION", "One More Friend Button Clicked. New Friend Added")
+
+          editFragmentFriendViewAdapter.notifyDataSetChanged()
+
+        }
+
+        updateData(true)
 
       }
+      else {
 
+//      val snackbar = Snackbar.make(viewSave, "", Snackbar.LENGTH_LONG)
+        val toast = KToasty.info(requireContext(), "You need internet access to add friend.", Toast.LENGTH_LONG)
+
+//      snackbar.show()
+        toast.show()
+
+      }
 
     }
 
@@ -1238,8 +1328,24 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
             .setCancelable(true)
             .setPositiveButton("Proceed", DialogInterface.OnClickListener {
               dialog, id -> dialog.cancel()
-              runDeleteContact(index)
-              saveReminder()
+
+              if (networkUtil.isOnline(requireContext())) {
+
+                runDeleteContact(index)
+                updateData(true)
+
+              }
+              else {
+
+        //      val snackbar = Snackbar.make(viewSave, "", Snackbar.LENGTH_LONG)
+                val toast = KToasty.info(requireContext(), "You need internet access to add friend.", Toast.LENGTH_LONG)
+
+        //      snackbar.show()
+                toast.show()
+
+              }
+//              saveReminder()
+
             })
             .setNegativeButton("Cancel", DialogInterface.OnClickListener {
               dialog, id -> dialog.cancel()

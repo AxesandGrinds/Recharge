@@ -52,6 +52,8 @@ class HomeFriendViewAdapter(
 
   override fun onBindViewHolder(holderHome: HomeFriendItemViewHolder, position: Int) {
 
+    holderHome.setIsRecyclable(false)
+
     holderHome.bind(model.friendList?.get(position)!!)
 
     Log.e("ATTENTION ATTENTION", "HomeFriendViewAdapter: onBindViewHolder(...): " +

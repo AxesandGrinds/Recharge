@@ -554,7 +554,7 @@ class EditFriendItemViewHolder(
     val bankStringArray: Array<String>  = res.getStringArray(R.array.banks_arrays)
     val networkStringArray: Array<String>  = res.getStringArray(R.array.network_arrays)
 
-    readFromLocal()
+//    readFromLocal()
 
     checkModelsIndex(model)
 
@@ -732,14 +732,24 @@ class EditFriendItemViewHolder(
         var allInfoJsonUnsaved = sharedPref.getString("allInfoUnsaved", "defaultAll")!!
         val allInfoUnsaved = gson.fromJson(allInfoJsonUnsaved, UserAndFriendInfo::class.java)
 
-        val name: String = s.toString()
-        allInfoUnsaved.friendList?.get(model.index)?.name = name
 
-        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
+        try {
 
-        val editor = sharedPref!!.edit()
-        editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
-        editor.apply()
+          val name: String = s.toString()
+//          model.name = name
+          Log.e("ATTENTION ATTENTION", "addTextChangedListener Model.index: ${model.index}. model.name: ${model.name}")
+          allInfoUnsaved.friendList!![model.index].name = name
+
+          allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
+
+          val editor = sharedPref!!.edit()
+          editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
+          editor.apply()
+
+        }
+        catch (e: Exception) {
+
+        }
 
       }
 
@@ -764,14 +774,21 @@ class EditFriendItemViewHolder(
         var allInfoJsonUnsaved = sharedPref.getString("allInfoUnsaved", "defaultAll")!!
         val allInfoUnsaved = gson.fromJson(allInfoJsonUnsaved, UserAndFriendInfo::class.java)
 
-        val phone1: String = s.toString()
-//        userAndFriendInfo.friendList?.get(model.index)?.phone1 = phone1
-        allInfoUnsaved.friendList?.get(model.index)?.phone1 = phone1
-        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+        try {
 
-        val editor = sharedPref!!.edit()
-        editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
-        editor.apply()
+          val phone1: String = s.toString()
+//        userAndFriendInfo.friendList?.get(model.index)?.phone1 = phone1
+          allInfoUnsaved.friendList?.get(model.index)?.phone1 = phone1
+          allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+
+          val editor = sharedPref!!.edit()
+          editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
+          editor.apply()
+
+        }
+        catch (e: Exception) {
+
+        }
 
       }
 
@@ -794,14 +811,21 @@ class EditFriendItemViewHolder(
         var allInfoJsonUnsaved = sharedPref.getString("allInfoUnsaved", "defaultAll")!!
         val allInfoUnsaved = gson.fromJson(allInfoJsonUnsaved, UserAndFriendInfo::class.java)
 
-        val phone2: String = friendPhoneEt2.text.toString()
-//        userAndFriendInfo.friendList?.get(model.index)?.phone2 = phone2
-        allInfoUnsaved.friendList?.get(model.index)?.phone2 = phone2
-        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
+        try {
 
-        val editor = sharedPref!!.edit()
-        editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
-        editor.apply()
+          val phone2: String = friendPhoneEt2.text.toString()
+//        userAndFriendInfo.friendList?.get(model.index)?.phone2 = phone2
+          allInfoUnsaved.friendList?.get(model.index)?.phone2 = phone2
+          allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
+
+          val editor = sharedPref!!.edit()
+          editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
+          editor.apply()
+
+        }
+        catch (e: Exception) {
+
+        }
 
       }
 
@@ -824,14 +848,21 @@ class EditFriendItemViewHolder(
         var allInfoJsonUnsaved = sharedPref.getString("allInfoUnsaved", "defaultAll")!!
         val allInfoUnsaved = gson.fromJson(allInfoJsonUnsaved, UserAndFriendInfo::class.java)
 
-        val phone3: String = friendPhoneEt3.text.toString()
-//        userAndFriendInfo.friendList?.get(model.index)?.phone3 = phone3
-        allInfoUnsaved.friendList?.get(model.index)?.phone3 = phone3
-        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+        try {
 
-        val editor = sharedPref!!.edit()
-        editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
-        editor.apply()
+          val phone3: String = friendPhoneEt3.text.toString()
+//        userAndFriendInfo.friendList?.get(model.index)?.phone3 = phone3
+          allInfoUnsaved.friendList?.get(model.index)?.phone3 = phone3
+          allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+
+          val editor = sharedPref!!.edit()
+          editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
+          editor.apply()
+
+        }
+        catch (e: Exception) {
+
+        }
 
       }
 
@@ -851,41 +882,48 @@ class EditFriendItemViewHolder(
         var allInfoJsonUnsaved = sharedPref.getString("allInfoUnsaved", "defaultAll")!!
         val allInfoUnsaved = gson.fromJson(allInfoJsonUnsaved, UserAndFriendInfo::class.java)
 
-        if (selectedItem != "Choose Network") {
+        try {
+
+          if (selectedItem != "Choose Network") {
 //          userAndFriendInfo.friendList?.get(model.index)?.network1 = network1
-          allInfoUnsaved.friendList?.get(model.index)?.network1 = network1
-        }
-        else {
-
-          try {
-
-            allInfoUnsaved.friendList?.get(model.index)?.network1 = null
-//            userAndFriendInfo.friendList?.get(model.index)?.network1 = null
-
+            allInfoUnsaved.friendList?.get(model.index)?.network1 = network1
           }
-          catch (e: Exception) {
-
-            Log.e("ATTENTION ATTENTION", "Edit Friend ${model.index} error")
+          else {
 
             try {
 
               allInfoUnsaved.friendList?.get(model.index)?.network1 = null
+//            userAndFriendInfo.friendList?.get(model.index)?.network1 = null
 
             }
             catch (e: Exception) {
 
               Log.e("ATTENTION ATTENTION", "Edit Friend ${model.index} error")
 
+              try {
+
+                allInfoUnsaved.friendList?.get(model.index)?.network1 = null
+
+              }
+              catch (e: Exception) {
+
+                Log.e("ATTENTION ATTENTION", "Edit Friend ${model.index} error")
+
+              }
+
             }
 
           }
 
-        }
+          allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
+          val editor = sharedPref!!.edit()
+          editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
+          editor.apply()
 
-        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
-        val editor = sharedPref!!.edit()
-        editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
-        editor.apply()
+        }
+        catch (e: Exception) {
+
+        }
 
       }
 
@@ -905,30 +943,37 @@ class EditFriendItemViewHolder(
         var allInfoJsonUnsaved = sharedPref.getString("allInfoUnsaved", "defaultAll")!!
         val allInfoUnsaved = gson.fromJson(allInfoJsonUnsaved, UserAndFriendInfo::class.java)
 
-        if (selectedItem != "Choose Network") {
-          allInfoUnsaved.friendList?.get(model.index)?.network2 = network2
+        try {
+
+          if (selectedItem != "Choose Network") {
+            allInfoUnsaved.friendList?.get(model.index)?.network2 = network2
 //          userAndFriendInfo.friendList?.get(model.index)?.network2 = network2
-        }
-        else {
+          }
+          else {
 
-          try {
+            try {
 
-            allInfoUnsaved.friendList?.get(model.index)?.network2 = null
+              allInfoUnsaved.friendList?.get(model.index)?.network2 = null
 //            userAndFriendInfo.friendList?.get(model.index)?.network2 = null
 
-          }
-          catch (e: Exception) {
+            }
+            catch (e: Exception) {
 
-            Log.e("ATTENTION ATTENTION", "Edit Friend ${model.index} error")
+              Log.e("ATTENTION ATTENTION", "Edit Friend ${model.index} error")
+
+            }
 
           }
+
+          allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
+          val editor = sharedPref!!.edit()
+          editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
+          editor.apply()
 
         }
+        catch (e: Exception) {
 
-        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
-        val editor = sharedPref!!.edit()
-        editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
-        editor.apply()
+        }
 
       }
 
@@ -948,30 +993,37 @@ class EditFriendItemViewHolder(
         var allInfoJsonUnsaved = sharedPref.getString("allInfoUnsaved", "defaultAll")!!
         val allInfoUnsaved = gson.fromJson(allInfoJsonUnsaved, UserAndFriendInfo::class.java)
 
-        if (selectedItem != "Choose Network") {
-          allInfoUnsaved.friendList?.get(model.index)?.network3 = network3
+        try {
+
+          if (selectedItem != "Choose Network") {
+            allInfoUnsaved.friendList?.get(model.index)?.network3 = network3
 //          userAndFriendInfo.friendList?.get(model.index)?.network3 = network3
-        }
-        else {
+          }
+          else {
 
-          try {
+            try {
 
-            allInfoUnsaved.friendList?.get(model.index)?.network3 = null
+              allInfoUnsaved.friendList?.get(model.index)?.network3 = null
 //            userAndFriendInfo.friendList?.get(model.index)?.network3 = null
 
-          }
-          catch (e: Exception) {
+            }
+            catch (e: Exception) {
 
-            Log.e("ATTENTION ATTENTION", "Edit Friend ${model.index} error")
+              Log.e("ATTENTION ATTENTION", "Edit Friend ${model.index} error")
+
+            }
 
           }
+
+          allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
+          val editor = sharedPref!!.edit()
+          editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
+          editor.apply()
 
         }
+        catch (e: Exception) {
 
-        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
-        val editor = sharedPref!!.edit()
-        editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
-        editor.apply()
+        }
 
       }
 
@@ -991,30 +1043,37 @@ class EditFriendItemViewHolder(
         var allInfoJsonUnsaved = sharedPref.getString("allInfoUnsaved", "defaultAll")!!
         val allInfoUnsaved = gson.fromJson(allInfoJsonUnsaved, UserAndFriendInfo::class.java)
 
-        if (selectedItem != "Choose Bank") {
-          allInfoUnsaved.friendList?.get(model.index)?.bank1 = bank1
+        try {
+
+          if (selectedItem != "Choose Bank") {
+            allInfoUnsaved.friendList?.get(model.index)?.bank1 = bank1
 //          userAndFriendInfo.friendList?.get(model.index)?.bank1 = bank1
-        }
-        else {
+          }
+          else {
 
-          try {
+            try {
 
-            allInfoUnsaved.friendList?.get(model.index)?.bank1 = null
+              allInfoUnsaved.friendList?.get(model.index)?.bank1 = null
 //            userAndFriendInfo.friendList?.get(model.index)?.bank1 = null
 
-          }
-          catch (e: Exception) {
+            }
+            catch (e: Exception) {
 
-            Log.e("ATTENTION ATTENTION", "Edit Friend ${model.index} error")
+              Log.e("ATTENTION ATTENTION", "Edit Friend ${model.index} error")
+
+            }
 
           }
+
+          allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
+          val editor = sharedPref!!.edit()
+          editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
+          editor.apply()
 
         }
+        catch (e: Exception) {
 
-        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
-        val editor = sharedPref!!.edit()
-        editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
-        editor.apply()
+        }
 
       }
 
@@ -1034,30 +1093,37 @@ class EditFriendItemViewHolder(
         var allInfoJsonUnsaved = sharedPref.getString("allInfoUnsaved", "defaultAll")!!
         val allInfoUnsaved = gson.fromJson(allInfoJsonUnsaved, UserAndFriendInfo::class.java)
 
-        if (selectedItem != "Choose Bank") {
-          allInfoUnsaved.friendList?.get(model.index)?.bank2 = bank2
+        try {
+
+          if (selectedItem != "Choose Bank") {
+            allInfoUnsaved.friendList?.get(model.index)?.bank2 = bank2
 //          userAndFriendInfo.friendList?.get(model.index)?.bank2 = bank2
-        }
-        else {
+          }
+          else {
 
-          try {
+            try {
 
-            allInfoUnsaved.friendList?.get(model.index)?.bank2 = null
+              allInfoUnsaved.friendList?.get(model.index)?.bank2 = null
 //            userAndFriendInfo.friendList?.get(model.index)?.bank2 = null
 
-          }
-          catch (e: Exception) {
+            }
+            catch (e: Exception) {
 
-            Log.e("ATTENTION ATTENTION", "Edit Friend ${model.index} error")
+              Log.e("ATTENTION ATTENTION", "Edit Friend ${model.index} error")
+
+            }
 
           }
+
+          allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+          val editor = sharedPref!!.edit()
+          editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
+          editor.apply()
 
         }
+        catch (e: Exception) {
 
-        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
-        val editor = sharedPref!!.edit()
-        editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
-        editor.apply()
+        }
 
       }
 
@@ -1077,30 +1143,37 @@ class EditFriendItemViewHolder(
         var allInfoJsonUnsaved = sharedPref.getString("allInfoUnsaved", "defaultAll")!!
         val allInfoUnsaved = gson.fromJson(allInfoJsonUnsaved, UserAndFriendInfo::class.java)
 
-        if (selectedItem != "Choose Bank") {
-          allInfoUnsaved.friendList?.get(model.index)?.bank3 = bank3
+        try {
+
+          if (selectedItem != "Choose Bank") {
+            allInfoUnsaved.friendList?.get(model.index)?.bank3 = bank3
 //          userAndFriendInfo.friendList?.get(model.index)?.bank3 = bank3
-        }
-        else {
+          }
+          else {
 
-          try {
+            try {
 
-            allInfoUnsaved.friendList?.get(model.index)?.bank3 = null
+              allInfoUnsaved.friendList?.get(model.index)?.bank3 = null
 //            userAndFriendInfo.friendList?.get(model.index)?.bank3 = null
 
-          }
-          catch (e: Exception) {
+            }
+            catch (e: Exception) {
 
-            Log.e("ATTENTION ATTENTION", "Edit Friend ${model.index} error")
+              Log.e("ATTENTION ATTENTION", "Edit Friend ${model.index} error")
+
+            }
 
           }
+
+          allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+          val editor = sharedPref!!.edit()
+          editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
+          editor.apply()
 
         }
+        catch (e: Exception) {
 
-        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
-        val editor = sharedPref!!.edit()
-        editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
-        editor.apply()
+        }
 
       }
 
@@ -1120,30 +1193,37 @@ class EditFriendItemViewHolder(
         var allInfoJsonUnsaved = sharedPref.getString("allInfoUnsaved", "defaultAll")!!
         val allInfoUnsaved = gson.fromJson(allInfoJsonUnsaved, UserAndFriendInfo::class.java)
 
-        if (selectedItem != "Choose Bank") {
-          allInfoUnsaved.friendList?.get(model.index)?.bank4 = bank4
+        try {
+
+          if (selectedItem != "Choose Bank") {
+            allInfoUnsaved.friendList?.get(model.index)?.bank4 = bank4
 //          userAndFriendInfo.friendList?.get(model.index)?.bank4 = bank4
-        }
-        else {
+          }
+          else {
 
-          try {
+            try {
 
-            allInfoUnsaved.friendList?.get(model.index)?.bank4 = null
+              allInfoUnsaved.friendList?.get(model.index)?.bank4 = null
 //            userAndFriendInfo.friendList?.get(model.index)?.bank4 = null
 
-          }
-          catch (e: Exception) {
+            }
+            catch (e: Exception) {
 
-            Log.e("ATTENTION ATTENTION", "Edit Friend ${model.index} error")
+              Log.e("ATTENTION ATTENTION", "Edit Friend ${model.index} error")
+
+            }
 
           }
+
+          allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
+          val editor = sharedPref!!.edit()
+          editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
+          editor.apply()
 
         }
+        catch (e: Exception) {
 
-        allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)
-        val editor = sharedPref!!.edit()
-        editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
-        editor.apply()
+        }
 
       }
 
@@ -1171,13 +1251,20 @@ class EditFriendItemViewHolder(
 
         if (allInfoUnsaved.friendList?.size ?: 0 > model.index) {
 
-//          userAndFriendInfo.friendList?.get(model.index)?.accountNumber1 = accountNumber1
-          allInfoUnsaved.friendList?.get(model.index)?.accountNumber1 = accountNumber1
-          allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+          try {
 
-          val editor = sharedPref!!.edit()
-          editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
-          editor.apply()
+//          userAndFriendInfo.friendList?.get(model.index)?.accountNumber1 = accountNumber1
+            allInfoUnsaved.friendList?.get(model.index)?.accountNumber1 = accountNumber1
+            allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+
+            val editor = sharedPref!!.edit()
+            editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
+            editor.apply()
+
+          }
+          catch (e: Exception) {
+
+          }
 
         }
 
@@ -1207,13 +1294,20 @@ class EditFriendItemViewHolder(
 
         if (allInfoUnsaved.friendList?.size ?: 0 > model.index) {
 
-//          userAndFriendInfo.friendList?.get(model.index)?.accountNumber2 = accountNumber2
-          allInfoUnsaved.friendList?.get(model.index)?.accountNumber2 = accountNumber2
-          allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+          try {
 
-          val editor = sharedPref!!.edit()
-          editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
-          editor.apply()
+//          userAndFriendInfo.friendList?.get(model.index)?.accountNumber2 = accountNumber2
+            allInfoUnsaved.friendList?.get(model.index)?.accountNumber2 = accountNumber2
+            allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+
+            val editor = sharedPref!!.edit()
+            editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
+            editor.apply()
+
+          }
+          catch (e: Exception) {
+
+          }
 
         }
 
@@ -1243,13 +1337,20 @@ class EditFriendItemViewHolder(
 
         if (allInfoUnsaved.friendList?.size ?: 0 > model.index) {
 
-//          userAndFriendInfo.friendList?.get(model.index)?.accountNumber3 = accountNumber3
-          allInfoUnsaved.friendList?.get(model.index)?.accountNumber3 = accountNumber3
-          allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+          try {
 
-          val editor = sharedPref!!.edit()
-          editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
-          editor.apply()
+//          userAndFriendInfo.friendList?.get(model.index)?.accountNumber3 = accountNumber3
+            allInfoUnsaved.friendList?.get(model.index)?.accountNumber3 = accountNumber3
+            allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+
+            val editor = sharedPref!!.edit()
+            editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
+            editor.apply()
+
+          }
+          catch (e: Exception) {
+
+          }
 
         }
 
@@ -1279,13 +1380,20 @@ class EditFriendItemViewHolder(
 
         if (allInfoUnsaved.friendList?.size ?: 0 > model.index) {
 
-//          userAndFriendInfo.friendList?.get(model.index)?.accountNumber4 = accountNumber4
-          allInfoUnsaved.friendList?.get(model.index)?.accountNumber4 = accountNumber4
-          allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+          try {
 
-          val editor = sharedPref!!.edit()
-          editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
-          editor.apply()
+//          userAndFriendInfo.friendList?.get(model.index)?.accountNumber4 = accountNumber4
+            allInfoUnsaved.friendList?.get(model.index)?.accountNumber4 = accountNumber4
+            allInfoJsonUnsaved = gson.toJson(allInfoUnsaved)  // json string
+
+            val editor = sharedPref!!.edit()
+            editor.putString("allInfoUnsaved", allInfoJsonUnsaved)
+            editor.apply()
+
+          }
+          catch (e: Exception) {
+
+          }
 
         }
 
@@ -1309,92 +1417,101 @@ class EditFriendItemViewHolder(
 
     }
 
-    model.run {
 
-      val friendNumberString: String = "Friend ${(index+1).toString()}"
+    try {
 
-      friendNumberTv.text = friendNumberString
+      model.run {
 
-      if (name != null) {
-        friendNameEt.setText(name)
-      }
+        val friendNumberString: String = "Friend ${(index+1).toString()}"
 
-      if (phone1 != null) {
-        friendPhoneEt1.setText(phone1)
-      }
+        friendNumberTv.text = friendNumberString
 
-      if (phone2 != null) {
-        friendPhoneEt2.setText(phone2)
-      }
-
-      if (phone3 != null) {
-        friendPhoneEt3.setText(phone3)
-      }
-
-      if (network1 != null) {
-        val networkItemPosition: Int = networkStringArray.indexOf(network1)
-        friendNetworkSpinner1.setSelection(networkItemPosition)
-      }
-
-      if (network2 != null) {
-        val networkItemPosition: Int = networkStringArray.indexOf(network2)
-        friendNetworkSpinner2.setSelection(networkItemPosition)
-      }
-
-      if (network3 != null) {
-        val networkItemPosition: Int = networkStringArray.indexOf(network3)
-        friendNetworkSpinner3.setSelection(networkItemPosition)
-      }
-
-      if (bank1 != null) {
-        val bankItemPosition: Int = bankStringArray.indexOf(bank1)
-        friendBankSpinner1.setSelection(bankItemPosition)
-      }
-
-      if (bank2 != null) {
-        val bankItemPosition: Int = bankStringArray.indexOf(bank2)
-        friendBankSpinner2.setSelection(bankItemPosition)
-      }
-
-      if (bank3 != null) {
-        val bankItemPosition: Int = bankStringArray.indexOf(bank3)
-        friendBankSpinner3.setSelection(bankItemPosition)
-      }
-
-      if (bank4 != null) {
-        val bankItemPosition: Int = bankStringArray.indexOf(bank4)
-        friendBankSpinner4.setSelection(bankItemPosition)
-      }
-
-      if (accountNumber1 != null) {
-        friendBankAccountEt1.setText(accountNumber1)
-      }
-
-      if (accountNumber2 != null) {
-        friendBankAccountEt2.setText(accountNumber2)
-      }
-
-      if (accountNumber3 != null) {
-        friendBankAccountEt3.setText(accountNumber3)
-      }
-
-      if (accountNumber4 != null) {
-        friendBankAccountEt4.setText(accountNumber4)
-      }
-
-      if (showDeleteCheckBox != null) {
-
-        if (showDeleteCheckBox!!) {
-          friendDeleteCheckBox.visibility = View.VISIBLE
+        if (name != null) {
+          Log.e("ATTENTION ATTENTION", "model.run {} Model.index: ${index}. model.name: ${name}")
+          friendNameEt.setText(name)
         }
-        else {
-          friendDeleteCheckBox.visibility = View.GONE
+
+        if (phone1 != null) {
+          friendPhoneEt1.setText(phone1)
         }
-        friendDeleteCheckBox.isChecked = deleteCheckBox!!
+
+        if (phone2 != null) {
+          friendPhoneEt2.setText(phone2)
+        }
+
+        if (phone3 != null) {
+          friendPhoneEt3.setText(phone3)
+        }
+
+        if (network1 != null) {
+          val networkItemPosition: Int = networkStringArray.indexOf(network1)
+          friendNetworkSpinner1.setSelection(networkItemPosition)
+        }
+
+        if (network2 != null) {
+          val networkItemPosition: Int = networkStringArray.indexOf(network2)
+          friendNetworkSpinner2.setSelection(networkItemPosition)
+        }
+
+        if (network3 != null) {
+          val networkItemPosition: Int = networkStringArray.indexOf(network3)
+          friendNetworkSpinner3.setSelection(networkItemPosition)
+        }
+
+        if (bank1 != null) {
+          val bankItemPosition: Int = bankStringArray.indexOf(bank1)
+          friendBankSpinner1.setSelection(bankItemPosition)
+        }
+
+        if (bank2 != null) {
+          val bankItemPosition: Int = bankStringArray.indexOf(bank2)
+          friendBankSpinner2.setSelection(bankItemPosition)
+        }
+
+        if (bank3 != null) {
+          val bankItemPosition: Int = bankStringArray.indexOf(bank3)
+          friendBankSpinner3.setSelection(bankItemPosition)
+        }
+
+        if (bank4 != null) {
+          val bankItemPosition: Int = bankStringArray.indexOf(bank4)
+          friendBankSpinner4.setSelection(bankItemPosition)
+        }
+
+        if (accountNumber1 != null) {
+          friendBankAccountEt1.setText(accountNumber1)
+        }
+
+        if (accountNumber2 != null) {
+          friendBankAccountEt2.setText(accountNumber2)
+        }
+
+        if (accountNumber3 != null) {
+          friendBankAccountEt3.setText(accountNumber3)
+        }
+
+        if (accountNumber4 != null) {
+          friendBankAccountEt4.setText(accountNumber4)
+        }
+
+        if (showDeleteCheckBox != null) {
+
+          if (showDeleteCheckBox!!) {
+            friendDeleteCheckBox.visibility = View.VISIBLE
+          }
+          else {
+            friendDeleteCheckBox.visibility = View.GONE
+          }
+          friendDeleteCheckBox.isChecked = deleteCheckBox!!
+
+        }
+
+        transition(folded)
 
       }
 
-      transition(folded)
+    }
+    catch (e: Exception) {
 
     }
 

@@ -72,7 +72,7 @@ class LoginActivityMain : AppCompatActivity() {
           CalligraphyInterceptor(
             CalligraphyConfig.Builder()
               .setDefaultFontPath("font/bold.ttf")
-              .setFontAttrId(R.attr.fontPath)
+//              .setFontAttrId(R.attr.fontPath)
               .build()
           )
         )

@@ -123,6 +123,8 @@ class EditFriendViewAdapter(
 
   override fun onBindViewHolder(holderEdit: EditFriendItemViewHolder, position: Int) {
 
+      holderEdit.setIsRecyclable(false)
+
     val friends: List<Friend> = listOf(
 
             Friend(

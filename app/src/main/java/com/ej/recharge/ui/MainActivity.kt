@@ -41,7 +41,7 @@ import kotlinx.coroutines.*
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-class MainActivity : AppCompatActivity() {
+class  MainActivity : AppCompatActivity() {
 
   private lateinit var context: Context
 
