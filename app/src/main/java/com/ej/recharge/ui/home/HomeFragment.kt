@@ -1,5 +1,6 @@
 package com.ej.recharge.ui.home
 
+//import com.facebook.ads.*
 import android.Manifest
 import android.app.Activity
 import android.app.Activity.RESULT_OK
@@ -26,6 +27,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.droidman.ktoasty.KToasty
 import com.ej.recharge.R
 import com.ej.recharge.init.InitApp
 import com.ej.recharge.model.FriendListModel
@@ -40,15 +42,12 @@ import com.ej.recharge.ui.account.LoginActivityMain
 import com.ej.recharge.ui.fab.FloatingActionButton
 import com.ej.recharge.ui.fab.FloatingActionMenu
 import com.ej.recharge.utils.NetworkUtil
-import com.ej.recharge.utils.ironSourceAppKey
 import com.ej.recharge.vision.RecognitionActivityFinal
-import com.droidman.ktoasty.KToasty
-//import com.facebook.ads.*
-import com.google.android.gms.ads.*
 import com.fondesa.kpermissions.allGranted
 import com.fondesa.kpermissions.coroutines.sendSuspend
 import com.fondesa.kpermissions.extension.permissionsBuilder
 import com.github.marlonlom.utilities.timeago.TimeAgo
+import com.google.android.gms.ads.*
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
@@ -59,12 +58,7 @@ import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import com.google.gson.Gson
-import com.ironsource.mediationsdk.ISBannerSize
-import com.ironsource.mediationsdk.IronSource
 import com.ironsource.mediationsdk.IronSourceBannerLayout
-import com.ironsource.mediationsdk.logger.IronSourceError
-import com.ironsource.mediationsdk.sdk.BannerListener
-import com.mopub.mobileads.MoPubErrorCode
 import com.mopub.mobileads.MoPubView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -911,7 +905,9 @@ private val TAG: String = "ATTENTION ATTENTION"
         homeFragmentPresenter.displayHomeDetails()
 
         Handler(Looper.getMainLooper()).postDelayed({
-          checkBiDailyInterstitialAd()
+          if (isAttachedToActivity()) {
+            checkBiDailyInterstitialAd()
+          }
         }, 200)
 
       }
@@ -931,6 +927,10 @@ private val TAG: String = "ATTENTION ATTENTION"
     }
 
 
+  }
+
+  fun isAttachedToActivity(): Boolean {
+    return isVisible && activity != null
   }
 
   private val UPDATE_REQUEST_CODE: Int = 3030

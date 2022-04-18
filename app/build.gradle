@@ -23,8 +23,8 @@ android {
         applicationId "com.ej.recharge"
         minSdkVersion 19
         targetSdkVersion 32
-        versionCode 5
-        versionName "0.0.104"
+        versionCode 6
+        versionName "0.0.105"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true

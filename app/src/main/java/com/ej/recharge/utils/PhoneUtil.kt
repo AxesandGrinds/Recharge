@@ -82,7 +82,13 @@ class PhoneUtil {
                 val subscriptionManager = context.getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE) as SubscriptionManager
 
                 val activeSubscriptionInfoList = subscriptionManager.activeSubscriptionInfoList
-                simCount = activeSubscriptionInfoList.size
+
+                if (activeSubscriptionInfoList != null) {
+                    simCount = activeSubscriptionInfoList.size
+                }
+                else {
+                    simCount = 1
+                }
 
             }
 //            // Not working Correctly. Returns dual sim for single sim phone
