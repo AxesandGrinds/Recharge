@@ -3,6 +3,8 @@
 
 
 
+    <string name="permission_granted">Permission Granted</string>
+    <string name="permission_required">Permission required.</string>
 
 
 

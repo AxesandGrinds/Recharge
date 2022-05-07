@@ -23,6 +23,7 @@ import android.telephony.SubscriptionManager
 import android.transition.Fade
 import android.util.Log
 import android.view.View
+import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -2172,7 +2173,16 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
                                                 val tookTooLongAlertDialog: AlertDialog = tookTooLongAlertDialogBuilder.create()
                                                 tookTooLongAlertDialog.setCancelable(false)
-                                                tookTooLongAlertDialog.show()
+
+                                                try {
+                                                    tookTooLongAlertDialog.show()
+                                                }
+                                                catch (e: WindowManager.BadTokenException) {
+
+                                                }
+                                                catch (e: Exception) {
+
+                                                }
 
                                             }
 

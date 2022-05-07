@@ -482,7 +482,7 @@ class RecognitionActivityFinal : AppCompatActivity(),
 
     didTakePicture = true
 
-    previewView?.cameraSource?.camera?.release()
+//    previewView?.cameraSource?.camera?.release()
     camera.open()
     camera.visibility = View.VISIBLE
 
@@ -1445,7 +1445,12 @@ class RecognitionActivityFinal : AppCompatActivity(),
 //  TODO--------------------------------------------------------------------------------------------
 //  TODO--------------------------------------------------------------------------------------------
 
-      graphicOverlay!!.clear()
+      try {
+        graphicOverlay?.clear()
+      }
+      catch (e: Exception) {
+
+      }
 
 
       if (didTakePicture) {

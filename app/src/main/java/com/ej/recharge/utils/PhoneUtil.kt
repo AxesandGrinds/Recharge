@@ -81,12 +81,19 @@ class PhoneUtil {
 
                 val subscriptionManager = context.getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE) as SubscriptionManager
 
-                val activeSubscriptionInfoList = subscriptionManager.activeSubscriptionInfoList
+                try {
 
-                if (activeSubscriptionInfoList != null) {
-                    simCount = activeSubscriptionInfoList.size
+                    val activeSubscriptionInfoList = subscriptionManager.activeSubscriptionInfoList
+
+                    if (activeSubscriptionInfoList != null) {
+                        simCount = activeSubscriptionInfoList.size
+                    }
+                    else {
+                        simCount = 1
+                    }
+
                 }
-                else {
+                catch (e: Exception) {
                     simCount = 1
                 }
 

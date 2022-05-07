@@ -22,7 +22,10 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -224,6 +227,7 @@ private val TAG: String = "ATTENTION ATTENTION"
 
         val result = permissionsBuilder(
           Manifest.permission.CALL_PHONE,
+          Manifest.permission.READ_PHONE_STATE,
           Manifest.permission.ACCESS_WIFI_STATE,
           Manifest.permission.ACCESS_NETWORK_STATE,
           Manifest.permission.CHANGE_WIFI_STATE,
@@ -904,6 +908,35 @@ private val TAG: String = "ATTENTION ATTENTION"
 
         homeFragmentPresenter.displayHomeDetails()
 
+//        CoroutineScope(Dispatchers.IO).launch {
+//
+//          val result = permissionsBuilder(
+//            Manifest.permission.READ_PHONE_STATE,
+//          ).build().sendSuspend()
+//
+//          if (result.allGranted()) {
+//            homeFragmentPresenter.displayHomeDetails()
+//          }
+//          else {
+//
+//            withContext(Dispatchers.Main) {
+//
+//              val message: String = "You have denied some permissions permanently, " +
+//                      "if the app force close try granting permission from settings."
+//              KToasty.info(requireContext(), message, Toast.LENGTH_LONG, true).show()
+//
+//              val snackbar = Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG)
+//              snackbar.setAction("Ok", View.OnClickListener {
+//                snackbar.dismiss()
+//            }).show()
+//
+//
+//            }
+//
+//          }
+//
+//        }
+
         Handler(Looper.getMainLooper()).postDelayed({
           if (isAttachedToActivity()) {
             checkBiDailyInterstitialAd()
@@ -929,9 +962,76 @@ private val TAG: String = "ATTENTION ATTENTION"
 
   }
 
-  fun isAttachedToActivity(): Boolean {
+  private fun isAttachedToActivity(): Boolean {
     return isVisible && activity != null
   }
+
+  private val requestPermissionLauncher =
+    registerForActivityResult(
+      ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+      if (isGranted) {
+        Log.i("Permission: ", "Granted")
+      } else {
+        Log.i("Permission: ", "Denied")
+      }
+    }
+
+  private fun View.showSnackbar(
+    view: View,
+    msg: String,
+    length: Int,
+    actionMessage: CharSequence?,
+    action: (View) -> Unit
+  ) {
+    val snackbar = Snackbar.make(view, msg, length)
+    if (actionMessage != null) {
+      snackbar.setAction(actionMessage) {
+        action(this)
+      }.show()
+    } else {
+      snackbar.show()
+    }
+  }
+
+  fun onClickRequestPermission(view: View) {
+    when {
+      ContextCompat.checkSelfPermission(
+        requireContext(),
+        Manifest.permission.READ_PHONE_STATE
+      ) == PackageManager.PERMISSION_GRANTED -> {
+        requireView().showSnackbar(
+          view,
+          getString(R.string.permission_granted),
+          Snackbar.LENGTH_INDEFINITE,
+          null
+        ) {}
+      }
+
+      ActivityCompat.shouldShowRequestPermissionRationale(
+        requireActivity(),
+        Manifest.permission.READ_PHONE_STATE
+      ) -> {
+        requireView().showSnackbar(
+          view,
+          getString(R.string.permission_required),
+          Snackbar.LENGTH_INDEFINITE,
+          getString(R.string.ok)
+        ) {
+          requestPermissionLauncher.launch(
+            Manifest.permission.READ_PHONE_STATE
+          )
+        }
+      }
+
+      else -> {
+        requestPermissionLauncher.launch(
+          Manifest.permission.READ_PHONE_STATE
+        )
+      }
+    }
+  }
+
 
   private val UPDATE_REQUEST_CODE: Int = 3030
 

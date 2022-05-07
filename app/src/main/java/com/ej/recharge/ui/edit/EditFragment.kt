@@ -829,7 +829,9 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
 
   }
 
-
+  fun isAttachedToActivity(): Boolean {
+    return isVisible && activity != null
+  }
 
   private fun readDataFromFirestoreSaveToLocal(documentSnapshot: DocumentSnapshot) {
 
@@ -910,8 +912,10 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
         .addOnSuccessListener {
 
           if (!isAddOrRemove) {
-            util.onShowMessage("Save complete!", requireContext(), requireView())
-            Log.d(TAG, "Save complete!")
+            if (isAttachedToActivity()) {
+              util.onShowMessage("Save complete!", requireContext(), requireView())
+              Log.d(TAG, "Save complete!")
+            }
           }
 
           friendsListModel.friendList = userAndFriendInfoUnsaved.friendList
@@ -929,7 +933,9 @@ class EditFragment : Fragment(), EditFragmentView, PickContactListener {
 
               if (allInfo.usersList.size > 0 && allInfo.usersList[0].uid == userId) {
 
-                readDataFromFirestoreSaveToLocal(userDocumentSnapshot)
+                if (isAttachedToActivity()) {
+                  readDataFromFirestoreSaveToLocal(userDocumentSnapshot)
+                }
 
               }
 
