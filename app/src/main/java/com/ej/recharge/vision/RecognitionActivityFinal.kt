@@ -495,7 +495,7 @@ class RecognitionActivityFinal : AppCompatActivity(),
       toggleCamera()
     }
 
-    if (camera.isTakingPicture) return
+//    if (camera.isTakingPicture) return
     captureTime = System.currentTimeMillis()
 
     Handler().postDelayed({
@@ -508,12 +508,11 @@ class RecognitionActivityFinal : AppCompatActivity(),
 
         override fun onFinish() {
           camera.takePicture()
-
         }
 
       }.start()
 
-    }, 0)
+    }, 1000)
 
   }
 

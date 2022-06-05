@@ -20,12 +20,12 @@ class TimerFlow private constructor(millisInFuture: Long, countDownInterval: Lon
 
         object : CountDownTimer(millisInFuture, countDownInterval) {
             override fun onFinish() {
-                offer(0L)
+                trySend (0L)
                 cancel()
             }
 
             override fun onTick(millisUntilFinished: Long) {
-                offer(millisUntilFinished)
+                trySend (millisUntilFinished)
             }
         }.start()
 
