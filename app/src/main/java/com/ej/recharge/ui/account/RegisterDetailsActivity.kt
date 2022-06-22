@@ -82,6 +82,7 @@ import java.util.*
 import kotlin.collections.HashMap
 import kotlin.concurrent.fixedRateTimer
 import com.google.android.gms.location.LocationRequest
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 
 
 class RegisterDetailsActivity() : AppCompatActivity(),
@@ -1012,6 +1013,8 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
             userSecondRecyclerView.adapter = editFragmentUserSecondViewAdapter
 
+            userSecondRecyclerView.visibility = View.GONE
+
         }
         else {
 
@@ -1924,9 +1927,12 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
                                             Log.e(TAG, "Create user with email failed", task.exception)
 
-                                            Toast.makeText(context, "Authentication failed.",
-                                                Toast.LENGTH_SHORT).show()
+                                            Toast.makeText(context, "Authentication failed: ${task.exception}",
+                                                Toast.LENGTH_LONG).show()
 
+                                            task.exception?.let {
+                                                FirebaseCrashlytics.getInstance().recordException(it)
+                                            }
 
                                         }
 
@@ -1954,7 +1960,6 @@ class RegisterDetailsActivity() : AppCompatActivity(),
                     }
 
                 }
-
 
 
             }

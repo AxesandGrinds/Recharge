@@ -126,6 +126,7 @@
                     android:layout_marginBottom="@dimen/edit_text_register_button_layout_margin_vertical" />
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:visibility="gone"
                     android:id="@+id/edit_user_friends_recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -136,6 +137,7 @@
 
 
                 <FrameLayout
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" >
 

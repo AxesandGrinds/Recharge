@@ -67,7 +67,7 @@
     <dimen name="layout_marginLeftStart">40dp</dimen>
     <dimen name="layout_marginLeftStart2">70dp</dimen>
 
-    <dimen name="edit_text_input_layout_margin_horizontal">10sp</dimen>
+    <dimen name="edit_text_input_layout_margin_horizontal">12sp</dimen>
     <dimen name="edit_text_input_layout_margin_vertical">6sp</dimen>
 
     <dimen name="edit_text_register_button_layout_margin_vertical">20dp</dimen>
