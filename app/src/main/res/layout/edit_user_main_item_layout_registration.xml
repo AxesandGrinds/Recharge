@@ -404,6 +404,7 @@
               tools:ignore="UselessParent">
 
             <Spinner
+                android:theme="@style/mySpinnerItemStyle"
                 android:id="@+id/p1Bank1Spinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -424,6 +425,7 @@
               tools:ignore="UselessParent">
 
             <Spinner
+                android:theme="@style/mySpinnerItemStyle"
                 android:id="@+id/p1Bank2Spinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -454,6 +456,7 @@
               tools:ignore="UselessParent">
 
             <Spinner
+                android:theme="@style/mySpinnerItemStyle"
                 android:id="@+id/p1Bank3Spinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -474,6 +477,7 @@
               tools:ignore="UselessParent">
 
             <Spinner
+                android:theme="@style/mySpinnerItemStyle"
                 android:id="@+id/p1Bank4Spinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

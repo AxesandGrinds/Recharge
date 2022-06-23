@@ -1,5 +1,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
+  <style name="mySpinnerItemStyle" parent="@android:style/Widget.Holo.DropDownItem.Spinner">
+    <item name="android:textSize">12sp</item>
+</style>
+
   <style name="AppTheme" parent="Theme.MaterialComponents.Light">
     <item name="colorPrimary">@color/scan_background</item>
     <item name="colorPrimaryDark">@color/colorPrimaryDark3</item>
