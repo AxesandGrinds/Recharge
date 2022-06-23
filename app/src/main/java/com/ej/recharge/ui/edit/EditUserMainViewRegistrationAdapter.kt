@@ -10,7 +10,7 @@ import com.ej.recharge.model.UserListModel
 import com.ej.recharge.repository.entity.User
 import com.google.firebase.auth.FirebaseUser
 
-class EditUserMainViewAdapter(
+class EditUserMainViewRegistrationAdapter(
     private val model: UserListModel,
     private val activity: Activity,
     private val firebaseUser: FirebaseUser?,
@@ -23,7 +23,7 @@ class EditUserMainViewAdapter(
 
     val itemView = LayoutInflater
       .from(parent.context)
-      .inflate(R.layout.edit_user_main_item_layout, parent, false)
+      .inflate(R.layout.edit_user_main_item_layout_registration, parent, false)
 
     return EditUserMainItemViewHolder(itemView, activity, firebaseUser, listener)
 

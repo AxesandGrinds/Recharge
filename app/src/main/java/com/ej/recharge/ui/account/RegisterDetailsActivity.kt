@@ -44,7 +44,7 @@ import com.ej.recharge.repository.entity.UserAndFriendInfo
 import com.ej.recharge.service.AppLocationService
 import com.ej.recharge.ui.MainActivity
 import com.ej.recharge.ui.edit.EditFriendViewAdapter
-import com.ej.recharge.ui.edit.EditUserMainViewAdapter
+import com.ej.recharge.ui.edit.EditUserMainViewRegistrationAdapter
 import com.ej.recharge.ui.edit.EditUserSecondViewAdapter
 import com.ej.recharge.utils.*
 import com.droidman.ktoasty.KToasty
@@ -897,7 +897,7 @@ class RegisterDetailsActivity() : AppCompatActivity(),
     private lateinit var rda_coordinatorLayout: CoordinatorLayout
 
     private lateinit var userMainRecyclerView: RecyclerView
-    private lateinit var editFragmentUserMainViewAdapter: EditUserMainViewAdapter
+    private lateinit var editFragmentUserMainViewAdapter: EditUserMainViewRegistrationAdapter
     private var userMainListModel: UserListModel = UserListModel(mutableListOf())
 
     private lateinit var userSecondRecyclerView: RecyclerView
@@ -978,7 +978,7 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
         userMainRecyclerView.isNestedScrollingEnabled = false
 
-        editFragmentUserMainViewAdapter = EditUserMainViewAdapter(userMainListModel, this, firebaseUser) {}
+        editFragmentUserMainViewAdapter = EditUserMainViewRegistrationAdapter(userMainListModel, this, firebaseUser) {}
 
         userMainRecyclerView.adapter = editFragmentUserMainViewAdapter
 
