@@ -4,21 +4,15 @@ import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.ej.recharge.R
-import com.ej.recharge.ui.CodeInputActivity
-import com.ej.recharge.ui.MyMoPub
 import com.ej.recharge.utils.ImeHelper
 import com.ej.recharge.utils.NetworkUtil
 import com.ej.recharge.utils.Util
-import com.ej.recharge.utils.ironSourceAppKey
-import com.ej.recharge.vision.RecognitionActivityReviewFinal
 //import com.facebook.ads.Ad
 //import com.facebook.ads.AdError
 //import com.facebook.ads.AdListener
@@ -30,13 +24,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.ironsource.mediationsdk.ISBannerSize
-import com.ironsource.mediationsdk.IronSource
 import com.ironsource.mediationsdk.IronSourceBannerLayout
-import com.ironsource.mediationsdk.logger.IronSourceError
-import com.ironsource.mediationsdk.sdk.BannerListener
-import com.mopub.mobileads.MoPubErrorCode
-import com.mopub.mobileads.MoPubView
+//import com.mopub.mobileads.MoPubView
 
 
 class RecoverPasswordActivity:  AppCompatActivity(), View.OnClickListener,
@@ -165,7 +154,7 @@ class RecoverPasswordActivity:  AppCompatActivity(), View.OnClickListener,
 
     }
 
-    var moPubView: MoPubView? = null
+//    var moPubView: MoPubView? = null
 
     private var adUnit: String = "ca8da1a9954d436f9b81f39bf980712a"
     private val debugAdUnit: String = "b195f8dd8ded45fe847ad89ed1d016da"

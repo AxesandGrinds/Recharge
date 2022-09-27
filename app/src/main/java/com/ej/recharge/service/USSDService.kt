@@ -41,7 +41,7 @@ open class USSDService : AccessibilityService() {
 
         Log.e(TAG, "onAccessibilityEvent")
 
-        val source: AccessibilityNodeInfo = event.source
+        val source: AccessibilityNodeInfo? = event.source
 
 
         if (source != null) {

@@ -351,7 +351,7 @@ class PermissionHelper : OnActivityPermissionCallback {
                             context,
                             it
                         )
-                    }
+                    }!!
                 ) {
                     permissionsNeeded.add(permission)
                 }
@@ -367,7 +367,7 @@ class PermissionHelper : OnActivityPermissionCallback {
                             context,
                             it
                         )
-                    }
+                    }!!
                 ) {
                     permissionsNeeded.add(permission)
                 }

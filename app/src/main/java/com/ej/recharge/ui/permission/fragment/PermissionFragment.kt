@@ -180,7 +180,7 @@ class PermissionFragment : Fragment(), View.OnClickListener {
 
         if (isFromResources) {
 
-            permissionModel?.let { resources.getDimension(it?.textSize) }?.let {
+            permissionModel?.let { it?.textSize?.let { it1 -> resources.getDimension(it1) } }?.let {
 
                 title!!.setTextSize(TypedValue.COMPLEX_UNIT_PX, it)
 

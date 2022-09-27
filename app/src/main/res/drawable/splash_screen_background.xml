@@ -8,7 +8,7 @@
     <item  android:bottom="100dp">
         <bitmap
             android:gravity="center"
-            android:src="@drawable/recharge_app_name_canva_8" />
+            android:src="@drawable/recharge_app_name_91" />
     </item>
 
 </layer-list>

@@ -3,9 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Victor/Documents/Projects/Recharge/app/src/main/res/drawable/splash_screen_background.xml" value="0.109" />
+        <entry key="..\:/Users/Victor/Documents/Projects/Recharge/app/src/main/res/layout/activity_login_email.xml" value="0.36" />
+        <entry key="..\:/Users/Victor/Documents/Projects/Recharge/app/src/main/res/layout/activity_login_main.xml" value="0.1" />
+        <entry key="..\:/Users/Victor/Documents/Projects/Recharge/app/src/main/res/layout/activity_login_phone.xml" value="0.13179347826086957" />
         <entry key="..\:/Users/Victor/Documents/Projects/Recharge/app/src/main/res/layout/activity_register_details.xml" value="0.2328125" />
         <entry key="..\:/Users/Victor/Documents/Projects/Recharge/app/src/main/res/layout/edit_user_main_item_layout.xml" value="0.25" />
         <entry key="..\:/Users/Victor/Documents/Projects/Recharge/app/src/main/res/layout/edit_user_main_item_layout_registration.xml" value="0.36" />
+        <entry key="..\:/Users/Victor/Documents/Projects/Recharge/app/src/main/res/layout/edit_user_second_item_layout.xml" value="0.2328125" />
         <entry key="..\:/Users/Victor/Documents/Projects/Recharge/app/src/main/res/layout/vision_activity_still_image_final.xml" value="0.245018115942029" />
         <entry key="app/src/main/res/layout/activity_login_phone.xml" value="0.20185185185185187" />
         <entry key="app/src/main/res/layout/edit_fragment_lists_layout.xml" value="0.20185185185185187" />

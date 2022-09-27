@@ -1909,7 +1909,7 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
                                 val email: String = userAndFriendInfoUnsaved.usersList[0].email!!
 
-                                auth.createUserWithEmailAndPassword(email, password)
+                                auth.createUserWithEmailAndPassword(email.trim(), password)
                                     .addOnCompleteListener(this) {
 
                                             task ->
@@ -1938,7 +1938,6 @@ class RegisterDetailsActivity() : AppCompatActivity(),
 
                                     }
 
-
                             }
                             else {
 
@@ -1946,8 +1945,6 @@ class RegisterDetailsActivity() : AppCompatActivity(),
                                 util.onShowErrorMessageLong(message, this)
 
                             }
-
-
 
                         }
                         else {

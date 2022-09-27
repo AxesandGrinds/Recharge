@@ -17,15 +17,15 @@ android {
 
     }
 
-    compileSdkVersion 32
+    compileSdkVersion 33
 
     defaultConfig {
 
         applicationId "com.ej.recharge"
         minSdkVersion 19
-        targetSdkVersion 32
-        versionCode 9
-        versionName "0.0.108"
+        targetSdkVersion 33
+        versionCode 10
+        versionName "0.0.110"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
@@ -106,7 +106,7 @@ dependencies {
 //    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
 //    kapt  "com.google.dagger:dagger-android-support:$dagger_version"
 
-    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation 'androidx.appcompat:appcompat:1.5.0'
     implementation 'com.google.android.material:material:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
@@ -119,12 +119,12 @@ dependencies {
     implementation "androidx.preference:preference-ktx:1.2.0"
     implementation 'androidx.browser:browser:1.4.0'
 
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.4.2'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.4.2'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.1'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.5.1'
 
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.1'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
     implementation platform('com.google.firebase:firebase-bom:28.3.0')
@@ -210,7 +210,7 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:$glide_version"
     annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
 
-    def room_version = "2.4.2"
+    def room_version = "2.4.3"
     implementation "androidx.room:room-runtime:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
@@ -239,7 +239,7 @@ dependencies {
     // Text features // was 16.2.0
 //    implementation 'com.google.android.gms:play-services-mlkit-text-recognition:17.0.0'
 //    implementation 'com.google.android.gms:play-services-mlkit-text-recognition:17.0.0'
-    implementation 'com.google.mlkit:text-recognition:16.0.0-beta4'
+    implementation 'com.google.mlkit:text-recognition:16.0.0-beta5'
 
     // Image labeling
     implementation 'com.google.mlkit:image-labeling:17.0.7'
@@ -265,9 +265,9 @@ dependencies {
     implementation 'androidx.annotation:annotation:1.4.0'
 
     // CameraX
-    implementation "androidx.camera:camera-camera2:1.2.0-alpha02"
-    implementation "androidx.camera:camera-lifecycle:1.2.0-alpha02"
-    implementation "androidx.camera:camera-view:1.2.0-alpha02"
+    implementation "androidx.camera:camera-camera2:1.2.0-beta01"
+    implementation "androidx.camera:camera-lifecycle:1.2.0-beta01"
+    implementation "androidx.camera:camera-view:1.2.0-beta01"
 
 //    implementation "androidx.camera:camera-camera2:1.1.0-alpha08"
 //    implementation "androidx.camera:camera-lifecycle:1.1.0-alpha08"
@@ -280,7 +280,7 @@ dependencies {
 
     implementation 'com.google.code.gson:gson:2.8.9'
 
-    implementation 'com.github.yalantis:ucrop:2.2.7'
+    implementation 'com.github.yalantis:ucrop:2.2.8'
     implementation 'io.github.inflationx:calligraphy3:3.1.1'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'com.github.GrenderG:Toasty:1.4.1'
@@ -315,7 +315,7 @@ dependencies {
     //needed for adjust and appsflyer
     implementation 'com.android.installreferrer:installreferrer:2.2'
 
-    // was 19.8.0 then 20.3.0
+    // was 19.8.0 then 20.3.0 // do not change from 20.6.0
     implementation 'com.google.android.gms:play-services-ads:20.6.0'
 
     implementation 'com.squareup.moshi:moshi-kotlin:1.13.0'
@@ -328,7 +328,7 @@ dependencies {
     // For Kotlin users also import the Kotlin extensions library for Play Core:
     implementation 'com.google.android.play:core-ktx:1.8.1'
 
-    implementation 'com.google.firebase:firebase-config-ktx:21.1.0'
+    implementation 'com.google.firebase:firebase-config-ktx:21.1.1'
 
 //    // For banners
 //    implementation('com.mopub:mopub-sdk-banner:5.17.0@aar') {
@@ -351,7 +351,7 @@ dependencies {
     implementation 'com.ironsource.adapters:facebookadapter:4.3.28'
     implementation 'com.facebook.android:audience-network-sdk:6.6.0'
     implementation 'com.google.android.gms:play-services-ads-identifier:18.0.1'
-    implementation 'com.google.android.gms:play-services-basement:18.0.2'
+    implementation 'com.google.android.gms:play-services-basement:18.1.0'
 
 }
 

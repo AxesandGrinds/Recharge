@@ -16,48 +16,28 @@
 
 package com.ej.recharge.vision
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.graphics.Color
-import android.graphics.Typeface
-import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import android.widget.AdapterView.OnItemClickListener
-import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import com.ej.recharge.R
-import com.ej.recharge.ui.CodeInputActivity
-import com.ej.recharge.ui.MyMoPub
 import com.ej.recharge.utils.PhoneUtil
 import com.ej.recharge.utils.Util
-import com.ej.recharge.utils.ironSourceAppKey
 //import com.facebook.ads.Ad
 //import com.facebook.ads.AdError
 //import com.facebook.ads.AdListener
 //import com.facebook.ads.AdSize
 //import com.facebook.ads.AdView
 import com.google.android.gms.ads.*
-import com.ironsource.mediationsdk.ISBannerSize
-import com.ironsource.mediationsdk.IronSource
 import com.ironsource.mediationsdk.IronSourceBannerLayout
-import com.ironsource.mediationsdk.logger.IronSourceError
-import com.ironsource.mediationsdk.sdk.BannerListener
-import com.mopub.mobileads.MoPubErrorCode
 import com.mopub.mobileads.MoPubView
-import java.util.*
 
 /**
  * Demo app chooser which takes care of runtime permission requesting and allow you pick from all
@@ -224,6 +204,7 @@ class RecognitionActivityReviewFinal :
 
     code = code.replace("-", "")
     code = code.replace(" ", "")
+    code = code.replace("[^0-9]".toRegex(), "")
     crossCheckEt.setText(code)
 
     val doneButton = findViewById<Button>(R.id.done_btn)
@@ -233,7 +214,7 @@ class RecognitionActivityReviewFinal :
       code = crossCheckEt.text.toString()
       code = code.replace("-", "")
       code = code.replace(" ", "")
-
+      code = code.replace("[^0-9]".toRegex(), "")
       runRecharge()
 
     }

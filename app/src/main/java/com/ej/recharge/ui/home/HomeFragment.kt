@@ -777,7 +777,7 @@ private val TAG: String = "ATTENTION ATTENTION"
 
   val PREFNAME: String = "local_user"
 
-  private fun checkBiDailyInterstitialAd() {
+  private fun checkWeeklyInterstitialAd() {
 
     val currentTimeMillis = System.currentTimeMillis()
 
@@ -809,23 +809,23 @@ private val TAG: String = "ATTENTION ATTENTION"
 
       val olderThan7Days: Boolean = thisDate.after(Date(date1.time + day7))
 
-      if (olderThan3Days) {
+      if (olderThan7Days) {
 
-        val biDailySentBuilder = AlertDialog.Builder(requireContext(), R.style.MyDialogTheme)
-        biDailySentBuilder.setTitle("Hello")
-        biDailySentBuilder.setMessage("Please view ad. This ad shows up once every 3 days. This will help to keep Recharge App free.")
+        val weeklySentBuilder = AlertDialog.Builder(requireContext(), R.style.MyDialogTheme)
+        weeklySentBuilder.setTitle("Hello")
+        weeklySentBuilder.setMessage("Please view ad. This ad shows up once every 7 days. This will help to keep Recharge App free.")
 
-        biDailySentBuilder.setPositiveButton(android.R.string.ok) {
+        weeklySentBuilder.setPositiveButton(android.R.string.ok) {
 
             dialog, which ->
 
           dialog.dismiss()
 
-          goToPleaseWaitBeforeBiDailyInterstitialAd()
+          goToPleaseWaitBeforeWeeklyInterstitialAd()
 
         }
 
-        biDailySentBuilder.show()
+        weeklySentBuilder.show()
 
       }
       else {
@@ -848,7 +848,7 @@ private val TAG: String = "ATTENTION ATTENTION"
 
   }
 
-  private fun goToPleaseWaitBeforeBiDailyInterstitialAd() {
+  private fun goToPleaseWaitBeforeWeeklyInterstitialAd() {
 
     val intent = Intent(context, PleaseWaitFBScreenHomeActivity::class.java)
 
@@ -939,7 +939,7 @@ private val TAG: String = "ATTENTION ATTENTION"
 
         Handler(Looper.getMainLooper()).postDelayed({
           if (isAttachedToActivity()) {
-            checkBiDailyInterstitialAd()
+            checkWeeklyInterstitialAd()
           }
         }, 200)
 

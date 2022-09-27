@@ -59,7 +59,8 @@
     <color name="blue">#448AFF</color>
     <color name="dark_blue">#004c8c</color>
 
-    <color name="splash_background_color">#E64A19</color>
+    <color name="splash_background_color">#fe4502</color>
+    <color name="splash_background_color8">#E64A19</color>
     <color name="splash_background_color7">#FF914D</color>
 
     <color name="splash_background_color2">#ffab91</color>
@@ -261,10 +262,12 @@
     <color name="card_color_user6">#E6E5E5</color>
     <color name="card_color6">#E6E5E5</color>
 
-    <color name="colorPrimary3">#e64a19</color>
+    <color name="colorPrimary3">#fe4502</color>
     <color name="colorPrimaryLight3">#DD603A</color>
     <color name="colorPrimaryDark3">#ac0800</color>
     <color name="colorAccent3">#D81B60</color>
+
+    <color name="colorPrimary4">#e64a19</color>
 
     <color name="colorPrimary">#6A6A6A</color>
     <color name="colorPrimaryDark">#e64a19</color>
